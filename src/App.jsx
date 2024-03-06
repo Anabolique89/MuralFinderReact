@@ -7,22 +7,20 @@ import Community from './pages/Community';
 import Profile from './pages/Profile';
 import Map from './pages/Map';
 import Walls from './pages/Walls';
-import IndexLogin from './pages/IndexLogin'; 
-import IndexSignup from './pages/IndexSignup'; 
+import IndexLogin from './pages/IndexLogin';
+import IndexSignup from './pages/IndexSignup';
 import Onboarding1 from './pages/Onboarding1';
 import Onboarding2 from './pages/Onboarding2';
 import Onboarding3 from './pages/Onboarding3';
-import Contact from './pages/Contact'; 
+import Contact from './pages/Contact';
 
-
-//const apiKey = process.env.REACT_APP_PIXABAY_API_KEY;
 const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [term, setTerm] = useState('');
 
   useEffect(() => {
-    fetch(`https://pixabay.com/api/?key=42390755-c4255a757e48b6966be24bf39&q=${term}&image_type=photo&pretty=true`) 
+    fetch(`https://pixabay.com/api/?key=42390755-c4255a757e48b6966be24bf39&q=${term}&image_type=photo&pretty=true`)
       .then(res => res.json())
       .then(data => {
         console.log(data);
@@ -30,13 +28,11 @@ const App = () => {
         setIsLoading(false);
       })
       .catch(err => console.log(err));
-  }, [term]); 
-  
+  }, [term]);
 
   return (
-
     <Router>
-      <div className="bg-indigo-700 w-full overflow-hidden">
+      <div className="bg-indigo-700 w-full overflow-hidden flex flex-col items-center">
         <div className={`${styles.paddingX} ${styles.flexCenter}`}>
           <div className={`${styles.boxWidth}`}>
             <Navbar />
@@ -55,21 +51,22 @@ const App = () => {
                   <Stats />
                   <Business />
                   <Billing />
-                  <h2 className={ `${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
-                  <ImageSearch searchText={(text) => setTerm(text)}/>
+                  <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
+                  <ImageSearch searchText={(text) => setTerm(text)} />
 
                   {!isLoading && images.length === 0 && <h1 className='text-5xl text-center mx-auto mt-32'>No Images Found</h1>}
 
-                 {isLoading ? <h1 className='text-6xl text-center mx-auto mt-32'>Loading ...</h1> : <div className='container mx-auto py-4'>
-                    <div className="flex flex-wrap gap-4">
+                  {isLoading ? <h1 className='text-6xl text-center mx-auto mt-32'>Loading ...</h1> : <div className='container mx-auto py-4'>
+                    <div className="mx-auto">
+                      <div className="flex flex-wrap gap-4 justify-center">
                         {images.map(image => (
-                            <ArtworksGallery key={image.id} image={image}/>
-                        ))}
-                  </div>
+                          <ArtworksGallery key={image.id} image={image} />
+                         ))}
+                      </div>
+                    </div>
                   </div>}
                   <CardDeal />
                   <Testimonials />
-                  {/* <Clients /> */}
                   <CTA />
                   <Footer />
                 </div>
@@ -94,4 +91,3 @@ const App = () => {
 };
 
 export default App;
-
