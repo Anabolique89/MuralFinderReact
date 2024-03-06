@@ -14,6 +14,8 @@ import Onboarding2 from './pages/Onboarding2';
 import Onboarding3 from './pages/Onboarding3';
 import Contact from './pages/Contact';
 
+
+//const apiKey = process.env.REACT_APP_PIXABAY_API_KEY;
 const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,9 +32,11 @@ const App = () => {
       .catch(err => console.log(err));
   }, [term]);
 
+
   return (
+
     <Router>
-      <div className="bg-indigo-700 w-full overflow-hidden flex flex-col items-center">
+      <div className="bg-indigo-700 w-full overflow-hidden">
         <div className={`${styles.paddingX} ${styles.flexCenter}`}>
           <div className={`${styles.boxWidth}`}>
             <Navbar />
@@ -57,16 +61,18 @@ const App = () => {
                   {!isLoading && images.length === 0 && <h1 className='text-5xl text-center mx-auto mt-32'>No Images Found</h1>}
 
                   {isLoading ? <h1 className='text-6xl text-center mx-auto mt-32'>Loading ...</h1> : <div className='container mx-auto py-4'>
-                    <div className="mx-auto">
-                      <div className="flex flex-wrap gap-4 justify-center">
+                    <div className="{styles.flexc}">
+                      <div className="flex flex-wrap gap-4">
                         {images.map(image => (
                           <ArtworksGallery key={image.id} image={image} />
-                         ))}
+                        ))}
                       </div>
                     </div>
+
                   </div>}
                   <CardDeal />
                   <Testimonials />
+                  {/* <Clients /> */}
                   <CTA />
                   <Footer />
                 </div>
@@ -91,3 +97,4 @@ const App = () => {
 };
 
 export default App;
+
