@@ -1,12 +1,7 @@
-import airbnb from "./airbnb.png";
 import bill from "./bill.png";
 import binance from "./binance.png";
-import card from "./card.png";
 import coinbase from "./coinbase.png";
-import dropbox from "./dropbox.png";
-import logo from "./logo.svg";
 import quotes from "./quotes.svg";
-import robot from "./robot.png";
 import send from "./Send.svg";
 import shield from "./Shield.svg";
 import star from "./Star.svg";
@@ -26,14 +21,11 @@ import people03 from "./people03.png";
 import ArtZoroLogoWhite from "./ArtZoroLogoWhite.svg";
 import profile from "./profile.svg";
 import hologram from "./hologram.png";
-import fluidElement4 from "./fluidElement4.png";
 import bubbles from "./bubbles.png";
 import Fluidele from "./Fluidele.png";
-import goodcloudpaint from "./goodcloudpaint.png";
 import Interlinked from "./Interlinked.png";
 import DigitalTrauma from "./DigitalTrauma.png";
 import city from "./city.png";
-import GameOverColor from "./GameOverColor.png";
 import swimWhite from "./swimWhite.png";
 import eagle from "./eagle.png";
 import Aura from "./Aura.svg";
@@ -42,17 +34,15 @@ import libraWhite from "./libraWhite.png";
 import snake from "./snake.png";
 import fadeintoyouWhite from "./fadeintoyouWhite.png";
 import steampunk from "./steampunk.png";
+import catWhite from "./catWhite.png";
+import faeWhite from "./faeWhite.png";
+import iceCreamWhite from "./iceCreamWhite.png";
 
 export {
-  airbnb,
   bill,
   binance,
-  card,
   coinbase,
-  dropbox,
-  logo,
   quotes,
-  robot,
   send,
   shield,
   star,
@@ -72,14 +62,11 @@ export {
   ArtZoroLogoWhite,
   profile,
   hologram,
-  fluidElement4,
   bubbles,
   Fluidele,
-  goodcloudpaint,
   Interlinked,
   DigitalTrauma,
   city,
-  GameOverColor,
   swimWhite,
   eagle,
   Aura,
@@ -88,4 +75,7 @@ export {
   snake,
   fadeintoyouWhite,
   steampunk,
+  catWhite,
+  faeWhite,
+  iceCreamWhite,
 };

@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from '../style';
 import Button2 from './Button2';
-import { Aura, swimWhite, fadeintoyouWhite, steampunk} from '../assets';
+import {  swimWhite, fadeintoyouWhite, steampunk} from '../assets';
 
 const CardWithImageExample  = () => (
 <section className='flex flex-wrap sm:justify-start justify-center w-full feedback-container relative z-[1]'>
       <div
-        className=" flex flex-col justify-between px-6 py-6 max-w-[350px] md:m-10 sm:m-5 feedback-card m-3 backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-34 rounded-2xl border-solid border-2 border-indigo-600 ">
+        className=" flex flex-col justify-between max-w-[320px] md:m-10 sm:m-5 feedback-card m-3 backdrop-filter backdrop-blur-lg md:p-6 sm:p-8 ss:p-20 rounded-2xl border-solid border-2 border-indigo-600 ">
         <a href="#!">
           <img
             className="rounded-t-lg"
@@ -30,7 +30,7 @@ const CardWithImageExample  = () => (
       </div>
 
 <div
-className="flex flex-col justify-between px-10 py-12 max-w-[350px] md:m-10 sm:m-5 feedback-card m-3 backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-34 rounded-2xl border-solid border-2 border-indigo-600 ">
+className="flex flex-col justify-between max-w-[320px] md:m-10 sm:m-5 feedback-card m-3 backdrop-filter backdrop-blur-lg md:p-6 sm:p-8 ss:p-20 rounded-2xl border-solid border-2 border-indigo-600 ">
 <a href="#!">
   <img
     className="rounded-t-lg"
@@ -54,7 +54,7 @@ className="flex flex-col justify-between px-10 py-12 max-w-[350px] md:m-10 sm:m-
 </div>
 
 <div
-className="flex flex-col justify-between px-10 py-12 max-w-[350px] md:m-10 sm:m-5 feedback-card m-3 backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-34 rounded-2xl border-solid border-2 border-indigo-600 ">
+className="flex flex-col justify-between max-w-[320px] md:m-10 sm:m-5 feedback-card m-3 backdrop-filter backdrop-blur-lg md:p-6 sm:p-8 ss:p-20 rounded-2xl border-solid border-2 border-indigo-600 ">
 <a href="#!">
   <img
     className="rounded-t-lg"

@@ -4,6 +4,7 @@ import styles from '../style';
 
 const ImageSearch = ({ searchText }) => {
     const [text, setText] = useState('');
+    console.log(text)
   
     const onSubmit = (e) => {
       e.preventDefault();

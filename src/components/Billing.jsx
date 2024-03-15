@@ -1,4 +1,4 @@
-import { apple, DigitalTrauma } from '../assets';
+import {  DigitalTrauma } from '../assets';
 import styles, { layout } from '../style';
 import Button from './Button';
 import Button2 from './Button2';

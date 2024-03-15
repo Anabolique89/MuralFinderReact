@@ -14,6 +14,9 @@ import ImageSearch from "./ImageSearch";
 import HeroAbout from "./HeroAbout";
 import CardWithImageExample from "./CardWithImageExample";
 import AboutSection2 from "./AboutSection2";
+import HeroCommunity from "./HeroCommunity";
+import CommunitySection2 from "./CommunitySection2";
+import CommunityBlogSection from "./CommunityBlogSection";
 
 export {
   Navbar,
@@ -32,4 +35,7 @@ export {
   HeroAbout,
   CardWithImageExample,
   AboutSection2,
+  HeroCommunity,
+  CommunitySection2,
+  CommunityBlogSection,
 };

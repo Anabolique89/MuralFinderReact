@@ -1,5 +1,5 @@
 import styles from '../style';
-import {google, hologram, robot, bubbles, Fluidele, goodcloudpaint, Interlinked} from '../assets';
+import {google, Interlinked} from '../assets';
 import GetStarted from './GetStarted';
 
 const Hero = () => (

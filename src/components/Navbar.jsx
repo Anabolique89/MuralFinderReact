@@ -41,8 +41,8 @@ const Navbar = () => {
         ))}
       </ul>
 
-      <div className='flex flex-row items-center py-[6px] px-2 bg-discount-gradient rounded-[30px] mb-2 ms-8'>
-<img src={profile} alt="profile" className="w-[32px] h-[32px]" />
+      <div className='flex flex-row items-center py-[6px] px-2 rounded-[30px] mb-2 ms-8'>
+<img src={profile} alt="profile" className="w-[30px] h-[30px]" /> PROFILE
       </div>
       <div className="sm:hidden flex flex-1 justify-end items-center">
         <img

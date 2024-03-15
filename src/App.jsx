@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, Clients, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch } from "./components";
+import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -14,27 +14,38 @@ import Onboarding2 from './pages/Onboarding2';
 import Onboarding3 from './pages/Onboarding3';
 import Contact from './pages/Contact';
 
-
-//const apiKey = process.env.REACT_APP_PIXABAY_API_KEY;
 const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [term, setTerm] = useState('');
+  const [filteredImages, setFilteredImages] = useState([]); 
+  console.log(filteredImages)
 
   useEffect(() => {
-    fetch(`https://pixabay.com/api/?key=42390755-c4255a757e48b6966be24bf39&q=${term}&image_type=photo&pretty=true`)
+    setIsLoading(true);
+    fetch(`https://api.muralfinder.net/api/artworks`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        setImages(data.hits);
+      
+        if (data.success && data.data) {
+          setImages(data.data.data); // Adjusted for the new API response structure
+          console.log(data.data.data)
+        } else {
+          setImages([]); 
+          setFilteredImages([]);
+        }
         setIsLoading(false);
       })
-      .catch(err => console.log(err));
-  }, [term]);
-
+      .catch(err => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  }, []);
+  const searchText=(text)=>{
+    const filtered=images.filter(image=>image.title.toLowerCase().includes(text.toLowerCase()));
+    setFilteredImages(filtered);
+  }
 
   return (
-
     <Router>
       <div className="bg-indigo-700 w-full overflow-hidden">
         <div className={`${styles.paddingX} ${styles.flexCenter}`}>
@@ -56,23 +67,24 @@ const App = () => {
                   <Business />
                   <Billing />
                   <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
-                  <ImageSearch searchText={(text) => setTerm(text)} />
+                  <ImageSearch searchText={searchText} />
 
                   {!isLoading && images.length === 0 && <h1 className='text-5xl text-center mx-auto mt-32'>No Images Found</h1>}
-
-                  {isLoading ? <h1 className='text-6xl text-center mx-auto mt-32'>Loading ...</h1> : <div className='container mx-auto py-4'>
-                    <div className="{styles.flexc}">
-                      <div className="flex flex-wrap gap-4">
-                        {images.map(image => (
-                          <ArtworksGallery key={image.id} image={image} />
-                        ))}
+                  {isLoading ? (
+                    <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
+                      ) : (
+                           <div className='container mx-auto py-4'>
+                           <div className="flex flex-wrap gap-4">
+                          {(filteredImages.length > 0 ? filteredImages : images).map(image => (
+                               <ArtworksGallery key={image.id} image={image} />
+                          ))}
+                       </div>
                       </div>
-                    </div>
+                      )}
 
-                  </div>}
+                 
                   <CardDeal />
                   <Testimonials />
-                  {/* <Clients /> */}
                   <CTA />
                   <Footer />
                 </div>
@@ -80,16 +92,16 @@ const App = () => {
             </>
           } />
           <Route path="/About" element={<About />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/map" element={<Map />} />
-          <Route path="/walls" element={<Walls />} />
-          <Route path="/login" element={<IndexLogin />} />
+          <Route path="/Community" element={<Community />} />
+          <Route path="/Profile" element={<Profile />} />
+          <Route path="/Map" element={<Map />} />
+          <Route path="/Walls" element={<Walls />} />
+          <Route path="/Login" element={<IndexLogin />} />
           <Route path="/IndexSignup" element={<IndexSignup />} />
           <Route path="/Onboarding1" element={<Onboarding1 />} />
           <Route path="/Onboarding2" element={<Onboarding2 />} />
           <Route path="/Onboarding3" element={<Onboarding3 />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/Contact" element={<Contact />} />
         </Routes>
       </div>
     </Router>
@@ -97,4 +109,3 @@ const App = () => {
 };
 
 export default App;
-

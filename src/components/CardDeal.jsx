@@ -1,4 +1,4 @@
-import { card, city } from '../assets';
+import { city } from '../assets';
 import styles, { layout } from '../style';
 import Button from './Button';
 import Button3 from './Button3';

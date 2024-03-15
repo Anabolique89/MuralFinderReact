@@ -1,6 +1,6 @@
 import styles from '../style';
 import { ArtZoroLogoWhite } from "../assets";
-import { footerLinks, socialMedia } from '../constants';
+import { footerLinks} from '../constants';
 
 const Footer = () => (
   
