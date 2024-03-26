@@ -13,8 +13,10 @@ import Onboarding1 from './pages/Onboarding1';
 import Onboarding2 from './pages/Onboarding2';
 import Onboarding3 from './pages/Onboarding3';
 import Contact from './pages/Contact';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
+
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]); 
@@ -46,13 +48,16 @@ const App = () => {
   }
 
   return (
+   
     <Router>
       <div className="bg-indigo-700 w-full overflow-hidden">
+
         <div className={`${styles.paddingX} ${styles.flexCenter}`}>
           <div className={`${styles.boxWidth}`}>
             <Navbar />
           </div>
         </div>
+        <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={
             <>
@@ -73,8 +78,8 @@ const App = () => {
                   {isLoading ? (
                     <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
                       ) : (
-                           <div className='container mx-auto py-4'>
-                           <div className="flex flex-wrap gap-4">
+                           <div className='container mx-auto py-2'>
+                           <div className="flex flex-wrap gap-2">
                           {(filteredImages.length > 0 ? filteredImages : images).map(image => (
                                <ArtworksGallery key={image.id} image={image} />
                           ))}

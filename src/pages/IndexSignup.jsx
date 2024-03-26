@@ -1,52 +1,65 @@
 import React, { useState } from 'react';
 import styles, { layout } from '../style';
 import { libraWhite } from '../assets';
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const IndexSignup = () => {
+
+const [username, usernamechange] = useState("");
+const [email, emailchange] = useState("");
+const [role, rolechange] = useState("");
+const [password, passwordchange] = useState("");
+const [password_confirmation, repeatPasswordchange] = useState("");
+
+const navigate = useNavigate();
+
+const IsValidate = () => {
+    let isproceed = true;
+    let errormessage = 'Please enter the value in ';
   
-  const [formValues, setFormValues] = useState({
-    username: '',
-    email: '',
-    role: '',
-    password: '',
-    repeatPassword: '',
-  });
-
-
-  const [passwordError, setPasswordError] = useState('');
-
- 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
-
-    if (name === 'password' || name === 'repeatPassword') {
-      setPasswordError('');
+    if (password === null || password === '') {
+        isproceed = false;
+        errormessage += ' Password';
     }
-  };
-
- 
-  const handleSubmit = (event) => {
-    event.preventDefault(); 
-
-    
-    if (formValues.password !== formValues.repeatPassword) {
-      setPasswordError('Passwords do not match');
-      return;
+    if (email === null || email === '') {
+        isproceed = false;
+        errormessage += ' Email';
     }
 
-    console.log('User Details:', formValues);
+    if(!isproceed){
+        toast.warning(errormessage)
+    }else{
+        if(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)){
 
-    
-    setTimeout(() => {
-      alert(`Signup successful for ${formValues.email}`);
-      
-      setFormValues({ username: '', email: '', role: '', password: '', repeatPassword: '' }); 
-    }, 500);
-  };
+        }else{
+            isproceed = false;
+            toast.warning('Please enter the valid email')
+        }
+    }
+    return isproceed;
+}
+
+
+const handleSubmit = (e) => {
+        e.preventDefault();
+        let regobj = { username, email, role, password, password_confirmation };
+        if (IsValidate()) {
+  
+        fetch("https://api.muralfinder.net/api/register", {
+            method: "POST",
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(regobj)
+          }).then(async (response) => {
+            const data = await response.json(); // Parse the JSON response
+            console.log(data); // Now you have the response data in a JavaScript object
+            toast.success(data.message);
+            navigate('/login');
+        }).catch((err) => {
+            toast.error('Failed :' + err.message);
+        });
+    }
+}
 
   return (
 
@@ -62,8 +75,8 @@ const IndexSignup = () => {
           name="username"
           placeholder="Username"
           className="input-text"
-          value={formValues.username}
-          onChange={handleChange}
+          value={username} 
+          onChange={e => usernamechange(e.target.value)}
           required
         />
         </div>
@@ -75,18 +88,19 @@ const IndexSignup = () => {
           name="email"
           placeholder="Email"
           className="input-text"
-          value={formValues.email}
-          onChange={handleChange}
+          value={email} 
+          onChange={e => emailchange(e.target.value)}
           required
         />
         </div>
       </div>
       <div className="form-group">
       <div className="input-wrapper">
-        <select name="role" value={formValues.role} onChange={handleChange} class="input-text" required>
+        <select name="role"  value={role} 
+          onChange={e => rolechange(e.target.value)} class="input-text" required>
           <option value="">Select a role</option>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
+          <option value="artist">Artist</option>
+          <option value="art_lover">Art Lover</option>
         </select>
         </div>
       </div>
@@ -97,8 +111,8 @@ const IndexSignup = () => {
           name="password"
           placeholder="Password"
           className="input-text"
-          value={formValues.password}
-          onChange={handleChange}
+          value={password} 
+          onChange={e => passwordchange(e.target.value)}
           required
         />
         </div>
@@ -107,18 +121,19 @@ const IndexSignup = () => {
       <div className="input-wrapper">
         <input
           type="password"
-          name="repeatPassword"
+          name="password_confirmation"
           placeholder="Repeat Password"
           className="input-text"
-          value={formValues.repeatPassword}
-          onChange={handleChange}
+          value={password_confirmation} 
+          onChange={e => repeatPasswordchange(e.target.value)}
           required
         />
       </div>
       </div>
-      {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
+      {/* {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>} */}
       <div className={`${styles.flexCenter} p-4`}>
       <button type="submit" className={` py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>Create Account</button>
+      <Link to={'/Login'} className="btn btn-danger">Close</Link>
       </div>
       <div>
       <p className={styles.paragraph} >Already have an account? <a className={`${styles.paragraph} text-black`} href='/login'>Login Here</a></p>

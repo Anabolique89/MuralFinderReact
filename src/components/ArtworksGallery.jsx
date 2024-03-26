@@ -31,15 +31,7 @@ const ArtworksGallery = ({ image }) => {
             </li>
      
           </ul>
-          {/* Comment out or remove the tags section if not applicable
-          <div className='py-4'>
-            {tags.map((tag, index) => (
-              <span key={index} className='inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2'>
-                #{tag}
-              </span>
-            ))}
-          </div>
-          */}
+    
         </div>
       </div>
     </div>
