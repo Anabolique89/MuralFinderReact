@@ -186,7 +186,32 @@ background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
   font-size: 16px;
   margin-bottom: 8px;
 }
+.input-error {
+  border-color: red; /* Customize the border color for the error state */
+}
 
+.error-message {
+  color: rgb(58, 10, 20);
+  font-size: 16px;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  background-color: rgb(255, 204, 204);
+  padding: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.error-message::before {
+  content: "\f06a";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+}
  /*
  .onboarding-page, .onboarding-page2, .onboarding-page3 {
   width: 450px;

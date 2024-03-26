@@ -14,27 +14,20 @@ import Onboarding2 from './pages/Onboarding2';
 import Onboarding3 from './pages/Onboarding3';
 import Contact from './pages/Contact';
 import { ToastContainer } from 'react-toastify';
+import ArtworkService from './services/ArtworkService';
 
 const App = () => {
 
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filteredImages, setFilteredImages] = useState([]); 
+  const [filteredImages, setFilteredImages] = useState([]);
   console.log(filteredImages)
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`https://api.muralfinder.net/api/artworks`)
-      .then(res => res.json())
+    ArtworkService.loadArtworks()
       .then(data => {
-      
-        if (data.success && data.data) {
-          setImages(data.data.data); // Adjusted for the new API response structure
-          console.log(data.data.data)
-        } else {
-          setImages([]); 
-          setFilteredImages([]);
-        }
+        setImages(data);
         setIsLoading(false);
       })
       .catch(err => {
@@ -42,13 +35,23 @@ const App = () => {
         setIsLoading(false);
       });
   }, []);
-  const searchText=(text)=>{
-    const filtered=images.filter(image=>image.title.toLowerCase().includes(text.toLowerCase()));
+
+  const searchText = async (text) => {
+    const filtered = ArtworkService.searchArtworks(images, text);
     setFilteredImages(filtered);
-  }
+  
+    if (filtered.length === 0) {
+      try {
+        const backendResults = await ArtworkService.searchArtworksOnBackend(text);
+        setFilteredImages(backendResults);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
-   
+
     <Router>
       <div className="bg-indigo-700 w-full overflow-hidden">
 
@@ -77,17 +80,16 @@ const App = () => {
                   {!isLoading && images.length === 0 && <h1 className='text-5xl text-center mx-auto mt-32'>No Images Found</h1>}
                   {isLoading ? (
                     <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
-                      ) : (
-                           <div className='container mx-auto py-2'>
-                           <div className="flex flex-wrap gap-2">
+                  ) : (
+                      <div className='container mx-auto py-2'>
+                        <div className="flex flex-wrap gap-2">
                           {(filteredImages.length > 0 ? filteredImages : images).map(image => (
-                               <ArtworksGallery key={image.id} image={image} />
+                            <ArtworksGallery key={image.id} image={image} />
                           ))}
-                       </div>
+                        </div>
                       </div>
-                      )}
+                    )}
 
-                 
                   <CardDeal />
                   <Testimonials />
                   <CTA />
