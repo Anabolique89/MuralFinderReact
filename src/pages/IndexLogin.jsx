@@ -22,8 +22,10 @@ const Indexlogin = () => {
         sessionStorage.clear();
         sessionStorage.setItem('user', user);
         sessionStorage.setItem('token', token);
+        console.log("Login was succesful");
+        console.log(user);
 
-        navigate('/login');
+        navigate('/login'); // please change this to redirect to the right place..
       } catch (error) {
         // Handle error if login fails
         if (error.message) {
