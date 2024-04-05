@@ -13,6 +13,7 @@ const Contact = () => {
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +25,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading state to true
     try {
       const response = await contactService.sendMessage(formData);
       console.log(response);
@@ -40,6 +42,8 @@ const Contact = () => {
       console.error('Error sending message:', error);
       setErrorMessage('Failed to send message. Please try again.');
       setSuccessMessage('');
+    } finally {
+      setIsLoading(false); // Reset loading state
     }
   };
 
@@ -108,13 +112,16 @@ const Contact = () => {
         </div>
 
         <div className={`${styles.flexCenter} p-4`}>
-          <button type="submit" className={` py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full mt-8 ${styles}`}>Login</button>
+          <button type="submit" disabled={isLoading} className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full mt-8 ${styles}`}>
+            {isLoading ? <div className="loader"></div> : 'Send Message'}
+          </button>
         </div>
       </form>
       <div className={layout.sectionImg}>
-        <img className='w-[80%] h-auto relative z-[2] w-[100%] p-2 md:px-20 sm:px-26 ss:px-34' src={fadeintoyouWhite} alt="bkgImg" /></div>
+        <img className='w-[80%] h-auto relative z-[2] w-[100%] p-2 md:px-20 sm:px-26 ss:px-34' src={fadeintoyouWhite} alt="bkgImg" />
+      </div>
     </div>
-  )
+  );
 }
 
-export default Contact
+export default Contact;

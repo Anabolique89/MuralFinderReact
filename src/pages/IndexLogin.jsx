@@ -10,10 +10,12 @@ const Indexlogin = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading state to true
 
     if (validate()) {
       try {
@@ -22,20 +24,22 @@ const Indexlogin = () => {
         sessionStorage.clear();
         sessionStorage.setItem('user', user);
         sessionStorage.setItem('token', token);
-        console.log("Login was succesful");
+        console.log("Login was successful");
         console.log(user);
 
-        navigate('/login'); // please change this to redirect to the right place..
+        navigate('/dashboard'); // Redirect to the dashboard or appropriate page
       } catch (error) {
         // Handle error if login fails
         if (error.message) {
           console.log(error)
-          // can do specifi email/username validation here
+          // can do specific email/username validation here
           setEmailError(error.message);
         } else {
           // Handle other types of errors
           setEmailError('Login Failed');
         }
+      } finally {
+        setIsLoading(false); // Reset loading state
       }
     }
   };
@@ -91,10 +95,11 @@ const Indexlogin = () => {
           </div>
         </div>
         <div className={`${styles.flexCenter} p-4`}>
-          <button type="submit" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>Login</button>
-          <Link className="btn btn-success" to={'/IndexSignup'}>New User</Link>
+          <button type="submit" disabled={isLoading} className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+            {isLoading ? <div className="loader"></div> : 'Login'}
+          </button>
         </div>
-        <p className={`${styles.paragraph} text-indigo-600`}>Don't have an account? <a className={`${styles.paragraph} text-black`} href='/IndexSignup'>Register Here</a></p>
+        <p className={`${styles.paragraph} text-indigo-600`}>Don't have an account? <Link className={`${styles.paragraph} text-black`} to='/IndexSignup'>Register Here</Link></p>
       </form>
       <div className={layout.sectionImg}>
         <img className='w-[80%] h-auto relative z-[2] w-[100%] p-2 md:px-20 sm:px-26 ss:px-34' src={fadeintoyouWhite} alt="swim" />
