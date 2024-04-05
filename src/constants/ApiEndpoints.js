@@ -12,3 +12,5 @@ export const artworkEndpoints = {
   searchArtworks: 'artworks/artwork/search',
   // add more here
 };
+
+export const ContactEndpoint = "/contact";
