@@ -17,6 +17,7 @@ import AboutSection2 from "./AboutSection2";
 import HeroCommunity from "./HeroCommunity";
 import CommunitySection2 from "./CommunitySection2";
 import CommunityBlogSection from "./CommunityBlogSection";
+import DragDropImageUploader from "./DragDropImageUploader";
 
 export {
   Navbar,
@@ -38,4 +39,5 @@ export {
   HeroCommunity,
   CommunitySection2,
   CommunityBlogSection,
+  DragDropImageUploader,
 };

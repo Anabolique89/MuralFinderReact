@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch } from "./components";
+import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -87,9 +87,11 @@ const App = () => {
                           {(filteredImages.length > 0 ? filteredImages : images).map(image => (
                             <ArtworksGallery key={image.id} image={image} />
                           ))}
+                         
                         </div>
                       </div>
                     )}
+                     <DragDropImageUploader />
 
                   <CardDeal />
                   <Testimonials />

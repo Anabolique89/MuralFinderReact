@@ -27,7 +27,8 @@ const Indexlogin = () => {
         console.log("Login was successful");
         console.log(user);
 
-        navigate('/dashboard'); // Redirect to the dashboard or appropriate page
+        navigate('/Profile'); // please change this to redirect to the right place..
+        
       } catch (error) {
         // Handle error if login fails
         if (error.message) {
