@@ -4,21 +4,21 @@ import { navLinks } from "../constants";
 import { Link } from "react-router-dom";
 import { faUser, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AuthService from "../services/AuthService";
 
 const Navbar = () => {
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
 
-  const isAuthenticated = () => {
-    const user = sessionStorage.getItem('user');
-    const token = sessionStorage.getItem('token');
-    return user && token;
-  };
+  const isAuthenticated = AuthService.isAuthenticated();
 
   const getUser = () => {
     const userString = sessionStorage.getItem('user');
     return userString ? JSON.parse(userString) : null;
   };
+  
+  const user = isAuthenticated ? getUser() : null;
+  
 
   return (
     <nav className="w-full flex py-6 justify-between items-center Navbar pb-0">
@@ -32,7 +32,7 @@ const Navbar = () => {
               } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
             onClick={() => setActive(nav.title)}
           >
-            {nav.title === 'LOGIN' && isAuthenticated() ? (
+            {nav.title === 'LOGIN' && isAuthenticated ? (
               <Link to="/logout" className="text-gray-200 hover:text-red-700">LOGOUT</Link>
             ) : (
               <Link to={nav.id === 'home' ? '/' : `${nav.id}`}>{nav.title}</Link>
@@ -41,7 +41,7 @@ const Navbar = () => {
         ))}
       </ul>
 
-      {isAuthenticated() && (
+      {isAuthenticated && (
         <div className="flex flex-row items-center py-[6px] px-2 rounded-[30px] mb-2 ms-8">
           <div className="flex items-center">
             <div className="w-[50px] h-[50px] flex items-center justify-center bg-indigo-900 rounded-full">
@@ -49,7 +49,7 @@ const Navbar = () => {
             </div>
 
             <div className="relative">
-              <Link to="/profile" className="text-white ml-2">Hello {getUser().username}</Link>
+              <Link to="/profile" className="text-white ml-2">Hello {user.username}</Link>
               <FontAwesomeIcon icon={faChevronDown} className="ml-1 text-white cursor-pointer" onClick={() => setToggle(!toggle)} />
               {toggle && (
                 <div className="absolute top-10 right-0 bg-indigo-800 text-white p-4 rounded-md shadow-md">
