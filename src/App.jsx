@@ -15,6 +15,7 @@ import Onboarding3 from './pages/Onboarding3';
 import Contact from './pages/Contact';
 import { ToastContainer } from 'react-toastify';
 import ArtworkService from './services/ArtworkService';
+import SingleBlogPost from './pages/SingleBlogPost';
 
 const App = () => {
 
@@ -111,6 +112,7 @@ const App = () => {
           <Route path="/Onboarding2" element={<Onboarding2 />} />
           <Route path="/Onboarding3" element={<Onboarding3 />} />
           <Route path="/Contact" element={<Contact />} />
+          <Route path="/blog/:postId" element={<SingleBlogPost/>} /> 
         </Routes>
       </div>
     </Router>

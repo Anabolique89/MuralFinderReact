@@ -10,16 +10,19 @@ const IndexSignup = () => {
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
+
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
     try {
       const response = await AuthService.signup(username, email, role, password, passwordConfirmation);
 
-      console.log(response.message); // Optional: Log the response message
+      console.log(response.message);
       navigate('/login');
     } catch (err) {
       if (err.message && Array.isArray(err.message)) {
@@ -29,6 +32,8 @@ const IndexSignup = () => {
         const errorString = err.message || JSON.stringify(err);
         setError(errorString);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -112,11 +117,16 @@ const IndexSignup = () => {
           </div>
         </div>
         <div className={`${styles.flexCenter} p-4`}>
-          <button type="submit" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>Create Account</button>
-          <Link to={'/Login'} className="btn btn-danger">Close</Link>
+        <button type="submit" disabled={isLoading} className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+            {isLoading ? <div className="loader"></div> : 'Create Account'}
+          </button>
+          {/* <Link to={'/Login'} className="bg-red-500 text-white px-4 py-2 rounded-xl">Close</Link> */}
+
         </div>
         <div>
-          <p className={styles.paragraph}>Already have an account? <a className={`${styles.paragraph} text-black`} href='/login'>Login Here</a></p>
+          <p className={`${styles.paragraph} text-gray-600`}>Already have an account? 
+            <a className={`${styles.paragraph} text-blue-600 hover:text-blue-800 underline`} href='/login'>Login Here</a>
+          </p>
         </div>
       </form>
       <div className={layout.sectionImg}>
