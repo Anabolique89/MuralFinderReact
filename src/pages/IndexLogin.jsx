@@ -22,7 +22,7 @@ const Indexlogin = () => {
         const { user, token } = await AuthService.login(email, password);
 
         sessionStorage.clear();
-        sessionStorage.setItem('user', user);
+        sessionStorage.setItem('user', JSON.stringify(user));
         sessionStorage.setItem('token', token);
         console.log("Login was successful");
         console.log(user);

@@ -63,6 +63,12 @@ const AuthService = {
     } catch (err) {
       throw err;
     }
+  },
+
+  isAuthenticated() {
+    const user = sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('token');
+    return user && token;
   }
 };
 
