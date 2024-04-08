@@ -60,7 +60,7 @@ const Profile = () => {
                                 <img src={defaultimg} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img">
 
                                 </img>
-                                <h1 className="text-xl username-name">{profileData.user.username}</h1>
+                                <h1 className="text-xl username-name">{profileData.username}</h1>
                                 <p className={`${styles.paragraph} mt-5`}>Profile Description <br />Bio Goes Here</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a>
@@ -70,8 +70,8 @@ const Profile = () => {
                             <div className="flex flex-col">
                                 <span className="text-white uppercase font-bold tracking-wider mb-2">Details</span>
                                 <ul>
-                                    <li className={`${styles.paragraph} mt-2 mb-2`}>FOLLOWERS <span className='followers'>20</span></li>
-                                    <li className={`${styles.paragraph}  mb-2`}>FOLLOWING <span className='following'>10</span></li>
+                                    <li className={`${styles.paragraph} mt-2 mb-2`}>FOLLOWERS <span className='followers'>{profileData.followers_count}</span></li>
+                                    <li className={`${styles.paragraph}  mb-2`}>FOLLOWING <span className='following'>{profileData.followings_count}</span></li>
                                     <li className={`${styles.paragraph}  mb-4`}>REVIEWS <span className='reviews'>5</span></li>
                                 </ul>
                                 {/* social media icons */}
