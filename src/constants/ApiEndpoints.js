@@ -3,8 +3,10 @@ export const BASE_URL = 'https://api.muralfinder.net/api/';
 export const authEndpoints = {
   login: 'login',
   register: 'register',
-  logout: 'logout'
+  logout: 'logout',
+  profile: (userId) => `profiles/${userId}`
 };
+
 
 export const artworkEndpoints = {
   getAllArtworks: 'artworks',
