@@ -1,9 +1,13 @@
 import React from 'react'
+import { WallsHero, WallsIntro } from '../components';
 
-const Walls = () => {
-  return (
-    <div>walls</div>
-  )
-}
+
+const Walls = () => (
+ 
+  <section>
+    <WallsIntro />
+    <WallsHero />
+  </section>
+)
 
 export default Walls

@@ -18,6 +18,8 @@ import HeroCommunity from "./HeroCommunity";
 import CommunitySection2 from "./CommunitySection2";
 import CommunityBlogSection from "./CommunityBlogSection";
 import DragDropImageUploader from "./DragDropImageUploader";
+import WallsHero from "./WallsHero.jsx";
+import WallsIntro from "./WallsIntro.jsx";
 
 export {
   Navbar,
@@ -40,4 +42,6 @@ export {
   CommunitySection2,
   CommunityBlogSection,
   DragDropImageUploader,
+  WallsHero,
+  WallsIntro,
 };

@@ -37,6 +37,8 @@ import steampunk from "./steampunk.png";
 import catWhite from "./catWhite.png";
 import faeWhite from "./faeWhite.png";
 import iceCreamWhite from "./iceCreamWhite.png";
+import defaultimg from "./defaultimg.jpg";
+import bulbWhite from "./bulbWhite.png";
 
 export {
   bill,
@@ -78,4 +80,6 @@ export {
   catWhite,
   faeWhite,
   iceCreamWhite,
+  defaultimg,
+  bulbWhite,
 };
