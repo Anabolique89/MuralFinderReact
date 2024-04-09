@@ -1,3 +1,4 @@
+import axios from "axios";
 import { BASE_URL, authEndpoints } from "../constants/ApiEndpoints";
 
 const AuthService = {
@@ -69,6 +70,39 @@ const AuthService = {
     const user = sessionStorage.getItem('user');
     const token = sessionStorage.getItem('token');
     return user && token;
+  },
+
+  getUser() {
+    const userString = sessionStorage.getItem('user');
+    return userString ? JSON.parse(userString) : null;
+  },
+
+  getProfile: async (userId) => {
+    try {
+      if (!userId) {
+        throw new Error('Missing userId parameter');
+      }
+
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        throw new Error('User not authenticated');
+      }
+
+      const response = await axios.get(`${BASE_URL}${authEndpoints.profile(userId)}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+      if (response.status === 200) {
+        return response.data.data; 
+      } else {
+        throw new Error('Failed to fetch profile data');
+      }
+    } catch (err) {
+      throw err; 
+    }
   }
 };
 
