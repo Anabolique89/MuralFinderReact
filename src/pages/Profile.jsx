@@ -84,7 +84,7 @@ const Profile = () => {
                         </ul>
                         {/* social media icons */}
                         <div className="flex justify-left items-center gap-6 my-6">
-                        <a className="text-gray-700 hover:text-orange-600" aria-label="Visit TrendyMinds LinkedIn" href=""
+                        <a className="text-purple-950 hover:text-orange-600" aria-label="Visit TrendyMinds LinkedIn" href=""
                             target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="h-6">
                                 <path fill="currentColor"
@@ -92,7 +92,7 @@ const Profile = () => {
                                 </path>
                             </svg>
                         </a>
-                        <a className="text-gray-700 hover:text-orange-600" aria-label="Visit TrendyMinds YouTube" href=""
+                        <a className="text-purple-950 hover:text-orange-600" aria-label="Visit TrendyMinds YouTube" href=""
                             target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" className="h-6">
                                 <path fill="currentColor"
@@ -100,7 +100,7 @@ const Profile = () => {
                                 </path>
                             </svg>
                         </a>
-                        <a className="text-gray-700 hover:text-orange-600" aria-label="Visit TrendyMinds Facebook" href=""
+                        <a className="text-purple-950 hover:text-orange-600" aria-label="Visit TrendyMinds Facebook" href=""
                             target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="h-6">
                                 <path fill="currentColor"
@@ -108,7 +108,7 @@ const Profile = () => {
                                 </path>
                             </svg>
                         </a>
-                        <a className="text-gray-700 hover:text-orange-600" aria-label="Visit TrendyMinds Instagram" href=""
+                        <a className="text-purple-950 hover:text-orange-600" aria-label="Visit TrendyMinds Instagram" href=""
                             target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="h-6">
                                 <path fill="currentColor"
@@ -116,7 +116,7 @@ const Profile = () => {
                                 </path>
                             </svg>
                         </a>
-                        <a className="text-gray-700 hover:text-orange-600" aria-label="Visit TrendyMinds Twitter" href=""
+                        <a className="text-purple-950 hover:text-orange-600" aria-label="Visit TrendyMinds Twitter" href=""
                             target="_blank">
                             <svg className="h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path fill="currentColor"
@@ -126,60 +126,74 @@ const Profile = () => {
                         </a>
                     </div>
                     </div>
+                    <div className="mt-6 flex flex-wrap gap-4 justify-center">
                     <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>PROFILE SETTINGS</a>
+                </div>
                 </div>
             </div>
             <div className="col-span-4 sm:col-span-9">
-                <div className="bg-white p-6 profile-content">
-                    <h2 className="text-xl font-raleway font-bold mb-4">About Me Title Goes Here</h2>
-                    <p className="text-black font-raleway font-regular">About Me Text Goes Here  my style is ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est
+            <h2 className="text-white text-xl font-raleway font-bold mb-4">About Me Title Goes Here</h2>
+                    <p className="text-white font-raleway font-regular mb-4">About Me Text Goes Here  my style is ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est
                         vitae tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
                         suscipit. Nunc finibus vel ante id euismod.
                     </p>
+                    <div className='highlights flex flex-column mb-4 mt-2'>
+<img src={defaultimg} alt="" className='highlight mr-4' />
+<img src={defaultimg}alt="" className='highlight mr-4' />
+<img src={defaultimg} alt="" className='highlight mr-4' />
+<img src={defaultimg} alt="" className='highlight mr-4' />
+<img src={defaultimg} alt="" className='highlight mr-4' />
+</div>
+                <div className="bg-white p-6 profile-content">
 
-                    <h2 className=" text-xl font-bold uppercase mt-6 mb-4">POSTS</h2>
-                    <div className="mb-6">
+                    <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4">BLOG POSTS</h2>
+                    <div className="mb-6 profile-post">
                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                            <span className="text-gray-700 font-bold">Web Developer</span>
+                            <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">IT IS A BUSY DAY IN TOWN</span>
                             <p>
-                                <span className="text-gray-700 mr-2">at ABC Company</span>
-                                <span className="text-gray-700">2017 - 2019</span>
+                                <span className="text-purple-950 mr-2">Edit Icon</span>
+                                <span className="text-purple-950">Date</span>
                             </p>
                         </div>
-                        <p className="mt-2">
+                        <p className={`${styles.paragraph} mt-2 mb-2`}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae
                             tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
                             suscipit.
                         </p>
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 profile-post">
                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                            <span className="text-gray-700 font-bold">Web Developer</span>
+                            <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">Walls of thoughts and thoughts in walls
+</span>
                             <p>
-                                <span className="text-gray-700 mr-2">at ABC Company</span>
-                                <span className="text-gray-700">2017 - 2019</span>
+                                <span className="text-purple-950 mr-2">Edit Icon</span>
+                                <span className="text-purple-950">Date</span>
                             </p>
                         </div>
-                        <p className="mt-2">
+                        <p className={`${styles.paragraph} mt-2 mb-2`}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae
                             tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
                             suscipit.
                         </p>
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 profile-post">
                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                            <span className="text-gray-700 font-bold">Web Developer</span>
+                            <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">RANDOM POST 3</span>
                             <p>
-                                <span className="text-gray-700 mr-2">at ABC Company</span>
-                                <span className="text-gray-700">2017 - 2019</span>
+                                <span className="text-purple-950 mr-2">Edit Icon</span>
+                                <span className="text-purple-950">Date</span>
                             </p>
                         </div>
-                        <p className="mt-2">
+                        <p className={`${styles.paragraph} mt-2 mb-2`}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae
                             tortor ullamcorper, ut vestibulum velit convallis. Aenean posuere risus non velit egestas
                             suscipit.
                         </p>
                     </div>
+                    
+                    <a href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</a>
+                    <a href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</a>
+                   
                 </div>
             </div>
         </div>

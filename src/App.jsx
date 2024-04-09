@@ -16,6 +16,7 @@ import Contact from './pages/Contact';
 import { ToastContainer } from 'react-toastify';
 import ArtworkService from './services/ArtworkService';
 import SingleBlogPost from './pages/SingleBlogPost';
+import ProfileSettings from './pages/ProfileSettings';
 
 const App = () => {
 
@@ -113,6 +114,9 @@ const App = () => {
           <Route path="/Onboarding3" element={<Onboarding3 />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/blog/:postId" element={<SingleBlogPost/>} /> 
+          <Route path="/ProfileSettings" element={<ProfileSettings/>} /> 
+          
+
         </Routes>
       </div>
     </Router>

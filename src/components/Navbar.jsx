@@ -22,9 +22,8 @@ const Navbar = () => {
 
   return (
     <nav className="w-full flex py-6 justify-between items-center Navbar pb-0">
-      <img src={ArtZoroLogoWhite} alt="ArtZoroLogoWhite" className="w-[120px] h-[60px]" />
 
-      <ul className="list-none sm:flex hidden flex justify-center items-center flex-1">
+      <ul className="list-none sm:flex hidden flex justify-left items-left flex-1">
         {navLinks.map((nav, index) => (
           <li
             key={nav.id}
@@ -41,28 +40,10 @@ const Navbar = () => {
         ))}
       </ul>
 
-      {isAuthenticated && (
-        <div className="flex flex-row items-center py-[6px] px-2 rounded-[30px] mb-2 ms-8">
-          <div className="flex items-center">
-            <div className="w-[50px] h-[50px] flex items-center justify-center bg-indigo-900 rounded-full">
-              <FontAwesomeIcon icon={faUser} alt="User Icon" className="w-[30px] h-[30px] text-white p-5" />
-            </div>
+    
+           
 
-            <div className="relative">
-              <Link to="/profile" className="text-white ml-2">Hello {user.username}</Link>
-              <FontAwesomeIcon icon={faChevronDown} className="ml-1 text-white cursor-pointer" onClick={() => setToggle(!toggle)} />
-              {toggle && (
-                <div className="absolute top-10 right-0 bg-indigo-800 text-white p-4 rounded-md shadow-md">
-                  <Link to="/profile" className="block text-gray-200 hover:text-gray-600">Profile</Link>
-                  <Link to="/logout" className="block text-gray-200 hover:text-gray-600 mt-2">Logout</Link>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="sm:hidden flex flex-1 justify-end items-center">
+      <div className="sm:hidden flex flex-1 justify-start items-left">
         <img
           src={toggle ? close : menu}
           alt="menu"
@@ -72,9 +53,10 @@ const Navbar = () => {
 
         <div
           className={`${!toggle ? "hidden" : "flex"
-            } p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+            } p-6 bg-black-gradient absolute top-20 left-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar z-[99]`}
         >
-          <ul className="list-none flex justify-end items-start flex-1 flex-col">
+         
+          <ul className="list-none flex justify-start items-centre flex-1 flex-col">
             {navLinks.map((nav, index) => (
               <li
                 key={nav.id}
@@ -88,6 +70,29 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+      
+      {isAuthenticated && (
+        <div className="flex flex-row items-center py-[6px] px-2 rounded-[30px] mb-2 ms-8">
+          <div className="flex items-center">
+            <div className="w-[35px] h-[35px] flex items-center justify-center rounded-full">
+            <img src={ArtZoroLogoWhite} alt="ArtZoroLogoWhite" className="w-[120px] h-[60px]" />
+              {/* <FontAwesomeIcon icon={faUser} alt="User Icon" className="w-[20px] h-[20px] text-white p-3" /> */}
+            </div>
+
+            <div className="relative">
+              <Link to="/profile" className="text-white ml-2">{user.username}</Link>
+              <FontAwesomeIcon icon={faChevronDown} className="ml-1 text-white cursor-pointer" onClick={() => setToggle(!toggle)} />
+              {toggle && (
+                <div className="absolute top-10 right-0 bg-indigo-800 text-white p-4 rounded-md shadow-md">
+                  <Link to="/profile" className="block text-gray-200 hover:text-gray-600">Profile</Link>
+                  <Link to="/logout" className="block text-gray-200 hover:text-gray-600 mt-2">Logout</Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      
+      )}
     </nav>
   );
 };
