@@ -17,6 +17,7 @@ import { ToastContainer } from 'react-toastify';
 import ArtworkService from './services/ArtworkService';
 import SingleBlogPost from './pages/SingleBlogPost';
 import ProfileSettings from './pages/ProfileSettings';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const App = () => {
 
@@ -115,6 +116,7 @@ const App = () => {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/blog/:postId" element={<SingleBlogPost/>} /> 
           <Route path="/ProfileSettings" element={<ProfileSettings/>} /> 
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>} /> 
           
 
         </Routes>

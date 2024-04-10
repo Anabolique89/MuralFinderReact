@@ -100,7 +100,7 @@ const Indexlogin = () => {
             {isLoading ? <div className="loader"></div> : 'Login'}
           </button>
         </div>
-        <p className={`${styles.paragraph} text-indigo-600`}>Don't have an account? <Link className={`${styles.paragraph} text-black`} to='/IndexSignup'>Register Here</Link></p>
+        <p className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black`}>Don't have an account? <Link className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black hover:text-blue-800 underline`} to='/IndexSignup'> Register Here</Link></p>
       </form>
       <div className={layout.sectionImg}>
         <img className='w-[80%] h-auto relative z-[2] w-[100%] p-2 md:px-20 sm:px-26 ss:px-34' src={fadeintoyouWhite} alt="swim" />

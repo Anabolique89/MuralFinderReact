@@ -51,7 +51,7 @@ const Profile = () => {
     }
 
     return (
-        <div className="bg-indigo-700">
+        <div className="bg-indigo-700 mt-4">
     <div className="container mx-auto py-8">
         <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
             <div className="col-span-4 sm:col-span-3">
@@ -130,11 +130,11 @@ const Profile = () => {
                         suscipit. Nunc finibus vel ante id euismod.
                     </p>
                     <div className='highlights flex flex-column mb-4 mt-2'>
-<img src={defaultimg} alt="" className='highlight mr-4' />
-<img src={defaultimg}alt="" className='highlight mr-4' />
-<img src={defaultimg} alt="" className='highlight mr-4' />
-<img src={defaultimg} alt="" className='highlight mr-4' />
-<img src={defaultimg} alt="" className='highlight mr-4' />
+<img src={defaultimg} alt="" className='highlight sm:mr-4 md:mr-6 mr-10' />
+<img src={defaultimg}alt="" className='highlight sm:mr-4 md:mr-6 mr-10' />
+<img src={defaultimg} alt="" className='highlight sm:mr-4 md:mr-6 mr-10' />
+<img src={defaultimg} alt="" className='highlight sm:mr-4 md:mr-6 mr-10' />
+<img src={defaultimg} alt="" className='highlight sm:mr-4 md:mr-6 mr-10' />
 </div>
                 <div className="bg-white p-6 profile-content">
 

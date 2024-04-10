@@ -176,7 +176,7 @@ export const footerLinks = [
       },
       {
         name: "Privacy Policy",
-        link: "https://www.hoobank.com/become-a-partner/",
+        link: "/PrivacyPolicy",
       },
       {
         name: "FAQ's",

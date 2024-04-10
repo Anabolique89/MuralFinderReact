@@ -124,8 +124,8 @@ const IndexSignup = () => {
 
         </div>
         <div>
-          <p className={`${styles.paragraph} text-gray-600`}>Already have an account? 
-            <a className={`${styles.paragraph} text-blue-600 hover:text-blue-800 underline`} href='/login'>Login Here</a>
+          <p className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black`}>Already have an account?  
+            <a className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black hover:text-blue-800 underline`} href='/login'>Login Here</a>
           </p>
         </div>
       </form>
