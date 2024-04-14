@@ -18,6 +18,7 @@ import ArtworkService from './services/ArtworkService';
 import SingleBlogPost from './pages/SingleBlogPost';
 import ProfileSettings from './pages/ProfileSettings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import ViewWall from './pages/ViewWall';
 
 const App = () => {
 
@@ -42,7 +43,7 @@ const App = () => {
   const searchText = async (text) => {
     const filtered = ArtworkService.searchArtworks(images, text);
     setFilteredImages(filtered);
-  
+
     if (filtered.length === 0) {
       try {
         const backendResults = await ArtworkService.searchArtworksOnBackend(text);
@@ -84,16 +85,16 @@ const App = () => {
                   {isLoading ? (
                     <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
                   ) : (
-                      <div className='container mx-auto py-2'>
-                        <div className="flex flex-wrap gap-2">
-                          {(filteredImages.length > 0 ? filteredImages : images).map(image => (
-                            <ArtworksGallery key={image.id} image={image} />
-                          ))}
-                         
-                        </div>
+                    <div className='container mx-auto py-2'>
+                      <div className="flex flex-wrap gap-2">
+                        {(filteredImages.length > 0 ? filteredImages : images).map(image => (
+                          <ArtworksGallery key={image.id} image={image} />
+                        ))}
+
                       </div>
-                    )}
-                     <DragDropImageUploader />
+                    </div>
+                  )}
+                  <DragDropImageUploader />
 
                   <CardDeal />
                   <Testimonials />
@@ -114,10 +115,10 @@ const App = () => {
           <Route path="/Onboarding2" element={<Onboarding2 />} />
           <Route path="/Onboarding3" element={<Onboarding3 />} />
           <Route path="/Contact" element={<Contact />} />
-          <Route path="/blog/:postId" element={<SingleBlogPost/>} /> 
-          <Route path="/ProfileSettings" element={<ProfileSettings/>} /> 
-          <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>} /> 
-          
+          <Route path="/blog/:postId" element={<SingleBlogPost />} />
+          <Route path="/ProfileSettings" element={<ProfileSettings />} />
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/wall/:wallId" element={<ViewWall />} />
 
         </Routes>
       </div>
