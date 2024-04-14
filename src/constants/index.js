@@ -176,7 +176,8 @@ export const footerLinks = [
       },
       {
         name: "Privacy Policy",
-        link: "/PrivacyPolicy",
+        link: "https://muralfinder.net/PrivacyPolicy", 
+        
       },
       {
         name: "FAQ's",
