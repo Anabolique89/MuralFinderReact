@@ -24,6 +24,17 @@ const BlogService = {
     }
   },
 
+  getBlogPostByUserId: async (userId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}${blogEndpoints.getBlogPostByUserId(userId)}`); // Adding BASE_URL to the endpoint
+      console.log(response.data.data)
+      return response.data.data;
+    } catch (error) {
+      console.error('Error fetching blog post:', error);
+      throw new Error('Failed to fetch blog post');
+    }
+  },
+
   createBlogPost: async (postData) => {
     try {
       const response = await axios.post(`${BASE_URL}${blogEndpoints.createBlogPost}`, postData); // Adding BASE_URL to the endpoint

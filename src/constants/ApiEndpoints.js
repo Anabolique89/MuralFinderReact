@@ -16,6 +16,7 @@ export const artworkEndpoints = {
 export const blogEndpoints = {
   getAllBlogPosts: 'posts',
   getBlogPostById: (postId) => `posts/${postId}`,
+  getBlogPostByUserId: (userId) => `posts/post/${userId}/get`,
   createBlogPost: 'posts',
   updateBlogPost: (postId) => `posts/${postId}`,
   deleteBlogPost: (postId) => `posts/${postId}`,
