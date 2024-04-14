@@ -9,10 +9,11 @@ const Walls = () => (
   <section className='bg-indigo-700 w-full overflow-hidden'>
     <WallsIntro />
     <WallsHero />
+   
+    <DisplayWalls />
     <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
       <Footer />
     </div>
-    <DisplayWalls />
   </section>
 )
 

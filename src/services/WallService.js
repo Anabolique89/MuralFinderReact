@@ -14,8 +14,12 @@ const WallService = {
 
   getWallById: async (wallId) => {
     try {
+      const url = `${BASE_URL}${wallEndpoints.getWallById(wallId)}`;
+      console.log(url)
       const response = await axios.get(`${BASE_URL}${wallEndpoints.getWallById(wallId)}`);
+      console.log(response.data)
       return response.data;
+
     } catch (error) {
       console.error('Error fetching wall:', error);
       throw new Error('Failed to fetch wall');
