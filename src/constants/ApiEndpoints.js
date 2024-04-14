@@ -26,4 +26,12 @@ export const blogEndpoints = {
 };
 
 
+export const wallEndpoints = {
+  getAllWalls: 'walls',
+  getWallById: (wallId) => `walls/${wallId}`,
+  addWall: 'walls',
+  updateWall: (wallId) => `walls/${wallId}`
+};
+
+
 export const contactEndpoint = "/contact";
