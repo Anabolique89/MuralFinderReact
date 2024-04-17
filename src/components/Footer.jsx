@@ -2,7 +2,7 @@ import styles from '../style';
 import { ArtZoroLogoWhite } from "../assets";
 import { footerLinks} from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
-import PrivacyPolicy from '../pages/PrivacyPolicy';
+
 
 const Footer = () => (
   
@@ -23,7 +23,9 @@ const Footer = () => (
       {footerLink.links.map((Link, index) => (
         <li key={Link.name} className={`font-raleway font-normal text-[16px] leading-[24px] 
         text-dimWhite hover:text-secondary cursor-pointer`}>
+            <a href={Link.link} className="block">
         {Link.name}
+        </a>
         </li>
       ))}
     </ul>

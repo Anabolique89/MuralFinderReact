@@ -14,7 +14,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^1.6.8",
-    "google-map-react": "^2.2.1",
     "google-maps-react": "^2.0.6",
     "leaflet": "^1.9.4",
     "postcss-cli": "^11.0.0",

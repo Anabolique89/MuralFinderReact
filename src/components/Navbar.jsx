@@ -9,6 +9,7 @@ import AuthService from "../services/AuthService";
 const Navbar = () => {
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
+  const [toggle_menu, setToggle_menu] = useState(false);
 
   const isAuthenticated = AuthService.isAuthenticated();
 
@@ -45,14 +46,14 @@ const Navbar = () => {
 
       <div className="sm:hidden flex flex-1 justify-start items-left">
         <img
-          src={toggle ? close : menu}
+          src={toggle_menu ? close : menu}
           alt="menu"
           className="w-[28px] h-[28px] object-contain"
-          onClick={() => setToggle(!toggle)}
+          onClick={() => setToggle_menu(!toggle_menu)}
         />
 
         <div
-          className={`${!toggle ? "hidden" : "flex"
+          className={`${!toggle_menu ? "hidden" : "flex"
             } p-6 bg-black-gradient absolute top-20 left-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar z-[99]`}
         >
          

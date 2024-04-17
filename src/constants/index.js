@@ -122,11 +122,11 @@ export const footerLinks = [
     links: [
       {
         name: "Profile",
-        link: "https://www.hoobank.com/content/",
+        link: "/Profile",
       },
       {
         name: "About",
-        link: "https://www.hoobank.com/how-it-works/",
+        link: "/About",
       },
       {
         name: "Events",
@@ -138,7 +138,7 @@ export const footerLinks = [
       },
       {
         name: "Contact",
-        link: "https://www.hoobank.com/terms-and-services/",
+        link: "/Contact",
       },
     ],
   },
@@ -147,15 +147,15 @@ export const footerLinks = [
     links: [
       {
         name: "Wall Feed",
-        link: "https://www.hoobank.com/help-center/",
+        link: "/Walls",
       },
       {
         name: "Community Page",
-        link: "https://www.hoobank.com/partners/",
+        link: "/Community",
       },
       {
-        name: "Shops",
-        link: "https://www.hoobank.com/suggestions/",
+        name: "Map",
+        link: "/Map",
       },
       {
         name: "Blog",
@@ -163,7 +163,7 @@ export const footerLinks = [
       },
       {
         name: "Sponsors",
-        link: "https://www.hoobank.com/newsletters/",
+        link: "",
       },
     ],
   },
@@ -172,16 +172,15 @@ export const footerLinks = [
     links: [
       {
         name: "Terms & Conditions",
-        link: "https://www.hoobank.com/our-partner/",
+        link: "/TermsConditions",
       },
       {
         name: "Privacy Policy",
-        link: "https://muralfinder.net/PrivacyPolicy", 
-        
+        link: "/PrivacyPolicy",
       },
       {
         name: "FAQ's",
-        link: "https://www.hoobank.com/become-a-partner/",
+        link: "/FAQS",
       },
       {
         name: "Help Center",

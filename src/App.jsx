@@ -18,7 +18,10 @@ import ArtworkService from './services/ArtworkService';
 import SingleBlogPost from './pages/SingleBlogPost';
 import ProfileSettings from './pages/ProfileSettings';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import FAQS from './pages/FAQS';
+import TermsConditions from './pages/TermsConditions';
 import ViewWall from './pages/ViewWall';
+
 
 const App = () => {
 
@@ -118,6 +121,8 @@ const App = () => {
           <Route path="/blog/:postId" element={<SingleBlogPost />} />
           <Route path="/ProfileSettings" element={<ProfileSettings />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/TermsConditions" element={<TermsConditions />} />
+          <Route path="/FAQS" element={<FAQS />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
 
         </Routes>

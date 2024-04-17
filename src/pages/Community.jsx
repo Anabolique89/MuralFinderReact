@@ -1,5 +1,4 @@
 import styles, { layout } from '../style';
-import { libraWhite } from '../assets';
 import { Business, CardDeal, CTA, Footer, CommunitySection2, HeroCommunity, CommunityBlogSection} from "../components";
 
 
