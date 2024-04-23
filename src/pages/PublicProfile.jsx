@@ -7,10 +7,9 @@ import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
 import { UserArtworks, Footer } from '../components';
-import { RiMessage2Fill } from "react-icons/ri";
 
 
-const Profile = () => {
+const PublicProfile = () => {
     const [profileData, setProfileData] = useState(null);
     const [blogData, setBlogData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -81,7 +80,7 @@ const Profile = () => {
                                 <p className={`${styles.paragraph} font-semibold mt-5`}>Profile Title </p><br />
                                 <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                                    {/* <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a> */}
+                                    <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a>
                                 </div>
                             </div>
                             <hr className="my-6 border-t border-gray-300"></hr>
@@ -121,18 +120,13 @@ const Profile = () => {
                                     </a>
                                 </div>
                             </div>
-                            <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                                <a href="/ProfileSettings" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>PROFILE SETTINGS</a>
-                            </div>
+                         
                         </div>
                     </div>
-        
                     <div className="col-span-4 sm:col-span-9">
-                    
-                        <h2 className="text-white text-xl font-raleway font-bold mb-4">Profile Description...</h2>
+                    <h2 className="text-white text-xl font-raleway font-bold mb-4">Profile Description...</h2>
                         <p className="text-white font-raleway font-regular mb-4">Bio text goes here...
                         </p>
-                        <div className=' float-right'><RiMessage2Fill className='w-[30px] h-[30px] '/></div>
                         <div className='highlights flex flex-column mb-4 mt-2'>
                             {blogData.map(blog => (
                                 <img
@@ -150,8 +144,8 @@ const Profile = () => {
 
                             <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4">BLOG POSTS</h2>
                             <p className="text-white font-raleway font-regular mb-4">
-                           Add your first post and join in the fun! Share your insights with our community! We welcome you to post anything art related, 
-                           useful information for people looking to paint on legal walls or colorful inspiration for travelers and artists. <span className='text-[16px] text-red-700 uppercase'>When user posts their first post, this paragraph tag disapears.</span>
+                           Join in the fun and share your insights with our community! We welcome you to post anything art related, 
+                           usefull information for people looking for legal walls or colorful inspiration for travelers and artists. 
                         </p>
                             {blogData.map(blog => (
                                 <div key={blog.id} className="mb-6 profile-post">
@@ -168,8 +162,8 @@ const Profile = () => {
                                 </div>
                             ))}
 
-                            <a href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</a>
-                            <a href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</a>
+                            <a href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>REGISTER</a>
+                            <a href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>LOGIN</a>
 
                         </div>
                     </div>
@@ -185,4 +179,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default PublicProfile

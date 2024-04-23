@@ -5,6 +5,7 @@ import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, 
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
+import PublicProfile from './pages/PublicProfile';
 import Map from './pages/Map';
 import Walls from './pages/Walls';
 import IndexLogin from './pages/IndexLogin';
@@ -110,6 +111,7 @@ const App = () => {
           <Route path="/About" element={<About />} />
           <Route path="/Community" element={<Community />} />
           <Route path="/Profile" element={<Profile />} />
+          <Route path="/PublicProfile" element={<PublicProfile />} />
           <Route path="/Map" element={<Map />} />
           <Route path="/Walls" element={<Walls />} />
           <Route path="/Login" element={<IndexLogin />} />
