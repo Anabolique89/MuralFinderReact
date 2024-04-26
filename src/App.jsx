@@ -111,7 +111,7 @@ const App = () => {
           <Route path="/About" element={<About />} />
           <Route path="/Community" element={<Community />} />
           <Route path="/Profile" element={<Profile />} />
-          <Route path="/PublicProfile" element={<PublicProfile />} />
+          <Route path="/profile/:userId" element={<PublicProfile />} />
           <Route path="/Map" element={<Map />} />
           <Route path="/Walls" element={<Walls />} />
           <Route path="/Login" element={<IndexLogin />} />

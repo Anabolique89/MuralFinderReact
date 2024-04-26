@@ -7,9 +7,12 @@ import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
 import { UserArtworks, Footer } from '../components';
+import { useParams } from 'react-router-dom';
 
 
 const PublicProfile = () => {
+  const { userId } = useParams();
+
     const [profileData, setProfileData] = useState(null);
     const [blogData, setBlogData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -18,8 +21,8 @@ const PublicProfile = () => {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const user = AuthService.getUser();
-                const data = await AuthService.getProfile(user.id);
+               
+                const data = await AuthService.getProfile(userId);
 
                 if (data.length > 1) {
                     setProfileData(data[0])
@@ -36,8 +39,7 @@ const PublicProfile = () => {
 
         const fetchBlogsByUser = async () => {
             try {
-                const user = AuthService.getUser();
-                const data = await BlogService.getBlogPostByUserId(user.id)
+                const data = await BlogService.getBlogPostByUserId(userId)
                 setBlogData(data.data)
             } catch (error) {
                 setError(error.message);

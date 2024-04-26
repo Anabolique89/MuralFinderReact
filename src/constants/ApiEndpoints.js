@@ -10,6 +10,7 @@ export const authEndpoints = {
 
 export const artworkEndpoints = {
   getAllArtworks: 'artworks',
+  uploadArtwork: 'artworks',
   searchArtworks: 'artworks/artwork/search'
 };
 

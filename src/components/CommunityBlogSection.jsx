@@ -42,7 +42,7 @@ const CommunityBlogSection = () => {
             </div>
           ) : (
             blogPosts.map(blogPost => (
-              <Link key={blogPost.id} to={`/blog/${blogPost.id}`} className="flex flex-col items-start justify-between bg-white rounded-md shadow-md p-6 hover:bg-gray-100 transition duration-300">
+              <div key={blogPost.id} to={`/blog/${blogPost.id}`} className="flex flex-col items-start justify-between bg-white rounded-md shadow-md p-6 hover:bg-gray-100 transition duration-300">
               
                 {blogPost.feature_image ? (
                   <img
@@ -73,14 +73,18 @@ const CommunityBlogSection = () => {
                     <span>{blogPost.comments_count}</span>
                   </div>
                 </div>
+                
                 <div className="flex items-center mt-4 text-gray-600">
-                  <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-gray-200 p-1" />
+                  <a href={`/profile/${blogPost.user.id}`}> {/* Profile link */}
+                    <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-gray-200 p-1" />
+                  </a>
                   <div>
                     <p className="font-semibold">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                     <p>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                   </div>
                 </div>
-              </Link>
+                </div>
+              
             ))
           )}
         </div>
