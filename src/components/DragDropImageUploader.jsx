@@ -11,6 +11,7 @@ const DragDropImageUploader = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false); // State for loading indicator
+  const [responseMessage, setResponseMessage] = useState(null);
 
   const isAuthenticated = AuthService.isAuthenticated();
 
@@ -79,22 +80,37 @@ const DragDropImageUploader = () => {
         formData.append(`images[${index}]`, image.file);
       });
 
-      await ArtworkService.uploadArtwork(formData);
-      // Clear the form and images after successful upload
+      const message = await ArtworkService.uploadArtwork(formData);
+      setResponseMessage(message);
+      console.log(responseMessage)
       setImages([]);
       setTitle('');
       setDescription('');
+      setTimeout(() => {
+        setResponseMessage(null);
+      }, 5000);
     } catch (error) {
       console.error('Error uploading images:', error);
+      setResponseMessage(error);
+
     } finally {
-      setLoading(false); // Stop loading indicator
+      setLoading(false); 
+
     }
   }
 
   return (
     <div className="flex flex-col w-full border border-gray-600 rounded-md mt-3">
+
+      
       <div className="w-full p-4 text-center text-white">
         <h2 className="font-bold text-lg mb-2">Have an artwork you'd like to show to the world?</h2>
+
+        {responseMessage && (
+        <div className="absolute top-0 right-0 m-8 bg-green-500 text-white px-4 py-2 rounded-md shadow-md">
+          {responseMessage}
+        </div>
+      )}
       </div>
       <div className="flex flex-col md:flex-row">
         {isAuthenticated ? (

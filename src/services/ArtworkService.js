@@ -25,18 +25,18 @@ const ArtworkService = {
 
   searchArtworksOnBackend: async (searchText, pageSize = 10) => {
     try {
-        const response = await fetch(`${BASE_URL}${artworkEndpoints.searchArtworks}?query=${searchText}&pageSize=${pageSize}`);
-        const data = await response.json();
-        if (data.success && data.data) {
-            return data.data;
-        } else {
-            return [];
-        }
-    } catch (error) {
-        console.log(error);
+      const response = await fetch(`${BASE_URL}${artworkEndpoints.searchArtworks}?query=${searchText}&pageSize=${pageSize}`);
+      const data = await response.json();
+      if (data.success && data.data) {
+        return data.data;
+      } else {
         return [];
+      }
+    } catch (error) {
+      console.log(error);
+      return [];
     }
-},
+  },
 
 
   uploadArtwork: async (formData) => {
@@ -51,12 +51,13 @@ const ArtworkService = {
       });
       if (response.data.success) {
         console.log('Artwork uploaded successfully');
+        return response.data.sucess;
       } else {
-        throw new Error(response.data.message || 'Failed to upload artwork');
+        return response.data.message || 'Failed to upload artwork';
       }
     } catch (error) {
       console.error('Error uploading artwork:', error);
-      throw error;
+      return error.response.data.message;
     }
   }
 
