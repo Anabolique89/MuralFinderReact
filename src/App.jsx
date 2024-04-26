@@ -25,6 +25,8 @@ import ViewWall from './pages/ViewWall';
 
 
 const App = () => {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,17 +47,25 @@ const App = () => {
   }, []);
 
   const searchText = async (text) => {
-    const filtered = ArtworkService.searchArtworks(images, text);
-    setFilteredImages(filtered);
-
-    if (filtered.length === 0) {
-      try {
-        const backendResults = await ArtworkService.searchArtworksOnBackend(text);
-        setFilteredImages(backendResults);
-      } catch (error) {
-        console.log(error);
-      }
+    setIsLoading(true);
+    try {
+      const filtered = await ArtworkService.searchArtworksOnBackend(text, page, pageSize);
+      setFilteredImages(filtered);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
     }
+  };
+
+  // Add functions to handle pagination
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
+    setPage(1); // Reset page when page size changes
   };
 
   return (
@@ -83,7 +93,14 @@ const App = () => {
                   <Business />
                   <Billing />
                   <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
-                  <ImageSearch searchText={searchText} />
+                  <ImageSearch
+                    searchText={searchText}
+                    page={page}
+                    pageSize={pageSize}
+                    onPageChange={handlePageChange}
+                    onPageSizeChange={handlePageSizeChange}
+                  />
+
 
                   {!isLoading && images.length === 0 && <h1 className='text-5xl text-center mx-auto mt-32'>No Images Found</h1>}
                   {isLoading ? (

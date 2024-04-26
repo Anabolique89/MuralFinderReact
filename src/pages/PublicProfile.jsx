@@ -8,51 +8,96 @@ import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
 import { UserArtworks, Footer } from '../components';
 import { useParams } from 'react-router-dom';
-
+import FellowshipService from '../services/FellowshipService';
 
 const PublicProfile = () => {
-  const { userId } = useParams();
+    const { userId } = useParams();
 
     const [profileData, setProfileData] = useState(null);
     const [blogData, setBlogData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [loadingFollow, setLoadingFollow] = useState(false);
+    const [followMessage, setFollowMessage] = useState(null);
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    const fetchProfileData = async () => {
+        try {
+            const data = await AuthService.getProfile(userId);
+            if (data.length > 1) {
+                setProfileData(data[0]);
+            } else {
+                setProfileData(data);
+            }
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
+        }
+    };
+
+    const fetchBlogsByUser = async () => {
+        try {
+            const data = await BlogService.getBlogPostByUserId(userId);
+            setBlogData(data.data);
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    const handleFollow = async () => {
+        setLoadingFollow(true);
+        try {
+            const message = await FellowshipService.follow(userId);
+            setFollowMessage(message);
+            await fetchProfileData();
+            setIsFollowing(true);
+            setTimeout(() => {
+                setFollowMessage(null);
+            }, 5000);
+        } catch (error) {
+            console.error('Error following user:', error);
+        } finally {
+            setLoadingFollow(false);
+        }
+    };
+
+    const handleUnfollow = async () => {
+        setLoadingFollow(true);
+        try {
+            const message = await FellowshipService.unfollow(userId);
+            setFollowMessage(message);
+
+            await fetchProfileData();
+            setIsFollowing(true);
+            setTimeout(() => {
+                setFollowMessage(null);
+            }, 5000);
+
+        } catch (error) {
+            console.error('Error unfollowing user:', error);
+        } finally {
+            setLoadingFollow(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchProfileData = async () => {
+        fetchProfileData();
+        fetchBlogsByUser();
+
+        const checkIsFollowing = async () => {
             try {
-               
-                const data = await AuthService.getProfile(userId);
-
-                if (data.length > 1) {
-                    setProfileData(data[0])
-                } else {
-                    setProfileData(data);
-
-                }
-                setLoading(false);
+                const following = await FellowshipService.isFollowing(userId);
+                setIsFollowing(following);
             } catch (error) {
-                setError(error.message);
-                setLoading(false);
+                console.error('Error checking if user is following:', error);
             }
         };
 
-        const fetchBlogsByUser = async () => {
-            try {
-                const data = await BlogService.getBlogPostByUserId(userId)
-                setBlogData(data.data)
-            } catch (error) {
-                setError(error.message);
-            }
-        }
-
-        fetchProfileData();
-        fetchBlogsByUser();
-        console.log(profileData);
-
-
-
+        checkIsFollowing();
     }, []);
+
+
 
     if (loading) {
         return (
@@ -60,7 +105,6 @@ const PublicProfile = () => {
                 <FontAwesomeIcon icon={faSpinner} className="animate-spin text-gray-200 text-4xl mr-2" style={{ fontSize: '2rem' }} />
                 <span className="text-gray-200 text-xl">...</span>
             </div>
-
         );
     }
 
@@ -70,7 +114,14 @@ const PublicProfile = () => {
 
     return (
         <div className="bg-indigo-700 mt-4">
+
+
             <div className="container mx-auto py-8">
+                {followMessage && (
+                    <div className="absolute top-0 right-0 m-8 bg-green-500 text-white px-4 py-2 rounded-md shadow-md">
+                        {followMessage}
+                    </div>
+                )}
                 <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
                     <div className="col-span-4 sm:col-span-3">
                         <div className="bg-white profile-content p-6 ">
@@ -82,7 +133,21 @@ const PublicProfile = () => {
                                 <p className={`${styles.paragraph} font-semibold mt-5`}>Profile Title </p><br />
                                 <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                                    <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a>
+                                    <button
+                                        onClick={isFollowing ? handleUnfollow : handleFollow}
+                                        className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}
+                                        disabled={loadingFollow}
+                                    >
+                                        {loadingFollow ? (
+                                            <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" style={{ fontSize: '1rem' }} />
+                                        ) : (
+                                            isFollowing ? 'UNFOLLOW' : 'FOLLOW'
+                                        )}
+                                    </button>
+
+
+
+
                                 </div>
                             </div>
                             <hr className="my-6 border-t border-gray-300"></hr>
@@ -95,7 +160,7 @@ const PublicProfile = () => {
                                 </ul>
                                 {/* social media icons */}
                                 <div className="flex justify-center items-center gap-6 my-6">
-                            
+
                                     <a className="text-purple-950 hover:text-orange-600" aria-label="Visit TrendyMinds Facebook" href=""
                                         target="_blank">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="h-6">
@@ -122,11 +187,11 @@ const PublicProfile = () => {
                                     </a>
                                 </div>
                             </div>
-                         
+
                         </div>
                     </div>
                     <div className="col-span-4 sm:col-span-9">
-                    <h2 className="text-white text-xl font-raleway font-bold mb-4">Profile Description...</h2>
+                        <h2 className="text-white text-xl font-raleway font-bold mb-4">Profile Description...</h2>
                         <p className="text-white font-raleway font-regular mb-4">Bio text goes here...
                         </p>
                         <div className='highlights flex flex-column mb-4 mt-2'>
@@ -146,9 +211,9 @@ const PublicProfile = () => {
 
                             <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4">BLOG POSTS</h2>
                             <p className="text-white font-raleway font-regular mb-4">
-                           Join in the fun and share your insights with our community! We welcome you to post anything art related, 
-                           usefull information for people looking for legal walls or colorful inspiration for travelers and artists. 
-                        </p>
+                                Join in the fun and share your insights with our community! We welcome you to post anything art related,
+                                usefull information for people looking for legal walls or colorful inspiration for travelers and artists.
+                            </p>
                             {blogData.map(blog => (
                                 <div key={blog.id} className="mb-6 profile-post">
                                     <div className="flex justify-between flex-wrap gap-2 w-full">
@@ -173,11 +238,11 @@ const PublicProfile = () => {
             </div>
             {/* <UserArtworks /> */}
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
-                  <Footer />
-                  </div>
+                <Footer />
+            </div>
         </div>
-        
-        
+
+
     )
 }
 

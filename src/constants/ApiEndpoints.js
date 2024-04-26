@@ -9,7 +9,7 @@ export const authEndpoints = {
 
 
 export const artworkEndpoints = {
-  getAllArtworks: 'artworks',
+  getAllArtworks: 'artworks?pageSize=50',
   uploadArtwork: 'artworks',
   searchArtworks: 'artworks/artwork/search'
 };
@@ -34,5 +34,10 @@ export const wallEndpoints = {
   updateWall: (wallId) => `walls/${wallId}`
 };
 
+export const fellowshipEndpoints = {
+  follow: 'fellowships/follow',
+  unfollow: 'fellowships/unfollow',
+  isFollowing: (userId) => `fellowships/isFollowing/${userId}`,
+}
 
 export const contactEndpoint = "/contact";

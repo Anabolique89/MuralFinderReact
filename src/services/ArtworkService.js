@@ -17,26 +17,27 @@ const ArtworkService = {
     }
   },
 
-  searchArtworks: (artworks, searchText) => {
-    return artworks.filter(artwork =>
-      artwork.title.toLowerCase().includes(searchText.toLowerCase())
-    );
-  },
+  // searchArtworks: (artworks, searchText) => {
+  //   return artworks.filter(artwork =>
+  //     artwork.title.toLowerCase().includes(searchText.toLowerCase())
+  //   );
+  // },
 
-  searchArtworksOnBackend: async (searchText) => {
+  searchArtworksOnBackend: async (searchText, pageSize = 10) => {
     try {
-      const response = await fetch(`${BASE_URL}${artworkEndpoints.searchArtworks}?query=${searchText}`);
-      const data = await response.json();
-      if (data.success && data.data) {
-        return data.data.data;
-      } else {
-        return [];
-      }
+        const response = await fetch(`${BASE_URL}${artworkEndpoints.searchArtworks}?query=${searchText}&pageSize=${pageSize}`);
+        const data = await response.json();
+        if (data.success && data.data) {
+            return data.data;
+        } else {
+            return [];
+        }
     } catch (error) {
-      console.log(error);
-      return [];
+        console.log(error);
+        return [];
     }
-  },
+},
+
 
   uploadArtwork: async (formData) => {
     try {
