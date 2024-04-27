@@ -64,7 +64,7 @@ const CommunityBlogSection = () => {
                   </h3>
                   <p className="mt-2 text-gray-600">
                     <p>
-                      <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blogPost.content, 100)) }} />
+                      <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blogPost.content, 200)) }} />
                     </p>
                   </p>
                 </div>

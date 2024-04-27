@@ -97,7 +97,7 @@ const PublicProfile = () => {
             }
         };
 
-        // checkIsFollowing();
+        checkIsFollowing();
     }, []);
 
 

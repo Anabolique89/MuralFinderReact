@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../style';
 import { Footer } from '../components';
 import AuthService from '../services/AuthService';
+import ProfileImageUpload from '../components/ProfileUpload';
 
 
 const ProfileSettings = () => {
@@ -29,12 +30,14 @@ const ProfileSettings = () => {
                     throw new Error('User ID not found');
                 }
                 const profile = await AuthService.getProfile(userId);
+                console.log(profile)
                 setProfileData(profile);
             } catch (error) {
                 console.error('Error fetching profile data:', error.message);
             }
         };
         fetchProfileData();
+        console.log(profileData)
     }, []);
 
     return (
@@ -55,11 +58,7 @@ const ProfileSettings = () => {
                             <h2 className="pl-6 font-Raleway text-2xl font-bold sm:text-xl pt-4 pb-6">Profile Picture</h2>
                             <div className="grid max-w-2xl mx-auto mt-8">
                                 <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
-                                    <img className="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Bordered avatar" />
-                                    <div className="flex flex-col space-y-4 w-[200px] sm:ml-8">
-                                        <input name="file" type="file" className="file" />
-                                        <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>Delete</button>
-                                    </div>
+                                <ProfileImageUpload imageUrl={profileData.profile.profile_image_url} />
                                 </div>
                                 <div className="items-center mt-8 sm:mt-14 text-[#202142]">
                                     <div className="mb-2 sm:mb-6">

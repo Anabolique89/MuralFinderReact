@@ -90,18 +90,49 @@ const AuthService = {
 
       const response = await axios.get(`${BASE_URL}${authEndpoints.profile(userId)}`, {
         headers: {
-            'Content-Type': 'application/json',
-            
+          'Content-Type': 'application/json',
+
         }
-    });
+      });
 
       if (response.status === 200) {
-        return response.data.data; 
+        return response.data.data;
       } else {
         throw new Error('Failed to fetch profile data');
       }
     } catch (err) {
-      throw err; 
+      throw err;
+    }
+  },
+  uploadProfileImage: async (userId, imageData) => {
+    try {
+      if (!userId) {
+        return 'Missing userId parameter';
+      }
+
+      const token = sessionStorage.getItem('token')
+      if (!token) {
+        return 'the server could not authenticate your request';
+      }
+
+
+      const response = await axios.post(`${BASE_URL}${authEndpoints.uploadProfileImage(userId)}`, imageData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+
+        },
+      });
+
+      if (response.data.success) {
+        console.log('Profile image uploaded successfully');
+        return response.data.success;
+      } else {
+        return response.data.message || 'Failed to upload profile image';
+      }
+    } catch (error) {
+      console.error('Error uploading profile image:', error);
+      return error.response.data.error || 'An error occurred';
     }
   }
 };
