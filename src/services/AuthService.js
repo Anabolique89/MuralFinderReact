@@ -125,8 +125,8 @@ const AuthService = {
       });
 
       if (response.data.success) {
-        console.log('Profile image uploaded successfully');
-        return response.data.success;
+        console.log(response.data.data);
+        return response.data.message;
       } else {
         return response.data.message || 'Failed to upload profile image';
       }

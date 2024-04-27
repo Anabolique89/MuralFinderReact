@@ -132,9 +132,15 @@ const PublicProfile = () => {
                     <div className="col-span-4 sm:col-span-3">
                         <div className="bg-white profile-content p-6 ">
                             <div className="flex flex-col items-center">
-                                <img src={defaultimg} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img">
 
-                                </img>
+                                <img
+                                    src={(profileData && profileData.profile)
+                                        ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}`
+                                        : defaultimg}
+                                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
+                                    alt="Bordered avatar"
+                                />
+
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
                                 <p className={`${styles.paragraph} font-semibold mt-5`}>Profile Title </p><br />
                                 <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
@@ -268,7 +274,7 @@ const PublicProfile = () => {
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>
-        </div>
+        </div >
 
 
     )

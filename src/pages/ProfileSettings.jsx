@@ -58,8 +58,11 @@ const ProfileSettings = () => {
                             <h2 className="pl-6 font-Raleway text-2xl font-bold sm:text-xl pt-4 pb-6">Profile Picture</h2>
                             <div className="grid max-w-2xl mx-auto mt-8">
                                 <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
-                                <ProfileImageUpload imageUrl={profileData.profile.profile_image_url} />
+                                    {profileData && profileData.profile && (
+                                        <ProfileImageUpload imageUrl={profileData.profile.profile_image_url} />
+                                    )}
                                 </div>
+
                                 <div className="items-center mt-8 sm:mt-14 text-[#202142]">
                                     <div className="mb-2 sm:mb-6">
                                         <label htmlFor="profession" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Profile Title</label>
