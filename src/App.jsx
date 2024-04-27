@@ -22,6 +22,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import FAQS from './pages/FAQS';
 import TermsConditions from './pages/TermsConditions';
 import ViewWall from './pages/ViewWall';
+import AddBlog from './pages/AddBlog';
 
 
 const App = () => {
@@ -138,6 +139,7 @@ const App = () => {
           <Route path="/Onboarding3" element={<Onboarding3 />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/blog/:postId" element={<SingleBlogPost />} />
+          <Route path="/blog/create" element={<AddBlog />} />
           <Route path="/ProfileSettings" element={<ProfileSettings />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsConditions" element={<TermsConditions />} />

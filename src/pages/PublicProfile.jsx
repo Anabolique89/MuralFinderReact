@@ -9,6 +9,7 @@ import { formatDate } from '../utils/dateUtils';
 import { UserArtworks, Footer } from '../components';
 import { useParams } from 'react-router-dom';
 import FellowshipService from '../services/FellowshipService';
+import { cleanHTML, trimContent } from '../utils/blogUtils';
 
 const PublicProfile = () => {
     const { userId } = useParams();
@@ -224,7 +225,9 @@ const PublicProfile = () => {
                                         </p>
                                     </div>
                                     <p className={`${styles.paragraph} mt-2 mb-2`}>
-                                        {blog.content}
+                                        <p>
+                                            <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blog.content, 200)) }} />
+                                        </p>
                                     </p>
                                 </div>
                             ))}

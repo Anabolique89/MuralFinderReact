@@ -4,6 +4,9 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BlogService from '../services/BlogService';
 import { faEye, faThumbsUp, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
+import ReactQuill from 'react-quill';
+import DOMPurify from 'dompurify';
+import { cleanHTML, trimContent } from '../utils/blogUtils';
 
 const CommunityBlogSection = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -25,6 +28,8 @@ const CommunityBlogSection = () => {
     fetchBlogPosts();
   }, []);
 
+  
+
   return (
     <div className="bg-indigo-800 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -43,7 +48,7 @@ const CommunityBlogSection = () => {
           ) : (
             blogPosts.map(blogPost => (
               <div key={blogPost.id} to={`/blog/${blogPost.id}`} className="flex flex-col items-start justify-between bg-white rounded-md shadow-md p-6 hover:bg-gray-100 transition duration-300">
-              
+
                 {blogPost.feature_image ? (
                   <img
                     src={`https://api.muralfinder.net/${blogPost.feature_image}`}
@@ -57,7 +62,11 @@ const CommunityBlogSection = () => {
                   <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
                     <Link to={`/blog/${blogPost.id}`} className="hover:text-blue-500">{blogPost.title}</Link>
                   </h3>
-                  <p className="mt-2 text-gray-600">{blogPost.content}</p>
+                  <p className="mt-2 text-gray-600">
+                    <p>
+                      <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blogPost.content, 100)) }} />
+                    </p>
+                  </p>
                 </div>
                 <div className="flex items-center mt-4">
                   <div className="flex items-center mr-4 text-gray-600">
@@ -73,7 +82,7 @@ const CommunityBlogSection = () => {
                     <span>{blogPost.comments_count}</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center mt-4 text-gray-600">
                   <a href={`/profile/${blogPost.user.id}`}> {/* Profile link */}
                     <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-gray-200 p-1" />
@@ -83,8 +92,8 @@ const CommunityBlogSection = () => {
                     <p>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                   </div>
                 </div>
-                </div>
-              
+              </div>
+
             ))
           )}
         </div>

@@ -6,12 +6,22 @@ import styles, { layout } from '../style';
 import { fadeintoyouWhite } from '../assets';
 import axios from 'axios';
 import { blogEndpoints } from '../config/endpoints';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import DOMPurify from 'dompurify'; 
+
+
 
 const BlogPosts = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+
+    const cleanHTML = (content) => {
+      return DOMPurify.sanitize(content); 
+    };
+    
     const fetchBlogPosts = async () => {
       try {
         setLoading(true);
@@ -26,6 +36,10 @@ const BlogPosts = () => {
 
     fetchBlogPosts();
   }, []);
+
+  const trimContent = (content) => {
+    return content.length > 100 ? `${content.substring(0, 20)}...` : content;
+  };
 
   return (
     <div>
@@ -45,7 +59,13 @@ const BlogPosts = () => {
               {blogPosts.map(blogPost => (
                 <div key={blogPost.id} className="blog-post">
                   <h3 className="text-xl font-semibold">{blogPost.title}</h3>
-                  <p>{blogPost.content}</p>
+                  <p>
+                    <ReactQuill
+                      theme="snow"
+                      value={blogPost.content}
+                      readOnly
+                    />
+                  </p>
                   <Link to={`/blog/${blogPost.id}`} className="text-blue-500 hover:underline">Read More</Link>
                 </div>
               ))}

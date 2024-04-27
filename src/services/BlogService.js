@@ -37,13 +37,32 @@ const BlogService = {
 
   createBlogPost: async (postData) => {
     try {
-      const response = await axios.post(`${BASE_URL}${blogEndpoints.createBlogPost}`, postData); // Adding BASE_URL to the endpoint
-      return response.data;
+      const token = sessionStorage.getItem('token')
+      const response = await axios.post(
+        `${BASE_URL}${blogEndpoints.createBlogPost}`,
+        postData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log(response.data)
+      return response.data.message;
     } catch (error) {
       console.error('Error creating blog post:', error);
-      throw new Error('Failed to create blog post');
+      if (error.response && error.response.data && error.response.data.message) {
+        console.log(error)
+        return error.response.data.message;
+      } else {
+        console.log(error)
+        return error.response.data.error
+      }
     }
   },
+
 
   updateBlogPost: async (postId, updatedData) => {
     try {
