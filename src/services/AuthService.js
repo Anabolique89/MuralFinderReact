@@ -83,15 +83,15 @@ const AuthService = {
         throw new Error('Missing userId parameter');
       }
 
-      const token = sessionStorage.getItem('token');
-      if (!token) {
-        throw new Error('User not authenticated');
-      }
+      // const token = sessionStorage.getItem('token');
+      // if (!token) {
+      //   throw new Error('User not authenticated');
+      // }
 
       const response = await axios.get(`${BASE_URL}${authEndpoints.profile(userId)}`, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            
         }
     });
 

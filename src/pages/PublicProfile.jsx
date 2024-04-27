@@ -40,11 +40,13 @@ const PublicProfile = () => {
     const fetchBlogsByUser = async () => {
         try {
             const data = await BlogService.getBlogPostByUserId(userId);
+            console.log('Blog data:', data); // Add this line for debugging
             setBlogData(data.data);
         } catch (error) {
             setError(error.message);
         }
     };
+
 
     const handleFollow = async () => {
         setLoadingFollow(true);
@@ -95,8 +97,9 @@ const PublicProfile = () => {
             }
         };
 
-        checkIsFollowing();
+        // checkIsFollowing();
     }, []);
+
 
 
 
@@ -112,6 +115,8 @@ const PublicProfile = () => {
     if (error) {
         return <div>Error: {error}</div>; // Render error message
     }
+
+
 
     return (
         <div className="bg-indigo-700 mt-4">
@@ -196,15 +201,26 @@ const PublicProfile = () => {
                         <p className="text-white font-raleway font-regular mb-4">Bio text goes here...
                         </p>
                         <div className='highlights flex flex-column mb-4 mt-2'>
-                            {blogData.map(blog => (
-                                <img
-                                    key={blog.id}
-                                    src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
-                                    alt={`Blog Image ${blog.id}`}
-                                    className='highlight sm:mr-4 md:mr-6 mr-10'
-                                />
-                            ))}
+                            {!blogData ? (
+                                // Display spinners while blog data is being fetched
+                                <div className="flex justify-center">
+                                    {[...Array(3)].map((_, index) => (
+                                        <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
+                                    ))}
+                                </div>
+                            ) : (
+                                // Display blog images once data is fetched
+                                blogData.map(blog => (
+                                    <img
+                                        key={blog.id}
+                                        src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
+                                        alt={`Blog Image ${blog.id}`}
+                                        className='highlight sm:mr-4 md:mr-6 mr-10'
+                                    />
+                                ))
+                            )}
                         </div>
+
 
 
 
@@ -215,22 +231,31 @@ const PublicProfile = () => {
                                 Join in the fun and share your insights with our community! We welcome you to post anything art related,
                                 usefull information for people looking for legal walls or colorful inspiration for travelers and artists.
                             </p>
-                            {blogData.map(blog => (
-                                <div key={blog.id} className="mb-6 profile-post">
-                                    <div className="flex justify-between flex-wrap gap-2 w-full">
-                                        <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</span>
-                                        <p>
-                                            <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
-                                            <span className="text-purple-950">{formatDate(blog.created_at)}</span>
+                            {!blogData ? (
+                                <div className="flex justify-center">
+                                    {[...Array(3)].map((_, index) => (
+                                        <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
+                                    ))}
+                                </div>
+                            ) :
+                                (blogData.map(blog => (
+                                    <div key={blog.id} className="mb-6 profile-post">
+                                        <div className="flex justify-between flex-wrap gap-2 w-full">
+                                            <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</span>
+                                            <p>
+                                                <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
+                                                <span className="text-purple-950">{formatDate(blog.created_at)}</span>
+                                            </p>
+                                        </div>
+                                        <p className={`${styles.paragraph} mt-2 mb-2`}>
+                                            <p>
+                                                <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blog.content, 200)) }} />
+                                            </p>
                                         </p>
                                     </div>
-                                    <p className={`${styles.paragraph} mt-2 mb-2`}>
-                                        <p>
-                                            <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blog.content, 200)) }} />
-                                        </p>
-                                    </p>
-                                </div>
-                            ))}
+                                ))
+                                )}
+
 
                             <a href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>REGISTER</a>
                             <a href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>LOGIN</a>
