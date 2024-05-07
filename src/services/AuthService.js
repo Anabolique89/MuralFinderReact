@@ -134,7 +134,30 @@ const AuthService = {
       console.error('Error uploading profile image:', error);
       return error.response.data.error || 'An error occurred';
     }
-  }
+  },
+  logout: async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        return 'No token found in session storage';
+      }
+
+      await axios.post(`${BASE_URL}${authEndpoints.logout}`, null, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      // Remove the token from session storage
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
+
+      // You can also perform any other necessary cleanup, such as clearing the user's data from the application state
+    } catch (error) {
+      console.error('Error logging out:', error);
+      return error.response.data.error || 'An error occurred during logout';
+    }
+  },
 };
 
 export default AuthService;
