@@ -10,6 +10,7 @@ import { UserArtworks, Footer, WallsHero} from '../components';
 // import { DisplayWalls } from '../pages';
 import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
+import { Link } from 'react-router-dom';
 
 
 const Profile = () => {
@@ -195,8 +196,8 @@ const Profile = () => {
                                 ))
                                 )}
 
-                            <a href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</a>
-                            <a href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</a>
+                            <Link to={'/blog/create'} href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</Link>
+                            <Link to={'/community'} href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
 
                         </div>
                     </div>

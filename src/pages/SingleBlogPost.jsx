@@ -123,7 +123,7 @@ const SingleBlogPost = () => {
                       <FontAwesomeIcon icon={faUser} className="text-gray-500" />
                     </div>
                     <div>
-                      <p className="font-semibold">{comment.user.username}</p>
+                      <p className="font-semibold">{comment.user ? comment.user.username: '...'}</p>
                       <p>{comment.content}</p>
                     </div>
                   </div>
