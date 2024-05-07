@@ -20,6 +20,7 @@ import CommunityBlogSection from "./CommunityBlogSection";
 import DragDropImageUploader from "./DragDropImageUploader";
 import WallsHero from "./WallsHero.jsx";
 import WallsIntro from "./WallsIntro.jsx";
+import WallFeed from "./WallFeed.jsx";
 
 export {
   Navbar,
@@ -44,4 +45,5 @@ export {
   DragDropImageUploader,
   WallsHero,
   WallsIntro,
+  WallFeed,
 };

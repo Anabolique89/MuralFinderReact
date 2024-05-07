@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles, { layout } from '../style';
 import { fadeintoyouWhite } from '../assets';
 import AuthService from '../services/AuthService';
+import { Footer } from '../components';
 
 const Indexlogin = () => {
   
@@ -66,8 +67,9 @@ const Indexlogin = () => {
   };
 
   return (
-    <div className={`${layout.sectionImg} bg-indigo-700 mt-0`}>
-      <form className="login-form absolute z-[5] backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-34 rounded-2xl border-solid border-2 border-indigo-600" onSubmit={handleLogin}>
+    <section>
+    <div className={`${layout.sectionImg} bg-indigo-700 mt-0 w-full`}>
+      <form className="login-form absolute z-[5] backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-30 rounded-2xl border-solid border-2 border-indigo-600 sm:mt-10 sm:mb-10" onSubmit={handleLogin}>
         <h1 className='font-raleway font-semibold ss:text-[30px] text-[35px] text-white ss:leading-[40px] leading-[45px] w-full p-2'>Enter Your Account.</h1>
         {emailError && <span className="error-message mt-2 text-red-500">{emailError}</span>}
         {passwordError && <span className="error-message mt-2 text-red-500">{passwordError}</span>}
@@ -106,6 +108,10 @@ const Indexlogin = () => {
         <img className='w-[80%] h-auto relative z-[2] w-[100%] p-2 md:px-20 sm:px-26 ss:px-34' src={fadeintoyouWhite} alt="swim" />
       </div>
     </div>
+       <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+       <Footer />
+   </div>
+   </section>
   );
 };
 

@@ -7,6 +7,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --black-gradient: linear-gradient(
     144.39deg,
@@ -158,11 +159,12 @@ background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
 }
 
 
-  .input-wrapper .input-text{
-  width: 80%;
+.input-wrapper, .input-text{
+    width: 100%;
   }
 
-.input-wrapper .input-text{
+
+.input-text{
   padding: 0.6rem 1rem;
   border-radius: 2rem;
   box-shadow: inset 2px 2px 5px #BABECC, inset -5px -5px 10px #EEE;
@@ -172,19 +174,27 @@ background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
   background: #E5F3FE;
 }
 
-.input-wrapper{
+input, .input-wrapper{
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin: 1.7rem 0rem;
-  margin-bottom: 1.7rem;
+  margin: 0.5rem 0rem;
   width: auto;
-  height: 34px;
-  font-family: Roboto;
+  font-family: 'Raleway';
   font-size: 16px;
-  margin-bottom: 8px;
 }
+
+textarea, .input-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  width: auto;
+  font-family: 'Raleway';
+  font-size: 16px;
+}
+
 .input-error {
   border-color: red; /* Customize the border color for the error state */
 }
@@ -266,12 +276,6 @@ background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
   font-size: 20px;
   cursor: pointer;
 }
-
-/* input,
-.drag-area .on-drop,
-.drag-area.dragover .visible{
-  display: none;
-} */
 
 
 /* file -selector - button */

@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import { Footer } from '../components';
+import styles from '../style';
+
 
 export default function Policy() {
   useEffect(() => {
@@ -7,11 +10,17 @@ export default function Policy() {
     script.async = true;
     document.body.appendChild(script);
   }, []);  return (
-    <div
+    <section>
+    <div className="p-5"
       name="termly-embed"
       data-id="63955a0c-84a3-4df5-a9a5-22afc65c28a9"
       data-type="iframe"
+      
     ></div>
+     <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
+    </section>
   );
 }
 

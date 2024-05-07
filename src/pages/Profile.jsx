@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
-import { UserArtworks, Footer } from '../components';
+import { UserArtworks, Footer, WallsHero} from '../components';
+// import { DisplayWalls } from '../pages';
 import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 
@@ -201,7 +202,9 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-            {/* <UserArtworks /> */}
+         {/* <UserArtworks /> */}
+         {/* <WallsHero />
+            <DisplayWalls /> */}
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>
