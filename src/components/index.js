@@ -21,6 +21,7 @@ import DragDropImageUploader from "./DragDropImageUploader";
 import WallsHero from "./WallsHero.jsx";
 import WallsIntro from "./WallsIntro.jsx";
 import WallFeed from "./WallFeed.jsx";
+import BottomNavigation from "./BottomNavigation.jsx";
 
 export {
   Navbar,
@@ -46,4 +47,5 @@ export {
   WallsHero,
   WallsIntro,
   WallFeed,
+  BottomNavigation,
 };

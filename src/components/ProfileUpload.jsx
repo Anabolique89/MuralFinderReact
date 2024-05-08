@@ -61,7 +61,7 @@ const ProfileImageUpload = ({ imageUrl }) => {
                 alt="Bordered avatar"
             />
 
-            <div className="flex flex-col space-y-4 w-[200px] sm:ml-8">
+            <div className="flex flex-col space-y-2 w-[200px] sm:ml-8">
                 <input name="file" type="file" className="file" onChange={handleFileChange} />
                 {selectedFile && (
                     <>
