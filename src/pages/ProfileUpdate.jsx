@@ -101,7 +101,7 @@ const ProfileUpdate = ({ profile }) => {
                 </div>
                 <hr className="mt-4 mb-8" />
                 <div className="mb-10">
-                    <h2 className="text-2xl font-bold font-Raleway sm:text-xl pt-4 pb-6">Delete Account</h2>
+                    <h2 className="text-2xl font-bold font-raleway sm:text-xl pt-4 pb-6">Delete Account</h2>
                     <p className="inline-flex items-center rounded-full bg-rose-100 px-4 py-1 text-rose-600 font-Raleway ">
                         <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path

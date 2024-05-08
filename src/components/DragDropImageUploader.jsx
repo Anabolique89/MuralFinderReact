@@ -147,7 +147,7 @@ const DragDropImageUploader = () => {
                   name="title"
                   type="text"
                   placeholder="Artwork Title..."
-                  className="input-text w-full p-4 rounded mb-4 border border-gray-300"
+                  className="w-full p-4 rounded-md mb-4 border border-gray-300"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
@@ -156,7 +156,7 @@ const DragDropImageUploader = () => {
                   name="description"
                   type="text"
                   placeholder="Artwork Description..."
-                  className="input-text w-full p-4 rounded border border-gray-300"
+                  className="w-full p-4 rounded-md border border-gray-300"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
