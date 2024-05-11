@@ -23,12 +23,11 @@ import FAQS from './pages/FAQS';
 import TermsConditions from './pages/TermsConditions';
 import ViewWall from './pages/ViewWall';
 import AddBlog from './pages/AddBlog';
-
+import PrivateRoute from './utils/PrivateRoute';
 
 const App = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]);
@@ -70,10 +69,8 @@ const App = () => {
   };
 
   return (
-
     <Router>
       <div className="bg-indigo-700 w-full overflow-hidden">
-
         <div className={`${styles.paddingX} ${styles.flexCenter}`}>
           <div className={`${styles.boxWidth}`}>
             <Navbar />
@@ -108,13 +105,13 @@ const App = () => {
                     <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
                   ) : (
                     <div className='container mx-auto py-2'>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
                         {(filteredImages.length > 0 ? filteredImages : images).map(image => (
                           <ArtworksGallery key={image.id} image={image} />
                         ))}
-
                       </div>
                     </div>
+
                   )}
                   <DragDropImageUploader />
 
@@ -129,7 +126,6 @@ const App = () => {
           } />
           <Route path="/About" element={<About />} />
           <Route path="/Community" element={<Community />} />
-          <Route path="/Profile" element={<Profile />} />
           <Route path="/profile/:userId" element={<PublicProfile />} />
           <Route path="/Map" element={<Map />} />
           <Route path="/Walls" element={<Walls />} />
@@ -146,6 +142,16 @@ const App = () => {
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          } />
+          <Route path="/profilesettings" element={
+            <PrivateRoute>
+              <ProfileSettings />
+            </PrivateRoute>
+          } />
 
         </Routes>
       </div>
