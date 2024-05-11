@@ -8,8 +8,9 @@ import AuthService from '../services/AuthService';
 
 const ArtworksGallery = ({ image }) => {
 
+  console.log(image)
   const isAuthenticated = AuthService.isAuthenticated()
-  const userImage = image.user?.profile?.image || ''; // Check if user profile image exists
+  const userImage = image.user?.profile?.profile_image_url || ''; // Check if user profile image exists
   const defaultImage = 'https://example.com/default-image.jpg'; // Default image URL from CDN
   const [showMenu, setShowMenu] = useState(false);
 
@@ -36,7 +37,7 @@ const ArtworksGallery = ({ image }) => {
         <div className='px-6 py-4'>
           <div className='flex items-center'>
             {userImage ? (
-              <img src={userImage} alt={image.user?.username} className='w-8 h-8 rounded-full mr-2' />
+              <img src={`https://api.muralfinder.net${userImage}`} alt={image.user?.username} className='w-8 h-8 rounded-full mr-2' />
             ) : (
               <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
             )}
