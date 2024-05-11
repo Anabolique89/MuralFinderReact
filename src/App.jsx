@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader } from "./components";
+import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, BottomNavigation } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -122,6 +122,7 @@ const App = () => {
                   <Testimonials />
                   <CTA />
                   <Footer />
+                  <BottomNavigation />
                 </div>
               </div>
             </>
