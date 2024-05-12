@@ -17,6 +17,26 @@ const ArtworkService = {
     }
   },
 
+  getArtworkById: async (artworkId) => {
+      try {
+        const url = `${BASE_URL}${artworkEndpoints.artworkById(artworkId)}`;
+        console.log(url)
+        const response = await axios.get(url);
+        console.log(response.data)
+        return response.data;
+  
+      }catch (error) {
+        console.error('Error getting artwork:', error);
+        if (error.response && error.response.data && error.response.data.message) {
+          console.log(error)
+          return error.response.data.message;
+        } else {
+          console.log(error)
+          return error.response.data.error
+        }
+      }
+  },
+
   // searchArtworks: (artworks, searchText) => {
   //   return artworks.filter(artwork =>
   //     artwork.title.toLowerCase().includes(searchText.toLowerCase())

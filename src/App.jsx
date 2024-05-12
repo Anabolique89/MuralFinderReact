@@ -118,7 +118,6 @@ const App = () => {
                   <CardDeal />
                   <Testimonials />
                   <CTA />
-                  <SingleArtwork />
                   <Footer />
                   <BottomNavigation />
                 </div>
@@ -143,6 +142,7 @@ const App = () => {
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
+          <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
           <Route path="/profile" element={
             <PrivateRoute>
               <Profile />

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEllipsisV, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import AuthService from '../services/AuthService';
+import { Link } from 'react-router-dom';
 
 const ArtworksGallery = ({ image }) => {
 
@@ -46,7 +47,9 @@ const ArtworksGallery = ({ image }) => {
             </div>
           </div>
           <div className='font-bold text-white text-xl mb-2'>
+            <Link to={`/artworks/${image.id}`}>
             {image.title}
+            </Link>
           </div>
           <ul className='flex'>
             <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {image.likes_count}</strong></span></li>

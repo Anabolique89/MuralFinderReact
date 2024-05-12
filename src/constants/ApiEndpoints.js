@@ -13,7 +13,8 @@ export const authEndpoints = {
 export const artworkEndpoints = {
   getAllArtworks: 'artworks?pageSize=50',
   uploadArtwork: 'artworks',
-  searchArtworks: 'artworks/artwork/search'
+  searchArtworks: 'artworks/artwork/search',
+  artworkById: (artworkId) => `artworks/${artworkId}`
 };
 
 export const blogEndpoints = {
