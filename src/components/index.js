@@ -22,6 +22,7 @@ import WallsHero from "./WallsHero.jsx";
 import WallsIntro from "./WallsIntro.jsx";
 import WallFeed from "./WallFeed.jsx";
 import BottomNavigation from "./BottomNavigation.jsx";
+import SingleArtwork from "./SingleArtwork.jsx";
 
 export {
   Navbar,
@@ -48,4 +49,5 @@ export {
   WallsIntro,
   WallFeed,
   BottomNavigation,
+  SingleArtwork,
 };
