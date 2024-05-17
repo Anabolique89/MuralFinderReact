@@ -136,13 +136,18 @@ const App = () => {
           <Route path="/Onboarding3" element={<Onboarding3 />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/blog/:postId" element={<SingleBlogPost />} />
-          <Route path="/blog/create" element={<AddBlog />} />
           <Route path="/ProfileSettings" element={<ProfileSettings />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
+          
+          <Route path="/blog/create" element={
+            <PrivateRoute>
+              <AddBlog />
+            </PrivateRoute>
+          } />
           <Route path="/profile" element={
             <PrivateRoute>
               <Profile />
