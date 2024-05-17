@@ -38,7 +38,7 @@ const SocialLogin = () => {
         }
     }, [responseData]);
 
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = process.env.REACT_APP_GOOGLE_AUTH_API_URL;
 
     const handleLogin = (provider) => {
         const newTab = window.open(`${apiUrl}${provider}`, '_blank');
