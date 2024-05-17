@@ -59,7 +59,6 @@ const SocialLogin = () => {
                 className="w-full"
                 startIcon={<Google />}
                 onClick={() => handleLogin('google')}
-                sx={{ borderRadius: '50%' }}
             >
                 Login with Google
             </Button>
@@ -69,7 +68,6 @@ const SocialLogin = () => {
                 className="w-full"
                 startIcon={<Facebook />}
                 onClick={() => handleLogin('facebook')}
-                sx={{ borderRadius: '50%' }}
             >
                 Login with Facebook
             </Button>
