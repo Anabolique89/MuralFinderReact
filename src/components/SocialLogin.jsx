@@ -38,9 +38,11 @@ const SocialLogin = () => {
         }
     }, [responseData]);
 
-    const apiUrl = process.env.REACT_APP_GOOGLE_AUTH_API_URL;
+
 
     const handleLogin = (provider) => {
+        const apiUrl = "https://api.muralfinder.net/api/auth/";
+        console.log(apiUrl)
         const newTab = window.open(`${apiUrl}${provider}`, '_blank');
         if (newTab) {
             newTab.focus();
