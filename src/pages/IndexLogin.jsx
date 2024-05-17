@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles, { layout } from '../style';
 import { fadeintoyouWhite } from '../assets';
 import AuthService from '../services/AuthService';
@@ -7,17 +7,30 @@ import { Footer } from '../components';
 import SocialLogin from '../components/SocialLogin';
 
 const Indexlogin = () => {
-  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Track loading state
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const token = urlParams.get('token');
+    const user = urlParams.get('user');
+
+    if (token && user) {
+      sessionStorage.clear();
+      sessionStorage.setItem('user', user);
+      sessionStorage.setItem('token', token);
+      navigate('/Profile');
+    }
+  }, [location.search, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true);
 
     if (validate()) {
       try {
@@ -29,20 +42,16 @@ const Indexlogin = () => {
         console.log("Login was successful");
         console.log(user);
 
-        navigate('/Profile'); // please change this to redirect to the right place..
-        
+        navigate('/Profile');
       } catch (error) {
-        // Handle error if login fails
         if (error.message) {
           console.log(error)
-          // can do specific email/username validation here
           setEmailError(error.message);
         } else {
-          // Handle other types of errors
           setEmailError('Login Failed');
         }
       } finally {
-        setIsLoading(false); // Reset loading state
+        setIsLoading(false);
       }
     }
   };

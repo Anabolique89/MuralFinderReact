@@ -41,6 +41,7 @@ const Profile = () => {
         const fetchBlogsByUser = async () => {
             try {
                 const user = AuthService.getUser();
+                console.log(user)
                 const data = await BlogService.getBlogPostByUserId(user.id)
                 setBlogData(data.data)
             } catch (error) {

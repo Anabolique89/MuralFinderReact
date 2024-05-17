@@ -1,45 +1,57 @@
-import { useNavigate } from 'react-router-dom';
-import { Facebook, Google } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import { Facebook, Google } from '@mui/icons-material';
 
 const SocialLogin = () => {
-    const navigate = useNavigate();
-    const [loginAttempted, setLoginAttempted] = useState(false);
-    const [loginError, setLoginError] = useState(null); // State to store login errors
+    const [loginError, setLoginError] = useState(null);
+    const [responseData, setResponseData] = useState(null);
 
-    const handleLogin = async (provider) => {
-        setLoginAttempted(true);
-        setLoginError(null); // Clear previous errors
+    useEffect(() => {
+       const handleMessage = (event) => {
+    if (event.data && event.data.type === 'redirect') {
+        const url = new URL(event.data.url);
+        const token = url.searchParams.get('token');
+        const user = JSON.parse(url.searchParams.get('user'));
+        const error = url.searchParams.get('error');
 
-        try {
-            const response = await fetch(`http://localhost:8000/api/auth/${provider}`);
+        if (token && user) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            window.close(); // Close the new tab
+        } else if (error) {
+            setLoginError(error);
+        }
+    }
+};
+        window.addEventListener('message', handleMessage);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
+    }, []);
 
-            const data = await response.json();
+    useEffect(() => {
+        if (responseData) {
+            localStorage.setItem('token', responseData.token);
+            localStorage.setItem('user', JSON.stringify(responseData.user));
+            window.close(); // Close the new tab
+        }
+    }, [responseData]);
 
-            if (data.success) {
-                localStorage.setItem('token', data.data.token);
-                localStorage.setItem('user', JSON.stringify(data.data.user));
-                navigate('/'); // Redirect to home on success
-            } else {
-                console.error('Login failed:', data.message);
-                setLoginError(data.message); // Set error message to display
-            }
-        } catch (error) {
-            console.error('Error during social login:', error);
-            setLoginError(error.message || 'An unknown error occurred.'); // Set error message to display
-        } finally {
-            setLoginAttempted(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    const handleLogin = (provider) => {
+        const newTab = window.open(`${apiUrl}${provider}`, '_blank');
+        if (newTab) {
+            newTab.focus();
+        } else {
+            setLoginError('Popup blocked. Please allow popups for this site.');
         }
     };
 
     return (
         <div className="flex flex-col items-center gap-4 mt-4">
-            {loginError && <p className="text-red-500">{loginError}</p>} {/* Display error if any */}
+            {loginError && <p className="text-red-500">{loginError}</p>}
 
             <Button
                 variant="contained"
@@ -47,7 +59,7 @@ const SocialLogin = () => {
                 className="w-full"
                 startIcon={<Google />}
                 onClick={() => handleLogin('google')}
-                disabled={loginAttempted} // Disable button during login attempt
+                sx={{ borderRadius: '50%' }}
             >
                 Login with Google
             </Button>
@@ -57,7 +69,7 @@ const SocialLogin = () => {
                 className="w-full"
                 startIcon={<Facebook />}
                 onClick={() => handleLogin('facebook')}
-                disabled={loginAttempted} // Disable button during login attempt
+                sx={{ borderRadius: '50%' }}
             >
                 Login with Facebook
             </Button>
