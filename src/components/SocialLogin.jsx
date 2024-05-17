@@ -47,7 +47,6 @@ const SocialLogin = () => {
                 className="w-full"
                 startIcon={<Google />}
                 onClick={() => handleLogin('google')}
-                sx={{ borderRadius: '50%' }}
                 disabled={loginAttempted} // Disable button during login attempt
             >
                 Login with Google
@@ -58,7 +57,6 @@ const SocialLogin = () => {
                 className="w-full"
                 startIcon={<Facebook />}
                 onClick={() => handleLogin('facebook')}
-                sx={{ borderRadius: '50%' }}
                 disabled={loginAttempted} // Disable button during login attempt
             >
                 Login with Facebook
