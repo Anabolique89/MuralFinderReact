@@ -48,7 +48,7 @@ const SocialLogin = () => {
                 color="primary"
                 className="w-full"
                 startIcon={<Facebook />}
-                onClick={() => handleLogin('facebook')}
+                onClick={() => console.log("login with facebook")}
             >
                 Login with Facebook
             </Button>
