@@ -1,8 +1,8 @@
 import React from 'react';
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import Card from '../components/Card';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
-const MapForWall = ({ lat, long, title, image, google, mapWidth, mapHeight }) => {
+const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
     const mapStyles = {
         width: mapWidth || '315px', // Default width is 315px if not specified
         height: mapHeight || '200px', // Default height is 200px if not specified
@@ -19,7 +19,7 @@ const MapForWall = ({ lat, long, title, image, google, mapWidth, mapHeight }) =>
     };
 
     const defaultProps = {
-        center: { lat: lat, lng: long },
+        center: [lat, long],
         zoom: 13
     };
 
@@ -34,20 +34,22 @@ const MapForWall = ({ lat, long, title, image, google, mapWidth, mapHeight }) =>
                 />
 
                 <div style={{ height: mapStyles.height, marginBottom: '10px', }}>
-                    <Map
-                        google={google}
+                    <MapContainer
                         style={mapStyles}
-                        initialCenter={defaultProps.center}
+                        center={defaultProps.center}
                         zoom={defaultProps.zoom}
                     >
-                        <Marker position={defaultProps.center} />
-                    </Map>
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker position={defaultProps.center}>
+                            <Popup>{title}</Popup>
+                        </Marker>
+                    </MapContainer>
                 </div>
             </div>
         </Card>
     );
 };
 
-export default GoogleApiWrapper({
-    apiKey: 'AIzaSyBEfyuMVyPbaYNEDUXgbEE_SCoNC1y6kaw'
-})(MapForWall);
+export default MapForWall;
