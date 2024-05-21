@@ -5,7 +5,7 @@ import Business from "./Business";
 import Clients from "./Clients";
 import CTA from "./CTA";
 import Stats from "./Stats";
-import Footer from "./Footer";
+import Footer from "./WebFooter.jsx";
 import Testimonials from "./Testimonials";
 import Hero from "./Hero";
 import UserArtworks from "./UserArtworks";
@@ -21,7 +21,7 @@ import DragDropImageUploader from "./DragDropImageUploader";
 import WallsHero from "./WallsHero.jsx";
 import WallsIntro from "./WallsIntro.jsx";
 import WallFeed from "./WallFeed.jsx";
-import BottomNavigation from "./BottomNavigation.jsx";
+import MobileFooter from "./MobileFooter.jsx";
 import SingleArtwork from "./SingleArtwork.jsx";
 
 export {
@@ -48,6 +48,6 @@ export {
   WallsHero,
   WallsIntro,
   WallFeed,
-  BottomNavigation,
+  MobileFooter,
   SingleArtwork,
 };

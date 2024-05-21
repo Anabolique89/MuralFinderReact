@@ -7,7 +7,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons/faEllipsisVertical';
 import ArtworkService from '../services/ArtworkService';
 import { useParams } from 'react-router-dom';
-import Footer from './Footer';
+import Footer from './WebFooter';
 
 const SingleArtwork = () => {
     const { artworkId } = useParams(); // Use object destructuring to get artworkId from useParams

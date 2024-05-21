@@ -1,5 +1,6 @@
 import styles, { layout } from '../style';
-import { Business, CardDeal, CTA, Footer, CommunitySection2, HeroCommunity, CommunityBlogSection} from "../components";
+import { Business, CardDeal, CTA, CommunitySection2, HeroCommunity, CommunityBlogSection} from "../components";
+import Footer from '../components/Footer';
 
 
 const Community = () => (

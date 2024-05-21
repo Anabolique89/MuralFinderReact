@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
-import styles, { layout } from '../style';
+import React, { useState } from 'react';
 import { Menus } from '../constants';
 
+const MobileFooter = () => {
+    const [active, setActive] = useState(0);
 
-const BottomNavigation = () => {
-    
-      const [active, setActive] = useState(0);
-      return (
-        <div className="cta-block max-h-[4.4rem] px-6 rounded-t-xl">
-            <ul className="flex relative">
+    const handleClick = (index, link) => {
+        setActive(index);
+        // Navigate to the link
+        window.location.href = link;
+    };
+
+    return (
+        <div className="cta-block max-h-[4.4rem] px-6 rounded-t-xl fixed bottom-0 left-0 right-0 bg-gray-900">
+            <ul className="flex relative justify-around">
                 <span
                     className={`cta-block duration-500 ${Menus[active].dis} border-4 border-white h-16 w-16 absolute -top-5 rounded-full`}
                 >
@@ -46,4 +50,4 @@ const BottomNavigation = () => {
     );
 };
 
-export default BottomNavigation
+export default MobileFooter;

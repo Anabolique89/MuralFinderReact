@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, BottomNavigation, SingleArtwork } from "./components";
+import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -24,6 +24,7 @@ import TermsConditions from './pages/TermsConditions';
 import ViewWall from './pages/ViewWall';
 import AddBlog from './pages/AddBlog';
 import PrivateRoute from './utils/PrivateRoute';
+import Footer from './components/Footer';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -119,7 +120,6 @@ const App = () => {
                   <Testimonials />
                   <CTA />
                   <Footer />
-                  <BottomNavigation />
                 </div>
               </div>
             </>

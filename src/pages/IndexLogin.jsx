@@ -3,8 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles, { layout } from '../style';
 import { fadeintoyouWhite } from '../assets';
 import AuthService from '../services/AuthService';
-import { Footer } from '../components';
 import SocialLogin from '../components/SocialLogin';
+import Footer from '../components/Footer';
 
 const Indexlogin = () => {
   const [email, setEmail] = useState('');
@@ -78,7 +78,7 @@ const Indexlogin = () => {
 
   return (
     <section>
-      <div className={`${layout.sectionImg} bg-indigo-700 mt-0 w-full`}>
+      <div className={`${layout.sectionImg} bg-indigo-700 mt-0 w-full min-h-screen mb-5`}>
         <form className="login-form absolute z-[5] backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-30 rounded-2xl border-solid border-2 border-indigo-600 sm:mt-10 sm:mb-10" onSubmit={handleLogin}>
           <h1 className='font-raleway font-semibold ss:text-[30px] text-[35px] text-white ss:leading-[40px] leading-[45px] w-full p-2'>Enter Your Account.</h1>
           {emailError && <span className="error-message mt-2 text-red-500">{emailError}</span>}

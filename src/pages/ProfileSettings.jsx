@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../style';
-import { Footer } from '../components';
 import AuthService from '../services/AuthService';
 import ProfileImageUpload from '../components/ProfileUpload';
 import ProfileUpdate from './ProfileUpdate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Footer from '../components/Footer';
 
 
 const ProfileSettings = () => {
