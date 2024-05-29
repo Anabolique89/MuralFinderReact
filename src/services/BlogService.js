@@ -82,11 +82,17 @@ const BlogService = {
 
   deleteBlogPost: async (postId) => {
     try {
-      const response = await axios.delete(`${BASE_URL}${blogEndpoints.deleteBlogPost(postId)}`); // Adding BASE_URL to the endpoint
+      const token = sessionStorage.getItem('token')
+
+      const response = await axios.delete(`${BASE_URL}${blogEndpoints.deleteBlogPost(postId)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }); // Adding BASE_URL to the endpoint
       return response.data;
     } catch (error) {
       console.error('Error deleting blog post:', error);
-      throw new Error('Failed to delete blog post');
+      return error.data
     }
   },
   getCommentsForBlogPost: async (postId) => {
