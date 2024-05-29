@@ -25,6 +25,7 @@ import ViewWall from './pages/ViewWall';
 import AddBlog from './pages/AddBlog';
 import PrivateRoute from './utils/PrivateRoute';
 import Footer from './components/Footer';
+import EditBlog from './pages/EditBlog';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -142,10 +143,15 @@ const App = () => {
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
-          
+
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />
+            </PrivateRoute>
+          } />
+          <Route path="/blog/edit/:blogId" element={
+            <PrivateRoute>
+              <EditBlog />
             </PrivateRoute>
           } />
           <Route path="/profile" element={

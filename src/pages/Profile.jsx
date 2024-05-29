@@ -183,7 +183,10 @@ const Profile = () => {
                                         <div className="flex justify-between flex-wrap gap-2 w-full">
                                             <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</span>
                                             <p>
-                                                <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
+                                                <Link to={`/blog/edit/${blog.id}`}>
+                                                    <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
+                                                </Link>
+
                                                 <span className="text-purple-950">{formatDate(blog.created_at)}</span>
                                             </p>
                                         </div>
@@ -203,8 +206,8 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-         {/* <UserArtworks /> */}
-         {/* <WallsHero />
+            {/* <UserArtworks /> */}
+            {/* <WallsHero />
             <DisplayWalls /> */}
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
