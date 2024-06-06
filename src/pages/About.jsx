@@ -1,6 +1,6 @@
 import styles, { layout } from '../style';
 import { libraWhite } from '../assets';
-import { Business, CardDeal, Clients, CTA, Footer, Stats, AboutSection2, CardWithImageExample, HeroAbout } from "../components";
+import {  Footer, AboutSection2, CardWithImageExample, HeroAbout, BottomNavigation } from "../components";
 
 const About = () => {
   return (
@@ -25,7 +25,9 @@ const About = () => {
       <AboutSection2 />
       <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
         <Footer />
+        
       </div>
+      <BottomNavigation />
     </section>
 
   )

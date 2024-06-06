@@ -6,7 +6,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons/faHeart';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons/faEllipsisVertical';
 import ArtworkService from '../services/ArtworkService';
 import { useParams } from 'react-router-dom';
-
+import {Footer, BottomNavigation} from '../components';
 
 const SingleArtwork = () => (
 
@@ -79,6 +79,10 @@ const SingleArtwork = () => (
             </div>
         </div>
     </div>
+    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
+    <BottomNavigation />
     </section>
   );
 

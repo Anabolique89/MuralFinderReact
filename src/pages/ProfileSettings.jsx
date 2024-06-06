@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../style';
-import { Footer } from '../components';
+import { Footer, BottomNavigation } from '../components';
 import AuthService from '../services/AuthService';
 import ProfileImageUpload from '../components/ProfileUpload';
 import ProfileUpdate from './ProfileUpdate';
@@ -127,6 +127,7 @@ const ProfileSettings = () => {
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>
+            <BottomNavigation />
         </section>
     );
 }

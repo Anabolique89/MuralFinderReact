@@ -35,8 +35,8 @@ const ArtworksGallery = ({ image }) => {
           src={image.image_path ? `https://api.muralfinder.net${image.image_path}` : defaultImage}
           alt={image.title || 'Artwork'}
         />
-        <div className='px-6 py-4'>
-          <div className='flex items-center'>
+        <div className='px-6 py-2'>
+          <div className='flex items-center mb-2'>
             {userImage ? (
               <img src={`https://api.muralfinder.net${userImage}`} alt={image.user?.username} className='w-8 h-8 rounded-full mr-2' />
             ) : (
@@ -52,14 +52,14 @@ const ArtworksGallery = ({ image }) => {
             </Link>
           </div>
           <ul className='flex'>
-            <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {image.likes_count}</strong></span></li>
+            <li className='flex '><FcLike /> <span className='ml-2 mr-2'><strong> {image.likes_count}</strong></span></li>
             <li className='flex'><FaComments /><span className='ml-2'><strong>{image.comments_count}</strong></span></li>
           </ul>
           {isAuthenticated && (
             <div>
               <FontAwesomeIcon
                 icon={faEllipsisV}
-                className="cursor-pointer absolute bottom-5 right-10 mt-2 mr-2 text-white"
+                className="cursor-pointer absolute bottom-5 right-5 mt-2 mr-2 text-white"
                 onClick={toggleMenu}
               />
               {showMenu && (

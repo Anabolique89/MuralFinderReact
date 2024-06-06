@@ -130,11 +130,11 @@ export const footerLinks = [
       },
       {
         name: "Events",
-        link: "https://www.hoobank.com/create/",
+        link: "",
       },
       {
         name: "Reviews",
-        link: "https://www.hoobank.com/explore/",
+        link: "",
       },
       {
         name: "Contact",
@@ -159,7 +159,7 @@ export const footerLinks = [
       },
       {
         name: "Blog",
-        link: "https://www.hoobank.com/blog/",
+        link: "",
       },
       {
         name: "Sponsors",
@@ -184,7 +184,7 @@ export const footerLinks = [
       },
       {
         name: "Help Center",
-        link: "https://www.hoobank.com/help-center/",
+        link: "",
       },
     ],
   },
@@ -224,11 +224,30 @@ export const clients = [
   },
 ];
 
-
 export const Menus = [
   { name: "Home", icon: "home-outline", link: "/", dis: "translate-x-0" },
-  { name: "Profile", icon: "person-outline", link: "/profile", dis: "translate-x-16" },
-  { name: "Message", icon: "add-circle-outline", link: "/community", dis: "translate-x-32" },
-  { name: "Photos", icon: "location-outline", link: "/photos", dis: "translate-x-48" },
-  { name: "Settings", icon: "settings-outline", link: "/profilesettings", dis: "translate-x-64" },
+  {
+    name: "Profile",
+    icon: "person-outline",
+    link: "/profile",
+    dis: "translate-x-16",
+  },
+  {
+    name: "Message",
+    icon: "add-circle-outline",
+    link: "/community",
+    dis: "translate-x-32",
+  },
+  {
+    name: "Photos",
+    icon: "location-outline",
+    link: "/photos",
+    dis: "translate-x-48",
+  },
+  {
+    name: "Settings",
+    icon: "settings-outline",
+    link: "/profilesettings",
+    dis: "translate-x-64",
+  },
 ];

@@ -119,9 +119,10 @@ const App = () => {
                   <Testimonials />
                   <CTA />
                   <Footer />
-                  <BottomNavigation />
+                  
                 </div>
               </div>
+              <BottomNavigation />
             </>
           } />
           <Route path="/About" element={<About />} />

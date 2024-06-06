@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
-import { UserArtworks, Footer, WallsHero } from '../components';
+import { UserArtworks, Footer, WallsHero, BottomNavigation } from '../components';
 import { useParams } from 'react-router-dom';
 import FellowshipService from '../services/FellowshipService';
 import { cleanHTML, trimContent } from '../utils/blogUtils';
@@ -276,6 +276,7 @@ const PublicProfile = () => {
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>
+            <BottomNavigation />
         </div >
 
 

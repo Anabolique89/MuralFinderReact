@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Footer } from '../components';
+import { BottomNavigation, Footer } from '../components';
 import styles from '../style';
 
 
@@ -19,7 +19,9 @@ export default function Policy() {
     ></div>
      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
+                
             </div>
+            <BottomNavigation />
     </section>
   );
 }

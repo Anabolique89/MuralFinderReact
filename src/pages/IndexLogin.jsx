@@ -122,6 +122,7 @@ const Indexlogin = () => {
       <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
         <Footer />
       </div>
+      
     </section>
   );
 };

@@ -8,6 +8,7 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons/faEllipsis
 import ArtworkService from '../services/ArtworkService';
 import { useParams } from 'react-router-dom';
 import Footer from './Footer';
+import { faShare } from '@fortawesome/free-solid-svg-icons';
 
 const SingleArtwork = () => {
     const { artworkId } = useParams(); // Use object destructuring to get artworkId from useParams
@@ -78,6 +79,10 @@ const SingleArtwork = () => {
                                 </a>
                                 <a href="#" className="flex text-gray-700">
                                     <FontAwesomeIcon icon={faComments} className="text-purple-950 mr-2 ml-4" />
+                                    <span>{artwork.comments}</span>
+                                </a>
+                                <a href="#" className="flex text-gray-700">
+                                    <FontAwesomeIcon icon={faShare} className="text-purple-950 mr-2 ml-4" />
                                     <span>{artwork.comments}</span>
                                 </a>
                             </div>

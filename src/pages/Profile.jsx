@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
-import { UserArtworks, Footer, WallsHero} from '../components';
+import { UserArtworks, Footer, WallsHero, BottomNavigation} from '../components';
 // import { DisplayWalls } from '../pages';
 import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
@@ -80,7 +80,7 @@ const Profile = () => {
                             <div className="flex flex-col items-center">
                                 <img
                                     src={(profileData.profile.profile_image_url ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}` : defaultimg)}
-                                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
+                                    className=" object-cover w-[120px] h-[120px] bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
                                     alt="Bordered avatar"
                                 />
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
@@ -142,7 +142,7 @@ const Profile = () => {
                         <div className='highlights flex flex-column mb-4 mt-2'>
                             {!blogData ? (
                                 // Display spinners while blog data is being fetched
-                                <div className="flex justify-center">
+                                <div className=" flex justify-center">
                                     {[...Array(3)].map((_, index) => (
                                         <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
                                     ))}
@@ -154,7 +154,7 @@ const Profile = () => {
                                         key={blog.id}
                                         src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
                                         alt={`Blog Image ${blog.id}`}
-                                        className='highlight sm:mr-4 md:mr-6 mr-10'
+                                        className='object-cover highlight sm:mr-4 md:mr-6 mr-10'
                                     />
                                 ))
                             )}
@@ -210,6 +210,7 @@ const Profile = () => {
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>
+            <BottomNavigation />
         </div>
 
 

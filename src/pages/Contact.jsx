@@ -4,7 +4,7 @@ import { fadeintoyouWhite } from '../assets';
 import contactService from '../services/ContactService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faPen } from '@fortawesome/free-solid-svg-icons';
-import { Footer } from '../components';
+import { Footer,BottomNavigation } from '../components';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -131,6 +131,7 @@ const Contact = () => {
     <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>
+            <BottomNavigation />
     </section>
   );
 }
