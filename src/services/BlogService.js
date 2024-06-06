@@ -15,8 +15,9 @@ const BlogService = {
 
   getBlogPostById: async (postId) => {
     try {
+      console.log(`${BASE_URL}${blogEndpoints.getBlogPostById(postId)}`)
       const response = await axios.get(`${BASE_URL}${blogEndpoints.getBlogPostById(postId)}`); // Adding BASE_URL to the endpoint
-      console.log(response.data.data)
+      console.log(response.data)
       return response.data.data;
     } catch (error) {
       console.error('Error fetching blog post:', error);
@@ -65,8 +66,14 @@ const BlogService = {
 
   updateBlogPost: async (postId, updatedData) => {
     try {
-      const response = await axios.put(`${BASE_URL}${blogEndpoints.updateBlogPost(postId)}`, updatedData); // Adding BASE_URL to the endpoint
-      return response.data;
+      const token = sessionStorage.getItem('token')
+      const response = await axios.post(`${BASE_URL}${blogEndpoints.updateBlogPost(postId)}`, updatedData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      }); // Adding BASE_URL to the endpoint
+      return response.data.message;
     } catch (error) {
       console.error('Error updating blog post:', error);
       throw new Error('Failed to update blog post');
@@ -75,11 +82,17 @@ const BlogService = {
 
   deleteBlogPost: async (postId) => {
     try {
-      const response = await axios.delete(`${BASE_URL}${blogEndpoints.deleteBlogPost(postId)}`); // Adding BASE_URL to the endpoint
+      const token = sessionStorage.getItem('token')
+
+      const response = await axios.delete(`${BASE_URL}${blogEndpoints.deleteBlogPost(postId)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }); // Adding BASE_URL to the endpoint
       return response.data;
     } catch (error) {
       console.error('Error deleting blog post:', error);
-      throw new Error('Failed to delete blog post');
+      return error.data
     }
   },
   getCommentsForBlogPost: async (postId) => {

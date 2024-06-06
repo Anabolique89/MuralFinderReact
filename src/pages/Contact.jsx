@@ -5,6 +5,7 @@ import contactService from '../services/ContactService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faEnvelope, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Footer,BottomNavigation } from '../components';
+import Footer from '../components/Footer';
 
 const Contact = () => {
   const [formData, setFormData] = useState({

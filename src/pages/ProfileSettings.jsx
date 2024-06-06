@@ -6,6 +6,7 @@ import ProfileImageUpload from '../components/ProfileUpload';
 import ProfileUpdate from './ProfileUpdate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Footer from '../components/Footer';
 
 
 const ProfileSettings = () => {

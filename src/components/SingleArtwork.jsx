@@ -9,6 +9,7 @@ import ArtworkService from '../services/ArtworkService';
 import { useParams } from 'react-router-dom';
 import Footer from './Footer';
 import { faShare } from '@fortawesome/free-solid-svg-icons';
+import Footer from './WebFooter';
 
 const SingleArtwork = () => {
     const { artworkId } = useParams(); // Use object destructuring to get artworkId from useParams

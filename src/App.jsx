@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Footer, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, BottomNavigation, SingleArtwork } from "./components";
+import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork } from "./components";
 import About from './pages/About';
-import Community from './pages/Community';
-import Profile from './pages/Profile';
+import Community from '../pages/Community';
+import Profile from '../pages/Profile';
 import PublicProfile from './pages/PublicProfile';
-import Map from './pages/Map';
+import Map from '../pages/Map';
 import Walls from './pages/Walls';
 import IndexLogin from './pages/IndexLogin';
 import IndexSignup from './pages/IndexSignup';
 import Onboarding1 from './pages/Onboarding1';
 import Onboarding2 from './pages/Onboarding2';
 import Onboarding3 from './pages/Onboarding3';
-import Contact from './pages/Contact';
+import Contact from '../pages/Contact';
 import { ToastContainer } from 'react-toastify';
 import ArtworkService from './services/ArtworkService';
 import SingleBlogPost from './pages/SingleBlogPost';
@@ -24,6 +24,8 @@ import TermsConditions from './pages/TermsConditions';
 import ViewWall from './pages/ViewWall';
 import AddBlog from './pages/AddBlog';
 import PrivateRoute from './utils/PrivateRoute';
+import Footer from './components/Footer';
+import EditBlog from './pages/EditBlog';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -143,10 +145,15 @@ const App = () => {
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
-          
+
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />
+            </PrivateRoute>
+          } />
+          <Route path="/blog/edit/:blogId" element={
+            <PrivateRoute>
+              <EditBlog />
             </PrivateRoute>
           } />
           <Route path="/profile" element={
