@@ -26,6 +26,7 @@ import AddBlog from './pages/AddBlog';
 import PrivateRoute from './utils/PrivateRoute';
 import Footer from './components/Footer';
 import EditBlog from './pages/EditBlog';
+import EditArtworkUploader from './pages/EditArtworkUploader';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -152,6 +153,11 @@ const App = () => {
           <Route path="/blog/edit/:blogId" element={
             <PrivateRoute>
               <EditBlog />
+            </PrivateRoute>
+          } />
+           <Route path="/artwork/edit/:artworkId" element={
+            <PrivateRoute>
+              <EditArtworkUploader />
             </PrivateRoute>
           } />
           <Route path="/profile" element={

@@ -79,6 +79,48 @@ const ArtworkService = {
       console.error('Error uploading artwork:', error);
       return error.response.data.message;
     }
+  },
+  editArtwork: async (artworkId, formData) => {
+    try {
+      const token = sessionStorage.getItem('token');
+      const url = `${BASE_URL}${artworkEndpoints.artworkById(artworkId)}`;
+      const response = await axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.data.success) {
+        console.log('Artwork edited successfully');
+        return response.data.message || 'Artwork edited successfully';
+      } else {
+        return response.data.message || 'Failed to edit artwork';
+      }
+    } catch (error) {
+      console.error('Error editing artwork:', error);
+      return error.response ? error.response.data.message : 'Unknown error';
+    }
+  },
+
+  deleteArtwork: async (artworkId) => {
+    try {
+      const token = sessionStorage.getItem('token');
+      const url = `${BASE_URL}${artworkEndpoints.artworkById(artworkId)}`;
+      const response = await axios.delete(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.data.success) {
+        console.log('Artwork deleted successfully');
+        return response.data.success;
+      } else {
+        return response.data.message || 'Failed to delete artwork';
+      }
+    } catch (error) {
+      console.error('Error deleting artwork:', error);
+      return error.response ? error.response.data.message : 'Unknown error';
+    }
   }
 
 };

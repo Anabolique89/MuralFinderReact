@@ -2,33 +2,68 @@ import styles from '../style';
 import { FaComments } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faEllipsisV, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPencil, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import AuthService from '../services/AuthService';
-import { Link } from 'react-router-dom';
+import ArtworkService from '../services/ArtworkService';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ArtworksGallery = ({ image }) => {
+  const isAuthenticated = AuthService.isAuthenticated();
+  const user = AuthService.getUser() ?? null;
+  console.log(user)
+  const userImage = image.user?.profile?.profile_image_url || '';
+  const defaultImage = 'https://example.com/default-image.jpg';
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  console.log(image)
-  const isAuthenticated = AuthService.isAuthenticated()
-  const userImage = image.user?.profile?.profile_image_url || ''; // Check if user profile image exists
-  const defaultImage = 'https://example.com/default-image.jpg'; // Default image URL from CDN
-  const [showMenu, setShowMenu] = useState(false);
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
+  const handleEdit = (artworkId) => {
+    navigate(`/artwork/edit/${artworkId}`);
   };
 
-  const handleEdit = () => {
-    alert("You want to edit me?")
-  };
-
-  const handleDelete = () => {
-    alert("You want to delete me?")
+  const handleDelete = async (artworkId) => {
+    setLoading(true); // Set loading state to true
+    try {
+      const deleteResponse = await ArtworkService.deleteArtwork(artworkId);
+      if (deleteResponse) {
+        setSuccessMessage('Artwork deleted successfully');
+        setErrorMessage('');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000); // Clear success message after 5 seconds
+      } else {
+        setErrorMessage('Failed to delete artwork');
+        setSuccessMessage('');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 5000); // Clear error message after 5 seconds
+      }
+    } catch (error) {
+      setErrorMessage('Error deleting artwork');
+      setSuccessMessage('');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000); // Clear error message after 5 seconds
+    } finally {
+      setLoading(false); // Set loading state to false
+    }
   };
 
   return (
     <div className='max-w-xs rounded-xl overflow-hidden shadow-lg w-50 relative bg-indigo-800 p-2'>
+      {successMessage && (
+        <div className="absolute top-0 right-0 m-4 bg-green-500 text-white p-2 rounded">
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="absolute top-0 right-0 m-4 bg-red-500 text-white p-2 rounded">
+          {errorMessage}
+        </div>
+      )}
       <div className='w-full'>
         <img
           className='w-full h-48 object-cover p-2'
@@ -48,30 +83,32 @@ const ArtworksGallery = ({ image }) => {
           </div>
           <div className='font-bold text-white text-xl mb-2'>
             <Link to={`/artworks/${image.id}`}>
-            {image.title}
+              {image.title}
             </Link>
           </div>
           <ul className='flex'>
             <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {image.likes_count}</strong></span></li>
-            <li className='flex'><FaComments /><span className='ml-2'><strong>{image.comments_count}</strong></span></li>
+            <li className='flex'><FaComments className=' text-blue-500' /><span className='ml-2'><strong>{image.comments_count}</strong></span></li>
           </ul>
-          {isAuthenticated && (
-            <div>
+          {isAuthenticated && user.id === image.user_id && (
+            <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">
+              <Link to={`/artwork/edit/${image.id}`}> 
               <FontAwesomeIcon
-                icon={faEllipsisV}
-                className="cursor-pointer absolute bottom-5 right-10 mt-2 mr-2 text-white"
-                onClick={toggleMenu}
+                icon={faPencil}
               />
-              {showMenu && (
-                <div className='absolute right-0 bottom-10 bg-white shadow-lg rounded-lg p-2'>
-                  <div className='text-gray-700 hover:bg-gray-200 rounded-lg p-1 cursor-pointer' onClick={handleEdit}>
-                    <FontAwesomeIcon icon={faPencil} className="mr-1" />
-                    Edit
-                  </div>
-                  <div className='text-red-500 hover:bg-gray-200 rounded-lg p-1 cursor-pointer' onClick={handleDelete}>
-                    <FontAwesomeIcon icon={faTrash} className="mr-1" />
-                    Delete
-                  </div>
+              </Link>
+
+              <FontAwesomeIcon
+                icon={faTrash}
+                className="cursor-pointer text-red-700"
+                onClick={() => handleDelete(image.id)}
+              />
+              {loading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="loader">  <FontAwesomeIcon
+                    icon={faSpinner}
+                    className="cursor-pointer text-red-100"
+                  />.</div>
                 </div>
               )}
             </div>
