@@ -41,16 +41,16 @@ const ViewWall = () => {
     };
 
     return (
-        <section className='bg-indigo w-full overflow-hidden'>
+        <section className='bg-indigo w-full overflow-hidden mt-5'>
             {isLoading || !wall ? (
                 <div className='flex justify-center items-center h-screen'>
                     <FontAwesomeIcon icon={faSpinner} spin size='3x' color="white" />
                 </div>
             ) : (
                 <div className='flex justify-center items-center'>
-                    <div className='w-3/4'>
+                    <div className='w-4/5 m-2'>
                         <div className='flex'>
-                            <div className='w-1/2'>
+                            <div className='w-1/2 m-1'>
                                 <img
                                     src={`https://api.muralfinder.net/${wall.image_path}`}
                                     alt='Wall Image'
@@ -58,8 +58,8 @@ const ViewWall = () => {
                                 />
                             </div>
                             <div className='w-1/2'>
-                                <Card>
-                                    <div style={{ height: mapSize, border: '2px solid #c2c', borderRadius: '2px', overflow: 'hidden' }}>
+                                <div>
+                                    <div style={{ height: mapSize, borderRadius: '2px', overflow: 'hidden', color: 'white', backgroundColor: 'transparent' }}>
                                         <MapForWall
                                             lat={wall.latitude}
                                             long={wall.longitude}
@@ -68,7 +68,7 @@ const ViewWall = () => {
                                             mapWidth={mapSize}
                                         />
                                     </div>
-                                </Card>
+                                </div>
                                 <h2 className='text-xl font-bold mt-4'>{wall.location_text}</h2>
                                 <button onClick={toggleMapSize}>Toggle Map Size</button>
                             </div>
