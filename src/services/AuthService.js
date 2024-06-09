@@ -67,13 +67,13 @@ const AuthService = {
   },
 
   isAuthenticated() {
-    const user = sessionStorage.getItem('user');
-    const token = sessionStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
     return user && token;
   },
 
   getUser() {
-    const userString = sessionStorage.getItem('user');
+    const userString = localStorage.getItem('user');
     return userString ? JSON.parse(userString) : null;
   },
 
@@ -83,7 +83,7 @@ const AuthService = {
         throw new Error('Missing userId parameter');
       }
 
-      // const token = sessionStorage.getItem('token');
+      // const token = localStorage.getItem('token');
       // if (!token) {
       //   throw new Error('User not authenticated');
       // }
@@ -110,7 +110,7 @@ const AuthService = {
         return 'Missing userId parameter';
       }
 
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       if (!token) {
         return 'the server could not authenticate your request';
       }
@@ -137,7 +137,7 @@ const AuthService = {
   },
   logout: async () => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       if (!token) {
         return 'No token found in session storage';
       }
@@ -149,8 +149,8 @@ const AuthService = {
       });
 
       // Remove the token from session storage
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
 
       // You can also perform any other necessary cleanup, such as clearing the user's data from the application state
     } catch (error) {
@@ -164,7 +164,7 @@ const AuthService = {
         throw new Error('Missing userId parameter');
       }
 
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('User not authenticated');
       }

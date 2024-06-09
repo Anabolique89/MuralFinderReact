@@ -37,7 +37,7 @@ const BlogService = {
 
   createBlogPost: async (postData) => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.post(
         `${BASE_URL}${blogEndpoints.createBlogPost}`,
         postData,
@@ -66,7 +66,7 @@ const BlogService = {
 
   updateBlogPost: async (postId, updatedData) => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.post(`${BASE_URL}${blogEndpoints.updateBlogPost(postId)}`, updatedData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -82,7 +82,7 @@ const BlogService = {
 
   deleteBlogPost: async (postId) => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
       const response = await axios.delete(`${BASE_URL}${blogEndpoints.deleteBlogPost(postId)}`, {
         headers: {
@@ -108,7 +108,7 @@ const BlogService = {
 
   commentOnBlogPost: async (postId, commentData) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const response = await axios.post(`${BASE_URL}${blogEndpoints.commentOnBlogPost(postId)}`, commentData, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -123,7 +123,7 @@ const BlogService = {
 
   likeBlogPost: async (postId) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       console.log(token)
       const response = await axios.post(`${BASE_URL}${blogEndpoints.likeBlogPost(postId)}`, null, {
         headers: {

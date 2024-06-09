@@ -62,7 +62,7 @@ const ArtworkService = {
   uploadArtwork: async (formData) => {
     try {
 
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.post(`${BASE_URL}${artworkEndpoints.uploadArtwork}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -82,7 +82,7 @@ const ArtworkService = {
   },
   editArtwork: async (artworkId, formData) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const url = `${BASE_URL}${artworkEndpoints.artworkById(artworkId)}`;
       const response = await axios.post(url, formData, {
         headers: {
@@ -104,7 +104,7 @@ const ArtworkService = {
 
   deleteArtwork: async (artworkId) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const url = `${BASE_URL}${artworkEndpoints.artworkById(artworkId)}`;
       const response = await axios.delete(url, {
         headers: {

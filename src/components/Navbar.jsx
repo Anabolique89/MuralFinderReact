@@ -16,7 +16,7 @@ const Navbar = () => {
   const isAuthenticated = AuthService.isAuthenticated();
 
   const getUser = () => {
-    const userString = sessionStorage.getItem('user');
+    const userString = localStorage.getItem('user');
     return userString ? JSON.parse(userString) : null;
   };
 

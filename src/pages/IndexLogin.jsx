@@ -21,9 +21,9 @@ const Indexlogin = () => {
     const user = urlParams.get('user');
 
     if (token && user) {
-      sessionStorage.clear();
-      sessionStorage.setItem('user', user);
-      sessionStorage.setItem('token', token);
+      localStorage.clear();
+      localStorage.setItem('user', user);
+      localStorage.setItem('token', token);
       navigate('/Profile');
     }
   }, [location.search, navigate]);
@@ -36,9 +36,9 @@ const Indexlogin = () => {
       try {
         const { user, token } = await AuthService.login(email, password);
 
-        sessionStorage.clear();
-        sessionStorage.setItem('user', JSON.stringify(user));
-        sessionStorage.setItem('token', token);
+        localStorage.clear();
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
         console.log("Login was successful");
         console.log(user);
 

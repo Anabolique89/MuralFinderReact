@@ -4,7 +4,7 @@ import { BASE_URL, fellowshipEndpoints } from "../constants/ApiEndpoints";
 const FellowshipService = {
     follow: async (userId) => {
         try {
-            const token = sessionStorage.getItem('token');
+            const token = localStorage.getItem('token');
             const response = await axios.post(
                 `${BASE_URL}${fellowshipEndpoints.follow}`,
                 { "user_id": userId },
@@ -28,7 +28,7 @@ const FellowshipService = {
 
     unfollow: async (userId) => {
         try {
-            const token = sessionStorage.getItem('token');
+            const token = localStorage.getItem('token');
             const response = await axios.post(
                 `${BASE_URL}${fellowshipEndpoints.unfollow}`,
                 { "user_id": userId },
@@ -50,7 +50,7 @@ const FellowshipService = {
     },
     isFollowing: async (userId) => {
         try {
-            const token = sessionStorage.getItem('token');
+            const token = localStorage.getItem('token');
             const response = await axios.get(
                 `${BASE_URL}${fellowshipEndpoints.isFollowing(userId)}`,
                 {
