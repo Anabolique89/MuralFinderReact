@@ -5,6 +5,8 @@ import { faSpinner, faEye, faThumbsUp, faComment, faUser, faEdit, faTrash } from
 import BlogService from '../services/BlogService';
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import AuthService from '../services/AuthService';
+import styles, { layout } from '../style';
+// import Button from './Button';
 
 const CommunityBlogSection = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -50,7 +52,7 @@ const CommunityBlogSection = () => {
   };
 
   return (
-    <div className="bg-indigo-800 py-24 sm:py-32">
+    <div className="bg-indigo-700 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {alertMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -72,46 +74,46 @@ const CommunityBlogSection = () => {
             </div>
           ) : (
             blogPosts.map(blogPost => (
-              <div key={blogPost.id} className="flex flex-col items-start justify-between bg-white rounded-md shadow-md p-6 hover:bg-gray-100 transition duration-300">
+              <div key={blogPost.id} className="flex flex-col items-start justify-between backdrop-filter backdrop-blur-lg rounded-md shadow-md p-6 hover:bg-indigo-800  transition duration-300 border-solid border-2 border-indigo-600 sm:mt-10 sm:mb-10">
                 {blogPost.feature_image ? (
                   <img
                     src={`https://api.muralfinder.net/${blogPost.feature_image}`}
                     alt={blogPost.title}
-                    className="w-full h-48 mb-4 rounded-md"
+                    className=" object-cover w-full h-48 mb-4 rounded-md "
                   />
                 ) : (
                   <div className="bg-gray-200 w-full h-32 mb-4 rounded-md"></div>
                 )}
                 <div className="w-full">
-                  <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
+                  <h3 className="mt-3 text-lg font-semibold leading-6 text-white font-raleway">
                     <Link to={`/blog/${blogPost.id}`} className="hover:text-blue-500">{blogPost.title}</Link>
                   </h3>
-                  <p className="mt-2 text-gray-600">
+                  <p className={`${styles.paragraph} mt-2 `}>
                     <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blogPost.content, 200)) }} />
                   </p>
                 </div>
                 <div className="flex items-center mt-4 w-full">
-                  <div className="flex items-center mr-4 text-gray-600">
+                  <div className="flex items-center mr-4 text-white">
                     <FontAwesomeIcon icon={faEye} className="mr-1" />
                     <span>{blogPost.views}</span>
                   </div>
-                  <div className="flex items-center mr-4 text-gray-600">
+                  <div className="flex items-center mr-4 text-white">
                     <FontAwesomeIcon icon={faThumbsUp} className="mr-1" />
                     <span>{blogPost.likes_count}</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-white">
                     <FontAwesomeIcon icon={faComment} className="mr-1" />
                     <span>{blogPost.comments_count}</span>
                   </div>
                 </div>
-                <div className="flex items-center mt-4 w-full text-gray-600 justify-between">
+                <div className="flex items-center mt-4 w-full text-white justify-between">
                   <div className="flex items-center">
                     <a href={`/profile/${blogPost.user.id}`}>
-                      <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-gray-200 p-1" />
+                      <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2" />
                     </a>
                     <div>
-                      <p className="font-semibold">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
-                      <p>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                      <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                      <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                     </div>
                   </div>
                   {currentUser && currentUser.id === blogPost.user.id && (

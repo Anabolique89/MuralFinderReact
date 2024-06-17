@@ -79,7 +79,7 @@ const Profile = () => {
                             <div className="flex flex-col items-center">
                                 <img
                                     src={(profileData.profile.profile_image_url ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}` : defaultimg)}
-                                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
+                                    className=" object-cover w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
                                     alt="Bordered avatar"
                                 />
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
@@ -153,7 +153,7 @@ const Profile = () => {
                                         key={blog.id}
                                         src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
                                         alt={`Blog Image ${blog.id}`}
-                                        className='highlight sm:mr-4 md:mr-6 mr-10'
+                                        className=' object-cover highlight sm:mr-4 md:mr-6 mr-10'
                                     />
                                 ))
                             )}

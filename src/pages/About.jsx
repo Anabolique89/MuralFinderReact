@@ -1,6 +1,6 @@
 import styles, { layout } from '../style';
 import { libraWhite } from '../assets';
-import { Business, CardDeal, Clients, CTA, Footer, Stats, AboutSection2, CardWithImageExample, HeroAbout } from "../components";
+import { Business, CardDeal, CTA, Footer, Stats, AboutSection2, CardWithImageExample, HeroAbout } from "../components";
 
 const About = () => {
   return (

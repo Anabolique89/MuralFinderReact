@@ -11,10 +11,10 @@ const MobileFooter = () => {
     };
 
     return (
-        <div className="cta-block max-h-[4.4rem] px-6 rounded-t-xl fixed bottom-0 left-0 right-0 bg-gray-900">
-            <ul className="flex relative justify-around">
+        <div className="cta-block max-h-[7rem] px-6 rounded-t-xl fixed bottom-0 left-0 right-0 bg-gray-900 z-50">
+            <ul className="flex relative">
                 <span
-                    className={`cta-block duration-500 ${Menus[active].dis} border-4 border-white h-16 w-16 absolute -top-5 rounded-full`}
+                    className={`cta-block duration-500 ${Menus[active].dis} border-4 border-white h-16 w-16 absolute -top-4 rounded-full`}
                 >
                     <span className="w-3.5 h-3.5 bg-transparent absolute top-4 -left-[18px] rounded-tr-[11px] shadow-myShadow1"></span>
                     <span className="w-3.5 h-3.5 bg-transparent absolute top-4 -right-[18px] rounded-tl-[11px] shadow-myShadow2"></span>
@@ -24,11 +24,11 @@ const MobileFooter = () => {
                         <a
                             href={menu.link}
                             className="flex flex-col text-center pt-6 text-white font-raleway"
-                            onClick={() => handleClick(i, menu.link)}
+                            onClick={() => setActive(i, menu.link)}
                         >
                             <span
                                 className={`text-xl cursor-pointer duration-500 ${
-                                    i === active && "-mt-6 text-white"
+                                    i === active && "-mt-4 text-white"
                                 }`}
                             >
                                 <ion-icon name={menu.icon}></ion-icon>

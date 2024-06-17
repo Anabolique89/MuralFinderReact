@@ -17,31 +17,38 @@ export const navLinks = [
   {
     id: "home",
     title: "HOME",
+    link: "/",
   },
   {
     id: "about",
     title: "ABOUT",
+    link: "/About",
   },
   {
     id: "map",
     title: "MAP",
+    link: "/Map",
   },
   {
     id: "walls",
     title: "WALLS",
+    link: "/Walls",
   },
   {
     id: "community",
     title: "COMMUNITY",
+    link: "/Community",
   },
 
   {
     id: "contact",
     title: "CONTACT",
+    link: "/Contact",
   },
   {
     id: "login",
     title: "LOGIN",
+    link: "/Login",
   },
 ];
 
@@ -224,11 +231,30 @@ export const clients = [
   },
 ];
 
-
 export const Menus = [
   { name: "Home", icon: "home-outline", link: "/", dis: "translate-x-0" },
-  { name: "Profile", icon: "person-outline", link: "/profile", dis: "translate-x-16" },
-  { name: "Message", icon: "add-circle-outline", link: "/community", dis: "translate-x-32" },
-  { name: "Photos", icon: "location-outline", link: "/photos", dis: "translate-x-48" },
-  { name: "Settings", icon: "settings-outline", link: "/profilesettings", dis: "translate-x-64" },
+  {
+    name: "Profile",
+    icon: "person-outline",
+    link: "/profile",
+    dis: "translate-x-16",
+  },
+  {
+    name: "Add",
+    icon: "add-circle-outline",
+    link: "/community",
+    dis: "translate-x-32",
+  },
+  {
+    name: "Map",
+    icon: "location-outline",
+    link: "/map",
+    dis: "translate-x-48",
+  },
+  {
+    name: "Settings",
+    icon: "settings-outline",
+    link: "/profilesettings",
+    dis: "translate-x-64",
+  },
 ];

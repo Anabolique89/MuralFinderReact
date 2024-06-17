@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork } from "./components";
+import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork, Carousel } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -34,7 +34,7 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]);
-  console.log(filteredImages)
+  // console.log(filteredImages)
 
   useEffect(() => {
     setIsLoading(true);
@@ -120,6 +120,9 @@ const App = () => {
 
                   <CardDeal />
                   <Testimonials />
+                  <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-10">
+      <Carousel />
+    </div>
                   <CTA />
                   <Footer />
                 </div>

@@ -2,7 +2,6 @@ import Navbar from "./Navbar";
 import Billing from "./Billing";
 import CardDeal from "./CardDeal";
 import Business from "./Business";
-import Clients from "./Clients";
 import CTA from "./CTA";
 import Stats from "./Stats";
 import Footer from "./WebFooter.jsx";
@@ -23,13 +22,14 @@ import WallsIntro from "./WallsIntro.jsx";
 import WallFeed from "./WallFeed.jsx";
 import MobileFooter from "./MobileFooter.jsx";
 import SingleArtwork from "./SingleArtwork.jsx";
+import CategoryCard from "./CategoryCard.jsx";
+import Carousel from "./Carousel.jsx";
 
 export {
   Navbar,
   Billing,
   CardDeal,
   Business,
-  Clients,
   CTA,
   Stats,
   Footer,
@@ -44,10 +44,13 @@ export {
   HeroCommunity,
   CommunitySection2,
   CommunityBlogSection,
+  // DragDropImageUploader,
   DragDropImageUploader,
   WallsHero,
   WallsIntro,
   WallFeed,
   MobileFooter,
   SingleArtwork,
+  CategoryCard,
+  Carousel,
 };
