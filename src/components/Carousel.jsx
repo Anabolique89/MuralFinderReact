@@ -76,8 +76,8 @@ const Carousel = () => {
     <section>
   <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
    
-    <div className="carousel my-12 mx-auto">
-      <h2 className={`${styles.paragraph} max-w-[470px] mt-5`}>
+    <div className="carousel my-2 mx-2 w-full">
+      <h2 className={`${styles.paragraph} max-w-[470px] mb-5`}>
         Category Name
       </h2>
       <div className="relative overflow-hidden">
@@ -105,7 +105,7 @@ const Carousel = () => {
           </button>
           <button
             onClick={moveNext}
-            className="hover:bg-blue-900/75 text-white w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
+            className="hover:bg-blue-900/75 text-white w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300 "
             disabled={isDisabled('next')}
           >
             <svg
@@ -127,37 +127,33 @@ const Carousel = () => {
         </div>
         <div
           ref={carousel}
-          className="carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+          className="carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-30 rounded-2xl "
         >
-
 {isLoading ? (
-                    <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
+                    <h1 className='text-4xl sm:text-2xl text-center mx-auto mt-32 text-white'>Loading...</h1>
                   ) : (
                   images.map(image => (
 
-          
-        //   {data.resources.map((resource, index) => {
-            // return (
               <div
                 key={image.id}
-                className="carousel-item text-center relative w-64 h-64 snap-start"
+                className="carousel-item text-center relative w-64 h-64 snap-start rounded p-2"
               >
                 <a
                   href={`/artworks/${image.id}`}
-                  className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
+                  className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0 "
                   style={{ backgroundImage: `https://api.muralfinder.net${image.image_path}` }}
                 >
                   <img
                    src={image.image_path ? `https://api.muralfinder.net${image.image_path}` : defaultImage}
                    alt={image.title || 'Artwork'}
-                    className="w-full aspect-square"
+                    className="w-full aspect-square object-cover rounded-md"
                   />
                 </a>
                 <a
                   href={`/artworks/${image.id}`}
-                  className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-blue-800/75 z-10"
+                  className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-indigo-800/75 z-10 rounded-md"
                 >
-                  <h3 className="text-white py-6 px-3 mx-auto text-xl">
+                  <h3 className={`${styles.paragraph} max-w-[470px] mt-5 mx-auto text-white`}>
                     {image.title}
                   </h3>
                 </a>

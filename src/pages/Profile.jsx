@@ -153,7 +153,7 @@ const Profile = () => {
                                         key={blog.id}
                                         src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
                                         alt={`Blog Image ${blog.id}`}
-                                        className=' object-cover highlight sm:mr-4 md:mr-6 mr-10'
+                                        className='object-cover highlight sm:mr-4 md:mr-6 mr-10'
                                     />
                                 ))
                             )}

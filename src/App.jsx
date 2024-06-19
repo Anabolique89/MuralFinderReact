@@ -27,6 +27,7 @@ import PrivateRoute from './utils/PrivateRoute';
 import Footer from './components/Footer';
 import EditBlog from './pages/EditBlog';
 import EditArtworkUploader from './pages/EditArtworkUploader';
+import ArtworkFeed from './pages/ArtworkFeed';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -108,7 +109,7 @@ const App = () => {
                     <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
                   ) : (
                     <div className='container mx-auto py-2'>
-                      <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
+                      <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {(filteredImages.length > 0 ? filteredImages : images).map(image => (
                           <ArtworksGallery key={image.id} image={image} />
                         ))}
@@ -120,8 +121,9 @@ const App = () => {
 
                   <CardDeal />
                   <Testimonials />
-                  <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-10">
+                  <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-2">
       <Carousel />
+      <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>See All</button>
     </div>
                   <CTA />
                   <Footer />
@@ -145,6 +147,7 @@ const App = () => {
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/FAQS" element={<FAQS />} />
+          <Route path="/ArtworkFeed" element={<ArtworkFeed />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
 

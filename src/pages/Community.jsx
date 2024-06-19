@@ -1,5 +1,5 @@
 import styles, { layout } from '../style';
-import { Business, CardDeal, CTA, CommunitySection2, HeroCommunity, CommunityBlogSection} from "../components";
+import {CommunitySection2, HeroCommunity, CommunityBlogSection} from "../components";
 import Footer from '../components/Footer';
 
 

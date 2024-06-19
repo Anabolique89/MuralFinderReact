@@ -53,7 +53,7 @@ const ArtworksGallery = ({ image }) => {
   };
 
   return (
-    <div className='max-w-xs rounded-xl overflow-hidden shadow-lg w-50 relative bg-indigo-800 p-2'>
+    <div className='rounded-xl overflow-hidden shadow-lg w-50 relative cta-block box-shadow p-2 sm:p-0 xs:m-2 sm:w-full'>
       {successMessage && (
         <div className="absolute top-0 right-0 m-4 bg-green-500 text-white p-2 rounded">
           {successMessage}

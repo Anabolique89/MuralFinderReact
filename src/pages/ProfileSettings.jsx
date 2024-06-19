@@ -100,7 +100,7 @@ const ProfileSettings = () => {
                                     <button className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white">Save Password</button>
                                     <hr className="mt-4 mb-8" />
                                     <div className="flex justify-end">
-                                        <button type="submit" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>SAVE</button>
+                                        {/* <button type="submit" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>SAVE</button> */}
                                     </div>
                                 </div>
                             </div>

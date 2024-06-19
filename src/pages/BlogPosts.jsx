@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles, { layout } from '../style';
-import { fadeintoyouWhite } from '../assets';
 import axios from 'axios';
 import { blogEndpoints } from '../config/endpoints';
 import ReactQuill from 'react-quill';
