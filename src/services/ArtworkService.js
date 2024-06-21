@@ -7,7 +7,7 @@ const ArtworkService = {
       const response = await fetch(`${BASE_URL}${artworkEndpoints.getAllArtworks}`);
       const data = await response.json();
       if (data.success && data.data) {
-        return data.data.data;
+        return data.data;
       } else {
         return [];
       }
