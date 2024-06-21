@@ -10,6 +10,7 @@ const DragDropImageUploader = () => {
   const fileInputRef = useRef(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(false); // State for loading indicator
   const [responseMessage, setResponseMessage] = useState(null);
 
@@ -74,6 +75,7 @@ const DragDropImageUploader = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
+      formData.append('category', category);
 
       // Append images to the form data
       images.forEach((image, index) => {
@@ -86,6 +88,7 @@ const DragDropImageUploader = () => {
       setImages([]);
       setTitle('');
       setDescription('');
+      setCategory('');
       setTimeout(() => {
         setResponseMessage(null);
       }, 5000);
@@ -101,16 +104,14 @@ const DragDropImageUploader = () => {
 
   return (
     <div className="flex flex-col w-full border border-gray-600 rounded-md mt-3">
-
-      
       <div className="w-full p-4 text-center text-white">
         <h2 className="font-bold text-lg mb-2">Have an artwork you'd like to show to the world?</h2>
 
         {responseMessage && (
-        <div className="absolute top-0 right-0 m-8 bg-green-500 text-white px-4 py-2 rounded-md shadow-md">
-          {responseMessage}
-        </div>
-      )}
+          <div className="absolute top-0 right-0 m-8 bg-green-500 text-white px-4 py-2 rounded-md shadow-md">
+            {responseMessage}
+          </div>
+        )}
       </div>
       <div className="flex flex-col md:flex-row">
         {isAuthenticated ? (
@@ -160,6 +161,18 @@ const DragDropImageUploader = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
+                <select
+                  name="category"
+                  className="w-full p-4 rounded-md mb-4 border border-gray-300"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                >
+                  <option value="">Select Category</option>
+                  <option value="Category 1">Category 1</option>
+                  <option value="Category 2">Category 2</option>
+                  <option value="Category 3">Category 3</option>
+                </select>
                 <button onClick={uploadImages} type="submit" className="my-7 py-2 px-4 text-white w-full p-4 rounded border border-blue-300">
                   {loading ? <FontAwesomeIcon icon={faSpinner} spin size="1x" className="mr-2" /> : 'Submit'}
                 </button>
