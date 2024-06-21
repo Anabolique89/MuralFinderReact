@@ -94,43 +94,16 @@ const App = () => {
                   <Stats />
                   <Business />
                   <Billing />
-                  <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
-                  <ImageSearch
-                    searchText={searchText}
-                    page={page}
-                    pageSize={pageSize}
-                    onPageChange={handlePageChange}
-                    onPageSizeChange={handlePageSizeChange}
-                  />
-
-
-                  {!isLoading && images.length === 0 && <h1 className='text-5xl text-center mx-auto mt-32'>No Images Found</h1>}
-                  {isLoading ? (
-                    <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
-                  ) : (
-                    <div className='container mx-auto py-2'>
-                      {images.map(categoryData => (
-                        <div key={categoryData.category}>
-                          <h2 className="text-3xl font-bold mb-4">{categoryData.category}</h2>
-                          <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                            {categoryData.artworks.map(artwork => (
-                      
-                              <ArtworksGallery key={artwork.id} artwork={artwork} />
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-2">
+                    <Carousel />
+                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>See All</button>
+                  </div>
 
                   <DragDropImageUploader />
 
                   <CardDeal />
                   <Testimonials />
-                  <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-2">
-                    <Carousel />
-                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>See All</button>
-                  </div>
+                 
                   <CTA />
                   <Footer />
                 </div>
