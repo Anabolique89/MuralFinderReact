@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,6 +6,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const DragDropImageUploader = () => {
   const [images, setImages] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const [title, setTitle] = useState('');
@@ -36,6 +37,19 @@ const DragDropImageUploader = () => {
       ]);
     }
   }
+
+  useEffect(() => {
+    setLoading(true);
+    ArtworkService.loadCategories()
+      .then(data => {
+        setCategories(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
 
   function deleteImage(index) {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
@@ -69,13 +83,14 @@ const DragDropImageUploader = () => {
     }
   }
 
+
   async function uploadImages() {
     setLoading(true); // Start loading indicator
     try {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
-      formData.append('category', category);
+      formData.append('artwork_category_id', category);
 
       // Append images to the form data
       images.forEach((image, index) => {
@@ -169,9 +184,11 @@ const DragDropImageUploader = () => {
                   required
                 >
                   <option value="">Select Category</option>
-                  <option value="Category 1">Category 1</option>
-                  <option value="Category 2">Category 2</option>
-                  <option value="Category 3">Category 3</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
                 <button onClick={uploadImages} type="submit" className="my-7 py-2 px-4 text-white w-full p-4 rounded border border-blue-300">
                   {loading ? <FontAwesomeIcon icon={faSpinner} spin size="1x" className="mr-2" /> : 'Submit'}

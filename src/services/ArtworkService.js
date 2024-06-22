@@ -17,6 +17,24 @@ const ArtworkService = {
     }
   },
 
+  loadCategories: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}${artworkEndpoints.getCategoires}`);
+      console.log(response.data)
+      return response.data.data;
+
+
+    }catch(error){
+      if (error.response && error.response.data && error.response.data.message) {
+        console.log(error)
+        return error.response.data.message;
+      } else {
+        console.log(error)
+        return error.response.data.error
+      }
+    }
+  },
+
   getArtworkById: async (artworkId) => {
       try {
         const url = `${BASE_URL}${artworkEndpoints.artworkById(artworkId)}`;
@@ -71,7 +89,7 @@ const ArtworkService = {
       });
       if (response.data.success) {
         console.log('Artwork uploaded successfully');
-        return response.data.sucess;
+        return response.data.message;
       } else {
         return response.data.message || 'Failed to upload artwork';
       }
