@@ -28,6 +28,7 @@ import Footer from './components/Footer';
 import EditBlog from './pages/EditBlog';
 import EditArtworkUploader from './pages/EditArtworkUploader';
 import ArtworkFeed from './pages/ArtworkFeed';
+import AddWall from './components/AddWall';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -126,6 +127,7 @@ const App = () => {
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/FAQS" element={<FAQS />} />
+          <Route path="/addWall" element={<AddWall />} />
           <Route path="/ArtworkFeed" element={<ArtworkFeed />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />

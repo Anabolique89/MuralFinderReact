@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
     Map, Marker, InfoWindow, APIProvider 
 } from '@vis.gl/react-google-maps';
 import { DirectionsRenderer, LoadScript, Autocomplete } from '@react-google-maps/api';
 import WallService from '../services/WallService';
+import { Navigate } from 'react-router-dom';
 
 const Maps = ({ locations, defaultCenter, center, style }) => {
+  const navigate = useNavigate();
+
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [walls, setWalls] = useState([]);
   const [title, setTitle] = useState('');
@@ -240,7 +244,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
             />
           </Autocomplete>
           <button
-            onClick={() => alert('Add Wall functionality is not implemented yet.')}
+            onClick={() => navigate('/addWall')}
             style={{
               position: 'absolute',
               left: '50%',
