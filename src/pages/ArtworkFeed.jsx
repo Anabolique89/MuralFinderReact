@@ -126,6 +126,6 @@ const ArtworkFeed = () => {
 
 
   )
-
+}
 
 export default ArtworkFeed 

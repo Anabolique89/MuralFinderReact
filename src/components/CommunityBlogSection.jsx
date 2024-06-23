@@ -52,7 +52,7 @@ const CommunityBlogSection = () => {
   };
 
   return (
-    <div className="bg-indigo-700 py-24 sm:py-32">
+    <div className="bg-indigo-700 py-10 sm:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {alertMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -61,9 +61,10 @@ const CommunityBlogSection = () => {
           </div>
         )}
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">From the blog</h2>
-          <p className="mt-2 text-lg leading-8 text-white">
-            Explore our latest blog posts covering a variety of topics.
+          <h2 className= {styles.heading2}>From the blog</h2>
+          <p className={`${styles.paragraph}`}>
+            Explore our latest blog posts covering a variety of artistic topics. Please feel free to submit your article if you are interested in
+            helping our community to expand. Please be mindful with the type of content you wish to post, otherwise we will block and delete your account. Thanks! 
           </p>
         </div>
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">

@@ -14,7 +14,7 @@ const Root = styled(Paper)(({ theme }) => ({
   color: '#fff',
   width: '90%',
   height: '100%',
-  borderRadius: '8px',
+  borderRadius: '10px',
 }));
 
 const Form = styled('form')(({ theme }) => ({
@@ -31,7 +31,7 @@ const Form = styled('form')(({ theme }) => ({
 const MapContainer = styled('div')({
   height: '400px',
   position: 'relative',
-  borderRadius: '8px',
+  borderRadius: '10px',
   overflow: 'hidden',
 });
 
@@ -80,7 +80,7 @@ const SearchBox = styled('input')({
   width: '240px',
   height: '32px',
   padding: '0 12px',
-  borderRadius: '3px',
+  borderRadius: '10px',
   boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
   fontSize: '14px',
   outline: 'none',
