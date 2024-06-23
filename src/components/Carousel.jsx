@@ -2,21 +2,14 @@ import { useState, useRef, useEffect } from 'react';
 import styles from '../style';
 import ArtworkService from '../services/ArtworkService';
 
-
-// Data
-import data from '../data.json';
-
 const Carousel = () => {
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
-
   const defaultImage = 'https://example.com/default-image.jpg';
 
-
-  const [images, setImages] = useState([]);
+  const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filteredImages, setFilteredImages] = useState([]);
 
   const movePrev = () => {
     if (currentIndex > 0) {
@@ -63,7 +56,8 @@ const Carousel = () => {
     setIsLoading(true);
     ArtworkService.loadArtworks()
       .then(data => {
-        setImages(data);
+        setArtworks(data);
+        console.log(data)
         setIsLoading(false);
       })
       .catch(err => {
@@ -74,97 +68,35 @@ const Carousel = () => {
 
   return (
     <section>
-  <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
-   
-    <div className="carousel my-2 mx-2 w-full">
-      <h2 className={`${styles.paragraph} max-w-[470px] mb-5`}>
-        Category Name
-      </h2>
-      <div className="relative overflow-hidden">
-        <div className="flex justify-between absolute top left w-full h-full">
-          <button
-            onClick={movePrev}
-            className="hover:bg-blue-900/75 text-white w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
-            disabled={isDisabled('prev')}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-20 -ml-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            <span className="sr-only">Prev</span>
-          </button>
-          <button
-            onClick={moveNext}
-            className="hover:bg-blue-900/75 text-white w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300 "
-            disabled={isDisabled('next')}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-20 -ml-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-            <span className="sr-only">Next</span>
-          </button>
-        </div>
-        <div
-          ref={carousel}
-          className="carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-30 rounded-2xl "
-        >
-{isLoading ? (
-                    <h1 className='text-4xl sm:text-2xl text-center mx-auto mt-32 text-white'>Loading...</h1>
-                  ) : (
-                  images.map(image => (
-
-              <div
-                key={image.id}
-                className="carousel-item text-center relative w-64 h-64 snap-start rounded p-2"
-              >
-                <a
-                  href={`/artworks/${image.id}`}
-                  className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0 "
-                  style={{ backgroundImage: `https://api.muralfinder.net${image.image_path}` }}
-                >
-                  <img
-                   src={image.image_path ? `https://api.muralfinder.net${image.image_path}` : defaultImage}
-                   alt={image.title || 'Artwork'}
-                    className="w-full aspect-square object-cover rounded-md"
-                  />
-                </a>
-                <a
-                  href={`/artworks/${image.id}`}
-                  className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-indigo-800/75 z-10 rounded-md"
-                >
-                  <h3 className={`${styles.paragraph} max-w-[470px] mt-5 mx-auto text-white`}>
-                    {image.title}
-                  </h3>
-                </a>
+      <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
+      <div className="carousel my-2 mx-2 w-full overflow-x-auto">
+        {isLoading ? (
+          <h1 className='text-4xl sm:text-2xl text-center mx-auto mt-32 text-gray-900'>Loading...</h1>
+        ) : (
+          artworks.map(categoryData => (
+            <div key={categoryData.category} className="mb-8">
+              <h2 className={`${styles.paragraph} text-2xl mb-2 font-bold text-white`}>{categoryData.category}</h2>
+              <hr  className='p-5 mt-1 mb-2'/>
+              <div className="flex items-center space-x-4">
+                <div className="overflow-x-auto flex-1">
+                  <div ref={carousel} className="flex space-x-4">
+                    {categoryData.artworks.map(artwork => (
+                      <div key={artwork.id} className="w-64 flex-shrink-0 relative">
+                        <a href={`/artworks/${artwork.id}`} className="block rounded-lg overflow-hidden">
+                          <img src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage} alt={artwork.title || 'Artwork'} className="w-full h-40 object-cover" />
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50">
+                            <h3 className="text-lg font-semibold text-white">{artwork.title}</h3>
+                          </div>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-           
+            </div>
           ))
-          
-          )};
-        </div>
+        )}
       </div>
-    </div>
     </section>
   );
 };

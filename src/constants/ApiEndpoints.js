@@ -13,6 +13,7 @@ export const authEndpoints = {
 export const artworkEndpoints = {
   getAllArtworks: 'artworks?pageSize=50',
   uploadArtwork: 'artworks',
+  getCategoires: 'artworks/categories/fetch',
   searchArtworks: 'artworks/artwork/search',
   artworkById: (artworkId) => `artworks/${artworkId}`
 };

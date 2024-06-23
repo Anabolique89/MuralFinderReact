@@ -28,7 +28,17 @@ const WallService = {
 
   addWall: async (wallData) => {
     try {
-      const response = await axios.post(`${BASE_URL}${wallEndpoints.addWall}`, wallData);
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `${BASE_URL}${wallEndpoints.addWall}`,
+        wallData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error('Error adding wall:', error);

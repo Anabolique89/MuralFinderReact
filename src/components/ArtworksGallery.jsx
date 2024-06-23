@@ -8,11 +8,12 @@ import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import { Link, useNavigate } from 'react-router-dom';
 
-const ArtworksGallery = ({ image }) => {
+const ArtworksGallery = ({ artwork }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
   console.log(user)
-  const userImage = image.user?.profile?.profile_image_url || '';
+  console.log(artwork)
+  const userImage = artwork.user?.profile?.profile_image_url || '';
   const defaultImage = 'https://example.com/default-image.jpg';
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -68,32 +69,32 @@ const ArtworksGallery = ({ image }) => {
       <div className='w-full'>
         <img
           className='w-full h-48 object-cover p-2'
-          src={image.image_path ? `https://api.muralfinder.net${image.image_path}` : defaultImage}
-          alt={image.title || 'Artwork'}
+          src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
+          alt={artwork.title || 'Artwork'}
         />
         <div className='px-6 py-4'>
           <div className='flex items-center'>
             {userImage ? (
-              <img src={`https://api.muralfinder.net${userImage}`} alt={image.user?.username} className='w-8 h-8 rounded-full mr-2' />
+              <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
             ) : (
               <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
             )}
             <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-              {image.user?.username || 'Unknown'}
+              {artwork.user?.username || 'Unknown'}
             </div>
           </div>
           <div className='font-bold text-white text-xl mb-2'>
-            <Link to={`/artworks/${image.id}`}>
-              {image.title}
+            <Link to={`/artworks/${artwork.id}`}>
+              {artwork.title}
             </Link>
           </div>
           <ul className='flex'>
-            <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {image.likes_count}</strong></span></li>
-            <li className='flex'><FaComments className=' text-blue-500' /><span className='ml-2'><strong>{image.comments_count}</strong></span></li>
+            <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {artwork.likes_count}</strong></span></li>
+            <li className='flex'><FaComments className=' text-blue-500' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span></li>
           </ul>
-          {isAuthenticated && user.id === image.user_id && (
+          {isAuthenticated && user.id === artwork.user_id && (
             <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">
-              <Link to={`/artwork/edit/${image.id}`}> 
+              <Link to={`/artwork/edit/${artwork.id}`}> 
               <FontAwesomeIcon
                 icon={faPencil}
               />
@@ -102,7 +103,7 @@ const ArtworksGallery = ({ image }) => {
               <FontAwesomeIcon
                 icon={faTrash}
                 className="cursor-pointer text-red-700"
-                onClick={() => handleDelete(image.id)}
+                onClick={() => handleDelete(artwork.id)}
               />
               {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
