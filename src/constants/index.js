@@ -72,9 +72,8 @@ export const about = [
   {
     id: "about-3",
     icon: send,
-    title: "Store",
-    content:
-      "Sell your work online on our platform. Create a profile and use it as a store! ",
+    title: "Map",
+    content: "Find awesome locations for creating and visiting street art! ",
   },
 ];
 
@@ -108,7 +107,7 @@ export const feedback = [
 export const stats = [
   {
     id: "stats-1",
-    title: "User Active",
+    title: "Users Active",
     value: "3800+",
   },
   {
@@ -118,8 +117,8 @@ export const stats = [
   },
   {
     id: "stats-3",
-    title: "Transaction",
-    value: "$230M+",
+    title: "Artworks",
+    value: "230K",
   },
 ];
 
@@ -137,11 +136,11 @@ export const footerLinks = [
       },
       {
         name: "Events",
-        link: "https://www.hoobank.com/create/",
+        link: "/Events",
       },
       {
         name: "Reviews",
-        link: "https://www.hoobank.com/explore/",
+        link: "/Reviews",
       },
       {
         name: "Contact",
@@ -165,12 +164,12 @@ export const footerLinks = [
         link: "/Map",
       },
       {
-        name: "Blog",
-        link: "https://www.hoobank.com/blog/",
+        name: "Blog Feed",
+        link: "/BlogFeed",
       },
       {
-        name: "Sponsors",
-        link: "",
+        name: "Artwork Feed",
+        link: "/ArtworkFeed",
       },
     ],
   },
@@ -191,7 +190,7 @@ export const footerLinks = [
       },
       {
         name: "Help Center",
-        link: "https://www.hoobank.com/help-center/",
+        link: "/Help",
       },
     ],
   },
@@ -236,25 +235,25 @@ export const Menus = [
   {
     name: "Profile",
     icon: "person-outline",
-    link: "/profile",
+    link: "/Profile",
     dis: "translate-x-16",
   },
   {
     name: "Add",
     icon: "add-circle-outline",
-    link: "/community",
+    link: "/Community",
     dis: "translate-x-32",
   },
   {
     name: "Map",
     icon: "location-outline",
-    link: "/map",
+    link: "/Map",
     dis: "translate-x-48",
   },
   {
     name: "Settings",
     icon: "settings-outline",
-    link: "/profilesettings",
+    link: "/Profilesettings",
     dis: "translate-x-64",
   },
 ];

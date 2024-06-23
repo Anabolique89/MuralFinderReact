@@ -15,6 +15,18 @@ const ArtworkFeed = () => {
     const [filteredImages, setFilteredImages] = useState([]);
     // console.log(filteredImages)
   
+
+//filter categories
+
+// const [filter, setFilter] = useState('all');
+// const [projects, setProjects] = useState([]);
+// useEffect(() => {  
+// setProjects(portfolio);}, []);
+// useEffect(() => {  
+// setProjects([]);  
+// const filtered = portfolio.map(p => ({ ...p, filtered: p.category.includes(filter) }));  
+// setProjects(filtered);}, [filter]);
+
     useEffect(() => {
       setIsLoading(true);
       ArtworkService.loadArtworks()
@@ -53,8 +65,32 @@ const ArtworkFeed = () => {
 
   return (
     <div className="bg-indigo-700 w-full overflow-hidden">
+    
 
 <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
+    {/* filters */}
+    <div className="portfolio__labels">     
+       <a href="/#">All</a>      
+       <a href="/#">StreetArt</a>      
+       <a href="/#">Graffiti</a>      
+       <a href="/#">TraditionalArt</a>      
+       <a href="/#">Photography</a>  
+       <a href="/#">DigitalArt</a>      
+       <a href="/#">PerformanceArt</a>  
+       </div>
+
+    {/* after applied categories to artwork, use this code instead */}
+
+    {/* <div className="portfolio__labels">  
+    <a href="/#" active={filter === 'all'} onClick={() => setFilter('all')}>All</a> 
+     <a href="/#" active={filter === 'StreetArt'} onClick={() => setFilter('StreetArt')}>StreetArt</a>  
+     <a href="/#" active={filter === 'Graffiti'} onClick={() => setFilter('Graffiti')}>Graffiti</a>  
+     <a href="/#" active={filter === 'TraditionalArt'} onClick={() => setFilter('TraditionalArt')}>TraditionalArt</a>  
+     <a href="/#" active={filter === 'Photography'} onClick={() => setFilter('Photography')}>Photography</a>
+     <a href="/#" active={filter === 'DigitalArt'} onClick={() => setFilter('DigitalArt')}>DigitalArt</a>  
+     <a href="/#" active={filter === 'PerformanceArt'} onClick={() => setFilter('PerformanceArt')}>PerformanceArt</a>
+     </div> */}
+
                   <ImageSearch
                     searchText={searchText}
                     page={page}

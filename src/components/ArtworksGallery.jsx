@@ -64,6 +64,7 @@ const ArtworksGallery = ({ image }) => {
           {errorMessage}
         </div>
       )}
+  
       <div className='w-full'>
         <img
           className='w-full h-48 object-cover p-2'

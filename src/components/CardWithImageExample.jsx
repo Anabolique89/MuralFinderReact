@@ -15,7 +15,7 @@ const CardWithImageExample  = () => (
         </a>
         <div className="p-6">
           <h5
-            className="mb-2 font-raleway text-[28px] leading-[32px] font-bold leading-tight text-white">
+            className="mb-2 font-raleway text-[28px] leading-[32px] font-bold text-white">
            Create Your Profile
           </h5>
           <p className={styles.paragraph}>
