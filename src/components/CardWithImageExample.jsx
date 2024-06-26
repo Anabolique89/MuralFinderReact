@@ -39,7 +39,7 @@ className="flex flex-col justify-between max-w-[320px] md:m-10 sm:m-5 feedback-c
 </a>
 <div className="p-6">
   <h5
-    className="mb-2 font-raleway text-[28px] leading-[32px] font-bold leading-tight text-white">
+    className="mb-2 font-raleway text-[28px] leading-[32px] font-bold text-white">
     Build a community
   </h5>
   <p className={styles.paragraph}>

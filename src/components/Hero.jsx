@@ -27,7 +27,7 @@ const Hero = () => (
   <img src={google} alt="googleplay" className='w-[128px] h-[42px] object-contain mr-5 cursor-pointer mt-2' />
     </div>
     <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}>
-  <img src={Interlinked} alt="interlinked" className="w-[100%] h-auto relative z-[5] p-8 md:px-20 sm:px-26 ss:px-34"/>
+  <img src={Interlinked} alt="interlinked" className="w-[100%] h-auto relative z-[5] p-8 md:px-20 sm:px-26 ss:px-20"/>
   <div className="absolute z-[0] w-[40%] h-[35%] bottom-0 rounded-full pink__gradient"/>
   <div className="absolute z-[1] w-[80%] h-[80%]  rounded-full bottom-8 white__gradient"/>
   <div className="absolute z-[0] w-[50%] h-[50%]  bottom-6 blue__gradient"/>

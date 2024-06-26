@@ -88,6 +88,8 @@ const SearchBox = styled('input')({
   position: 'absolute',
   left: '50%',
   marginLeft: '-120px',
+  marginTop: '50px',
+  color: '#000',
   top: '10px',
   zIndex: '10',
 });

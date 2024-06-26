@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArtZoroLogoWhite, close, menu } from "../assets";
 import { navLinks } from "../constants";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ const Navbar = () => {
   const [toggle_menu, setToggle_menu] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
+  const menuRef = useRef();
 
   const isAuthenticated = AuthService.isAuthenticated();
 
@@ -34,6 +35,21 @@ const Navbar = () => {
     }
   };
 
+  useEffect(() =>{
+    let handler = (e)=>{
+      if(!menuRef.current.contains(e.target)){
+      setToggle(false);
+      setToggle_menu(false);
+      console.log(menuRef.current);
+    };
+  }
+    document.addEventListener("mousedown", handler);
+
+    return() =>{
+      document.removeEventListener("mousedown", handler);
+    }
+  });
+
   return (
     <nav className="w-full flex py-6 justify-between items-center Navbar pb-0">
       <ul className="list-none sm:flex hidden flex justify-left items-left flex-1">
@@ -55,7 +71,7 @@ const Navbar = () => {
         ))}
       </ul>
 
-      <div className="sm:hidden flex flex-1 justify-start items-left">
+      <div className="sm:hidden flex flex-1 justify-start items-left " ref={menuRef}>
         <img
           src={toggle_menu ? close : menu}
           alt="menu"
@@ -63,15 +79,15 @@ const Navbar = () => {
           onClick={() => setToggle_menu(!toggle_menu)}
         />
 
-        <div
+        <div 
           className={`${!toggle_menu ? "hidden" : "flex"
-            } p-6 bg-black-gradient absolute top-20 left-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar z-[99]`}
+            } p-6  cta-block absolute top-20 left-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar z-[100]`}
         >
           <ul className="list-none flex justify-start items-centre flex-1 flex-col">
             {navLinks.map((nav, index) => (
               <li
                 key={nav.id}
-                className={`font-roboto font-medium cursor-pointer text-[16px] ${active === nav.title ? "text-white" : "text-dimWhite"
+                className={`font-roboto font-medium cursor-pointer text-[16px] ${active === nav.title ? "text-pink-600" : "text-white"
                   } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
                 onClick={() => setActive(nav.title)}
               >
@@ -89,19 +105,19 @@ const Navbar = () => {
               <img src={ArtZoroLogoWhite} alt="ArtZoroLogoWhite" className="w-[120px] h-[60px]" />
             </div>
 
-            <div className="relative">
+            <div className="relative font-medium font-roboto">
               <Link to="/profile" className="text-white ml-2">{user.username}</Link>
               <FontAwesomeIcon icon={faChevronDown} className="ml-1 text-white cursor-pointer" onClick={() => setToggle(!toggle)} />
               {toggle && (
-                <div className="absolute top-10 right-0 bg-indigo-800 text-white p-4 rounded-md shadow-md">
-                  <Link to="/profile" className="block text-gray-200 hover:text-gray-600">Profile</Link>
-                  <button
-                    className="block text-gray-200 hover:text-gray-600 mt-2 focus:outline-none"
+                <div className="absolute top-10 right-0  cta-block text-white p-4 rounded-md shadow-md  z-[120]" ref={menuRef}>
+                  <Link to="/profile" className="block text-gray-200 hover:text-pink-600">PROFILE</Link>
+                  {/* <button
+                    className="block text-gray-200 hover:text-pink-600 mt-2 focus:outline-none"
                     onClick={handleLogout}
                     disabled={isLoggingOut}
                   >
                     {isLoggingOut ? <FontAwesomeIcon icon={faSpinner} spin /> : 'LOGOUT'}
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>

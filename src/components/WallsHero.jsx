@@ -5,7 +5,7 @@ import Button2 from './Button2';
 
 const WallsHero = () => (
  
-    <section id="product" className={layout.sectionReverse}>
+    <section className={`${layout.sectionReverse} flex md:flex-row flex-col ${styles.paddingX}`}>
       <div className={layout.sectionImgReverse}>
         <img src={DigitalTrauma} alt="billing" className='w-[70%] h-auto relative z-[5]' />
   <div className='absolute z-[3] -left-10 top-4 w-[97%] h-[67%] rounded-full white__gradient opacity-[0.5]'/>
@@ -24,7 +24,7 @@ const WallsHero = () => (
         </p>
         <div className='flex flex-column'>
         <Button2 styles="mt-10" />
-        <button className={`py-2 px-4 mt-10 ml-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>Add Wall</button>
+        <button className={`py-2 px-4 mt-10 ml-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}><a href='/addWall'> Add Wall</a></button>
       </div>
       </div>
   

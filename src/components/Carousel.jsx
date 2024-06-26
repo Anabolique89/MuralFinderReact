@@ -78,7 +78,7 @@ const Carousel = () => {
               <h2 className={`${styles.paragraph} text-2xl mb-2 font-bold text-white`}>{categoryData.category}</h2>
               <hr  className='p-5 mt-1 mb-2'/>
               <div className="flex items-center space-x-4">
-                <div className="overflow-x-auto flex-1">
+                <div className="overflow-x-auto flex-1 scrollbar-thin scrollbar-webkit">
                   <div ref={carousel} className="flex space-x-4">
                     {categoryData.artworks.map(artwork => (
                       <div key={artwork.id} className="w-64 flex-shrink-0 relative">
