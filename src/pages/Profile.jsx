@@ -206,6 +206,8 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+
+            
             {/* <UserArtworks /> */}
             {/* <WallsHero />
             <DisplayWalls /> */}
