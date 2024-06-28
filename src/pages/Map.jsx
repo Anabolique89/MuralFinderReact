@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-    Map, Marker, InfoWindow, APIProvider 
+import {
+  Map, Marker, InfoWindow, APIProvider
 } from '@vis.gl/react-google-maps';
 import { DirectionsRenderer, LoadScript, Autocomplete } from '@react-google-maps/api';
 import WallService from '../services/WallService';
@@ -20,15 +20,15 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [autocomplete, setAutocomplete] = useState(null);
   const [searchMarker, setSearchMarker] = useState(null);
-  
-  const apiKey = "AIzaSyBEfyuMVyPbaYNEDUXgbEE_SCoNC1y6kaw"; 
+
+  const apiKey = "AIzaSyBEfyuMVyPbaYNEDUXgbEE_SCoNC1y6kaw";
 
   locations = locations || [
     { lat: 37.7749, lng: -122.4194, name: 'Location 1' },
     { lat: 37.7859, lng: -122.4364, name: 'Location 2' },
     { lat: 37.7969, lng: -122.4574, name: 'Location 3' }
   ];
-  defaultCenter = defaultCenter || { lat: 37.7749, lng: -122.4194 }; 
+  defaultCenter = defaultCenter || { lat: 37.7749, lng: -122.4194 };
   center = center || defaultCenter;
   style = style || {
     width: '100%',
@@ -128,7 +128,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
       }
     ]
   };
-  
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -149,17 +149,17 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
 
     const fetchWallsFromDatabase = async () => {
       try {
-          const response = await WallService.getAllWalls();
-          if (response.success) {
-              console.log(response.data.data);
-              setWalls(response.data.data);
-          } else {
-              console.error('Error fetching walls:', response.message);
-          }
+        const response = await WallService.getAllWalls();
+        if (response.success) {
+          console.log(response.data.data);
+          setWalls(response.data.data);
+        } else {
+          console.error('Error fetching walls:', response.message);
+        }
       } catch (error) {
-          console.error('Error fetching walls:', error);
+        console.error('Error fetching walls:', error);
       } finally {
-          setIsLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -175,7 +175,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const handleDirections = async (destination) => {
     if (!userLocation) {
       alert('Please allow location access to get directions.');
-      return; 
+      return;
     }
 
     const service = new google.maps.DirectionsService();
@@ -210,14 +210,17 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   return (
     <LoadScript googleMapsApiKey={apiKey} libraries={['places']}>
       <APIProvider apiKey={apiKey}>
-        <Map 
-      
-          style={style} 
-          defaultZoom={10} 
+        <Map
+          style={style}
+          defaultZoom={10}
           center={mapCenter}
-          defaultCenter={{lat: 40.7, lng: -74}}
-          scrollwheel={true} 
-          options={mapOptions} // Apply the custom map options here
+          defaultCenter={mapCenter}  // Changed from {{ mapCenter }}
+          gestureHandling={'cooperative'}
+          zoomControl={true}
+          options={mapOptions}
+          scrollwheel={true}
+          streetViewControl={true}
+
         >
           <Autocomplete
             onLoad={setAutocomplete}
@@ -292,7 +295,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
               <div className=''>
                 <h2 >{title}</h2>
                 <img src={image} alt="Wall" />
-                <button 
+                <button
                   onClick={() => handleDirections(walls[selectedMarker])}
                   disabled={!userLocation}
                 >

@@ -9,13 +9,16 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Router } from '@mui/icons-material';
 
 export default function FixedBottomNavigation() {
   const [value, setValue] = React.useState(0);
-  const ref = React.useRef(null);
+  const [active, setActive] = React.useState(0);
 
+  const ref = React.useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 //   const pages = ["Home", "Profile", "Add", "Map", "Settings"];
 
 
@@ -31,11 +34,11 @@ export default function FixedBottomNavigation() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="Home" sx={{ color: '#353535'}} icon={<HomeIcon />} />
-          <BottomNavigationAction label="Profile" sx={{ color: '#353535'}} icon={<PersonIcon />} />
-          <BottomNavigationAction label="Add" sx={{ color: '#353535'}} icon={<AddCircleIcon />} />
-          <BottomNavigationAction label="Map" sx={{ color: '#353535'}} icon={<LocationOnIcon />} />
-          <BottomNavigationAction label="Settings" sx={{ color: '#353535'}} icon={<SettingsIcon />} />
+          <BottomNavigationAction onClick={() => navigate('/Profile')} className={location.pathname === '/' ? 'Mui-selected' : ''} label="Home" sx={{ color: '#353535'}} icon={<HomeIcon />} />
+          <BottomNavigationAction onClick={() => navigate('/Profile')} className={location.pathname === '/Profile' ? 'Mui-selected' : ''} label="Profile" sx={{ color: '#353535'}} icon={<PersonIcon />} />
+          <BottomNavigationAction onClick={() => navigate('/addWall')} label="Add" sx={{ color: '#353535'}} className={location.pathname === '/addWall' ? 'Mui-selected' : ''} icon={<AddCircleIcon />} />
+          <BottomNavigationAction onClick={() => navigate('/Map')} label="Map" sx={{ color: '#353535'}} className={location.pathname === '/Map' ? 'Mui-selected' : ''}icon={<LocationOnIcon />} />
+          <BottomNavigationAction onClick={() => navigate('/ProfileSettings')} label="Settings" sx={{ color: '#353535'}} className={location.pathname === '/ProfileSettings' ? 'Mui-selected' : ''} icon={<SettingsIcon />} />
         </BottomNavigation>
       </Paper>
     </Box>

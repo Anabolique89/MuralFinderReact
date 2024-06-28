@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import styles from "../style";
-import { Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork, Carousel } from "../components";
-// import { ToastContainer } from 'react-toastify';
+import { Navbar, ArtworksGallery, ImageSearch, DragDropImageUploader } from "../components";
 import ArtworkService from '../services/ArtworkService';
 import Footer from '../components/Footer';
-import EditArtworkUploader from './EditArtworkUploader';
+import styles from "../style";
 
 const ArtworkFeed = () => {
-
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]);
-  // console.log(filteredImages)
+  const [filter, setFilter] = useState('All');
+  const [categories, setCategories] = useState([{ id: 'all', name: 'All' }]);
 
   useEffect(() => {
     setIsLoading(true);
-    ArtworkService.loadArtworks()
-      .then(data => {
-        setImages(data);
+    Promise.all([
+      ArtworkService.loadArtworks(),
+      ArtworkService.loadCategories()
+    ])
+      .then(([artworksData, categoriesData]) => {
+        setImages(artworksData);
+        setFilteredImages(artworksData);
+        setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
         setIsLoading(false);
       })
       .catch(err => {
@@ -40,52 +43,47 @@ const ArtworkFeed = () => {
     }
   };
 
-  // Add functions to handle pagination
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
 
   const handlePageSizeChange = (newPageSize) => {
     setPageSize(newPageSize);
-    setPage(1); // Reset page when page size changes
+    setPage(1);
   };
 
+  const handleFilterChange = (newValue) => {
+    setFilter(newValue);
+    if (newValue === 'All') {
+      setFilteredImages(images);
+    } else {
+      const filtered = images.filter(img => img.category === newValue);
+      setFilteredImages(filtered);
+    }
+  };
 
   return (
     <div className="bg-indigo-700 w-full overflow-hidden">
+      <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
 
-<h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
-    {/* filters */}
-    <div className="portfolio__labels">     
-       <a href="/#">All</a>      
-       <a href="/#">StreetArt</a>      
-       <a href="/#">Graffiti</a>      
-       <a href="/#">TraditionalArt</a>      
-       <a href="/#">Photography</a>  
-       <a href="/#">DigitalArt</a>      
-       <a href="/#">PerformanceArt</a>  
-       </div>
-
-    {/* after applied categories to artwork, use this code instead */}
-
-    {/* <div className="portfolio__labels">  
-    <a href="/#" active={filter === 'all'} onClick={() => setFilter('all')}>All</a> 
-     <a href="/#" active={filter === 'StreetArt'} onClick={() => setFilter('StreetArt')}>StreetArt</a>  
-     <a href="/#" active={filter === 'Graffiti'} onClick={() => setFilter('Graffiti')}>Graffiti</a>  
-     <a href="/#" active={filter === 'TraditionalArt'} onClick={() => setFilter('TraditionalArt')}>TraditionalArt</a>  
-     <a href="/#" active={filter === 'Photography'} onClick={() => setFilter('Photography')}>Photography</a>
-     <a href="/#" active={filter === 'DigitalArt'} onClick={() => setFilter('DigitalArt')}>DigitalArt</a>  
-     <a href="/#" active={filter === 'PerformanceArt'} onClick={() => setFilter('PerformanceArt')}>PerformanceArt</a>
-     </div> */}
-
-                  <ImageSearch
-                    searchText={searchText}
-                    page={page}
-                    pageSize={pageSize}
-                    onPageChange={handlePageChange}
-                    onPageSizeChange={handlePageSizeChange}
-                  />
-      <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
+      <div className="flex flex-wrap justify-center mb-8 px-4">
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            className={`
+        m-1 px-3 py-2 text-sm sm:text-base md:px-4 md:py-2
+        rounded-md text-white transition-all duration-300
+        ${filter === category.name
+                ? 'bg-blue-600 hover:bg-blue-700'
+                : 'bg-blue-400 hover:bg-blue-500'}
+        whitespace-nowrap
+      `}
+            onClick={() => handleFilterChange(category.name)}
+          >
+            {category.name}
+          </button>
+        ))}
+      </div>
       <ImageSearch
         searchText={searchText}
         page={page}
@@ -94,38 +92,28 @@ const ArtworkFeed = () => {
         onPageSizeChange={handlePageSizeChange}
       />
 
-
-      {!isLoading && images.length === 0 && <h1 className='text-5xl text-center mx-auto mt-32'>No Images Found</h1>}
       {isLoading ? (
         <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
       ) : (
         <div className='container mx-auto py-2'>
-          {images.map(categoryData => (
+          {filteredImages.map(categoryData => (
             <div key={categoryData.category}>
-              <h2 className="text-3xl font-bold mb-4">{categoryData.category}</h2>
+              <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2>
               <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {filteredImages.length > 0 ? filteredImages : categoryData.artworks.map(artwork => (
+                {categoryData.artworks.map(artwork => (
                   <ArtworksGallery key={artwork.id} artwork={artwork} />
                 ))}
               </div>
             </div>
           ))}
-
-
         </div>
-
       )}
       <DragDropImageUploader />
-
       <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
         <Footer />
       </div>
     </div>
-
-
-
-
-  )
+  );
 }
 
-export default ArtworkFeed 
+export default ArtworkFeed;
