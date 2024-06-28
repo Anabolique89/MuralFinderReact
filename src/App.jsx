@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork, Carousel } from "./components";
+import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -107,6 +107,7 @@ const App = () => {
                  
                   <CTA />
                   <Footer />
+                  {/* <MuiBottomNavigation /> */}
                 </div>
               </div>
             </>

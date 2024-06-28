@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import MapForWall from './MapForWall';
 import WallService from '../services/WallService';
 import Card from '../components/Card';
+import styles from '../style';
 
 const DisplayWalls = () => {
     const [walls, setWalls] = useState([]);
@@ -32,6 +33,7 @@ const DisplayWalls = () => {
 
     return (
         <section className='bg-indigo w-full overflow-hidden'>
+               <h2 className={` ${styles.heading2} ${styles.paddingX}`}>Walls</h2>
             {isLoading ? (
                 <div className='flex justify-center items-center h-screen'>
                     <FontAwesomeIcon icon={faSpinner} spin size='4x' />
@@ -56,7 +58,7 @@ const DisplayWalls = () => {
             )}
             <div className='flex justify-center'>
                 <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-                    View Full Map
+                <a href="/Map">View Full Map</a> 
                 </button>
             </div>
         </section>

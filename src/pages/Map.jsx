@@ -35,7 +35,8 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
     height: '100vh',
     border: '2px solid #c2c',
     borderRadius: '8px',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    position: 'relative'
   };
 
   const mapOptions = {
@@ -210,15 +211,18 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
     <LoadScript googleMapsApiKey={apiKey} libraries={['places']}>
       <APIProvider apiKey={apiKey}>
         <Map 
+      
           style={style} 
           defaultZoom={10} 
-          center={mapCenter} 
+          center={mapCenter}
+          defaultCenter={{lat: 40.7, lng: -74}}
           scrollwheel={true} 
           options={mapOptions} // Apply the custom map options here
         >
           <Autocomplete
             onLoad={setAutocomplete}
             onPlaceChanged={handlePlaceChanged}
+            className=''
           >
             <input
               type="text"
@@ -236,7 +240,6 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
                 textOverflow: 'ellipses',
                 position: 'absolute',
                 left: '50%',
-                marginLeft: '-120px',
                 top: '10px',
                 zIndex: '10',
                 transform: 'translateX(-50%)'
@@ -286,8 +289,8 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
                 setImage('');
               }}
             >
-              <div>
-                <h2>{title}</h2>
+              <div className=''>
+                <h2 >{title}</h2>
                 <img src={image} alt="Wall" />
                 <button 
                   onClick={() => handleDirections(walls[selectedMarker])}

@@ -2,7 +2,7 @@ import React from 'react'
 
 const WallFeed = () => {
   return (
-    <div>WallFeed</div>
+    <div>All Walls</div>
   )
 }
 

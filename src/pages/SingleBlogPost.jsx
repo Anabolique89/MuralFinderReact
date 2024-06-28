@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BlogService from '../services/BlogService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faSpinner, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-icons';
+import styles from '../style';
 
 
 const SingleBlogPost = () => {
@@ -79,11 +80,11 @@ const SingleBlogPost = () => {
     );
   }
   return (
-    <div className="bg-indigo-700 py-24 sm:py-32">
+    <div className="bg-indigo-700 py-12 sm:py-22">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-200 sm:text-4xl">Blog Post Details</h2>
-          <p className="mt-2 text-lg leading-8 text-gray-300">
+          <h2 className={`${styles.heading2}`}>Blog Post Details</h2>
+          <p className={`${styles.paragraph}`}>
             View the details of the blog post and add your comments.
           </p>
         </div>
@@ -91,22 +92,33 @@ const SingleBlogPost = () => {
           <div className="flex flex-col">
             <img src={`https://api.muralfinder.net/${blogPost.feature_image}`}
               alt={blogPost.title} className="w-full h-auto mb-4" />
-            <h3 className="text-xl text-gray-200 font-semibold mb-2">{blogPost.title}</h3>
-            <p className="text-gray-300 mb-4">{blogPost.content}</p>
-            <div className="flex items-center mb-4">
-              <img src={blogPost.user.imageUrl} alt={blogPost.user.username} className="h-8 w-8 rounded-full bg-gray-50 mr-2" />
-              <div>
-                <p className="font-semibold">{blogPost.user.name}</p>
-                <p>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
-              </div>
-            </div>
-            <div className="flex items-center text-gray-600">
-              <span className="mr-4">{blogPost.date}</span>
-              <span>Likes: {blogPost.likes_count}</span>
+            <h3 className="text-2xl text-gray-200 font-semibold mb-2">{blogPost.title}</h3>
+            <p className={`${styles.paragraph} mb-6`}>{blogPost.content}</p>
+            {/* <div className="flex items-center">
+                    <a href={`/profile/${blogPost.user.id}`}>
+                      <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2" />
+                    </a>
+                    <div>
+                      <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                      <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                    </div>
+                  </div> */}
+                       <div className="flex items-center">
+                    <a href={`/profile/${blogPost.user.id}`}>
+                      <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2 text-white" />
+                    </a>
+                    <div>
+                      <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                      <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                    </div>
+                  </div>
+            <div className="flex items-center text-white">
+              <span className="mr-4"> {blogPost.date}</span>
+              <span  className='text-pink-500'><FontAwesomeIcon icon={faHeart} /> {blogPost.likes_count}</span>
               <button onClick={handleLike} className="ml-4 bg-blue-500 text-white py-2 px-4 rounded-md">
                 {liking ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faThumbsUp} />} Like
               </button>
-            </div>
+            </div> 
           </div>
           <div className="flex flex-col">
             <h3 className="text-xl font-semibold mb-4">Comments</h3>

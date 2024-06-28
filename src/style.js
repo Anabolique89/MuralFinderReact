@@ -1,7 +1,9 @@
 const styles = {
   boxWidth: "xl:max-w-[1280px] w-full",
-  heading2: "font-raleway font-semibold xs:text-[48px] text-[40px] text-white xs:leading-[76.8px] leading-[66.8px] w-full",
-  paragraph: "font-raleway font-normal text-dimWhite text-[18px] leading-[30.8px]",
+  heading2:
+    "font-raleway font-semibold xs:text-[48px] text-[40px] text-white xs:leading-[76.8px] leading-[66.8px] w-full",
+  paragraph:
+    "font-raleway font-normal text-dimWhite md:text-[18px] leading-[30.8px] ss:text-[16px] ss:leading-[25px] xs:text-[14px] xs:leading-[18px] ",
   flexCenter: "flex justify-center items-center",
   flexStart: "flex justify-center items-start",
   paddingX: "sm:px-16 px-6",
@@ -12,7 +14,7 @@ const styles = {
   customCardWidth: "w-72",
   inputText: "input-text",
   inputError: "input-error",
-  errorMessage: "error-message"
+  errorMessage: "error-message",
 };
 
 export const layout = {
@@ -20,7 +22,7 @@ export const layout = {
   sectionReverse: `flex md:flex-row flex-col-reverse ${styles.paddingY}`,
   sectionImgReverse: `flex-1 flex ${styles.flexCenter} md:mr-10 mr-0 md:mt-0 mt-10 relative`,
   sectionImg: `flex-1 flex ${styles.flexCenter} md:ml-10 ml-0 md:mt-0 mt-10 relative`,
-  sectionInfo: `flex-1 ${styles.flexStart} flex-col`
+  sectionInfo: `flex-1 ${styles.flexStart} flex-col`,
 };
 
 export default styles;

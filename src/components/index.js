@@ -24,6 +24,7 @@ import MobileFooter from "./MobileFooter.jsx";
 import SingleArtwork from "./SingleArtwork.jsx";
 import CategoryCard from "./CategoryCard.jsx";
 import Carousel from "./Carousel.jsx";
+import MuiBottomNavigation from "./MuiBottomNavigation.tsx";
 
 export {
   Navbar,
@@ -53,4 +54,5 @@ export {
   SingleArtwork,
   CategoryCard,
   Carousel,
+  MuiBottomNavigation,
 };
