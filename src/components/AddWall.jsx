@@ -169,7 +169,7 @@ const AddWall = () => {
 
   return (
     <>
-      <Root elevation={3} className='p-4 m-auto w-50 font-raleway'>
+      <Root elevation={3} className= {`${styles.paddingX} p-4 m-auto w-50 font-raleway mt-6`}>
         <Typography variant="h4" align="center" gutterBottom>
           Add Wall
         </Typography>
@@ -182,6 +182,13 @@ const AddWall = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+              {/* <Input
+            label="Your email..."
+            variant="outlined"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          /> */}
           <Input
             label="Description"
             variant="outlined"
@@ -267,7 +274,9 @@ const AddWall = () => {
 
       </Root>
 
-      <Footer />
+      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
     </>
   );
 };

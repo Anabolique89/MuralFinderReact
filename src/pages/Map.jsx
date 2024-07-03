@@ -6,6 +6,8 @@ import {
 import { DirectionsRenderer, LoadScript, Autocomplete } from '@react-google-maps/api';
 import WallService from '../services/WallService';
 import { Navigate } from 'react-router-dom';
+import Footer from '../components/Footer';
+import styles from '../style';
 
 const Maps = ({ locations, defaultCenter, center, style }) => {
   const navigate = useNavigate();
@@ -208,6 +210,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   };
 
   return (
+    <section>
     <LoadScript googleMapsApiKey={apiKey} libraries={['places']}>
       <APIProvider apiKey={apiKey}>
         <Map
@@ -311,6 +314,10 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
         </Map>
       </APIProvider>
     </LoadScript>
+    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
+    </section>
   );
 };
 

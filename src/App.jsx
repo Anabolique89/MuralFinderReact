@@ -107,7 +107,6 @@ const App = () => {
                  
                   <CTA />
                   <Footer />
-                  {/* <MuiBottomNavigation /> */}
                 </div>
               </div>
             </>
