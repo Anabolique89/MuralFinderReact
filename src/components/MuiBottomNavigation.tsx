@@ -34,7 +34,7 @@ export default function FixedBottomNavigation() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction onClick={() => navigate('/Profile')} className={location.pathname === '/' ? 'Mui-selected' : ''} label="Home" sx={{ color: '#353535'}} icon={<HomeIcon />} />
+          <BottomNavigationAction onClick={() => navigate('/')} className={location.pathname === '/' ? 'Mui-selected' : ''} label="Home" sx={{ color: '#353535'}} icon={<HomeIcon />} />
           <BottomNavigationAction onClick={() => navigate('/Profile')} className={location.pathname === '/Profile' ? 'Mui-selected' : ''} label="Profile" sx={{ color: '#353535'}} icon={<PersonIcon />} />
           <BottomNavigationAction onClick={() => navigate('/addWall')} label="Add" sx={{ color: '#353535'}} className={location.pathname === '/addWall' ? 'Mui-selected' : ''} icon={<AddCircleIcon />} />
           <BottomNavigationAction onClick={() => navigate('/Map')} label="Map" sx={{ color: '#353535'}} className={location.pathname === '/Map' ? 'Mui-selected' : ''}icon={<LocationOnIcon />} />

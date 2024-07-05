@@ -24,7 +24,7 @@ const Hero = () => (
 
 <p className={`${styles.paragraph} max-w-[470px] mt-5`}>A platform that connects the urban art community worldwide and allows artists to explore new terrain and expand their creative talents easily all 
   the while meeting new people and sharing new experiences with fellow artists.</p>
-  <img src={google} alt="googleplay" className='w-[128px] h-[42px] object-contain mr-5 cursor-pointer mt-2' />
+  <img src={google} alt="googleplay" className='w-[140px] h-auto object-contain mr-5 cursor-pointer mt-2' />
     </div>
     <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}>
   <img src={Interlinked} alt="interlinked" className="w-[100%] h-auto relative z-[5] p-8 md:px-20 sm:px-26 ss:px-20"/>

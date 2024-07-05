@@ -6,11 +6,12 @@ import { styled } from '@mui/system';
 import LegalCheckbox from './LegalCheckbox';
 import WallService from '../services/WallService';
 import Footer from '../components/Footer';
+import styles from '../style';
 
 
 const Root = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
-  backgroundColor: '#3F51B5',
+  backgroundColor: '#4338ca',
   color: '#fff',
   width: '90%',
   height: '100%',
@@ -21,7 +22,7 @@ const Form = styled('form')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2),
-  backgroundColor: '#3F51B5',
+  backgroundColor: '#4338ca',
   color: '#fff',
   width: '80%',
   margin: 'auto',
@@ -168,7 +169,7 @@ const AddWall = () => {
 
   return (
     <>
-      <Root elevation={3} className='p-4 m-auto w-50'>
+      <Root elevation={3} className= {`${styles.paddingX} p-4 m-auto w-50 font-raleway mt-6`}>
         <Typography variant="h4" align="center" gutterBottom>
           Add Wall
         </Typography>
@@ -181,6 +182,13 @@ const AddWall = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+              {/* <Input
+            label="Your email..."
+            variant="outlined"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          /> */}
           <Input
             label="Description"
             variant="outlined"
@@ -266,7 +274,9 @@ const AddWall = () => {
 
       </Root>
 
-      <Footer />
+      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+                <Footer />
+            </div>
     </>
   );
 };

@@ -16,9 +16,9 @@ const HeroAbout = () => (
     </div>
 </div>
 
-<p className={`${styles.paragraph} max-w-[470px] mt-5`}>We support local and global artists and help them develop their online presence on a social media app dedicated to visual arts of all kinds. <br/>
+<p className={`${styles.paragraph} max-w-[470px] mt-5 sm:max-w-[600px]`}>We support local and global artists and help them develop their online presence on a social media app dedicated to visual arts of all kinds. <br/>
 We record street art history and its timeline, the artists and their stories. <br/>We offer the possibility to find artistic inspiration on your travels, legal spots to paint and walls on the map. Not forgetting art events of all kinds and also relevant shops.</p>
-  <img src={google} alt="googleplay" className='w-[128px] h-[42px] object-contain mr-5 cursor-pointer mt-2' />
+
     </div>
     <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}>
   <img src={libraWhite} alt="libra" className="w-[100%] h-auto relative z-[5] p-0 md:px-8 sm:px-12 ss:px-20"/>

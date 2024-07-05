@@ -2,6 +2,7 @@ import { city } from '../assets';
 import styles, { layout } from '../style';
 import Button from './Button';
 import Button3 from './Button3';
+import { Link} from 'react-router-dom';
 
 const CardDeal = () => (
 
@@ -13,7 +14,7 @@ const CardDeal = () => (
 <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
 It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 </p>
-<Button3 styles="mt-10"/>
+<Link to={'/Map'} href="" ><Button3 styles="mt-10"/></Link>
   </div>
 <div className={layout.sectionImg}>
 <img src={city} alt="card" className='w-[100%] h-[100%] z-[9]' />

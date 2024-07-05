@@ -11,8 +11,8 @@ import { Link, useNavigate } from 'react-router-dom';
 const ArtworksGallery = ({ artwork }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
-  console.log(user)
-  console.log(artwork)
+  // console.log(user)
+  // console.log(artwork)
   const userImage = artwork.user?.profile?.profile_image_url || '';
   const defaultImage = 'https://example.com/default-image.jpg';
   const [successMessage, setSuccessMessage] = useState('');

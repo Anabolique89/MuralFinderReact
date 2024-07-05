@@ -1,6 +1,7 @@
 import { about } from '../constants';
 import styles, { layout } from '../style';
 import Button from './Button';
+import { Link} from 'react-router-dom';
 
 const FeatureCard = ({icon, title, content, index}) =>(
   <div className={`flex flex-row p-6 rounded-[20px] ${index !== about.length - 1 ? "mb-6" : "mb-0"} cta-block`}>
@@ -28,7 +29,7 @@ const Business = () => {
           By doing this you are sharing with and helping 
           thousands of artists that are looking for places 
           to paint or explore.</p>
-          <Button styles="mt-10" />
+          <Link to={'/addWall'} href="" ><Button styles="mt-10" /></Link>
       </div>
 <div className={`${layout.sectionImg} flex-col`}>
 {about.map((about,index) =>(

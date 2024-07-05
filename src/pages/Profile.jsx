@@ -10,6 +10,8 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import { DragDropImageUploader, ArtworksGallery, WallsIntro } from '../components';
+import ArtworkService from '../services/ArtworkService';
 
 
 const Profile = () => {
@@ -17,6 +19,34 @@ const Profile = () => {
     const [blogData, setBlogData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    //user's artworks - do we need all of these variables? If not, [please delete]
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [images, setImages] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [filteredImages, setFilteredImages] = useState([]);
+    const [filter, setFilter] = useState('All');
+    const [categories, setCategories] = useState([{ id: 'all', name: 'All' }]);
+
+    useEffect(() => {
+        setIsLoading(true);
+        Promise.all([
+          ArtworkService.loadArtworks(),
+          ArtworkService.loadCategories()
+        ])
+          .then(([artworksData, categoriesData]) => {
+            setImages(artworksData);
+            setFilteredImages(artworksData);
+            setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
+            setIsLoading(false);
+          })
+          .catch(err => {
+            console.log(err);
+            setIsLoading(false);
+          });
+      }, []);
+
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -206,9 +236,36 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+
+
             {/* <UserArtworks /> */}
+            <div className="bg-indigo-700 w-full overflow-hidden">
+            <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
+            </div>
+
+            {isLoading ? (
+        <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
+      ) : (
+        <div className='container mx-auto py-2'>
+          {filteredImages.map(categoryData => (
+            <div key={categoryData.category}>
+              <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2>
+              <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {categoryData.artworks.map(artwork => (
+                  <ArtworksGallery key={artwork.id} artwork={artwork} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+            <DragDropImageUploader />
             {/* <WallsHero />
             <DisplayWalls /> */}
+
+<WallsIntro />
+
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>

@@ -50,6 +50,7 @@ const Navbar = () => {
     }
   });
 
+
   return (
     <nav className="w-full flex py-6 justify-between items-center Navbar pb-0">
       <ul className="list-none sm:flex hidden flex justify-left items-left flex-1">
