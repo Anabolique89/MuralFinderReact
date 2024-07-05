@@ -15,7 +15,8 @@ export const artworkEndpoints = {
   uploadArtwork: 'artworks',
   getCategoires: 'artworks/categories/fetch',
   searchArtworks: 'artworks/artwork/search',
-  artworkById: (artworkId) => `artworks/${artworkId}`
+  artworkById: (artworkId) => `artworks/${artworkId}`,
+  getUserArtworks: (userId) => `artworks/users/${userId}`
 };
 
 export const blogEndpoints = {
