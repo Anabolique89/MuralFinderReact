@@ -13,7 +13,6 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import moment from "moment";
 import clsx from "clsx";
 import { BGS, PRIOTITYSTYLES } from "../utils/index.js";
-import UserInfo from "../components/dashboard/UserInfo";
 import { Outlet, Link } from "react-router-dom";
 import styles from '../style';
 import Footer from '../components/Footer.jsx';
