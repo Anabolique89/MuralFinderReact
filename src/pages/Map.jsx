@@ -235,20 +235,24 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
               placeholder="Search location"
               style={{
                 boxSizing: 'border-box',
-                border: '1px solid transparent',
-                width: '240px',
-                height: '32px',
+                border: '2px solid white',
+                width: '250px',
+                height: '40px',
                 padding: '0 12px',
-                borderRadius: '3px',
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
-                fontSize: '14px',
+                borderRadius: '20px',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.5)',
+                fontSize: '16px',
                 outline: 'none',
                 textOverflow: 'ellipses',
                 position: 'absolute',
                 left: '50%',
-                top: '10px',
+                top: '50px',
                 zIndex: '10',
-                transform: 'translateX(-50%)'
+                transform: 'translateX(-50%)',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                backdropFilter:' blur(30px)',
+                boxShadow: '0 0 80px rgba(0, 0, 0, 0.2)',
+                color: '#000'
               }}
             />
           </Autocomplete>
@@ -257,19 +261,19 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
             style={{
               position: 'absolute',
               left: '50%',
-              marginLeft: '-60px',
-              top: '60px',
+              top: '100px',
               zIndex: '10',
-              backgroundColor: '#fff',
+              backgroundColor: '#000',
               padding: '5px 10px',
-              borderRadius: '3px',
+              borderRadius: '20px',
               boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
               cursor: 'pointer',
               transform: 'translateX(-50%)',
-              marginTop: '10px'
+              marginTop: '10px',
+              color: '#fff'
             }}
           >
-            Add Wall
+            + ADD WALL
           </button>
 
           {walls.map((wall, index) => (
@@ -288,19 +292,39 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
 
           {selectedMarker !== null && (
             <InfoWindow
+            style={{
+              backgroundColor: '#3700b3',
+              backgroundSize: 'cover',
+              borderRadius: '20px',
+              color: '#fff',
+              display: 'flex',
+              width: '250px',
+              height: 'auto',
+              zIndex: '20',
+
+            }}
               position={{ lat: Number(walls[selectedMarker].latitude), lng: Number(walls[selectedMarker].longitude) }}
               onCloseClick={() => {
                 setSelectedMarker(null);
                 setTitle('');
                 setImage('');
               }}
+              
+          
             >
-              <div className=''>
-                <h2 >{title}</h2>
-                <img src={image} alt="Wall" />
+              <div className='flex justify-between flex-col px-2 py-2 rounded-[20px] md:mr-2 mr-0 my-2 overflow-hidden z-[25]'>
+                <h2 className='font-raleway font-semibold xs:text-[18px] text-[16px] text-white w-full p-2'>{title}</h2>
+                <img className='object-cover w-full h-40 mb-4 rounded-md' src={image} alt="Wall" />
                 <button
                   onClick={() => handleDirections(walls[selectedMarker])}
                   disabled={!userLocation}
+                  style={{
+                 fontFamily:'Raleway',
+                 fontSize: '16px',
+                 fontWeight: '500',
+                    borderRadius: '20px',
+                    color: '#fff'
+                  }}
                 >
                   Get Directions
                 </button>

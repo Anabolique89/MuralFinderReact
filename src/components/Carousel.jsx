@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from '../style';
 import ArtworkService from '../services/ArtworkService';
+import AuthService from '../services/AuthService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner, faEye, faThumbsUp, faComment, faUser, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Carousel = () => {
   const maxScrollWidth = useRef(0);
@@ -10,6 +14,8 @@ const Carousel = () => {
 
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const currentUser = AuthService.getUser();
 
   const movePrev = () => {
     if (currentIndex > 0) {
@@ -71,7 +77,7 @@ const Carousel = () => {
       <h2 className={`${styles.heading2} ${styles.flexCenter} py-8`}>Artworks Feed</h2>
       <div className="carousel my-2 mx-2 w-full overflow-x-auto">
         {isLoading ? (
-          <h1 className='text-4xl sm:text-2xl text-center mx-auto mt-32 text-gray-900'>Loading...</h1>
+          <h1 className='text-2xl sm:text-2xl text-center mx-auto mt-32 text-gray-800'>Loading...</h1>
         ) : (
           artworks.map(categoryData => (
             <div key={categoryData.category} className="mb-8">
@@ -84,9 +90,34 @@ const Carousel = () => {
                       <div key={artwork.id} className="w-64 flex-shrink-0 relative">
                         <a href={`/artworks/${artwork.id}`} className="block rounded-lg overflow-hidden">
                           <img src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage} alt={artwork.title || 'Artwork'} className="w-full h-40 object-cover" />
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50">
-                            <h3 className="text-lg font-semibold text-white">{artwork.title}</h3>
-                          </div>
+                          <div className="absolute inset-0 flex items-start justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 pl-2">
+                            <div className="flex items-center mt-4 w-full text-white justify-between">
+                  <div className="flex items-center">
+                    <a href={`/profile/${artwork.user.id}`}>
+                      <FontAwesomeIcon icon={faUser} className="h-4 w-4 rounded-full mr-2 bg-purple-500 p-2" />
+                    </a>
+                    <div>
+                      <p className="font-semibold font-raleway">{artwork.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+  
+                    </div>
+                  </div>
+                  {currentUser && currentUser.id === artwork.user.id && (
+                    <div className="flex space-x-2 ml-20">
+                      <Link to={`/artwork/edit/${artwork.id}`}>
+                        <button className="text-blue-500 hover:text-blue-700">
+                          <FontAwesomeIcon icon={faEdit} />
+                        </button>
+                      </Link>
+                      <button onClick={() => handleDelete(artwork.id)} className="text-red-500 hover:text-red-700">
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
+                  )}
+                        <br/> 
+          
+          {/* <h3 className={`${styles.paragraph}`}>{artwork.title}</h3> */}
+                </div>
+        </div>
                         </a>
                       </div>
                     ))}

@@ -182,13 +182,7 @@ const AddWall = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-              {/* <Input
-            label="Your email..."
-            variant="outlined"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          /> */}
+      
           <Input
             label="Description"
             variant="outlined"
