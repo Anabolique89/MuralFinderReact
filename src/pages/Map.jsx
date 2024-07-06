@@ -251,7 +251,6 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
                 transform: 'translateX(-50%)',
                 backgroundColor: 'rgba(255, 255, 255, 0.8)',
                 backdropFilter:' blur(30px)',
-                boxShadow: '0 0 80px rgba(0, 0, 0, 0.2)',
                 color: '#000'
               }}
             />
