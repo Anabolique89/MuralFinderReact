@@ -17,17 +17,17 @@ const linkData = [
   },
   {
     label: "Walls",
-    link: "/WallsDashboard",
+    link: "/walls-dashboard",
     icon: <FaTasks />,
   },
   {
     label: "Artworks",
-    link: "/ArtworksDashboard",
+    link: "/artworks-dashboard",
     icon: <MdTaskAlt />,
   },
   {
     label: "Posts",
-    link: "/PostsDashboard",
+    link: "/post-dashboard",
     icon: <FaUsers />,
   },
   {

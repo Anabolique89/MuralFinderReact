@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  MdMenu
-} from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { MdMenu } from "react-icons/md";
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import RoomIcon from '@mui/icons-material/Room';
 import GroupIcon from '@mui/icons-material/Group';
@@ -9,78 +7,133 @@ import CheckCircleIcon from '@mui/icons-material/InsertPhoto';
 import moment from "moment";
 import clsx from "clsx";
 import UserInfo from "../components/dashboard/UserInfo";
-import { Outlet } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from '../style';
 import Footer from '../components/Footer.jsx';
 import BackToTopButton from '../components/BackToTopButton.jsx';
 import Sidebar from '../components/dashboard/Sidebar';
 import MobileSidebar from '../components/dashboard/MobileSidebar';
-import WallService from "../services/WallService.js"; // Import your wall service
+import WallService from "../services/WallService.js";
 import DashboardService from "../services/DashboardService.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../components/Spinner.jsx";
+import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
 
-const WallsTable = ({ walls, onEdit, onDelete, onView, isLoading }) => {
+const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const deleteHandler = async (wallId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to delete this wall? This action cannot be undone.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          const response = await WallService.deleteWall(wallId);
+          if (response?.success) {
+            toast.success("Wall deleted successfully");
+            await refreshWalls();
+          } else {
+            toast.error("Failed to delete the wall: " + response?.message);
+          }
+        } catch (error) {
+          toast.error("Error occurred while deleting wall: " + error.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
+  };
+
+
+  const refreshWalls = async () => {
+    setLoading(true);
+    try {
+      const wallsData = await WallService.getAllWalls(currentPage);
+      const wallsArray = wallsData.data.data;
+      setTotalPages(wallsData.data.last_page);
+      if (Array.isArray(wallsArray)) {
+        wallsArray.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        const wallsStat = await DashboardService.getWallsStatisticsData();
+        setWalls(wallsArray);
+        setWallStats(wallsStat);
+      } else {
+        console.error("Error: 'data' is not an array", wallsData);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const TableHeader = () => (
-    <thead className='border-b border-gray-300 '>
-      <tr className='text-black text-left'>
-        <th className='py-2'>Wall Title</th>
-        <th className='py-2'>Status</th>
-        <th className='py-2'>User</th>
-        <th className='py-2'>Location</th>
-        <th className='py-2'>Actions</th>
+    <thead className="bg-gray-100 border-b border-gray-300">
+      <tr className="text-gray-600 text-left">
+        <th className="py-2 px-4">Wall Title</th>
+        <th className="py-2 px-4">Status</th>
+        <th className="py-2 px-4">User</th>
+        <th className="py-2 px-4 hidden md:table-cell">Location</th>
+        <th className="py-2 px-4 hidden md:table-cell">Created At</th>
+        <th className="py-2 px-4">Actions</th>
       </tr>
     </thead>
   );
 
   const TableRow = ({ wall }) => (
-    <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
-      <td className='py-2'>
-        <div className='flex items-center gap-2'>
-          <p className='text-base text-black'>{wall.title ?? "Anonymous"}</p>
+    <tr className="border-b border-gray-300 text-gray-600 hover:bg-gray-100">
+      <td className="py-2 px-4">
+        <div className="flex items-center gap-2">
+          <p className="text-base text-black">{wall.title ?? wall.location_text}</p>
         </div>
       </td>
-      <td className='py-2'>
-        <div className='flex gap-1 items-center'>
-          <span className='capitalize'>{wall.is_verified ? "Verified" : "Unverified"}</span>
+      <td className="py-2 px-4">
+        <div className="flex gap-1 items-center">
+          <span className={`capitalize ${wall.is_verified ? 'text-green-600' : 'text-red-600'}`}>
+            {wall.is_verified ? "Verified" : "Unverified"}
+          </span>
         </div>
       </td>
-      <td className='py-2'>
-        <div className='flex'>
+      <td className="py-2 px-4">
+        <div className="flex">
           <UserInfo user={wall.added_by} />
         </div>
       </td>
-      <td className='py-2 hidden md:block'>
-        <span className='text-base text-gray-600'>
-          {wall.location_text}
-        </span>
+      <td className="py-2 px-4 hidden md:table-cell">
+        <span className="text-gray-600">{wall.location_text}</span>
       </td>
-      <td className='py-2 hidden md:block'>
-        <span className='text-base text-gray-600'>
-          {moment(wall.created_at).fromNow()}
-        </span>
+      <td className="py-2 px-4 hidden md:table-cell">
+        <span className="text-gray-600">{moment(wall.created_at).fromNow()}</span>
       </td>
-      <td className='py-2'>
-        <button onClick={() => onView(wall)}>
-          <span className='text-base text-gray-600'> <FontAwesomeIcon icon={faEye} /></span>
-        </button>
-        <button onClick={() => onEdit(wall)}>
-          <span className='text-base text-blue-600 ml-2 mr-2'> <FontAwesomeIcon icon={faPencil} /></span>
-        </button>
-        <button onClick={() => onDelete(wall)}>
-          <span className='text-base text-red-600'> <FontAwesomeIcon icon={faTrash} /></span>
+      <td className="py-2 px-4 flex items-center gap-2">
+        <Link to={'/walls/'+wall.id} className="text-gray-600 hover:text-blue-600">
+          <FontAwesomeIcon icon={faEye} />
+        </Link>
+        <Link to={'/walls/edit/'+wall.id} className="text-blue-600 hover:text-blue-800">
+          <FontAwesomeIcon icon={faPencil} />
+        </Link>
+        <button onClick={() => deleteHandler(wall.id)} className="text-red-600 hover:text-red-800">
+          <FontAwesomeIcon icon={faTrash} />
         </button>
       </td>
     </tr>
   );
 
   return (
-    <div className='w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
-      <table className='w-full'>
+    <div className="w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded">
+      <table className="w-full">
         <TableHeader />
         <tbody>
-          {isLoading ? (
+          {loading ? (
             <tr>
               <td colSpan="6" className="text-center py-4">
                 <Spinner />
@@ -102,36 +155,47 @@ const WallsDashboard = () => {
   const [walls, setWalls] = useState([]);
   const [wallsStats, setWallStats] = useState([]);
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchWalls = async () => {
       try {
-        const wallsData = await WallService.getAllWalls();
-        wallsData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        const wallsStat = await DashboardService.getWallsStatisticsData();
-        setWalls(wallsData);
-        setWallStats(wallsStat);
+        const wallsData = await WallService.getAllWalls(currentPage);
+        const wallsArray = wallsData.data.data;
+        setTotalPages(wallsData.data.last_page);
+        if (Array.isArray(wallsArray)) {
+          wallsArray.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          const wallsStat = await DashboardService.getWallsStatisticsData();
+          setWalls(wallsArray);
+          setWallStats(wallsStat);
+        } else {
+          console.error("Error: 'data' is not an array", wallsData);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
+
     fetchWalls();
-  }, []);
+  }, [currentPage]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
+    setCurrentPage(1); // Reset to page 1 on search
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   const handleEdit = (wall) => {
     // Edit functionality here
   };
 
-  const handleDelete = (wall) => {
-    // Delete functionality here
-  };
 
   const handleView = (wall) => {
     // View functionality here
@@ -143,41 +207,41 @@ const WallsDashboard = () => {
 
   const { wallsCount, verified, unverified, deletedCount } = wallsStats;
   const stats = [
-        {
-          _id: "1",
-          label: "WALLS",
-          total: wallsCount,
-          icon: <RoomIcon />,
-          bg: "bg-[#1d4ed8]",
-        },
-        {
-          _id: "2",
-          label: "VERIFIED",
-          total: verified,
-          icon: <CheckCircleIcon />,
-          bg: "bg-[#00b55e]",
-        },
-        {
-          _id: "3",
-          label: "UNVERIFIED",
-          total: unverified,
-          icon: <DangerousIcon />,
-          bg: "bg-[#e50338]",
-        },
-        {
-          _id: "4",
-          label: "DELETED",
-          total: deletedCount,
-          icon: <GroupIcon />,
-          bg: "bg-[#be185d]",
-        },
-      ];
+    {
+      _id: "1",
+      label: "WALLS",
+      total: wallsCount,
+      icon: <RoomIcon />,
+      bg: "bg-[#1d4ed8]",
+    },
+    {
+      _id: "2",
+      label: "VERIFIED",
+      total: verified,
+      icon: <CheckCircleIcon />,
+      bg: "bg-[#00b55e]",
+    },
+    {
+      _id: "3",
+      label: "UNVERIFIED",
+      total: unverified,
+      icon: <DangerousIcon />,
+      bg: "bg-[#e50338]",
+    },
+    {
+      _id: "4",
+      label: "DELETED",
+      total: deletedCount,
+      icon: <GroupIcon />,
+      bg: "bg-[#be185d]",
+    },
+  ];
 
   const Card = ({ label, count, bg, icon }) => {
     return (
       <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className={` text-black text-base font-semibold`}>{label}</p>
+          <p className={`text-black text-base font-semibold`}>{label}</p>
           {isLoading ? <Spinner /> : <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>}
           <span className='text-sm text-gray-400'>{"110 last month"}</span>
         </div>
@@ -195,17 +259,17 @@ const WallsDashboard = () => {
 
   return (
     <section className='flex flex-col min-h-screen'>
+      <ToastContainer />
+
       <div className='w-full flex flex-col md:flex-row flex-1'>
         <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
-        {/* Mobile Sidebar */}
         <MobileSidebar
           isSidebarOpen={isSidebarOpen}
           closeSidebar={() => setIsSidebarOpen(false)}
         />
 
-        {/* Main Content */}
         <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
           <header className='w-full flex justify-between items-center p-4 bg-white shadow-md md:hidden'>
             <button onClick={() => setIsSidebarOpen(true)} className='text-2xl'>
@@ -231,10 +295,26 @@ const WallsDashboard = () => {
               <WallsTable
                 walls={filteredWalls}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
                 onView={handleView}
                 isLoading={isLoading}
               />
+            </div>
+            <div className='flex justify-center mt-4 bg-gray-100 p-2'>
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className='px-4 py-2 border border-gray-300 rounded-md'
+              >
+                Previous
+              </button>
+              <span className='mx-4'>{`Page ${currentPage} of ${totalPages}`}</span>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className='px-4 py-2 border border-gray-300 rounded-md'
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>

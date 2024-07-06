@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import styles from '../style';
 import Footer from '../components/Footer';
 import { BackToTopButton } from '../components';
+import { FaCheckCircle } from 'react-icons/fa'; // Import green check icon
 
 const ViewWall = () => {
     const { wallId } = useParams();
@@ -95,6 +96,7 @@ const ViewWall = () => {
                                 long={wall.longitude}
                                 title={wall.location_text}
                                 image={wall.image_path}
+                                isVerified={wall.is_verified}
                                 mapWidth='100%'
                             />
                         </div>
@@ -151,19 +153,29 @@ const ViewWall = () => {
                             </div>
                         )}
                     </div>
-                    
-                    <h2 className={`flex flex-col justify-center items-center ${styles.heading2} ${styles.paddingX} ${styles.paddingY} `}>Wall Feed</h2>
+
+                    <h2 className={`flex flex-col justify-center items-center ${styles.heading2} ${styles.paddingX} ${styles.paddingY}`}>
+                        Wall Feed
+                    </h2>
+
                     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center'>
-                        {/* Wall Images and Details */}
                         <div className='w-full shadow-lg mt-4 p-4'>
-                            <h1 className='text-3xl font-bold mb-2 text-white dark:text-white'>{wall.location_text} Artwork Name</h1>
+                            {/* Image and Location Text */}
+                            <div className='flex items-center'>
+                                <h1 className='text-3xl font-bold mb-2 text-white dark:text-white flex-grow'>
+                                    {wall.location_text} Artwork Name
+                                </h1>
+                                {/* Conditionally render the green check icon */}
+                                {wall.is_verified && (
+                                    <FaCheckCircle size={24} color='green' className='ml-2' />
+                                )}
+                            </div>
                             <img
                                 src={`https://api.muralfinder.net/${wall.image_path}`}
                                 alt='Wall Image'
                                 className='w-full h-auto object-cover rounded-xl'
                             />
                         </div>
-                        {/* Duplicate sections as needed */}
                             {/* Wall Images and Details */}
                             <div className='w-full shadow-lg mt-4 p-4'>
                             <h1 className='text-3xl font-bold mb-2 text-white dark:text-white'>{wall.location_text} Artwork Name</h1>
