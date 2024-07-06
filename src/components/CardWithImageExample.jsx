@@ -23,7 +23,6 @@ const CardWithImageExample  = () => (
           </p>
       
           <div className='pt-4'>
-    <Button2 />
     </div>
         </div>
       </div>
@@ -46,7 +45,6 @@ className="flex flex-col justify-between max-w-[320px] md:m-2 sm:max-w-[350px] x
   </p>
 
   <div className='pt-4'>
-    <Button2 />
     </div>
 </div>
 </div>
@@ -68,7 +66,6 @@ className="flex flex-col justify-between max-w-[320px] md:m-2 sm:max-w-[350px] x
    Find potential clients and showcase your work as an artist!
   </p>
 <div className='pt-4'>
-    <Button2 />
     </div>
 </div>
 </div>

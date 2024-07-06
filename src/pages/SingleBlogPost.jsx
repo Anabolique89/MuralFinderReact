@@ -4,7 +4,7 @@ import BlogService from '../services/BlogService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faSpinner, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-icons';
 import styles from '../style';
-
+import DOMPurify from 'dompurify';
 
 const SingleBlogPost = () => {
   const { postId } = useParams();
@@ -16,6 +16,9 @@ const SingleBlogPost = () => {
   const [liking, setLiking] = useState(false);
   const [commenting, setCommenting] = useState(false);
 
+  const sanitizedContent = blogPost && blogPost.content ? DOMPurify.sanitize(blogPost.content) : '';
+
+  
   useEffect(() => {
     const fetchBlogPost = async () => {
       try {
@@ -81,10 +84,10 @@ const SingleBlogPost = () => {
   }
   return (
     <div className="bg-indigo-700 py-12 sm:py-22">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8" >
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2 className={`${styles.heading2}`}>Blog Post Details</h2>
-          <p className={`${styles.paragraph}`}>
+          <p className={`${styles.paragraph}`} >
             View the details of the blog post and add your comments.
           </p>
         </div>
@@ -93,21 +96,14 @@ const SingleBlogPost = () => {
             <img src={`https://api.muralfinder.net/${blogPost.feature_image}`}
               alt={blogPost.title} className="w-full h-auto mb-4" />
             <h3 className="text-2xl text-gray-200 font-semibold mb-2">{blogPost.title}</h3>
-            <p className={`${styles.paragraph} mb-6`}>{blogPost.content}</p>
-            {/* <div className="flex items-center">
-                    <a href={`/profile/${blogPost.user.id}`}>
-                      <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2" />
-                    </a>
-                    <div>
-                      <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
-                      <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
-                    </div>
-                  </div> */}
+        
+            <p className={`${styles.paragraph} mb-6`} dangerouslySetInnerHTML={{ __html: sanitizedContent }}></p>
+                  
                        <div className="flex items-center">
                     <a href={`/profile/${blogPost.user.id}`}>
                       <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2 text-white" />
                     </a>
-                    <div>
+                    <div >
                       <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                       <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                     </div>
@@ -118,6 +114,7 @@ const SingleBlogPost = () => {
               <button onClick={handleLike} className="ml-4 bg-blue-500 text-white py-2 px-4 rounded-md">
                 {liking ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faThumbsUp} />} Like
               </button>
+              
             </div> 
           </div>
           <div className="flex flex-col">

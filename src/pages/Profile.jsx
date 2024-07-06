@@ -10,7 +10,7 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { DragDropImageUploader, ArtworksGallery, WallsIntro } from '../components';
+import { DragDropImageUploader, ArtworksGallery, WallsHero } from '../components';
 import ArtworkService from '../services/ArtworkService';
 
 
