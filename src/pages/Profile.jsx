@@ -10,7 +10,7 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { DragDropImageUploader, ArtworksGallery, WallsHero } from '../components';
+import { DragDropImageUploader, ArtworksGallery, WallsIntro } from '../components';
 import ArtworkService from '../services/ArtworkService';
 
 
@@ -107,10 +107,10 @@ const Profile = () => {
                 <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
                     <div className="col-span-4 sm:col-span-3">
                         <div className="bg-white profile-content p-6 ">
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col items-center object-cover">
                                 <img
                                     src={(profileData.profile.profile_image_url ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}` : defaultimg)}
-                                    className=" object-cover w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
+                                    className="object-cover w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
                                     alt="Bordered avatar"
                                 />
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
@@ -239,11 +239,11 @@ const Profile = () => {
             </div>
 
 
-            {/* <UserArtworks /> */}
+      
             <div className="bg-indigo-700 w-full overflow-hidden">
                 <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
             </div>
-
+            <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
             {isLoading ? (
                 <div className='container mx-auto py-2'>
                     <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
@@ -266,7 +266,7 @@ const Profile = () => {
                     <p>No artworks found.</p>
                 )
             )}
-
+</div>
             <DragDropImageUploader />
 
             <WallsIntro />

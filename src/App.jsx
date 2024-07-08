@@ -97,7 +97,7 @@ const App = () => {
                   <Billing />
                   <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-2">
                     <Carousel />
-                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>See All</button>
+                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}><a href='/ArtworkFeed' >See All</a></button>
                   </div>
 
                   <DragDropImageUploader />
@@ -152,7 +152,7 @@ const App = () => {
               <Profile />
             </PrivateRoute>
           } />
-          <Route path="/profilesettings" element={
+          <Route path="/ProfileSettings" element={
             <PrivateRoute>
               <ProfileSettings />
             </PrivateRoute>

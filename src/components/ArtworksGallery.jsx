@@ -72,14 +72,16 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
         />
         <div className='px-6 py-4'>
           <div className='flex items-center'>
-            {userImage ? (
-              <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2 ' />
-            ) : (
-              <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
-            )}
-            <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-              {artwork.user?.username || 'Unknown'}
-            </div>
+            <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
+              {userImage ? (
+                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
+              ) : (
+                <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
+              )}
+              <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
+                {artwork.user?.username || 'Unknown'}
+              </div>
+            </Link>
           </div>
           <div className='font-bold text-white text-xl mb-2'>
             <Link to={`/artworks/${artwork.id}`}>

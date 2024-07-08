@@ -83,7 +83,6 @@ const DragDropImageUploader = () => {
     }
   }
 
-
   async function uploadImages() {
     setLoading(true); // Start loading indicator
     try {
@@ -91,31 +90,32 @@ const DragDropImageUploader = () => {
       formData.append('title', title);
       formData.append('description', description);
       formData.append('artwork_category_id', category);
-
+  
       // Append images to the form data
       images.forEach((image, index) => {
         formData.append(`images[${index}]`, image.file);
       });
-
+  
       const message = await ArtworkService.uploadArtwork(formData);
       setResponseMessage(message);
       console.log(responseMessage)
-      setImages([]);
-      setTitle('');
-      setDescription('');
-      setCategory('');
+      if (message.includes('successfully')) {
+        setImages([]);
+        setTitle('');
+        setDescription('');
+        setCategory('');
+      }
       setTimeout(() => {
         setResponseMessage(null);
       }, 5000);
     } catch (error) {
       console.error('Error uploading images:', error);
-      setResponseMessage(error);
-
+      setResponseMessage('An error occurred while uploading images');
     } finally {
       setLoading(false); 
-
     }
   }
+  
 
   return (
     <div className="flex flex-col w-full border border-gray-600 rounded-md mt-3">
