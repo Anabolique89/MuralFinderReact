@@ -85,20 +85,7 @@ const ProfileUpdate = ({ profile }) => {
                         required
                     />
                 </div>
-                <div className="mb-6">
-                    <label htmlFor="bio" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">
-                        Bio
-                    </label>
-                    <textarea
-                        id="bio"
-                        name="bio"
-                        rows="4"
-                        className="block p-2.5 w-full text-sm text-slate-800 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 "
-                        placeholder="Write your bio here..."
-                        value={profileData.bio}
-                        onChange={handleInputChange}
-                    ></textarea>
-                </div>
+             
                 <hr className="mt-4 mb-8" />
                 <div className="mb-10">
                     <h2 className="text-2xl font-bold font-raleway sm:text-xl pt-4 pb-6">Delete Account</h2>

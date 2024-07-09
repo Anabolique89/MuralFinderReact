@@ -67,10 +67,7 @@ const ProfileSettings = () => {
                                 </div>
 
                                 <div className="items-center mt-4 sm:mt-14 font-raleway text-white">
-                                    <div className="mb-2 sm:mb-6">
-                                        <label htmlFor="profession" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Profile Title</label>
-                                        <input type="text" id="profession" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Profile Title" value={profileData.username} onChange={handleInputChange} required />
-                                    </div>
+                             
                                     <div className="mb-4 font-raleway">
                                         <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Profile Text</label>
                                         <textarea id="message" rows="2" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " placeholder="Profile Text..." value={profileData.bio} onChange={handleInputChange}></textarea>
