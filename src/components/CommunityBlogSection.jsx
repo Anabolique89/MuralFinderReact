@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,6 +7,7 @@ import BlogService from '../services/BlogService';
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import AuthService from '../services/AuthService';
 import styles, { layout } from '../style';
+
 // import Button from './Button';
 
 const CommunityBlogSection = () => {
@@ -14,7 +16,10 @@ const CommunityBlogSection = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
 
+  const user = AuthService.getUser() ?? null;
+
   const currentUser = AuthService.getUser();
+  const userImage = blogPosts.user?.profile?.profile_image_url || '';
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -109,9 +114,22 @@ const CommunityBlogSection = () => {
                 </div>
                 <div className="flex items-center mt-4 w-full text-white justify-between">
                   <div className="flex items-center">
+                  
                     <a href={`/profile/${blogPost.user.id}`}>
                       <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2" />
                     </a>
+{/* 
+<Link to={`/profile/${blogPost.user?.id}`} className="flex items-center">
+              {userImage ? (
+                <img src={`https://api.muralfinder.net${userImage}`} alt={blogPost.user?.username} className='w-8 h-8 rounded-full mr-2' />
+              ) : (
+                <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
+              )}
+              <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
+                {blogPost.user?.username || 'Unknown'}
+              </div>
+            </Link> */}
+
                     <div>
                       <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                       <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>

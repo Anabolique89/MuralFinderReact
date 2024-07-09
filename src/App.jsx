@@ -28,6 +28,7 @@ import Footer from './components/Footer';
 import EditBlog from './pages/EditBlog';
 import EditArtworkUploader from './pages/EditArtworkUploader';
 import ArtworkFeed from './pages/ArtworkFeed';
+// import BlogPosts from './pages/BlogPosts';
 import AddWall from './components/AddWall';
 
 const App = () => {
@@ -129,6 +130,7 @@ const App = () => {
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/addWall" element={<AddWall />} />
           <Route path="/ArtworkFeed" element={<ArtworkFeed />} />
+          {/* <Route path="/BlogPosts" element={<BlogPosts />} /> */}
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
 
