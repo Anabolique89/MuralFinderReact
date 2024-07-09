@@ -6,6 +6,7 @@ import ProfileUpdate from './ProfileUpdate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
+import { BackToTopButton } from '../components';
 
 
 const ProfileSettings = () => {
@@ -121,6 +122,7 @@ const ProfileSettings = () => {
 
 
             </div>
+            <BackToTopButton />
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>

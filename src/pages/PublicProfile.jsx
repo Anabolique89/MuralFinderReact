@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
-import { UserArtworks, Footer, WallsHero, ArtworksGallery } from '../components';
+import { UserArtworks, Footer, WallsHero, ArtworksGallery, BackToTopButton } from '../components';
 import { useParams } from 'react-router-dom';
 import FellowshipService from '../services/FellowshipService';
 import { cleanHTML, trimContent } from '../utils/blogUtils';
@@ -281,15 +281,15 @@ const PublicProfile = () => {
                                 )}
 
 
-                            <a href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>REGISTER</a>
-                            <a href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>LOGIN</a>
+                            <a href="/IndexSignup" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>REGISTER</a>
+                            <a href="/IndexLogin" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>LOGIN</a>
 
                         </div>
                     </div>
                 </div>
             </div>
             {/* <UserArtworks /> */}
-            {/* <UserArtworks /> */}
+    
             <div className="bg-indigo-700 w-full overflow-hidden">
                 <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
             </div>
@@ -316,6 +316,7 @@ const PublicProfile = () => {
                     <p>No artworks found.</p>
                 )
             )}
+            <BackToTopButton />
             {/* <WallsHero />
             <DisplayWalls /> */}
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>

@@ -10,7 +10,7 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { DragDropImageUploader, ArtworksGallery, WallsIntro } from '../components';
+import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton } from '../components';
 import ArtworkService from '../services/ArtworkService';
 
 
@@ -269,7 +269,7 @@ const Profile = () => {
             <DragDropImageUploader />
 
             <WallsIntro />
-
+            <BackToTopButton />
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
                 <Footer />
             </div>
