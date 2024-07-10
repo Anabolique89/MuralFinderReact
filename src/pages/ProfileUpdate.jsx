@@ -62,7 +62,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                     console.log('Account deleted successfully');
 
                     // Log the user out
-                    AuthService.logout();
+                    localStorage.clear();
                     // Redirect or handle logout state as needed
 
                     Swal.fire(
