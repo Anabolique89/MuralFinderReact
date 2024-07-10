@@ -162,8 +162,7 @@ const PublicProfile = () => {
                                 />
 
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
-                                <br />
-                                <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <button
                                         onClick={isFollowing ? handleUnfollow : handleFollow}

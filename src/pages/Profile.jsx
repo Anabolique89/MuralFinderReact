@@ -115,7 +115,7 @@ const Profile = () => {
                                 />
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
                                 <br />
-                                <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     {/* <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a> */}
                                 </div>
