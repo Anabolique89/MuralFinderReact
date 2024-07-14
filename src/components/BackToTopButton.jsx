@@ -16,8 +16,8 @@ const ButtonContainer = styled.span`
   background: #3b3b98;
   border-radius: 4px;
   transition: opacity 0.4s, color ease-in-out 0.2s, background ease-in-out 0.2s;
-  display: ${({ isScrollButtonVisible }) =>
-    isScrollButtonVisible ? 'flex' : 'none'};
+  display: ${({ isscrollbuttonvisible }) =>
+    isscrollbuttonvisible ? 'flex' : 'none'};
 
   &:hover {
     opacity: 1;
@@ -47,7 +47,7 @@ const BackToTopButton = () => {
   };
 
   return (
-    <ButtonContainer isScrollButtonVisible={showButton} onClick={scrollToTop}>
+    <ButtonContainer isscrollbuttonvisible={showButton} onClick={scrollToTop}>
       <svg
         width={24}
         height={24}

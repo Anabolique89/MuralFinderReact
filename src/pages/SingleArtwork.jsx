@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { BackToTopButton, Footer } from '../components';
 
 
-const SingleArtwork = () => (
+const SingleArtwork = () => {
 
    const artworkId = useParams();
 
@@ -87,7 +87,7 @@ const SingleArtwork = () => (
     </section>
 
     
-  );
+ };
 
 
 export default SingleArtwork

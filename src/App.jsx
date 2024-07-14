@@ -30,6 +30,8 @@ import EditArtworkUploader from './pages/EditArtworkUploader';
 import ArtworkFeed from './pages/ArtworkFeed';
 // import BlogPosts from './pages/BlogPosts';
 import AddWall from './components/AddWall';
+import { WallsDashboard, Dashboard, ArtworksDashboard, ArtworkDetails, Trash, Users } from './pages';
+
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -127,6 +129,12 @@ const App = () => {
           <Route path="/ProfileSettings" element={<ProfileSettings />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsConditions" element={<TermsConditions />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/WallsDashboard" element={<WallsDashboard />} />
+          <Route path="/ArtworksDashboard" element={<ArtworksDashboard/>} />
+          <Route path="/ArtworkDetails" element={<ArtworkDetails />} />
+          <Route path="/Trash" element={<Trash />} />
+          <Route path="/Users" element={<Users />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/addWall" element={<AddWall />} />
           <Route path="/ArtworkFeed" element={<ArtworkFeed />} />
