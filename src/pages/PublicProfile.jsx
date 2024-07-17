@@ -162,8 +162,7 @@ const PublicProfile = () => {
                                 />
 
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
-                                <br />
-                                <p className={`${styles.paragraph} mt-0`}><br />Profile Text</p>
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <button
                                         onClick={isFollowing ? handleUnfollow : handleFollow}
@@ -279,17 +278,23 @@ const PublicProfile = () => {
                                     </div>
                                 ))
                                 )}
-
-
-                            <a href="/IndexSignup" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>REGISTER</a>
-                            <a href="/IndexLogin" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>LOGIN</a>
-
+                            {!AuthService.isAuthenticated && (
+                                <>
+                                    {/* Render links for non-authenticated users */}
+                                    <a href="/IndexSignup" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+                                        REGISTER
+                                    </a>
+                                    <a href="/IndexLogin" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+                                        LOGIN
+                                    </a>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
             {/* <UserArtworks /> */}
-    
+
             <div className="bg-indigo-700 w-full overflow-hidden">
                 <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
             </div>
