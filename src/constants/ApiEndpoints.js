@@ -6,7 +6,8 @@ export const authEndpoints = {
   logout: 'logout',
   profile: (userId) => `profiles/${userId}`,
   updateProfile: (userId) => `profiles/${userId}`,
-  uploadProfileImage: (userId) => `profiles/${userId}/image`
+  uploadProfileImage: (userId) => `profiles/${userId}/image`,
+  deleteAccount: (userId) => `delete/user/${userId}`
 };
 
 
