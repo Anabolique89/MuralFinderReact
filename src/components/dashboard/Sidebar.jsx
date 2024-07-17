@@ -26,6 +26,11 @@ const linkData = [
     icon: <MdTaskAlt />,
   },
   {
+    label: "Posts",
+    link: "/Posts",
+    icon: <FaUsers />,
+  },
+  {
     label: "Users",
     link: "/Users",
     icon: <FaUsers />,

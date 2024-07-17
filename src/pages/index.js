@@ -37,6 +37,7 @@ import ArtworksDashboard from "./ArtworksDashboard";
 import ArtworkDetails from "./ArtworkDetails";
 import Trash from "./Trash";
 import Users from "./Users";
+import PostsDashboard from "./PostsDashboard";
 
 export {
   About,
@@ -78,4 +79,5 @@ export {
   ArtworkDetails,
   Trash,
   Users,
+  PostsDashboard,
 };

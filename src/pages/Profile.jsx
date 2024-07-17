@@ -262,7 +262,7 @@ const Profile = () => {
                         ))}
                     </div>
                 ) : (
-                    <p>No artworks found.</p>
+                    <h2 className={`${styles.heading2} `}>No artworks found.</h2>
                 )
             )}
 </div>
