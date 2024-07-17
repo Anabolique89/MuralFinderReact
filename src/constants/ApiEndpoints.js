@@ -46,4 +46,9 @@ export const fellowshipEndpoints = {
   isFollowing: (userId) => `fellowships/isFollowing/${userId}`,
 }
 
+
+export const dashboardEndpoints = {
+  getDashboardData: 'admin/statistics'
+}
+
 export const contactEndpoint = "/contact";
