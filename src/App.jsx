@@ -131,7 +131,7 @@ const App = () => {
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/WallsDashboard" element={<WallsDashboard />} />
-          <Route path="/ArtworksDashboard" element={<ArtworksDashboard/>} />
+          <Route path="/admin/artworks" element={<ArtworksDashboard/>} />
           <Route path="/ArtworkDetails" element={<ArtworkDetails />} />
           <Route path="/Trash" element={<Trash />} />
           <Route path="/Users" element={<Users />} />

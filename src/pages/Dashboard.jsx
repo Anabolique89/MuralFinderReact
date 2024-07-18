@@ -24,7 +24,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { getInitials } from '../utils/index.js';
 
-const TaskTable = ({ tasks }) => {
+const ArtworksTable = ({ artworks }) => {
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
@@ -42,57 +42,90 @@ const TaskTable = ({ tasks }) => {
     </thead>
   );
 
-  const TableRow = ({ task }) => (
+  const TableRow = ({ artwork }) => (
     <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
-          {/* <div className={clsx('w-4 h-4 rounded-full', TASK_TYPE[task.stage])} /> */}
-          <p className='text-base text-black'>{task.title}</p>
+          {/* <div className={clsx('w-4 h-4 rounded-full', TASK_TYPE[artwork.stage])} /> */}
+          <p className='text-base text-black'>{artwork.title}</p>
         </div>
       </td>
       <td className='py-2'>
         <div className='flex gap-1 items-center'>
-          {/* <span className={clsx('text-lg', PRIOTITYSTYLES[task.priority])}>
-            {ICONS[task.priority]}
+          {/* <span className={clsx('text-lg', PRIOTITYSTYLES[artwork.priority])}>
+            {ICONS[artwork.priority]}
           </span> */}
-          <span className='capitalize'>{task.description}</span>
+          <span className='capitalize'>{artwork.description}</span>
         </div>
       </td>
       <td className='py-2'>
-        <div className='flex'>
-          {task.categories?.map((m, index) => (
-            <div
-              key={index}
-              className={clsx(
-                'w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1',
-                BGS[index % BGS.length]
-              )}
-            >
-              <UserInfo user={m} />
-            </div>
-          ))}
+        <div className='flex bg-gray-200 p-1 rounded'>
+          {artwork.category?artwork.category.name:""}
         </div>
       </td>
       <td className='py-2 hidden md:block'>
-        <span className='text-base text-gray-600'>
-          {moment(task?.date).fromNow()}
+        <span className='text-base text-gray-600 '>
+          {moment(artwork?.date).fromNow()}
         </span>
       </td>
     </tr>
   );
-
   return (
     <div className='w-full md:w-2/3 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
       <table className='w-full'>
         <TableHeader />
         <tbody>
-          {tasks?.map((task, id) => (
-            <TableRow key={id} task={task} />
+          {artworks?.map((artwork, id) => (
+            <TableRow key={id} artwork={artwork} />
           ))}
+          {artworks?.length === 0 && (
+            <tr>
+              <td className='py-2'>
+                <p className='text-base text-gray-600 '>
+                  No Artworks
+                </p>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
+  
+      <div className='flex justify-between items-center mt-4'>
+        <a href='/admin/artworks' className='text-blue-500 hover:text-blue-700'>
+          View All Artworks
+        </a>
+        <nav aria-label='Page navigation'>
+          <ul className='inline-flex -space-x-px'>
+            <li>
+              <a href='#' className='px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700'>
+                Previous
+              </a>
+            </li>
+            <li>
+              <a href='#' className='px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'>
+                1
+              </a>
+            </li>
+            <li>
+              <a href='#' className='px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'>
+                2
+              </a>
+            </li>
+            <li>
+              <a href='#' className='px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'>
+                3
+              </a>
+            </li>
+            <li>
+              <a href='#' className='px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700'>
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-  );
+  )
 };
 
 const UserTable = ({ users }) => {
@@ -228,7 +261,8 @@ const Dashboard = () => {
         <div className='h-full flex flex-1 flex-col justify-between'>
           <p className={` ${styles.paragraph} text-base font-semibold`}>{label}</p>
           <span className='text-2xl font-regular text-white font-raleway'>{total}</span>
-          <span className='text-sm text-gray-400'> {isLoading ? 'Loading...' : 'Last month'}</span>
+          <span className='text-sm text-gray-400'> {isLoading ? 
+            <FontAwesomeIcon icon={faSpinner} className='animate-spin' /> : moment(statistics?.recentArtworks[0]?.created_at).fromNow() }</span>
         </div>
         <div
           className={clsx(
@@ -259,11 +293,6 @@ const Dashboard = () => {
             </button>
           </header>
           <div className='h-full py-4 w-full'>
-            {isLoading ? (
-              <div className='flex justify-center items-center h-full'>
-                <span className='text-3xl text-white font-semibold font-raleway'><FontAwesomeIcon icon={faSpinner} spin /></span>
-              </div>
-            ) : (
               <div className='h-full py-4 w-full pl-2 pr-6'>
                 <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
                   {stats.map(({ icon, bg, label, total }, index) => (
@@ -274,16 +303,29 @@ const Dashboard = () => {
                   <h4 className='text-xl text-white font-semibold font-raleway'>
                     Chart by Priority
                   </h4>
-                  <Chart chartData={chartData} />
+                  {isLoading ? (
+                    <div className="text-center py-4">
+                      <span className="text-indigo-600 text-3xl"><FontAwesomeIcon icon={faSpinner} spin /></span>
+                    </div>
+                  ) : (
+                    <Chart chartData={chartData} />
+                  )}
                 </div>
 
               </div>
-            )}
           </div>
           <div className='bg-indigo-700 pl-5 pr-6'>
             <div className='w-full flex flex-col md:flex-row gap-2 2xl:gap-4 py-8'>
-              <TaskTable tasks={statistics.recentArtworks} />
-              <UserTable users={statistics.users} />
+              {isLoading ? (
+                <div className="text-center py-4">
+                  <span className="text-indigo-600 text-3xl"><FontAwesomeIcon icon={faSpinner} spin /></span>
+                </div>
+              ) : (
+                <><ArtworksTable artworks={statistics.recentArtworks} />
+                <UserTable users={statistics.users} /></>
+                
+              )}
+             
             </div>
           </div>
         </div>

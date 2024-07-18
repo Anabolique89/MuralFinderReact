@@ -15,6 +15,16 @@ const DashboardService = {
         }
     },
 
+    getArtworksStatistics: async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}${dashboardEndpoints.getArtworksStatistics}`);
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+            throw new Error('Failed to fetch dashboard data');
+        }
+    },
+
 
 }
 

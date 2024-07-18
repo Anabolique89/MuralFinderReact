@@ -48,7 +48,8 @@ export const fellowshipEndpoints = {
 
 
 export const dashboardEndpoints = {
-  getDashboardData: 'admin/statistics'
+  getDashboardData: 'admin/statistics',
+  getArtworksStatistics: 'admin/statistics/artworks'
 }
 
 export const contactEndpoint = "/contact";
