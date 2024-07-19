@@ -5,7 +5,7 @@ const WallService = {
   getAllWalls: async () => {
     try {
       const response = await axios.get(`${BASE_URL}${wallEndpoints.getAllWalls}`);
-      return response.data;
+      return response.data.data.data
     } catch (error) {
       console.error('Error fetching walls:', error);
       throw new Error('Failed to fetch walls');

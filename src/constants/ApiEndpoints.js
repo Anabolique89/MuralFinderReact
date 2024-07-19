@@ -49,7 +49,8 @@ export const fellowshipEndpoints = {
 
 export const dashboardEndpoints = {
   getDashboardData: 'admin/statistics',
-  getArtworksStatistics: 'admin/statistics/artworks'
+  getArtworksStatistics: 'admin/statistics/artworks',
+  getWallsStatisticsData: 'admin/statistics/walls'
 }
 
 export const contactEndpoint = "/contact";
