@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MdMenu,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
+  MdVisibility,
+  MdEdit,
+  MdDelete,
 } from "react-icons/md";
 import GroupIcon from '@mui/icons-material/Group';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ArticleIcon from '@mui/icons-material/Article';
 import RoomIcon from '@mui/icons-material/Room';
 import moment from "moment";
-import { summary } from "../assets/data";
 import clsx from "clsx";
-import { BGS, PRIOTITYSTYLES, TASK_TYPE, getInitials } from "../utils/index.js";
 import UserInfo from "../components/dashboard/UserInfo";
 import { Outlet } from "react-router-dom";
 import styles from '../style';
@@ -20,64 +21,69 @@ import Footer from '../components/Footer.jsx';
 import BackToTopButton from '../components/BackToTopButton.jsx';
 import Sidebar from '../components/dashboard/Sidebar';
 import MobileSidebar from '../components/dashboard/MobileSidebar';
+import DashboardService from "../services/DashboardService.js";
+import BlogService from '../services/BlogService.js';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-const TaskTable = ({ tasks }) => {
-  const ICONS = {
-    high: <MdKeyboardDoubleArrowUp />,
-    medium: <MdKeyboardArrowUp />,
-    low: <MdKeyboardArrowDown />,
-  };
-
+const PostTable = ({ posts }) => {
   const TableHeader = () => (
-    <thead className='border-b border-gray-300 '>
+    <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
         <th className='py-2'>Post Title</th>
         <th className='py-2'>Likes</th>
+        <th className="py-2">Comments</th>
         <th className='py-2'>User</th>
         <th className='py-2'>Created At</th>
-        <th className='py-2'>Description</th>
-        <th className='py-2 hidden md:block'>Comments</th>
+        <th className='py-2'>Action</th>
       </tr>
     </thead>
   );
 
-  const TableRow = ({ task }) => (
+  const TableRow = ({ post }) => (
     <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
-          <div
-            className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
-          />
-          <p className='text-base text-black'>{task.title}</p>
+          <p className='text-base text-black'>{post.title}</p>
         </div>
       </td>
       <td className='py-2'>
         <div className='flex gap-1 items-center'>
-          <span className={clsx("text-lg", PRIOTITYSTYLES[task.priority])}>
-            {ICONS[task.priority]}
-          </span>
-          <span className='capitalize'>{task.priority}</span>
+          <span className='capitalize'>{post.likes_count}</span>
+        </div>
+      </td>
+      <td className='py-2'>
+        <div className='flex gap-1 items-center'>
+          <span className='capitalize'>{post.comments_count}</span>
         </div>
       </td>
       <td className='py-2'>
         <div className='flex'>
-          {task.team.map((m, index) => (
-            <div
-              key={index}
-              className={clsx(
-                "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1",
-                BGS[index % BGS.length]
-              )}
-            >
-              <UserInfo user={m} />
-            </div>
-          ))}
+          <UserInfo user={post.user} />
         </div>
       </td>
       <td className='py-2 hidden md:block'>
         <span className='text-base text-gray-600'>
-          {moment(task?.date).fromNow()}
+          {moment(post?.created_at).fromNow()}
         </span>
+      </td>
+      <td className='py-2 hidden md:block'>
+        <span className='text-base text-gray-600'>
+          {post.totalComments}
+        </span>
+      </td>
+      <td className='py-2'>
+        <div className='flex gap-2'>
+          <button className='text-blue-500 hover:text-blue-700'>
+            <MdVisibility size={20} />
+          </button>
+          <button className='text-green-500 hover:text-green-700'>
+            <MdEdit size={20} />
+          </button>
+          <button className='text-red-500 hover:text-red-700'>
+            <MdDelete size={20} />
+          </button>
+        </div>
       </td>
     </tr>
   );
@@ -87,8 +93,8 @@ const TaskTable = ({ tasks }) => {
       <table className='w-full'>
         <TableHeader />
         <tbody>
-          {tasks?.map((task, id) => (
-            <TableRow key={id} task={task} />
+          {posts?.map((post, id) => (
+            <TableRow key={id} post={post} />
           ))}
         </tbody>
       </table>
@@ -98,36 +104,66 @@ const TaskTable = ({ tasks }) => {
 
 const PostsDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const totals = summary.tasks;
+  const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const [postStats, setPostStats] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const postStatsData = await DashboardService.getPostsStatisticsData();
+        const postsData = await BlogService.getAllBlogPosts();
+        setPostStats(postStatsData);
+        setPosts(postsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredPosts = posts.filter(post =>
+    post.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const { postsCount, commentsCount, likesCount, deletedPosts } = postStats;
 
   const stats = [
     {
       _id: "1",
       label: "POSTS",
-      total: summary?.totalTasks || 0,
+      total: postsCount || 0,
       icon: <RoomIcon />,
       bg: "bg-[#1d4ed8]",
     },
     {
       _id: "2",
       label: "LIKES",
-      total: totals["completed"] || 0,
+      total: likesCount || 0,
       icon: <InsertPhotoIcon />,
       bg: "bg-[#b444d0]",
     },
     {
       _id: "3",
       label: "COMMENTS",
-      total: totals["in progress"] || 0,
+      total: commentsCount || 0,
       icon: <ArticleIcon />,
       bg: "bg-[#f59e0b]",
     },
     {
       _id: "4",
       label: "DELETED",
-      total: totals["todo"],
+      total: deletedPosts || 0,
       icon: <GroupIcon />,
-      bg: "bg-[#be185d]" || 0,
+      bg: "bg-[#be185d]",
     },
   ];
 
@@ -157,8 +193,8 @@ const PostsDashboard = () => {
         <div className='w-1/5 bg-indigo-700 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
-     {/* Mobile Sidebar */}
-     <MobileSidebar
+        {/* Mobile Sidebar */}
+        <MobileSidebar
           isSidebarOpen={isSidebarOpen}
           closeSidebar={() => setIsSidebarOpen(false)}
         />
@@ -170,25 +206,47 @@ const PostsDashboard = () => {
               <MdMenu />
             </button>
           </header>
-        <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
-          <div className='grid grid-cols-1 md:grid-cols-4 gap-5 mb-4'>
-            {stats.map(({ icon, bg, label, total }, index) => (
-              <Card key={index} icon={icon} bg={bg} label={label} count={total} />
-            ))}
-          </div>
-          <div className='flex-1'>
-            <Outlet />
-          </div>
-          <div className='bg-indigo-700 p-6'>
-            <TaskTable tasks={summary.last10Task} />
+          <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
+              <>
+                {isLoading ? (
+                  <div className="">
+                    <FontAwesomeIcon icon={faSpinner} spin  className="text-2xl text-white"/>
+                  </div>
+                ) : (
+  
+                <div className='grid grid-cols-1 md:grid-cols-4 gap-5 mb-4'>
+                  {stats.map(({ icon, bg, label, total }, index) => (
+                    <Card key={index} icon={icon} bg={bg} label={label} count={total} />
+                  ))}
+                </div>
+                )}
+
+                <div className=' p-4 mb-4 rounded'>
+                  <input
+                    type='text'
+                    placeholder='Search posts...'
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    className='w-full px-4 py-2 border border-gray-300 rounded'
+                  />
+                </div>
+                <div className='bg-indigo-700 p-6'>
+                  {isLoading ? (
+                    <div className="">
+                      <FontAwesomeIcon icon={faSpinner} spin />
+                    </div>
+                  ) : (
+                    <PostTable posts={filteredPosts} />
+                  )}
+                </div>
+              </>
           </div>
         </div>
-      </div>
       </div>
       <BackToTopButton />
       <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
         <Footer />
-        </div>
+      </div>
     </section>
   );
 };
