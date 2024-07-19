@@ -3,6 +3,7 @@ import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import styles from '../style';
 
 const DragDropImageUploader = () => {
   const [images, setImages] = useState([]);
@@ -131,6 +132,7 @@ const DragDropImageUploader = () => {
       <div className="flex flex-col md:flex-row">
         {isAuthenticated ? (
           <>
+               
             <section className="w-full md:w-1/2 p-4 border-b md:border-b-0 md:border-r border-gray-300">
               <div className="flex justify-center items-center h-full text-center">
                 <div className="w-full p-2 transition border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-purple-400 focus:outline-none cta-block">
@@ -190,6 +192,7 @@ const DragDropImageUploader = () => {
                     </option>
                   ))}
                 </select>
+                
                 <button onClick={uploadImages} type="submit" className="my-7 py-2 px-4 text-white w-full p-4 rounded border border-blue-300">
                   {loading ? <FontAwesomeIcon icon={faSpinner} spin size="1x" className="mr-2" /> : 'Submit'}
                 </button>
@@ -205,6 +208,7 @@ const DragDropImageUploader = () => {
           </div>
         )}
       </div>
+      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
       <div className="test-image-container">
         {images.map((image, index) => (
           <div className="image" key={index}>
@@ -215,6 +219,7 @@ const DragDropImageUploader = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };

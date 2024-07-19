@@ -27,7 +27,7 @@ const linkData = [
   },
   {
     label: "Posts",
-    link: "/Posts",
+    link: "/PostsDashboard",
     icon: <FaUsers />,
   },
   {
