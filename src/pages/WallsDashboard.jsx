@@ -21,7 +21,7 @@ import BackToTopButton from '../components/BackToTopButton.jsx';
 import Sidebar from '../components/dashboard/Sidebar';
 import MobileSidebar from '../components/dashboard/MobileSidebar';
 
-const TaskTable = ({ tasks }) => {
+const ArtworksTable = ({ tasks }) => {
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
@@ -180,7 +180,7 @@ const WallsDashboard = () => {
             <Outlet />
           </div>
           <div className='bg-indigo-700 p-6'>
-            <TaskTable tasks={summary.last10Task} />
+            <ArtworksTable tasks={summary.last10Task} />
           </div>
         </div>
       </div>
