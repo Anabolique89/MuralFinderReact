@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MdMenu,
   MdKeyboardArrowDown,
@@ -10,9 +10,8 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ArticleIcon from '@mui/icons-material/Article';
 import RoomIcon from '@mui/icons-material/Room';
 import moment from "moment";
-import { summary } from "../assets/data";
 import clsx from "clsx";
-import { BGS, PRIOTITYSTYLES, TASK_TYPE, getInitials } from "../utils/index.js";
+import { summary } from "../assets/data";
 import UserInfo from "../components/dashboard/UserInfo";
 import { Outlet } from "react-router-dom";
 import styles from '../style';
@@ -20,14 +19,12 @@ import Footer from '../components/Footer.jsx';
 import BackToTopButton from '../components/BackToTopButton.jsx';
 import Sidebar from '../components/dashboard/Sidebar';
 import MobileSidebar from '../components/dashboard/MobileSidebar';
+import WallService from "../services/WallService.js"; // Import your wall service
+import DashboardService from "../services/DashboardService.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const ArtworksTable = ({ tasks }) => {
-  const ICONS = {
-    high: <MdKeyboardDoubleArrowUp />,
-    medium: <MdKeyboardArrowUp />,
-    low: <MdKeyboardArrowDown />,
-  };
-
+const WallsTable = ({ walls, onEdit, onDelete, onView }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
       <tr className='text-black text-left'>
@@ -35,49 +32,48 @@ const ArtworksTable = ({ tasks }) => {
         <th className='py-2'>Status</th>
         <th className='py-2'>User</th>
         <th className='py-2'>Location</th>
-        <th className='py-2'>Description</th>
-        <th className='py-2 hidden md:block'>Created At</th>
+        <th className='py-2'>Actions</th>
       </tr>
     </thead>
   );
 
-  const TableRow = ({ task }) => (
+  const TableRow = ({ wall }) => (
     <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
-          <div
-            className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
-          />
-          <p className='text-base text-black'>{task.title}</p>
+          <p className='text-base text-black'>{wall.title ?? "Anonymous"}</p>
         </div>
       </td>
       <td className='py-2'>
         <div className='flex gap-1 items-center'>
-          <span className={clsx("text-lg", PRIOTITYSTYLES[task.priority])}>
-            {ICONS[task.priority]}
-          </span>
-          <span className='capitalize'>{task.priority}</span>
+          <span className='capitalize'>{wall.is_verified ? "Verified" : "Unverified"}</span>
         </div>
       </td>
       <td className='py-2'>
         <div className='flex'>
-          {task.team.map((m, index) => (
-            <div
-              key={index}
-              className={clsx(
-                "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1",
-                BGS[index % BGS.length]
-              )}
-            >
-              <UserInfo user={m} />
-            </div>
-          ))}
+          <UserInfo user={wall.added_by} />
         </div>
       </td>
       <td className='py-2 hidden md:block'>
         <span className='text-base text-gray-600'>
-          {moment(task?.date).fromNow()}
+          {wall.location_text}
         </span>
+      </td>
+      <td className='py-2 hidden md:block'>
+        <span className='text-base text-gray-600'>
+          {moment(wall.created_at).fromNow()}
+        </span>
+      </td>
+      <td className='py-2'>
+        <button onClick={() => onView(wall)}>
+          <span className='text-base text-gray-600'> <FontAwesomeIcon icon={faEye} /></span>
+        </button>
+        <button onClick={() => onEdit(wall)}>
+          <span className='text-base text-blue-600 ml-2 mr-2'> <FontAwesomeIcon icon={faPencil} /></span>
+        </button>
+        <button onClick={() => onDelete(wall)}>
+          <span className='text-base text-red-600'> <FontAwesomeIcon icon={faTrash} /></span>
+        </button>
       </td>
     </tr>
   );
@@ -87,8 +83,8 @@ const ArtworksTable = ({ tasks }) => {
       <table className='w-full'>
         <TableHeader />
         <tbody>
-          {tasks?.map((task, id) => (
-            <TableRow key={id} task={task} />
+          {walls?.map((wall, id) => (
+            <TableRow key={id} wall={wall} />
           ))}
         </tbody>
       </table>
@@ -98,36 +94,74 @@ const ArtworksTable = ({ tasks }) => {
 
 const WallsDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const totals = summary.tasks;
+  const [walls, setWalls] = useState([]);
+  const [wallsStats, setWallStats] = useState([]);
+  const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchWalls = async () => {
+      const wallsData = await WallService.getAllWalls()
+      wallsData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      console.log(wallsData)
+      const wallsStat = await DashboardService.getWallsStatisticsData()
+      setWalls(wallsData);
+      setWallStats(wallsStat);
+    };
+    fetchWalls();
+  }, []);
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleEdit = (wall) => {
+    // Edit functionality here
+  };
+
+  const handleDelete = (wall) => {
+    // Delete functionality here
+  };
+
+  const handleView = (wall) => {
+    // View functionality here
+  };
+
+  const filteredWalls = walls.filter(wall => 
+    wall.location_text.toLowerCase().includes(search.toLowerCase())
+  );
+
+  
+
+  const {wallsCount, verified, unverified, deletedCount} = wallsStats
   const stats = [
     {
       _id: "1",
       label: "WALLS",
-      total: summary?.totalTasks || 0,
+      total: wallsCount,
       icon: <RoomIcon />,
       bg: "bg-[#1d4ed8]",
     },
     {
       _id: "2",
-      label: "LEGAL",
-      total: totals["completed"] || 0,
+      label: "VERIFIED",
+      total: verified,
       icon: <InsertPhotoIcon />,
       bg: "bg-[#b444d0]",
     },
     {
       _id: "3",
-      label: "ILLEGAL",
-      total: totals["in progress"] || 0,
+      label: "UNVERIFIED",
+      total: unverified,
       icon: <ArticleIcon />,
       bg: "bg-[#f59e0b]",
     },
     {
       _id: "4",
       label: "DELETED",
-      total: totals["todo"],
+      total: deletedCount,
       icon: <GroupIcon />,
-      bg: "bg-[#be185d]" || 0,
+      bg: "bg-[#be185d]",
     },
   ];
 
@@ -157,8 +191,8 @@ const WallsDashboard = () => {
         <div className='w-1/5 bg-indigo-700 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
-     {/* Mobile Sidebar */}
-     <MobileSidebar
+        {/* Mobile Sidebar */}
+        <MobileSidebar
           isSidebarOpen={isSidebarOpen}
           closeSidebar={() => setIsSidebarOpen(false)}
         />
@@ -170,25 +204,36 @@ const WallsDashboard = () => {
               <MdMenu />
             </button>
           </header>
-        <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
-          <div className='grid grid-cols-1 md:grid-cols-4 gap-5 mb-4'>
-            {stats.map(({ icon, bg, label, total }, index) => (
-              <Card key={index} icon={icon} bg={bg} label={label} count={total} />
-            ))}
-          </div>
-          <div className='flex-1'>
-            <Outlet />
-          </div>
-          <div className='bg-indigo-700 p-6'>
-            <ArtworksTable tasks={summary.last10Task} />
+          <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
+            <div className='grid grid-cols-1 md:grid-cols-4 gap-5 mb-4'>
+              {stats.map(({ icon, bg, label, total }, index) => (
+                <Card key={index} icon={icon} bg={bg} label={label} count={total} />
+              ))}
+            </div>
+            <div className='flex justify-between items-center mb-4'>
+              <input 
+                type="text"
+                value={search}
+                onChange={handleSearch}
+                placeholder="Search Walls"
+                className="p-2 border border-gray-300 rounded w-full"
+              />
+            </div>
+            <div className='flex-1'>
+              <WallsTable 
+                walls={filteredWalls} 
+                onEdit={handleEdit} 
+                onDelete={handleDelete} 
+                onView={handleView} 
+              />
+            </div>
           </div>
         </div>
-      </div>
       </div>
       <BackToTopButton />
       <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
         <Footer />
-        </div>
+      </div>
     </section>
   );
 };
