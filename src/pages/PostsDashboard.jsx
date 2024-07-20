@@ -169,10 +169,10 @@ const PostsDashboard = () => {
 
   const Card = ({ label, count, bg, icon }) => {
     return (
-      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 cta-block border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
+      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className={` ${styles.paragraph} text-base font-semibold`}>{label}</p>
-          <span className='text-2xl font-regular text-white font-raleway'>{count}</span>
+          <p className={` text-black text-base font-semibold`}>{label}</p>
+          <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>
           <span className='text-sm text-gray-400'>{"110 last month"}</span>
         </div>
         <div

@@ -40,12 +40,12 @@ const Users = () => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
-        <th className='py-2'>Full Name</th>
-        <th className='py-2'>Title</th>
-        <th className='py-2'>Email</th>
-        <th className='py-2'>Role</th>
-        <th className='py-2'>Active</th>
-        <th className='py-2'></th>
+        <th className='py-2 px-2'>Username</th>
+        <th className='py-2 px-2'>Title</th>
+        <th className='py-2 px-2'>Email</th>
+        <th className='py-2 px-2'>Role</th>
+        <th className='py-2 px-2'>Active</th>
+        <th className='py-2 px-2'></th>
       </tr>
     </thead>
   );

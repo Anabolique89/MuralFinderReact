@@ -10,7 +10,6 @@ import {
 } from "react-icons/md";
 import GroupIcon from '@mui/icons-material/Group';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import ArticleIcon from '@mui/icons-material/Article';
 import moment from "moment";
 import clsx from "clsx";
 import { BGS, PRIOTITYSTYLES } from "../utils/index.js";
@@ -23,9 +22,10 @@ import Sidebar from '../components/dashboard/Sidebar';
 import MobileSidebar from '../components/dashboard/MobileSidebar';
 import DashboardService from '../services/DashboardService.js';
 import Chart from '../components/Chart'; // Make sure you have the correct path for Chart component
-import { RoomServiceOutlined } from "@mui/icons-material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ChatIcon from '@mui/icons-material/Chat';
 
 const ArtworksTable = ({ artworks }) => {
   const ICONS = {
@@ -145,21 +145,21 @@ const ArtworksDashboard = () => {
             _id: "1",
             label: "ARTWORKS",
             total: artworksCount || 0,
-            icon: <RoomServiceOutlined />,
+            icon: <InsertPhotoIcon />,
             bg: "bg-[#1d4ed8]",
           },
           {
             _id: "2",
             label: "LIKES",
             total: likesCount || 0,
-            icon: <InsertPhotoIcon />,
+            icon: <ThumbUpIcon/>,
             bg: "bg-[#b444d0]",
           },
           {
             _id: "3",
             label: "COMMENTS",
             total: commentsCount || 0,
-            icon: <ArticleIcon />,
+            icon: <ChatIcon />,
             bg: "bg-[#f59e0b]",
           },
           {
@@ -208,10 +208,10 @@ const ArtworksDashboard = () => {
 
   const Card = ({ label, count, bg, icon }) => {
     return (
-      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 cta-block border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
+      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className={` ${styles.paragraph} text-base font-semibold`}>{label}</p>
-          <span className='text-2xl font-regular text-white font-raleway'>{count}</span>
+          <p className={`text-black text-base font-semibold`}>{label}</p>
+          <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>
           <span className='text-sm text-gray-400'>{"110 last month"}</span>
         </div>
         <div
@@ -251,8 +251,8 @@ const ArtworksDashboard = () => {
                 <Card key={index} icon={icon} bg={bg} label={label} count={total} />
               ))}
             </div>
-            <div className='w-full backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 cta-block border-solid border-2 border-indigo-600 my-16 p-4 rounded shadow-sm'>
-              <h4 className='text-xl text-white font-semibold font-raleway'>
+            <div className='w-full backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 my-16 p-4 rounded shadow-sm'>
+              <h4 className='text-xl text-black font-semibold font-raleway'>
                 Artwork Visualization
               </h4>
               {isLoading ? (
@@ -262,7 +262,7 @@ const ArtworksDashboard = () => {
               ) : (
                 <div className='h-64 w-full'>
                 <Chart chartData={chartData} />
-                <Link to="/admin/artworks" className="text-indigo-600 hover:underline mt-4 inline-block">
+                <Link to="/admin/artworks" className="text-white hover:underline mt-4 inline-block">
                   View all artworks
                 </Link>
                 </div>

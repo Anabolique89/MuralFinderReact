@@ -6,14 +6,14 @@ import {
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
 import GroupIcon from '@mui/icons-material/Group';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 import ArticleIcon from '@mui/icons-material/Article';
 import RoomIcon from '@mui/icons-material/Room';
 import moment from "moment";
 import clsx from "clsx";
-import { summary } from "../assets/data";
 import UserInfo from "../components/dashboard/UserInfo";
 import { Outlet } from "react-router-dom";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import styles from '../style';
 import Footer from '../components/Footer.jsx';
 import BackToTopButton from '../components/BackToTopButton.jsx';
@@ -28,38 +28,38 @@ const WallsTable = ({ walls, onEdit, onDelete, onView }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
       <tr className='text-black text-left'>
-        <th className='py-2'>Wall Title</th>
-        <th className='py-2'>Status</th>
-        <th className='py-2'>User</th>
-        <th className='py-2'>Location</th>
-        <th className='py-2'>Actions</th>
+        <th className='py-2 px-2'>Wall Title</th>
+        <th className='py-2 px-2'>Status</th>
+        <th className='py-2 px-2'>User</th>
+        <th className='py-2 px-2'>Location</th>
+        <th className='py-2 px-2'>Actions</th>
       </tr>
     </thead>
   );
 
   const TableRow = ({ wall }) => (
     <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
-      <td className='py-2'>
+      <td className='py-2 px-2'>
         <div className='flex items-center gap-2'>
           <p className='text-base text-black'>{wall.title ?? "Anonymous"}</p>
         </div>
       </td>
-      <td className='py-2'>
+      <td className='py-2 px-2'>
         <div className='flex gap-1 items-center'>
           <span className='capitalize'>{wall.is_verified ? "Verified" : "Unverified"}</span>
         </div>
       </td>
-      <td className='py-2'>
+      <td className='py-2 px-2'>
         <div className='flex'>
           <UserInfo user={wall.added_by} />
         </div>
       </td>
-      <td className='py-2 hidden md:block'>
+      <td className='py-2 px-2 hidden md:block'>
         <span className='text-base text-gray-600'>
           {wall.location_text}
         </span>
       </td>
-      <td className='py-2 hidden md:block'>
+      <td className='py-2 px-2 hidden md:block'>
         <span className='text-base text-gray-600'>
           {moment(wall.created_at).fromNow()}
         </span>
@@ -146,15 +146,15 @@ const WallsDashboard = () => {
       _id: "2",
       label: "VERIFIED",
       total: verified,
-      icon: <InsertPhotoIcon />,
-      bg: "bg-[#b444d0]",
+      icon: <CheckCircleIcon />,
+      bg: "bg-[#00b55e]",
     },
     {
       _id: "3",
       label: "UNVERIFIED",
       total: unverified,
-      icon: <ArticleIcon />,
-      bg: "bg-[#f59e0b]",
+      icon: <DangerousIcon />,
+      bg: "bg-[#e50338]",
     },
     {
       _id: "4",
@@ -167,10 +167,10 @@ const WallsDashboard = () => {
 
   const Card = ({ label, count, bg, icon }) => {
     return (
-      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 cta-block border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
+      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className={` ${styles.paragraph} text-base font-semibold`}>{label}</p>
-          <span className='text-2xl font-regular text-white font-raleway'>{count}</span>
+          <p className={`text-black text-base font-semibold`}>{label}</p>
+          <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>
           <span className='text-sm text-gray-400'>{"110 last month"}</span>
         </div>
         <div
@@ -210,13 +210,13 @@ const WallsDashboard = () => {
                 <Card key={index} icon={icon} bg={bg} label={label} count={total} />
               ))}
             </div>
-            <div className='flex justify-between items-center mb-4'>
+            <div className='flex justify-between items-center mb-4 font-raleway'>
               <input 
                 type="text"
                 value={search}
                 onChange={handleSearch}
                 placeholder="Search Walls"
-                className="p-2 border border-gray-300 rounded w-full"
+                className="p-2 border border-gray-300 rounded w-full "
               />
             </div>
             <div className='flex-1'>
