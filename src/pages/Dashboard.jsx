@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  MdMenu,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-  MdKeyboardDoubleArrowUp,
+  MdMenu
 } from 'react-icons/md';
 import GroupIcon from '@mui/icons-material/Group';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
