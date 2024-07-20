@@ -52,6 +52,7 @@ export const dashboardEndpoints = {
   getArtworksStatistics: 'admin/statistics/artworks',
   getWallsStatisticsData: 'admin/statistics/walls',
   getPostsStatisticsData: 'admin/statistics/posts',
+  getUsersStatisticsData: (page) => `admin/statistics/users?page=${page}`,
 }
 
 export const contactEndpoint = "/contact";

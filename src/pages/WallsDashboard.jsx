@@ -11,7 +11,6 @@ import ArticleIcon from '@mui/icons-material/Article';
 import RoomIcon from '@mui/icons-material/Room';
 import moment from "moment";
 import clsx from "clsx";
-import { summary } from "../assets/data";
 import UserInfo from "../components/dashboard/UserInfo";
 import { Outlet } from "react-router-dom";
 import styles from '../style';
@@ -23,8 +22,9 @@ import WallService from "../services/WallService.js"; // Import your wall servic
 import DashboardService from "../services/DashboardService.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../components/Spinner.jsx";
 
-const WallsTable = ({ walls, onEdit, onDelete, onView }) => {
+const WallsTable = ({ walls, onEdit, onDelete, onView, isLoading }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
       <tr className='text-black text-left'>
@@ -83,9 +83,17 @@ const WallsTable = ({ walls, onEdit, onDelete, onView }) => {
       <table className='w-full'>
         <TableHeader />
         <tbody>
-          {walls?.map((wall, id) => (
-            <TableRow key={id} wall={wall} />
-          ))}
+          {isLoading ? (
+            <tr>
+              <td colSpan="6" className="text-center py-4">
+                <Spinner />
+              </td>
+            </tr>
+          ) : (
+            walls?.map((wall, id) => (
+              <TableRow key={id} wall={wall} />
+            ))
+          )}
         </tbody>
       </table>
     </div>
@@ -97,16 +105,21 @@ const WallsDashboard = () => {
   const [walls, setWalls] = useState([]);
   const [wallsStats, setWallStats] = useState([]);
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchWalls = async () => {
-      const wallsData = await WallService.getAllWalls()
-      wallsData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      console.log(wallsData)
-      const wallsStat = await DashboardService.getWallsStatisticsData()
-      setWalls(wallsData);
-      setWallStats(wallsStat);
+      try {
+        const wallsData = await WallService.getAllWalls();
+        wallsData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        const wallsStat = await DashboardService.getWallsStatisticsData();
+        setWalls(wallsData);
+        setWallStats(wallsStat);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchWalls();
   }, []);
@@ -127,13 +140,11 @@ const WallsDashboard = () => {
     // View functionality here
   };
 
-  const filteredWalls = walls.filter(wall => 
+  const filteredWalls = walls.filter(wall =>
     wall.location_text.toLowerCase().includes(search.toLowerCase())
   );
 
-  
-
-  const {wallsCount, verified, unverified, deletedCount} = wallsStats
+  const { wallsCount, verified, unverified, deletedCount } = wallsStats;
   const stats = [
     {
       _id: "1",
@@ -170,7 +181,7 @@ const WallsDashboard = () => {
       <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 cta-block border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
           <p className={` ${styles.paragraph} text-base font-semibold`}>{label}</p>
-          <span className='text-2xl font-regular text-white font-raleway'>{count}</span>
+          {isLoading ? <Spinner /> : <span className='text-2xl font-regular text-white font-raleway'>{count}</span>}
           <span className='text-sm text-gray-400'>{"110 last month"}</span>
         </div>
         <div
@@ -211,7 +222,7 @@ const WallsDashboard = () => {
               ))}
             </div>
             <div className='flex justify-between items-center mb-4'>
-              <input 
+              <input
                 type="text"
                 value={search}
                 onChange={handleSearch}
@@ -220,11 +231,12 @@ const WallsDashboard = () => {
               />
             </div>
             <div className='flex-1'>
-              <WallsTable 
-                walls={filteredWalls} 
-                onEdit={handleEdit} 
-                onDelete={handleDelete} 
-                onView={handleView} 
+              <WallsTable
+                walls={filteredWalls}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onView={handleView}
+                isLoading={isLoading}
               />
             </div>
           </div>
