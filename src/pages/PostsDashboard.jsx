@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
   MdMenu,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-  MdKeyboardDoubleArrowUp,
   MdVisibility,
   MdEdit,
   MdDelete,
 } from "react-icons/md";
-import GroupIcon from '@mui/icons-material/Group';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ArticleIcon from '@mui/icons-material/Article';
-import RoomIcon from '@mui/icons-material/Room';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import ChatIcon from '@mui/icons-material/Chat';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import moment from "moment";
 import clsx from "clsx";
 import UserInfo from "../components/dashboard/UserInfo";
@@ -141,40 +138,40 @@ const PostsDashboard = () => {
       _id: "1",
       label: "POSTS",
       total: postsCount || 0,
-      icon: <RoomIcon />,
+      icon: <InsertPhotoIcon />,
       bg: "bg-[#1d4ed8]",
     },
     {
       _id: "2",
       label: "LIKES",
       total: likesCount || 0,
-      icon: <InsertPhotoIcon />,
+      icon: <ThumbUpIcon/>,
       bg: "bg-[#b444d0]",
     },
     {
       _id: "3",
       label: "COMMENTS",
       total: commentsCount || 0,
-      icon: <ArticleIcon />,
+      icon: <ChatIcon />,
       bg: "bg-[#f59e0b]",
     },
     {
       _id: "4",
       label: "DELETED",
       total: deletedPosts || 0,
-      icon: <GroupIcon />,
+      icon: <ArticleIcon />,
       bg: "bg-[#be185d]",
     },
   ];
 
   const Card = ({ label, count, bg, icon }) => {
     return (
-      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 cta-block border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
-        <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className={` ${styles.paragraph} text-base font-semibold`}>{label}</p>
-          <span className='text-2xl font-regular text-white font-raleway'>{count}</span>
-          <span className='text-sm text-gray-400'>{"110 last month"}</span>
-        </div>
+      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
+         <div className='h-full flex flex-1 flex-col justify-between'>
+         <p className={` text-black text-base font-semibold`}>{label}</p>
+         <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>
+         <span className='text-sm text-gray-400'>{"110 last month"}</span>
+         </div>
         <div
           className={clsx(
             "w-10 h-10 rounded-full flex items-center justify-center text-white",

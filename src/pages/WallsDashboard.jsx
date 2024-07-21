@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  MdMenu,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-  MdKeyboardDoubleArrowUp,
+  MdMenu
 } from "react-icons/md";
-import GroupIcon from '@mui/icons-material/Group';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import ArticleIcon from '@mui/icons-material/Article';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 import RoomIcon from '@mui/icons-material/Room';
+import GroupIcon from '@mui/icons-material/Group';
+import CheckCircleIcon from '@mui/icons-material/InsertPhoto';
 import moment from "moment";
 import clsx from "clsx";
 import UserInfo from "../components/dashboard/UserInfo";
@@ -146,42 +143,42 @@ const WallsDashboard = () => {
 
   const { wallsCount, verified, unverified, deletedCount } = wallsStats;
   const stats = [
-    {
-      _id: "1",
-      label: "WALLS",
-      total: wallsCount,
-      icon: <RoomIcon />,
-      bg: "bg-[#1d4ed8]",
-    },
-    {
-      _id: "2",
-      label: "VERIFIED",
-      total: verified,
-      icon: <InsertPhotoIcon />,
-      bg: "bg-[#b444d0]",
-    },
-    {
-      _id: "3",
-      label: "UNVERIFIED",
-      total: unverified,
-      icon: <ArticleIcon />,
-      bg: "bg-[#f59e0b]",
-    },
-    {
-      _id: "4",
-      label: "DELETED",
-      total: deletedCount,
-      icon: <GroupIcon />,
-      bg: "bg-[#be185d]",
-    },
-  ];
+        {
+          _id: "1",
+          label: "WALLS",
+          total: wallsCount,
+          icon: <RoomIcon />,
+          bg: "bg-[#1d4ed8]",
+        },
+        {
+          _id: "2",
+          label: "VERIFIED",
+          total: verified,
+          icon: <CheckCircleIcon />,
+          bg: "bg-[#00b55e]",
+        },
+        {
+          _id: "3",
+          label: "UNVERIFIED",
+          total: unverified,
+          icon: <DangerousIcon />,
+          bg: "bg-[#e50338]",
+        },
+        {
+          _id: "4",
+          label: "DELETED",
+          total: deletedCount,
+          icon: <GroupIcon />,
+          bg: "bg-[#be185d]",
+        },
+      ];
 
   const Card = ({ label, count, bg, icon }) => {
     return (
-      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 cta-block border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
+      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className={` ${styles.paragraph} text-base font-semibold`}>{label}</p>
-          {isLoading ? <Spinner /> : <span className='text-2xl font-regular text-white font-raleway'>{count}</span>}
+          <p className={` text-black text-base font-semibold`}>{label}</p>
+          {isLoading ? <Spinner /> : <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>}
           <span className='text-sm text-gray-400'>{"110 last month"}</span>
         </div>
         <div

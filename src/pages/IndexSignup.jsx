@@ -134,9 +134,7 @@ const IndexSignup = () => {
         <img className='w-[80%] h-auto relative z-[2] p-2 md:px-20 sm:px-26 ss:px-34' src={libraWhite} alt="aura" />
       </div>
       <BackToTopButton />
-    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
-                <Footer />
-            </div>
+ 
     </div>
   );
 };
