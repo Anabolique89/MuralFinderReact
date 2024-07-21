@@ -79,7 +79,7 @@ const Indexlogin = () => {
 
   return (
     <section>
-      <div className={`${layout.sectionImg} bg-indigo-700 mt-0 w-full min-h-screen mb-5`}>
+      <div className={`flex-1 flex ${styles.flexCenter} md:ml-10 ml-0 md:mt-0 mt-2 relative bg-indigo-700 w-full min-h-screen`}>
         <form className="login-form absolute z-[5] backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-30 rounded-2xl border-solid border-2 border-indigo-600 sm:mt-10 sm:mb-10" onSubmit={handleLogin}>
           <h1 className='font-raleway font-semibold ss:text-[30px] text-[35px] text-white ss:leading-[40px] leading-[45px] w-full p-2'>Enter Your Account.</h1>
           {emailError && <span className="error-message mt-2 text-red-500">{emailError}</span>}
@@ -114,10 +114,10 @@ const Indexlogin = () => {
             </button>
           </div>
           <SocialLogin />
-          <p className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black`}>Don't have an account? <Link className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black hover:text-blue-800 underline`} to='/IndexSignup'> Register Here</Link></p>
+          <p className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black mt-4`}>Don't have an account? <Link className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black hover:text-white underline`} to='/IndexSignup'> Register Here</Link></p>
         </form>
         <div className={layout.sectionImg}>
-          <img className='w-[80%] h-auto relative z-[2] w-[100%] p-2 md:px-20 sm:px-26 ss:px-34' src={fadeintoyouWhite} alt="swim" />
+          <img className='h-auto relative z-[2] w-[100%] p-2 md:px-20 sm:px-26 ss:px-34' src={fadeintoyouWhite} alt="swim" />
         </div>
       </div>
       <BackToTopButton />
