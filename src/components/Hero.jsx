@@ -26,7 +26,7 @@ const Hero = () => (
 <p className={`${styles.paragraph} max-w-[470px] mt-5`}>A platform that connects the urban art community worldwide and allows artists to explore new terrain and expand their creative talents easily all 
   the while meeting new people and sharing new experiences with fellow artists.</p>
   <div className='flex flex-row justify-centre'>
-  <img src={google} alt="googleplay" className='w-[140px] h-auto object-contain mr-5 cursor-pointer mt-2' />
+  <img src={google} alt="googleplay" className='w-[100px] h-auto object-contain mr-5 cursor-pointer mt-2' />
   <a href="/IndexSignup">
   <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>Create Account</button>
   </a>

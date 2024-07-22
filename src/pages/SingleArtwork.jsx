@@ -50,7 +50,7 @@ const SingleArtwork = () => {
                 
                    </a>
                    </div>
-            <div className="author flex items-center px-2">
+            <div className="author flex items-center">
                   
             <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
               {artwork.user?.profile ? (
@@ -74,12 +74,12 @@ const SingleArtwork = () => {
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora reiciendis ad architecto at aut placeat quia, minus dolor praesentium officia maxime deserunt porro amet ab debitis deleniti modi soluta similique...
                     </p>
                     <div className="flex items-center justify-start mt-2 mx-2">
-                    <a href="#" className="flex text-gray-700">
+                    <a href="#" className="flex text-gray-500">
                         
                              <FontAwesomeIcon icon={faHeart} className="text-purple-950 mr-2" />
                            <span>5</span> 
                         </a>
-                        <a href="#" className="flex text-gray-700">
+                        <a href="#" className="flex text-gray-500">
                         <FontAwesomeIcon icon={faComments} className="text-purple-950 mr-2 ml-4" />
                         <span>5</span>
                    </a>

@@ -1,6 +1,6 @@
 import About from "./About";
 import AddBlog from "./AddBlog";
-// import BlogPosts from "./BlogPosts";
+import BlogPosts from "./BlogPosts";
 import Community from "./Community";
 import Contact from "./Contact";
 import DisplayWalls from "./DisplayWalls";
@@ -42,7 +42,7 @@ import PostsDashboard from "./PostsDashboard";
 export {
   About,
   AddBlog,
-  // BlogPosts,
+  BlogPosts,
   Community,
   Contact,
   DisplayWalls,
