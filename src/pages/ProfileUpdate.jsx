@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
 import styles from '../style';
 
 const MySwal = withReactContent(Swal);
@@ -32,9 +34,11 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
             }
             await AuthService.updateProfile(userId, profileData);
             console.log('Profile updated successfully');
+            toast.success('Profile updated successfully!');
             onProfileUpdated(); // Call the callback function
         } catch (error) {
             console.error('Error updating profile:', error.message);
+            toast.error('Error updating profile!');
         }
     };
 
@@ -71,7 +75,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                         'success'
                     );
                 } catch (error) {
-                    console.error('Error deleting account:', error.message);
+                    console.error('Error deleting account:', error);
                     Swal.fire(
                         'Error!',
                         'There was an error deleting your account.',
@@ -200,6 +204,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                     <hr className="mt-4 mb-8" />
                 </div>
             </div>
+            <ToastContainer /> 
         </div>
     );
 };
