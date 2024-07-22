@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../style';
-import { defaultimg } from '../assets';
+import { defaultimg, swimBlue, swimWhite } from '../assets';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton } from '../components';
 import ArtworkService from '../services/ArtworkService';
+import { slider } from '../assets';
 
 
 const Profile = () => {
@@ -172,77 +173,77 @@ const Profile = () => {
             
                         {/* <div className=' float-right'><RiMessage2Fill className='w-[30px] h-[30px] ' /></div> */}
                         <div className='highlights flex flex-column mb-4 mt-2'>
-                            {!blogData ? (
-                                // Display spinners while blog data is being fetched
-                                <div className="flex justify-center">
-                                    {[...Array(3)].map((_, index) => (
-                                        <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
-                                    ))}
-                                </div>
-                            ) : (
-                                // Display blog images once data is fetched
-                                blogData.map(blog => (
-                                    <img
-                                        key={blog.id}
-                                        src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
-                                        alt={`Blog Image ${blog.id}`}
-                                        className='object-cover highlight sm:mr-4 md:mr-6 mr-10'
-                                    />
-                                ))
-                            )}
-                        </div>
+    {!blogData ? (
+        // Display spinners while blog data is being fetched
+        <div className="flex justify-center">
+            {[...Array(3)].map((_, index) => (
+                <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
+            ))}
+        </div>
+    ) : (
+        // Display blog images once data is fetched
+        blogData.map(blog => (
+            <img
+                key={blog.id}
+                src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
+                alt={`Blog Image ${blog.id}`}
+                className='object-cover highlight sm:mr-4 md:mr-6 mr-10 z-[20]'
+            />
+        ))
+    )}
+</div>
 
+<div className="bg-white p-6 profile-content z-[20] w-full">
+    <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4 font-raleway">BLOG POSTS</h2>
 
+    {!blogData ? (
+        <div className="flex justify-center z-[20]">
+            <p className="text-white font-raleway font-regular mb-4">
+                Add your first post and join in the fun! Share your insights with our community! We welcome you to post anything art related,
+                useful information for people looking to paint on legal walls or colorful inspiration for travelers and artists. <span className='text-[16px] text-red-700 uppercase'>When user posts their first post, this paragraph tag disappears.</span>
+            </p>
+            {[...Array(3)].map((_, index) => (
+                <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
+            ))}
+        </div>
+    ) : (
+        blogData.map(blog => (
+            <div key={blog.id} className="mb-6 profile-post z-[20]">
+                <div className="flex justify-between flex-wrap gap-2 w-full z-[20]">
+                    <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</span>
+                    <p>
+                        <Link to={`/blog/edit/${blog.id}`}>
+                            <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
+                        </Link>
+                        <span className="text-purple-950">{formatDate(blog.created_at)}</span>
+                    </p>
+                </div>
+                <p className={`${styles.paragraph} mt-2 mb-2`}>
+                    <p>
+                        <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blog.content, 200)) }} />
+                    </p>
+                </p>
+            </div>
+        ))
+    )}
+    <div className={`${styles.flexCenter} mt-6`}>
+        <Link to={'/blog/create'} className={`flex py-2 px-4 mr-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</Link>
+        <Link to={'/community'} className={`flex py-2 px-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
+    </div>
+</div>
 
-                        <div className="bg-white p-6 profile-content">
+<div className='relative z-[1] mt-6'>
+    <img className='z-[1] w-[60%] h-auto opacity-[50%] ml-10 xs:ml-20 ' src={swimBlue} alt="Swim Blue" />
+</div>
 
-                            <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4">BLOG POSTS</h2>
-
-                            {!blogData ? (
-
-
-                                <div className="flex justify-center">
-                                    <p className="text-white font-raleway font-regular mb-4">
-                                        Add your first post and join in the fun! Share your insights with our community! We welcome you to post anything art related,
-                                        useful information for people looking to paint on legal walls or colorful inspiration for travelers and artists. <span className='text-[16px] text-red-700 uppercase'>When user posts their first post, this paragraph tag disapears.</span>
-                                    </p>
-                                    {[...Array(3)].map((_, index) => (
-                                        <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
-                                    ))}
-                                </div>
-                            ) :
-                                (blogData.map(blog => (
-                                    <div key={blog.id} className="mb-6 profile-post">
-                                        <div className="flex justify-between flex-wrap gap-2 w-full">
-                                            <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</span>
-                                            <p>
-                                                <Link to={`/blog/edit/${blog.id}`}>
-                                                    <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
-                                                </Link>
-
-                                                <span className="text-purple-950">{formatDate(blog.created_at)}</span>
-                                            </p>
-                                        </div>
-                                        <p className={`${styles.paragraph} mt-2 mb-2`}>
-                                            <p>
-                                                <div dangerouslySetInnerHTML={{ __html: cleanHTML(trimContent(blog.content, 200)) }} />
-                                            </p>
-                                        </p>
-                                    </div>
-                                ))
-                                )}
-
-                            <Link to={'/blog/create'} href="" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</Link>
-                            <Link to={'/community'} href="" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
-
-                        </div>
+                       
                     </div>
                 </div>
             </div>
 
 
       
-            <div className="bg-indigo-700 w-full overflow-hidden">
+            <div className="bg-indigo-700 w-full overflow-hidden mt-4 xs:mt-8">
                 <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
             </div>
             <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
@@ -265,7 +266,7 @@ const Profile = () => {
                         ))}
                     </div>
                 ) : (
-                    <h2 className={`${styles.heading2} `}>No artworks found.</h2>
+                    <h2 className={`${styles.heading2} text-center`}>No artworks found.</h2>
                 )
             )}
 </div>

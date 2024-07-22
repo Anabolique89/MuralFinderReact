@@ -39,6 +39,8 @@ import faeWhite from "./faeWhite.png";
 import iceCreamWhite from "./iceCreamWhite.png";
 import defaultimg from "./defaultimg.jpg";
 import bulbWhite from "./bulbWhite.png";
+import slider from "./slider.png";
+import swimBlue from "./swimBlue.png";
 
 export {
   bill,
@@ -82,4 +84,6 @@ export {
   iceCreamWhite,
   defaultimg,
   bulbWhite,
+  slider,
+  swimBlue,
 };
