@@ -73,7 +73,12 @@ const ProfileSettings = () => {
                                         <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Bio</label>
                                         <div className="rounded-lg border border-indigo-300 p-2.5">
                                             <p className="text-sm text-white">
-                                                {profileData && profileData.profile && profileData.profile.bio}
+                                                {profileData && profileData.profile && profileData.profile.bio} 
+                                            </p>
+                                        </div>
+                                        <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
+                                            <p className="text-sm text-white">
+                                                {profileData && profileData.email }
                                             </p>
                                         </div>
                                     </div>
