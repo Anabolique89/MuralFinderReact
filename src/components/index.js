@@ -28,6 +28,7 @@ import MuiBottomNavigation from "./MuiBottomNavigation.tsx";
 import BackToTopButton from "./BackToTopButton.jsx";
 import NotificationPanel from "./NotificationPanel.jsx";
 import Chart from "./Chart.jsx";
+import UserAvatar from "./UserAvatar.jsx";
 
 export {
   Navbar,
@@ -61,4 +62,5 @@ export {
   BackToTopButton,
   NotificationPanel,
   Chart,
+  UserAvatar,
 };

@@ -28,7 +28,7 @@ const Hero = () => (
   <div className='flex flex-row justify-centre'>
   <img src={google} alt="googleplay" className='w-[100px] h-auto object-contain mr-5 cursor-pointer mt-2' />
   <a href="/IndexSignup">
-  <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>Create Account</button>
+  <button type="button" className={`py-1 px-2 mt-2 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>Signup</button>
   </a>
   </div>
     </div>

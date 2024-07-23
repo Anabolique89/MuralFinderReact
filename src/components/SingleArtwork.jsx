@@ -18,6 +18,7 @@ const SingleArtwork = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+    const [likedComments, setLikedComments] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -87,6 +88,7 @@ const SingleArtwork = () => {
                     return comment;
                 });
                 setComments(updatedComments);
+                setLikedComments({ ...likedComments, [commentId]: true });
                 toast.info('Comment liked!');
             } else {
                 toast.error('Failed to like comment.');
@@ -101,7 +103,6 @@ const SingleArtwork = () => {
         ? `https://api.muralfinder.net/${artwork.user?.profile?.profile_image_url}` 
         : '';
 
-        console.log(artwork.image_path)
     return (
         <section className={`rounded-xl overflow-hidden shadow-md p-4 ${styles}`}>
             <div className="mx-auto px-4 py-8 max-w-4xl my-20">
@@ -125,10 +126,10 @@ const SingleArtwork = () => {
                                 <FontAwesomeIcon icon={faEllipsisVertical} className="text-purple-950 mr-2 ml-4" />
                             </a>
                         </div>
-                        <div className="author flex items-center -ml-3 px-2">
-                            <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
+                        <div className="author flex items-center px-2">
+                            <Link to={`/profile/${artwork.user?.id}`} className="flex items-center ml-4">
                                 {userImage ? (
-                                    <img src={userImage} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
+                                    <img src={userImage} alt={artwork.user?.username} className='max-w-none w-[50px] h-[50px] object-cover rounded-full mr-2 ' />
                                 ) : (
                                     <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
                                 )}
@@ -176,8 +177,14 @@ const SingleArtwork = () => {
                             </div>
                             <p className="text-gray-700 mb-2">{comment.content}</p>
                             <div className="flex items-center">
-                                <button onClick={() => handleLikeComment(comment.id, index)} className="flex items-center text-gray-700 mr-4">
-                                    <FontAwesomeIcon icon={faHeart} className="text-purple-950 mr-1" />
+                                <button 
+                                    onClick={() => handleLikeComment(comment.id, index)} 
+                                    className="flex items-center text-gray-700 mr-4"
+                                >
+                                    <FontAwesomeIcon 
+                                        icon={faHeart} 
+                                        className={likedComments[comment.id] ? "text-red-500 mr-1" : "text-purple-950 mr-1"} 
+                                    />
                                     <span>{comment.likes}</span>
                                 </button>
                             </div>
