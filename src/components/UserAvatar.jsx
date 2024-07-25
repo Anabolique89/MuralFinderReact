@@ -5,19 +5,10 @@ const UserAvatar = () => {
   const [open, setOpen] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
-  
+
+  console.log(user);
+
   const navigate = useNavigate();
-
-//   const logoutHandler = async () => {
-//     try {
-//       await logoutUser().unwrap();
-//       dispatch(logout());
-
-//       navigate("/log-in");
-//     } catch (error) {
-//       toast.error("Something went wrong. Please try again.");
-//     }
-//   };
 
   return (
     <>
@@ -26,7 +17,9 @@ const UserAvatar = () => {
           <div>
             <MenuButton className='w-10 h-10 2xl:w-12 2xl:h-12 items-center justify-center rounded-full bg-blue-600'>
               <span className='text-white font-semibold'>
-                {getInitials(user?.username)}
+                <img src={'https://api.muralfinder.net/' + user?.profile_image_url}
+                 alt={user?.username} className='w-10 h-10 rounded-full' />
+                {user.profile}
               </span>
             </MenuButton>
           </div>
@@ -45,7 +38,7 @@ const UserAvatar = () => {
                 <MenuItem>
                   {({ active }) => (
                     <button
-                      onClick={() => setOpen(true)}
+                      onClick={() => navigate('/profile')}
                       className={`text-gray-700 dark:text-gray-300  group flex w-full items-center rounded-md px-2 py-2 text-base`}
                     >
                       <FaUser className='mr-2' aria-hidden='true' />
@@ -82,9 +75,6 @@ const UserAvatar = () => {
           </Transition>
         </Menu>
       </div>
-
-      {/* <AddUser open={open} setOpen={setOpen} userData={user} /> */}
-      {/* <ChangePassword open={openPassword} setOpen={setOpenPassword} /> */}
     </>
   );
 };
