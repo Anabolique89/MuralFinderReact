@@ -1,10 +1,4 @@
-import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
-import { FaUser, FaUserLock } from "react-icons/fa";
-import { IoLogOutOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { getInitials } from "../utils";
+
 // import ChangePassword from "./ChangePassword";
 
 const UserAvatar = () => {
