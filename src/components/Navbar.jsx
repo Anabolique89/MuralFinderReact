@@ -135,14 +135,14 @@ const Navbar = () => {
 
             
             <UserAvatar />
-            <div className="relative font-medium font-roboto">
+            {/* <div className="relative font-medium font-roboto">
               <Link to="/profile">
                 <div className="w-[35px] h-[35px] rounded-full bg-gray-200 overflow-hidden">
                   <img src={userImage} alt="User Avatar" className="w-full h-full object-cover" />
                 </div>
               </Link>
               
-            </div>
+            </div> */}
           </div>
         </div>
       )}
