@@ -544,3 +544,35 @@ margin-bottom: 8px;
     box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
   }
 }
+
+/* Hide the search bar on small screens 
+@media (max-width: 640px) {
+  .hide-on-small {
+    display: none;
+  }
+}
+
+ Ensure the burger menu is always visible on small screens 
+@media (max-width: 640px) {
+  .sm\\:hidden {
+    display: flex !important;
+  }
+}
+*/
+
+/* Hide the search bar on small screens by default */
+@media (max-width: 640px) {
+  .hide-on-small {
+    display: none;
+  }
+  .search-icon {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+
+/* Expand the search bar when active */
+.search-bar-expanded {
+  display: flex !important;
+}

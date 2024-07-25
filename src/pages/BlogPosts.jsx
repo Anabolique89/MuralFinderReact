@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 // import { blogEndpoints } from '../config/endpoints';
 import 'react-quill/dist/quill.snow.css';
 import DOMPurify from 'dompurify'; 
-import { CommunityBlogSection } from '../components';
-
+import { BackToTopButton, CommunityBlogSection } from '../components';
+import styles, { layout } from '../style';
+import Footer from '../components/Footer';
 
 
 const BlogPosts = () => {
@@ -22,9 +23,12 @@ const BlogPosts = () => {
   };
 
   return (
-    <div>
+    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
    <CommunityBlogSection />
-    </div>
+      <BackToTopButton />
+     
+                    <Footer />
+                    </div>
   );
 };
 

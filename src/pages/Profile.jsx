@@ -225,7 +225,7 @@ const Profile = () => {
     )}
     <div className={`${styles.flexCenter} mt-6`}>
         <Link to={'/blog/create'} className={`flex py-2 px-4 mr-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</Link>
-        <Link to={'/community'} className={`flex py-2 px-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
+        <Link to={'/BlogPosts'} className={`flex py-2 px-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
     </div>
 </div>
 
