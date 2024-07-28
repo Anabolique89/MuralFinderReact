@@ -164,8 +164,8 @@ export const footerLinks = [
         link: "/Map",
       },
       {
-        name: "Blog Feed",
-        link: "/BlogFeed",
+        name: "Blog Posts",
+        link: "/BlogPosts",
       },
       {
         name: "Artwork Feed",
