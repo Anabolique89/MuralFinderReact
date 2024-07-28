@@ -49,10 +49,10 @@ const App = () => {
 //   <div>
 //     {!excludedPaths.includes(location.pathname) && <SearchBar />}
 //     <Switch>
-//       <Route path="/map" component={MapPage} />
-//       <Route path="/contact" component={ContactPage} />
-//       <Route path="/indexlogin" component={IndexLoginPage} />
-//       <Route path="/" component={HomePage} />
+//       <Route path="/Map" component={Map} />
+//       <Route path="/Contact" component={Contact} />
+//       <Route path="/Login" component={Login} />
+//       <Route path="/IndexSignup" component={IndexSignup} />
 //       Add other routes as needed
 //     </Switch>
 //   </div>
