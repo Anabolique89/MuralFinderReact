@@ -96,6 +96,8 @@ const App = () => {
     setPage(1); // Reset page when page size changes
   };
 
+  const showSearchBarRoutes = ['/home', '/about']; // set the pages where the searchbar should be included.
+
   return (
     <Router>
       <div className="bg-indigo-700 w-full overflow-hidden">
@@ -104,7 +106,9 @@ const App = () => {
             <Navbar />
           </div>
         </div>
-        <SearchBar/>
+
+        {/* conditionally render the searchbar based on the searbhar enabled routes */}
+         {showSearchBarRoutes.includes(location.pathname) && <SearchBar />}
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={
