@@ -299,7 +299,7 @@ const PublicProfile = () => {
             ) : (
                 filteredImages && filteredImages.length > 0 ? (
                     <div className='container mx-auto py-2'>
-                        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 w-full'>
+                        <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-2 w-full'>
                             {filteredImages.flatMap(categoryData =>
                                 categoryData.artworks.map(artwork => (
                                     <ArtworksGallery key={artwork.id} artwork={artwork} />
