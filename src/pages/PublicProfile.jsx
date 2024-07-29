@@ -11,6 +11,8 @@ import { useParams } from 'react-router-dom';
 import FellowshipService from '../services/FellowshipService';
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import ArtworkService from '../services/ArtworkService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PublicProfile = () => {
     const { userId } = useParams();
@@ -37,7 +39,7 @@ const PublicProfile = () => {
             }
             setLoading(false);
         } catch (error) {
-            setError(error.message);
+            toast.error(error.message);
             setLoading(false);
         }
     };
@@ -57,14 +59,11 @@ const PublicProfile = () => {
         setLoadingFollow(true);
         try {
             const message = await FellowshipService.follow(userId);
-            setFollowMessage(message);
+            toast.success(message);
             await fetchProfileData();
             setIsFollowing(true);
-            setTimeout(() => {
-                setFollowMessage(null);
-            }, 5000);
         } catch (error) {
-            console.error('Error following user:', error);
+            toast.error('Error following user:', error);
         } finally {
             setLoadingFollow(false);
         }
@@ -74,16 +73,11 @@ const PublicProfile = () => {
         setLoadingFollow(true);
         try {
             const message = await FellowshipService.unfollow(userId);
-            setFollowMessage(message);
-
+            toast.success(message);
             await fetchProfileData();
             setIsFollowing(true);
-            setTimeout(() => {
-                setFollowMessage(null);
-            }, 5000);
-
         } catch (error) {
-            console.error('Error unfollowing user:', error);
+            toast.error('Error unfollowing user:', error);
         } finally {
             setLoadingFollow(false);
         }
@@ -113,7 +107,7 @@ const PublicProfile = () => {
                 const following = await FellowshipService.isFollowing(userId);
                 setIsFollowing(following);
             } catch (error) {
-                console.error('Error checking if user is following:', error);
+                console.log('Error checking if user is following:', error);
             }
         };
 
@@ -136,11 +130,10 @@ const PublicProfile = () => {
         return <div>Error: {error}</div>; // Render error message
     }
 
-
-
     return (
-        <div className="bg-indigo-700 mt-4">
 
+        <div className="bg-indigo-700 mt-4">
+        <ToastContainer />
 
             <div className="container mx-auto py-8">
                 {followMessage && (
@@ -306,17 +299,14 @@ const PublicProfile = () => {
             ) : (
                 filteredImages && filteredImages.length > 0 ? (
                     <div className='container mx-auto py-2'>
-                        {filteredImages.map(categoryData => (
-                            <div key={categoryData.category}>
-                                <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2>
-                                <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                                    {categoryData.artworks.map(artwork => (
-                                        <ArtworksGallery key={artwork.id} artwork={artwork} />
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
+                    <div className='grid grid-cols-4 gap-2 w-full'>
+                        {filteredImages.flatMap(categoryData =>
+                            categoryData.artworks.map(artwork => (
+                                <ArtworksGallery key={artwork.id} artwork={artwork} />
+                            ))
+                        )}
                     </div>
+                </div>
                 ) : (
                     <p>No artworks found.</p>
                 )
