@@ -29,6 +29,7 @@ import BackToTopButton from "./BackToTopButton.jsx";
 import NotificationPanel from "./NotificationPanel.jsx";
 import Chart from "./Chart.jsx";
 import UserAvatar from "./UserAvatar.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 export {
   Navbar,
@@ -63,4 +64,5 @@ export {
   NotificationPanel,
   Chart,
   UserAvatar,
+  SearchBar,
 };

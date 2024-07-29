@@ -251,16 +251,21 @@ const Profile = () => {
             ) : (
                 filteredImages && filteredImages.length > 0 ? (
                     <div className='container mx-auto py-2'>
+                        <div className='flex flex-row gap-2 align-center w-full'>
                         {filteredImages.map(categoryData => (
                             <div key={categoryData.category}>
-                                <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2>
-                                <div className="grid grid-cols-1 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                {/* <h2 className="text-3xl font-bold mb-4 text-white">{categoryData.category}</h2> */}
+                               
                                     {categoryData.artworks.map(artwork => (
+                                        //  <div className="grid grid-cols-4 gap-2 xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                        // <div className='flex row'>
                                         <ArtworksGallery key={artwork.id} artwork={artwork} />
+                                        // </div>
                                     ))}
                                 </div>
-                            </div>
+                           
                         ))}
+                        </div>
                     </div>
                 ) : (
                     <h2 className={`${styles.heading2} text-center`}>No artworks found.</h2>

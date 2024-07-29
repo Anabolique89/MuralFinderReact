@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, CTA, Navbar, Stats, Testimonials, Hero, ArtworksGallery, ImageSearch, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton } from "./components";
+import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton } from "./components";
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -33,12 +33,33 @@ import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
 
 
+
+
 const App = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]);
+
+
+//   const location = useLocation();
+//   const excludedPaths = ['/Map', '/Contact', '/Login', '/IndexSignup'];
+// return (
+//   <div>
+//     {!excludedPaths.includes(location.pathname) && <SearchBar />}
+//     <Switch>
+//       <Route path="/Map" component={Map} />
+//       <Route path="/Contact" component={Contact} />
+//       <Route path="/Login" component={Login} />
+//       <Route path="/IndexSignup" component={IndexSignup} />
+//       Add other routes as needed
+//     </Switch>
+//   </div>
+// );
+// };
+
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -83,6 +104,7 @@ const App = () => {
             <Navbar />
           </div>
         </div>
+        <SearchBar/>
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={

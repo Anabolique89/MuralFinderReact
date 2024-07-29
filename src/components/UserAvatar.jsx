@@ -2,17 +2,18 @@ import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/r
 import { Fragment, useState } from "react";
 import { FaUser, FaUserLock } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { getInitials } from "../utils";
+import { Link, useNavigate } from 'react-router-dom';
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 // import ChangePassword from "./ChangePassword";
 
 const UserAvatar = () => {
   const [open, setOpen] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
-
   console.log(user);
+  const userImage = user?.profile_image_url  || 'https://example.com/default-image.jpg';
 
   const navigate = useNavigate();
 
@@ -23,12 +24,25 @@ const UserAvatar = () => {
           <div>
             <MenuButton className='w-10 h-10 2xl:w-12 2xl:h-12 items-center justify-center rounded-full bg-blue-600'>
               <span className='text-white font-semibold'>
-                <img src={'https://api.muralfinder.net/' + user?.profile_image_url}
-                 alt={user?.username} className='w-10 h-10 rounded-full' />
-                {user.profile}
+                <img src={`https://api.muralfinder.net${userImage}`}
+                 alt={user?.userImage} className='w-10 h-10 rounded-full object-cover' />
+                {user.userImage}
               </span>
             </MenuButton>
           </div>
+
+
+
+          {/* <Link to={`/profile/${user?.id}`} className="flex items-center">
+              {userImage ? (
+                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
+              ) : (
+                <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
+              )}
+              <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
+                {user?.username || 'Unknown'}
+              </div>
+            </Link> */}
 
           <Transition
             as={Fragment}

@@ -74,7 +74,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
           <div className='flex items-center'>
             <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
               {userImage ? (
-                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2' />
+                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
               ) : (
                 <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
               )}
