@@ -133,7 +133,7 @@ const PublicProfile = () => {
     return (
 
         <div className="bg-indigo-700 mt-4">
-        <ToastContainer />
+            <ToastContainer />
 
             <div className="container mx-auto py-8">
                 {followMessage && (
@@ -299,14 +299,14 @@ const PublicProfile = () => {
             ) : (
                 filteredImages && filteredImages.length > 0 ? (
                     <div className='container mx-auto py-2'>
-                    <div className='grid grid-cols-4 gap-2 w-full'>
-                        {filteredImages.flatMap(categoryData =>
-                            categoryData.artworks.map(artwork => (
-                                <ArtworksGallery key={artwork.id} artwork={artwork} />
-                            ))
-                        )}
+                        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 w-full'>
+                            {filteredImages.flatMap(categoryData =>
+                                categoryData.artworks.map(artwork => (
+                                    <ArtworksGallery key={artwork.id} artwork={artwork} />
+                                ))
+                            )}
+                        </div>
                     </div>
-                </div>
                 ) : (
                     <p>No artworks found.</p>
                 )
