@@ -4,13 +4,13 @@ import { BASE_URL, wallEndpoints } from '../constants/ApiEndpoints';
 const WallService = {
   getAllWalls: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}${wallEndpoints.getAllWalls}`);
-      return response.data.data.data
+        const response = await axios.get(`${BASE_URL}${wallEndpoints.getAllWalls}`);
+        return response.data; // Return the entire response
     } catch (error) {
-      console.error('Error fetching walls:', error);
-      throw new Error('Failed to fetch walls');
+        console.error('Error fetching walls:', error);
+        throw new Error('Failed to fetch walls');
     }
-  },
+},
 
   getWallById: async (wallId) => {
     try {
