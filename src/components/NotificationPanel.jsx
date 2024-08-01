@@ -97,7 +97,7 @@ const NotificationPanel = () => {
           <PopoverPanel className='absolute -right-16 md:-right-2 z-10 mt-5 flex w-screen max-w-max  px-4'>
             {({ close }) =>
               data?.length > 0 && (
-                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5'>
+                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-indigo-400 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5'>
                   <div className='p-4'>
                     {data?.slice(0, 5).map((item, index) => (
                       <div
@@ -126,14 +126,14 @@ const NotificationPanel = () => {
                     ))}
                   </div>
 
-                  <div className='grid grid-cols-2 divide-x bg-gray-50'>
+                  <div className='grid grid-cols-2 divide-x bg-indigo-300'>
                     {callsToAction.map((item) => (
                       <Link
                         key={item.name}
                         onClick={
                           item?.onClick ? () => item.onClick() : () => close()
                         }
-                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-blue-600 hover:bg-gray-100'
+                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-600 hover:bg-gray-100'
                       >
                         {item.name}
                       </Link>

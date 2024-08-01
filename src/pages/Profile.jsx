@@ -207,7 +207,7 @@ const Profile = () => {
                                 blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post z-[20]">
                                         <div className="flex justify-between flex-wrap gap-2 w-full z-[20]">
-                                            <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</span>
+                                        <Link to={`/blog/${blog.id}`} className="hover:text-blue-500 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <Link to={`/blog/edit/${blog.id}`}>
                                                     <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />

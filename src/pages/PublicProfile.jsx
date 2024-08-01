@@ -13,6 +13,7 @@ import { cleanHTML, trimContent } from '../utils/blogUtils';
 import ArtworkService from '../services/ArtworkService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 const PublicProfile = () => {
     const { userId } = useParams();
@@ -257,7 +258,7 @@ const PublicProfile = () => {
                                 (blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post">
                                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                                            <span className="font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</span>
+                                        <Link to={`/blog/${blog.id}`} className="hover:text-blue-500 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
                                                 <span className="text-purple-950">{formatDate(blog.created_at)}</span>

@@ -30,6 +30,7 @@ import NotificationPanel from "./NotificationPanel.jsx";
 import Chart from "./Chart.jsx";
 import UserAvatar from "./UserAvatar.jsx";
 import SearchBar from "./SearchBar.jsx";
+// import Share from "./Share.tsx";
 
 export {
   Navbar,
@@ -65,4 +66,5 @@ export {
   Chart,
   UserAvatar,
   SearchBar,
+  // Share,
 };
