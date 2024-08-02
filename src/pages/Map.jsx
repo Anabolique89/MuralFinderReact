@@ -216,7 +216,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
         <Map
           style={style}
           defaultZoom={10}
-          center={mapCenter}
+          // center={mapCenter}
           defaultCenter={mapCenter}  // Changed from {{ mapCenter }}
           gestureHandling={'cooperative'}
           zoomControl={true}

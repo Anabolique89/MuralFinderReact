@@ -31,7 +31,7 @@ import ArtworkFeed from './pages/ArtworkFeed';
 import BlogPosts from './pages/BlogPosts';
 import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
-
+import {ShareSocial} from 'react-share-social';
 
 
 
@@ -96,7 +96,7 @@ const App = () => {
     setPage(1); // Reset page when page size changes
   };
 
-  const showSearchBarRoutes = ['/home', '/about']; // set the pages where the searchbar should be included.
+  const showSearchBarRoutes = ['/home', '/About']; // set the pages where the searchbar should be included.
 
   return (
     <Router>
@@ -134,6 +134,8 @@ const App = () => {
                   <Testimonials />
                  
                   <CTA />
+                  <ShareSocial url="https://www.muralfinder.net/" socialTypes={["whatsapp", "facebook", "email", "reddit"]}
+                  />
                   <BackToTopButton />
                   <Footer />
                 </div>

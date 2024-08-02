@@ -9,6 +9,8 @@ import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import styles from '../style';
 import BackToTopButton from './BackToTopButton';
+// import  Share from './Share';
+
 
 const SingleArtwork = () => {
     const { artworkId } = useParams();
@@ -187,6 +189,7 @@ const SingleArtwork = () => {
                                     />
                                     <span>{comment.likes}</span>
                                 </button>
+                                {/* <Share description={"this is a basic share page"} /> */}
                             </div>
                         </div>
                     ))
