@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Card from '../components/Card';
-import { Map, Marker, InfoWindow, APIProvider, AdvancedMarker } from '@vis.gl/react-google-maps';
+import { Map, Marker, InfoWindow, APIProvider } from '@vis.gl/react-google-maps';
 
 const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
-    // Ensure lat and long are numbers
     const latitude = Number(lat);
     const longitude = Number(long);
 
@@ -14,61 +13,72 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
 
     const [selected, setSelected] = useState(null);
 
+    const titleStyles = {
+        width: '100%', // Ensures the title is full width
+        textAlign: 'center', // Centers the title text
+        fontSize: '2rem', // Large font size for visibility
+        fontWeight: 'bold', // Bold font weight for the title
+        marginBottom: '0.5rem', // Adds a small margin below the title
+        // fontColor:'White' 
+    };
+
     const mapStyles = {
-        width: mapWidth || '100%', // Default width is 100% if not specified
-        height: mapHeight || '200px', // Default height is 200px if not specified
-        border: '2px solid ',
-        borderRadius: '8px',
+        width: mapWidth || '100%',
+        height: mapHeight || '200px',
+        border: 'none',
+        borderRadius: '0',
         overflow: 'hidden'
     };
 
     const imageStyles = {
         width: '100%',
-        height: '150px',
+        height: '200px',
         objectFit: 'cover',
-        borderRadius: '8px 8px 0 0' 
+        borderRadius: '0'
     };
 
-    const defaultCenter = {
-        lat: latitude,
-        lng: longitude
+    const cardStyles = {
+        padding: '0', // Removes padding to utilize full width
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center'
     };
+
+    const defaultCenter = { lat: latitude, lng: longitude };
 
     return (
         <Card>
-            <div className="rounded-md p-5">
-                <h2 className="text-2xl font-bold mb-2">{title}</h2>
-                <img
-                    src={`https://api.muralfinder.net/${image}`}
-                    alt="Wall Image"
-                    style={imageStyles}
-                />
-
-                <div style={{ height: mapStyles.height, marginBottom: '10px' }}>
-                    <APIProvider apiKey="AIzaSyBEfyuMVyPbaYNEDUXgbEE_SCoNC1y6kaw">
-                        <Map
-                            defaultCenter={defaultCenter}
-                            defaultZoom={8}
-                            gestureHandling={"greedy"}
-                            disableDefaultUI={true}
-                            className="h-[200px] w-full" // Assuming TailwindCSS for styling
-                        >
-                            <Marker 
+            <h2 style={titleStyles}>{title}</h2>
+            <div style={{ ...mapStyles }}>
+            <APIProvider apiKey="AIzaSyBEfyuMVyPbaYNEDUXgbEE_SCoNC1y6kaw">
+                    <Map
+                        defaultCenter={defaultCenter}
+                        defaultZoom={15}
+                        gestureHandling="greedy"
+                        disableDefaultUI={true}
+                        style={{ height: '100%', width: '100%' }}
+                    >
+                        <Marker 
+                            position={defaultCenter}
+                            onClick={() => setSelected(defaultCenter)}
+                        />
+                        {selected && (
+                            <InfoWindow
                                 position={defaultCenter}
-                                onClick={() => setSelected(defaultCenter)}
-                            />
-                            {selected && (
-                                <InfoWindow 
-                                    position={defaultCenter}
-                                    onCloseClick={() => setSelected(null)}
-                                >
-                                    <div>{title}</div>
-                                </InfoWindow>
-                            )}
-                        </Map>
-                    </APIProvider>
-                </div>
+                                onCloseClick={() => setSelected(null)}
+                            >
+                                <div>{title}</div>
+                            </InfoWindow>
+                        )}
+                    </Map>
+                </APIProvider>
             </div>
+            <img
+                src={`https://api.muralfinder.net/${image}`}
+                alt="Wall Image"
+                style={imageStyles}
+            />
         </Card>
     );
 };

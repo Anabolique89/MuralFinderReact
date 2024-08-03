@@ -214,7 +214,7 @@ const DragDropImageUploader = () => {
           </div>
         )}
       </div>
-      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+      <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
         <div className="test-image-container">
           {images.map((image, index) => (
             <div className="image" key={index}>

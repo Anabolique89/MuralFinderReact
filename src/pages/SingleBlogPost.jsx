@@ -84,7 +84,7 @@ const SingleBlogPost = () => {
     );
   }
   return (
-    <div className="bg-indigo-700 py-12 sm:py-22">
+    <div className="bg-indigo-600 py-12 sm:py-22">
       <div className="mx-auto max-w-7xl px-6 lg:px-8" >
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2 className={`${styles.heading2}`}>Blog Post Details</h2>
@@ -100,15 +100,17 @@ const SingleBlogPost = () => {
         
             <p className={`${styles.paragraph} mb-6`} dangerouslySetInnerHTML={{ __html: sanitizedContent }}></p>
                   
-                       <div className="flex items-center">
-                    <a href={`/profile/${blogPost.user.id}`}>
-                      <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full mr-2 bg-purple-500 p-2 text-white" />
-                    </a>
-                    <div >
-                      <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
-                      <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
-                    </div>
-                  </div>
+            <div className="flex items-center">
+
+<a href={`/profile/${blogPost.user.id}`}>
+  <img src={`https://api.muralfinder.net${blogPost.user.profile?.profile_image_url}`} alt={blogPost.user?.username} className='h-12 w-12 rounded-full mr-2 bg-purple-500 p-1 object-cover' />
+</a>
+
+<div>
+  <p className="font-semibold font-raleway">{blogPost.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+  <p className={`${styles.paragraph}`}>{blogPost.user.role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+</div>
+</div>
             <div className="flex items-center text-white">
               <span className="mr-4"> {blogPost.date}</span>
               <span  className='text-pink-500'><FontAwesomeIcon icon={faHeart} /> {blogPost.likes_count}</span>
@@ -162,7 +164,7 @@ const SingleBlogPost = () => {
         </div>
       </div>
       <BackToTopButton />
-    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+    <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
     </div>

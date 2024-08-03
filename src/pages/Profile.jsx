@@ -103,7 +103,7 @@ const Profile = () => {
     }
 
     return (
-        <div className="bg-indigo-700 mt-4">
+        <div className="bg-indigo-600 mt-4">
             <div className="container mx-auto py-8">
                 <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
                     <div className="col-span-4 sm:col-span-3">
@@ -240,10 +240,10 @@ const Profile = () => {
 
 
 
-            <div className="bg-indigo-700 w-full overflow-hidden mt-4 xs:mt-8">
+            <div className="bg-indigo-600 w-full overflow-hidden mt-4 xs:mt-8">
                 <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
             </div>
-            <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+            <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 {isLoading ? (
                     <div className='container mx-auto py-2'>
                         <h1 className='text-6xl text-center mx-auto mt-32'>Loading...</h1>
@@ -268,7 +268,7 @@ const Profile = () => {
 
             <WallsIntro />
             <BackToTopButton />
-            <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+            <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
         </div>

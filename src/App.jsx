@@ -42,7 +42,6 @@ const App = () => {
   const [filteredImages, setFilteredImages] = useState([]);
 
 
-//   const location = useLocation();
 //   const excludedPaths = ['/Map', '/Contact', '/Login', '/IndexSignup'];
 // return (
 //   <div>
@@ -95,13 +94,11 @@ const App = () => {
     setPage(1); // Reset page when page size changes
   };
 
-  const showSearchBarRoutes = ['/home', '/About']; // set the pages where the searchbar should be included.
-
-
+  const showSearchBarRoutes = ['/', '/about']; // set the pages where the searchbar should be included.
 
   return (
     <Router>
-      <div className="bg-indigo-700 w-full overflow-hidden">
+      <div className="bg-indigo-600 w-full overflow-hidden">
         <div className={`${styles.paddingX} ${styles.flexCenter}`}>
           <div className={`${styles.boxWidth}`}>
             <Navbar />
@@ -114,12 +111,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={
             <>
-              <div className={`bg-indigo-700 ${styles.flexStart}`}>
+              <div className={`bg-indigo-600 ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth}`}>
                   <Hero />
                 </div>
               </div>
-              <div className={`bg-indigo-700 ${styles.paddingX} ${styles.flexCenter}`}>
+              <div className={`bg-indigo-600 ${styles.paddingX} ${styles.flexCenter}`}>
                 <div className={`${styles.boxWidth}`}>
                   <Stats />
                   <Business />

@@ -133,7 +133,7 @@ const PublicProfile = () => {
 
     return (
 
-        <div className="bg-indigo-700 mt-4">
+        <div className="bg-indigo-600 mt-4">
             <ToastContainer />
 
             <div className="container mx-auto py-8">
@@ -289,7 +289,7 @@ const PublicProfile = () => {
             </div>
             {/* <UserArtworks /> */}
 
-            <div className="bg-indigo-700 w-full overflow-hidden">
+            <div className="bg-indigo-600 w-full overflow-hidden">
                 <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
             </div>
 
@@ -315,7 +315,7 @@ const PublicProfile = () => {
             <BackToTopButton />
             {/* <WallsHero />
             <DisplayWalls /> */}
-            <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+            <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
         </div >
