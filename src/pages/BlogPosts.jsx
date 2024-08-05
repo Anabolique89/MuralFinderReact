@@ -23,7 +23,7 @@ const BlogPosts = () => {
   };
 
   return (
-    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+    <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
    <CommunityBlogSection />
       <BackToTopButton />
      

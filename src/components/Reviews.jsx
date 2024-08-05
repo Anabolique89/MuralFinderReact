@@ -1,12 +1,13 @@
 import React from 'react';
+import styles from '../style';
 
 const Reviews = () => {
     return (
         <section>
             <div className="flex items-center mb-4">
                 <img className="w-10 h-10 me-4 rounded-full" src="../assets/" alt="" />
-                <div className="font-medium dark:text-white">
-                    <p>Jese Leos <time dateTime="2014-08-16 19:00" className="block text-sm text-gray-500 dark:text-gray-400">Joined on August 2014</time></p>
+                <div className="font-medium text-white  dark:text-white">
+                    <p>Jese Leos <time dateTime="2014-08-16 19:00" className={`${styles.paragraph} block text-sm dark:text-slate-100`}>Joined on August 2014</time></p>
                 </div>
             </div>
             <div className="flex items-center mb-1 space-x-1 rtl:space-x-reverse">

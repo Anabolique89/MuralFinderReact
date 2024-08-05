@@ -196,7 +196,7 @@ const WallsDashboard = () => {
   return (
     <section className='flex flex-col min-h-screen'>
       <div className='w-full flex flex-col md:flex-row flex-1'>
-        <div className='w-1/5 bg-indigo-700 sticky top-0 hidden md:block'>
+        <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
         {/* Mobile Sidebar */}
@@ -240,7 +240,7 @@ const WallsDashboard = () => {
         </div>
       </div>
       <BackToTopButton />
-      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+      <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
         <Footer />
       </div>
     </section>

@@ -187,7 +187,7 @@ const PostsDashboard = () => {
   return (
     <section className='flex flex-col min-h-screen'>
       <div className='w-full flex flex-col md:flex-row flex-1'>
-        <div className='w-1/5 bg-indigo-700 sticky top-0 hidden md:block'>
+        <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
         {/* Mobile Sidebar */}
@@ -227,7 +227,7 @@ const PostsDashboard = () => {
                     className='w-full px-4 py-2 border border-gray-300 rounded'
                   />
                 </div>
-                <div className='bg-indigo-700 p-6'>
+                <div className='bg-indigo-600 p-6'>
                   {isLoading ? (
                     <div className="">
                       <FontAwesomeIcon icon={faSpinner} spin />
@@ -241,7 +241,7 @@ const PostsDashboard = () => {
         </div>
       </div>
       <BackToTopButton />
-      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+      <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
         <Footer />
       </div>
     </section>

@@ -267,7 +267,7 @@ const Dashboard = () => {
   return (
     <section className='flex flex-col min-h-screen'>
       <div className='flex-1 flex flex-col md:flex-row'>
-        <div className='w-1/5 h-screen bg-indigo-700 sticky top-0 hidden md:block'>
+        <div className='w-1/5 h-screen bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
         <MobileSidebar
@@ -302,7 +302,7 @@ const Dashboard = () => {
 
               </div>
           </div>
-          <div className='bg-indigo-700 pl-5 pr-6'>
+          <div className='bg-indigo-600 pl-5 pr-6'>
             <div className='w-full flex flex-col md:flex-row gap-2 2xl:gap-4 py-'>
               {isLoading ? (
                 <div className="text-center py-4">
@@ -324,7 +324,7 @@ const Dashboard = () => {
       </div>
 
       <BackToTopButton />
-      <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+      <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
         <Footer />
       </div>
 

@@ -5,7 +5,6 @@ import {
 } from '@vis.gl/react-google-maps';
 import { DirectionsRenderer, LoadScript, Autocomplete } from '@react-google-maps/api';
 import WallService from '../services/WallService';
-import { Navigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import styles from '../style';
 
@@ -25,6 +24,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
 
   const apiKey = "AIzaSyBEfyuMVyPbaYNEDUXgbEE_SCoNC1y6kaw";
 
+  // Default locations if none are provided
   locations = locations || [
     { lat: 37.7749, lng: -122.4194, name: 'Location 1' },
     { lat: 37.7859, lng: -122.4364, name: 'Location 2' },
@@ -40,6 +40,13 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
     overflow: 'hidden',
     position: 'relative'
   };
+
+  // Example default bonds for each location
+  const defaultBonds = [
+    { locationId: 1, connections: ['Location 2', 'Location 3'], additionalInfo: 'This is the main hub.' },
+    { locationId: 2, connections: ['Location 1'], additionalInfo: 'Secondary location with a mural.' },
+    { locationId: 3, connections: ['Location 1'], additionalInfo: 'A scenic spot with a mural.' }
+  ];
 
   const mapOptions = {
     styles: [
@@ -131,7 +138,6 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
     ]
   };
 
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -216,14 +222,14 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
         <Map
           style={style}
           defaultZoom={10}
-          // center={mapCenter}
+          zoom={9}
+          center={mapCenter}
           defaultCenter={mapCenter}  // Changed from {{ mapCenter }}
           gestureHandling={'cooperative'}
           zoomControl={true}
           options={mapOptions}
           scrollwheel={true}
           streetViewControl={true}
-
         >
           <Autocomplete
             onLoad={setAutocomplete}
@@ -308,12 +314,13 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
                 setTitle('');
                 setImage('');
               }}
-              
-          
             >
               <div className='flex justify-between flex-col px-2 py-2 rounded-[20px] md:mr-2 mr-0 my-2 overflow-hidden z-[25]'>
                 <h2 className='font-raleway font-semibold xs:text-[18px] text-[16px] text-white w-full p-2'>{title}</h2>
                 <img className='object-cover w-full h-40 mb-4 rounded-md' src={image} alt="Wall" />
+                <p className='text-white mb-2'>
+                  {defaultBonds[selectedMarker] ? defaultBonds[selectedMarker].additionalInfo : ''}
+                </p>
                 <button
                   onClick={() => handleDirections(walls[selectedMarker])}
                   disabled={!userLocation}
@@ -337,7 +344,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
         </Map>
       </APIProvider>
     </LoadScript>
-    <div className={`${styles.paddingX} bg-indigo-700 w-full overflow-hidden`}>
+    <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
     </section>

@@ -32,23 +32,24 @@ const DisplayWalls = () => {
     };
 
     return (
-        <section className='bg-indigo w-full overflow-hidden'>
-               <h2 className={` ${styles.heading2} ${styles.paddingX}`}>Walls</h2>
+        <section className={`bg-indigo-600 w-full overflow-hidden`}>
+               <h2 className={`${styles.heading2} ${styles.paddingX} ${styles.flexCenter}`}>Walls</h2>
             {isLoading ? (
                 <div className='flex justify-center items-center h-screen'>
                     <FontAwesomeIcon icon={faSpinner} spin size='4x' />
                 </div>
             ) : (
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  justify-center'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center'>
     {walls.map(wall => (
         <div key={wall.id} className='m-1'>
-            <Link to={`/wall/${wall.id}`} className="block">
-                <div key={wall.id} className='m-4'>
+            <Link to={`/wall/${wall.id}`} className="block text-white font-raleway">
+                <div key={wall.id} className='m-2'>
                     <MapForWall
                         lat={wall.latitude}
                         long={wall.longitude}
                         title={wall.location_text}
                         image={wall.image_path}
+                        style={{ height: '400px', overflow: 'hidden' }}
                     />
                 </div>
             </Link>

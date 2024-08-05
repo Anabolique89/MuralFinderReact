@@ -57,7 +57,7 @@ const CommunityBlogSection = () => {
   };
 
   return (
-    <div className="bg-indigo-700 py-10 sm:py-18">
+    <div className="bg-indigo-600 py-10 sm:py-18">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {alertMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -116,7 +116,7 @@ const CommunityBlogSection = () => {
                   <div className="flex items-center">
 
                     <a href={`/profile/${blogPost.user.id}`}>
-                      <img src={`https://api.muralfinder.net${blogPost.user.profile?.profile_image_url}`} alt={blogPost.user?.username} className='h-12 w-12 rounded-full mr-2 bg-purple-500 p-1' />
+                      <img src={`https://api.muralfinder.net${blogPost.user.profile?.profile_image_url}`} alt={blogPost.user?.username} className='h-12 w-12 rounded-full mr-2 bg-purple-500 p-1 object-cover' />
                     </a>
 
                     <div>
