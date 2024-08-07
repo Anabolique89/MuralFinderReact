@@ -238,10 +238,9 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
       const newCenter = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
-        zoom: 5,
         // you can pass here zoom level or other details depending on what you need
       };
-      setCameraProps((p) => ({ ...p, center: newCenter }));
+      setCameraProps((p) => ({ ...p, center: newCenter, zoom: 11 }));
       setSearchMarker(newCenter); // Set the marker at the searched location
     }
   };
