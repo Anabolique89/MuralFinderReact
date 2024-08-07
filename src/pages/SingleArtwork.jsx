@@ -106,9 +106,7 @@ const SingleArtwork = () => {
                         <FontAwesomeIcon icon={faComments} className="text-purple-950 mr-2 ml-4" />
                         <span>5</span>
                    </a>
-                   {/* <ShareSocial url={`https://api.muralfinder.net${artwork.image_path}`} socialTypes={["whatsapp", "facebook", "email", "reddit"]} 
-                   style={stylez}
-                  /> */}
+    
                     </div>
                     <div className="flex items-center justify-end mt-2 mx-2">
                         <a href="#" className="text-blue-500 text-xs -ml-3 ">Expand</a>

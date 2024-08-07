@@ -84,18 +84,18 @@ const Navbar = () => {
 
         <div 
           className={`${!toggle_menu ? "hidden" : "flex"
-            } p-6  cta-block absolute top-20 left-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar z-[100]`}
+            } p-6 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-34 border-solid border-2 border-indigo-700 absolute top-20 left-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar z-[100]`}
         >
           <ul className="list-none flex justify-start items-centre flex-1 flex-col">
             {navLinks.map((nav, index) => (
               <li
                 key={nav.id}
-                className={`font-roboto font-medium cursor-pointer text-[16px] ${active === nav.title ? "text-pink-600" : "text-white"
+                className={`font-medium cursor-pointer text-[16px] font-raleway ${active === nav.title ? "text-pink-600" : "text-white"
                   } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
                 onClick={() => setActive(nav.title)}
               >
                 {nav.title === 'LOGIN' && isAuthenticated ? (
-                  <Link to="/login" className="text-gray-200 hover:text-red-700" onClick={handleLogout}>
+                  <Link to="/login" className="text-gray-200 hover:text-pink-600" onClick={handleLogout}>
                     {isLoggingOut ? 'Logging out...' : 'LOGOUT'}
                   </Link>
                 ) : (
@@ -126,7 +126,7 @@ const Navbar = () => {
                 <MdOutlineSearch className="text-white text-2xl" />
               </div>
             )} */}
-            
+
             {/* Notifications */}
             <div className='flex gap-2 items-center'>
               <NotificationPanel />
@@ -134,14 +134,6 @@ const Navbar = () => {
 
             
             <UserAvatar />
-            {/* <div className="relative font-medium font-roboto">
-              <Link to="/profile">
-                <div className="w-[35px] h-[35px] rounded-full bg-gray-200 overflow-hidden">
-                  <img src={userImage} alt="User Avatar" className="w-full h-full object-cover" />
-                </div>
-              </Link>
-              
-            </div> */}
           </div>
         </div>
       )}

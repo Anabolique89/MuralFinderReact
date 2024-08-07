@@ -4,6 +4,7 @@ import styles, { layout } from '../style';
 import { libraWhite } from '../assets';
 import AuthService from '../services/AuthService';
 import { BackToTopButton, Footer } from '../components';
+import SocialLogin from '../components/SocialLogin';
 
 const IndexSignup = () => {
   const [username, setUsername] = useState("");
@@ -123,8 +124,9 @@ const IndexSignup = () => {
             {isLoading ? <div className="loader"></div> : 'Create Account'}
           </button>
           {/* <Link to={'/Login'} className="bg-red-500 text-white px-4 py-2 rounded-xl">Close</Link> */}
-
+         
         </div>
+        <SocialLogin />
         <div>
           <p className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black`}>Already have an account?  
             <a className={`font-raleway font-normal text-[18px] leading-[30.8px] text-black hover:text-white underline`} href='/login'>Login Here</a>
@@ -132,9 +134,9 @@ const IndexSignup = () => {
         </div>
       </form>
       <div className={layout.sectionImg}>
-        <img className='w-[100%] h-auto relative z-[2] p-2 md:px-20 sm:px-26 ss:px-34' src={libraWhite} alt="aura" />
+        <img className='w-[90%] h-auto relative z-[2] p-2 md:px-20 sm:px-26 ss:px-34' src={libraWhite} alt="aura" />
       </div>
-
+     
     </div>
           <BackToTopButton />
         

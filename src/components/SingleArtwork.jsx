@@ -9,8 +9,24 @@ import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import styles from '../style';
 import BackToTopButton from './BackToTopButton';
-// import  Share from './Share';
+import {ShareSocial} from 'react-share-social';
 
+
+const stylez = {
+  root: {
+    width: '100%',
+    background: 'transparent',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+
+  },
+  copyContainer: {
+    border: '1px solid blue',
+    background: 'rgb(0,0,0,0.7)',
+    display: 'none'
+  },
+};
 
 const SingleArtwork = () => {
     const { artworkId } = useParams();
@@ -189,8 +205,9 @@ const SingleArtwork = () => {
                                     />
                                     <span>{comment.likes}</span>
                                 </button>
-                                {/* <Share description={"this is a basic share page"} /> */}
+                 
                             </div>
+                
                         </div>
                     ))
                 ) : (
@@ -212,6 +229,16 @@ const SingleArtwork = () => {
                     </div>
                 )}
             </div>
+
+{/* share your artwork */}
+<div className='px-4 py-2 max-w-4xl mx-auto'>
+            <div className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col cta-block rounded-[20px] box-shadow `}>
+            <h2 className={styles.heading2}>Share your artwork!</h2>  
+
+            <ShareSocial url={`https://api.muralfinder.net${artwork.image_path}`} socialTypes={["whatsapp", "facebook", "email", "reddit"]} 
+                   style={stylez}
+                  />
+                  </div></div>
             <BackToTopButton />
             <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />

@@ -17,6 +17,8 @@ const SingleBlogPost = () => {
   const [liking, setLiking] = useState(false);
   const [commenting, setCommenting] = useState(false);
 
+
+
   const sanitizedContent = blogPost && blogPost.content ? DOMPurify.sanitize(blogPost.content) : '';
 
   
@@ -78,7 +80,7 @@ const SingleBlogPost = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <FontAwesomeIcon icon={faSpinner} className="animate-spin text-gray-200 text-4xl mr-2" style={{ fontSize: '4rem' }} />
-        <span className="text-gray-200 text-xl">Please wait ...</span>
+        <span className="text-white-500 font-raleway font-medium text-xl">Please wait ...</span>
       </div>
 
     );
@@ -121,45 +123,57 @@ const SingleBlogPost = () => {
             </div> 
           </div>
           <div className="flex flex-col">
-            <h3 className="text-xl font-semibold mb-4">Comments</h3>
-            {loadingComments ? (
-              <div className="flex items-center justify-center text-gray-500">
-                <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />
-                Loading comments...
-              </div>
+  <h3 className="text-xl font-semibold mb-4 text-dimWhite font-raleway">Comments</h3>
+  {loadingComments ? (
+    <div className="flex items-center justify-center text-white-500 dark:text-white font-raleway">
+      <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />
+      Loading comments...
+    </div>
+  ) : (
+    <>
+      {comments.map((comment) => (
+        <div key={comment.id} className="bg-indigo-200 p-4 mb-4 rounded-lg flex items-center">
+          <div className="flex items-center justify-center h-8 w-8 bg-gray-50 rounded-full mr-2">
+            {comment.user && comment.user.profile?.profile_image_url ? (
+              <a href={`/profile/${blogPost.user.id}`}>
+              <img
+                src={`https://api.muralfinder.net/${comment.user.profile?.profile_image_url}`}
+                alt={comment.user.username}
+                className="h-8 w-8 rounded-full object-cover"
+              />
+
+</a>
             ) : (
-              <>
-                {comments.map(comment => (
-                  <div key={comment.id} className="bg-gray-100 p-4 mb-4 rounded-lg flex items-center">
-                    <div className="flex items-center justify-center h-8 w-8 bg-gray-50 rounded-full mr-2">
-                      <FontAwesomeIcon icon={faUser} className="text-gray-500" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">{comment.user ? comment.user.username: '...'}</p>
-                      <p>{comment.content}</p>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-            <button onClick={() => setShowCommentBox(!showCommentBox)} className="bg-blue-500 text-white py-2 px-4 rounded-md self-start">
-              {showCommentBox ? 'Hide Comment Box' : 'Add Comment'}
-            </button>
-            {showCommentBox && (
-              <div className="mt-4">
-                <textarea
-                  rows="4"
-                  placeholder="Enter your comment..."
-                  className="w-full border border-gray-300 rounded-md p-2"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                ></textarea>
-                <button onClick={handleCommentSubmit} className="bg-blue-500 text-white py-2 px-4 rounded-md mt-2">
-                  {commenting ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Submit'}
-                </button>
-              </div>
+              <FontAwesomeIcon icon={faUser} className="text-gray-500" />
             )}
           </div>
+          <div>
+            <p className="font-semibold font-raleway">{comment.user ? comment.user.username : '...'}</p>
+            <p className=''>{comment.content}</p>
+          </div>
+        </div>
+      ))}
+    </>
+  )}
+  <button onClick={() => setShowCommentBox(!showCommentBox)} className="bg-blue-500 text-white py-2 px-4 rounded-md self-start">
+    {showCommentBox ? 'Hide Comment Box' : 'Add Comment'}
+  </button>
+  {showCommentBox && (
+    <div className="mt-4">
+      <textarea
+        rows="4"
+        placeholder="Enter your comment..."
+        className="w-full border border-gray-300 rounded-md p-2"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+      ></textarea>
+      <button onClick={handleCommentSubmit} className="bg-blue-500 text-white py-2 px-4 rounded-md mt-2">
+        {commenting ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Submit'}
+      </button>
+    </div>
+  )}
+</div>
+
 
         </div>
       </div>
