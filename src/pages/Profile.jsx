@@ -20,15 +20,8 @@ const Profile = () => {
     const [blogData, setBlogData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    //user's artworks - do we need all of these variables? If not, [please delete]
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [images, setImages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filteredImages, setFilteredImages] = useState([]);
-    const [filter, setFilter] = useState('All');
-    const [categories, setCategories] = useState([{ id: 'all', name: 'All' }]);
 
     useEffect(() => {
         setIsLoading(true);
