@@ -117,6 +117,7 @@ const Profile = () => {
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
                                 <p className={`${styles.paragraph} mt-0 text-center`}><br />{profileData.profile.bio}</p>
                                 <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
+                                {/* <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.location}</p> */}
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     {/* <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a> */}
                                 </div>
@@ -207,7 +208,7 @@ const Profile = () => {
                                 blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post z-[20]">
                                         <div className="flex justify-between flex-wrap gap-2 w-full z-[20]">
-                                        <Link to={`/blog/${blog.id}`} className="hover:text-blue-500 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
+                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-600 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <Link to={`/blog/edit/${blog.id}`}>
                                                     <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />

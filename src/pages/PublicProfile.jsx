@@ -258,7 +258,7 @@ const PublicProfile = () => {
                                 (blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post">
                                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                                        <Link to={`/blog/${blog.id}`} className="hover:text-blue-500 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
+                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-600 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
                                                 <span className="text-purple-950">{formatDate(blog.created_at)}</span>
@@ -282,8 +282,13 @@ const PublicProfile = () => {
                                         LOGIN
                                     </a>
                                 </>
+                                
                             )}
                         </div>
+                        <div className='relative z-[1] mt-6'>
+                            <img className='z-[1] w-[60%] h-auto opacity-[50%] ml-10 xs:ml-20 ' src={swimBlue} alt="Swim Blue" />
+                        </div>
+
                     </div>
                 </div>
             </div>

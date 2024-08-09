@@ -57,6 +57,8 @@ const BlogService = {
 
       console.log(response.data);
       return response.data.message;
+
+
     } catch (error) {
       console.error("Error creating blog post:", error);
       if (
@@ -66,6 +68,13 @@ const BlogService = {
       ) {
         console.log(error);
         return error.response.data.message;
+
+    // Ensure the ID is extracted correctly
+      // return {
+      //   message: response.data.message,
+      //   postId: response.data.id, // Adjust this according to your actual response structure
+      // };
+
       } else {
         console.log(error);
         return error.response.data.error;
