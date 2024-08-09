@@ -8,6 +8,7 @@ export const authEndpoints = {
   updateProfile: (userId) => `profiles/${userId}`,
   uploadProfileImage: (userId) => `profiles/${userId}/image`,
   deleteAccount: (userId) => `delete/user/${userId}`
+  
 };
 
 

@@ -31,6 +31,7 @@ import ArtworkFeed from './pages/ArtworkFeed';
 import BlogPosts from './pages/BlogPosts';
 import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
+import EditUser from './pages/EditUser';
 
 
 
@@ -192,6 +193,12 @@ const App = () => {
           <Route path="/ProfileSettings" element={
             <PrivateRoute>
               <ProfileSettings />
+            </PrivateRoute>
+          } />
+
+          <Route path="/edit-user/:id" element={
+            <PrivateRoute>
+              <EditUser />
             </PrivateRoute>
           } />
 

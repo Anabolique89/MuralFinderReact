@@ -25,7 +25,7 @@ const ProfileSettings = () => {
             ...prevState,
             [name]: value
         }));
-    };
+    };delete
 
     useEffect(() => {
         const fetchProfileData = async () => {

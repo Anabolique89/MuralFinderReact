@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
-import Title from "../components/dashboard/Title";
-import Button from "../components/dashboard/Button.jsx";
-import { MdMenu } from "react-icons/md";
+import { Link, Outlet } from "react-router-dom";
+import { MdMenu, MdEdit, MdDelete } from "react-icons/md";
 import { getInitials, getRoleClass } from "../utils/index.js";
-import { Outlet } from "react-router-dom";
-import styles from '../style';
-import Footer from '../components/Footer.jsx';
-import BackToTopButton from '../components/BackToTopButton.jsx';
-import Sidebar from '../components/dashboard/Sidebar';
-import MobileSidebar from '../components/dashboard/MobileSidebar';
-import DashboardService from '../services/DashboardService';
-import Spinner from '../components/Spinner';
-import GroupIcon from '@mui/icons-material/Group';
+import DashboardService from "../services/DashboardService";
+import AuthService from "../services/AuthService.js";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import Sidebar from "../components/dashboard/Sidebar";
+import MobileSidebar from "../components/dashboard/MobileSidebar";
+import Spinner from "../components/Spinner";
+import GroupIcon from "@mui/icons-material/Group";
+import BackToTopButton from "../components/BackToTopButton.jsx";
+import Footer from "../components/Footer.jsx";
 import clsx from "clsx";
+import styles from '../style';
 
 const Users = () => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userStatistics, setUserStatistics] = useState([]);
@@ -38,7 +36,6 @@ const Users = () => {
         setCurrentPage(data.currentPage);
         setTotalPages(data.lastPage);
         setTotalUsers(data.totalUsers);
-
       } catch (error) {
         console.error('Error fetching user statistics:', error);
       } finally {
@@ -68,17 +65,30 @@ const Users = () => {
     setFilteredUsers(filtered);
   };
 
-  const userActionHandler = () => {};
-  const deleteHandler = () => {};
-
-  const deleteClick = (id) => {
-    setSelected(id);
-    setOpenDialog(true);
-  };
-
-  const editClick = (el) => {
-    setSelected(el);
-    setOpen(true);
+  const deleteHandler = async (userId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to delete this account? This action cannot be undone.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          await AuthService.deleteAccount(userId);
+          toast.success("User account deleted successfully");
+          // Optionally, you could refresh the user list here
+        } catch (error) {
+          console.error('Error deleting account:', error);
+          toast.error("Error occurred while deleting account: " + error.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
   };
 
   const handlePageChange = (newPage) => {
@@ -100,8 +110,6 @@ const Users = () => {
     </thead>
   );
 
-
-
   const TableRow = ({ user }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
       <td className='p-2'>
@@ -114,7 +122,6 @@ const Users = () => {
           {user.profile ? `${user.profile.first_name} ${user.profile.last_name}` : user.username}
         </div>
       </td>
-
       <td className='p-2'>{user.email || "user.email.com"}</td>
       <td className='p-2'>
         <span className={getRoleClass(user.role)}>{user.role}</span>
@@ -123,48 +130,33 @@ const Users = () => {
       <td className='p-2'>{user.artworksCount}</td>
       <td className='p-2'>{user.followersCount}</td>
       <td className='p-2'>{user.followingsCount}</td>
-
       <td className='p-2 flex gap-4 justify-end'>
-        <Button
-          className='text-purple-600 hover:text-purple-500 font-semibold sm:px-0'
-          label='Edit'
-          type='button'
-          onClick={() => editClick(user)}
-        />
-
-        <Button
-          className='text-red-700 hover:text-red-500 font-semibold sm:px-0'
-          label='Delete'
-          type='button'
-          onClick={() => deleteClick(user?._id)}
-        />
+        <Link className='text-purple-600 hover:text-purple-500' to={'/edit-user/' + user.id}>
+          <MdEdit size={20} />
+        </Link>
+        <button className='text-red-700 hover:text-red-500' onClick={() => deleteHandler(user.id)}>
+          <MdDelete size={20} />
+        </button>
       </td>
     </tr>
   );
 
-  const Card = ({ label, count, bg, icon }) => {
-    return (
-      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between mt-10'>
-        <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className={` text-black text-base font-semibold`}>{label}</p>
-          <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>
-          <span className='text-sm text-gray-400'>{"110 last month"}</span>
-        </div>
-        <div
-          className={clsx(
-            "w-10 h-10 rounded-full flex items-center justify-center text-white",
-            bg
-          )}
-        >
-          {icon}
-        </div>
+  const Card = ({ label, count, bg, icon }) => (
+    <div className='w-full h-32 backdrop-filter backdrop-blur-lg p-5 shadow-md rounded-md flex items-center justify-between mt-10 bg-white border-solid border-2 border-indigo-600'>
+      <div className='flex flex-col justify-between'>
+        <p className='text-black text-base font-semibold'>{label}</p>
+        <span className='text-2xl font-regular text-gray-800'>{count}</span>
+        <span className='text-sm text-gray-400'>{"110 last month"}</span>
       </div>
-    );
-  };
+      <div className={clsx("w-10 h-10 rounded-full flex items-center justify-center text-white", bg)}>
+        {icon}
+      </div>
+    </div>
+  );
 
   return (
     <>
-      <div className='w-full flex flex-col md:flex-row flex-1'>
+      <div className='w-full flex flex-col md:flex-row flex-1 '>
         <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
@@ -184,10 +176,10 @@ const Users = () => {
         </div>
 
         <div className='w-full md:px-1 px-0 mb-6'>
-          <div className='flex items-center justify-between mb-8'>
+          <div className='flex items-center justify-between mb-8 w-5/6 m-auto'>
             <Card label="TOTAL" count={totalUsers} bg="bg-[#f59e0b]" icon={<GroupIcon />} />
           </div>
-          <div className='flex items-center justify-between mb-4'>
+          <div className='flex items-center justify-between mb-4 w-5/6 m-auto'>
             <input
               type="text"
               placeholder="Search by name"
@@ -208,7 +200,7 @@ const Users = () => {
               <option value="art_lover">Art Lover</option>
             </select>
           </div>
-          <div className='bg-white px-2 md:px-4 py-4 shadow-md rounded'>
+          <div className='bg-white px-2 md:px-4 py-4 shadow-md rounded w-5/6 m-auto' >
             <div className='overflow-x-auto'>
               {loading ? (
                 <Spinner />
@@ -217,7 +209,8 @@ const Users = () => {
                   <TableHeader />
                   <tbody>
                     {filteredUsers.map((user, index) => (
-                      <TableRow key={index} user={user} />
+                      <TableRow key={index} user
+                        ={user} />
                     ))}
                   </tbody>
                 </table>
@@ -226,7 +219,8 @@ const Users = () => {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className='px-4 py-2 bg-gray-300 rounded disabled:opacity-50'
+                  className='px-4 py-2 bg-gray-300 rounded disabled
+'
                 >
                   Previous
                 </button>
@@ -236,7 +230,8 @@ const Users = () => {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className='px-4 py-2 bg-gray-300 rounded disabled:opacity-50'
+                  className='px-4 py-2 bg-gray-300 rounded disabled
+'
                 >
                   Next
                 </button>
@@ -244,6 +239,7 @@ const Users = () => {
             </div>
           </div>
           <BackToTopButton />
+          <ToastContainer />
           <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
             <Footer />
           </div>
