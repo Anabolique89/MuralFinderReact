@@ -32,18 +32,6 @@ const UserAvatar = () => {
           </div>
 
 
-
-          {/* <Link to={`/profile/${user?.id}`} className="flex items-center">
-              {userImage ? (
-                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
-              ) : (
-                <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
-              )}
-              <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                {user?.username || 'Unknown'}
-              </div>
-            </Link> */}
-
           <Transition
             as={Fragment}
             enter='transition ease-out duration-100'
@@ -53,13 +41,13 @@ const UserAvatar = () => {
             leaveFrom='transform opacity-100 scale-100'
             leaveTo='transform opacity-0 scale-95'
           >
-            <MenuItems className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white dark:bg-[#1f1f1f] shadow-2xl ring-1 ring-black/5 focus:outline-none'>
+            <MenuItems className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-indigo-300 dark:bg-[#1f1f1f] dark:text-white  shadow-2xl ring-1 ring-black/5 focus:outline-none z-[99]'>
               <div className='p-4'>
                 <MenuItem>
                   {({ active }) => (
                     <button
                       onClick={() => navigate('/profile')}
-                      className={`text-gray-700 dark:text-gray-300  group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                      className={`text-gray-700 dark:text-gray-200 group flex w-full items-center rounded-md px-2 py-2 text-base hover:text-indigo-600`}
                     >
                       <FaUser className='mr-2' aria-hidden='true' />
                       Profile
@@ -71,7 +59,7 @@ const UserAvatar = () => {
                   {({ active }) => (
                     <button
                       onClick={() => setOpenPassword(true)}
-                      className={`text-gray-700 dark:text-gray-300  group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                      className={`text-gray-700 dark:text-gray-200  group flex w-full items-center rounded-md px-2 py-2 text-base hover:text-indigo-600`}
                     >
                       <FaUserLock className='mr-2' aria-hidden='true' />
                       Change Password

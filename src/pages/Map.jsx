@@ -254,7 +254,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
       <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
         <APIProvider apiKey={apiKey}>
           {/* for height we need to pass a concrete value header=48px and footer=405px*/}
-          <div style={{ width: "100%", height: "calc(100vh - 48px - 405px" }}>
+          <div style={{ width: "100%", height: "calc(100vh - 100px)" }}>
             <Map {...cameraProps} onCameraChanged={handleCameraChange}>
               <Autocomplete
                 onLoad={setAutocomplete}

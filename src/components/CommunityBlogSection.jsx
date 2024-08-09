@@ -71,8 +71,12 @@ const CommunityBlogSection = () => {
             Explore our latest blog posts covering a variety of artistic topics. Please feel free to submit your article if you are interested in
             helping our community to expand. Please be mindful with the type of content you wish to post, otherwise we will block and delete your account. Thanks!
           </p>
+          <div className={`flex justify-start items-left mt-6`}>
+          <Link to={'/blog/create'} className={`flex py-2 px-4 mr-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</Link>
+          <Link to={'/BlogPosts'} className={`flex py-2 px-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
+     </div>
         </div>
-        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-6 border-t border-gray-200 pt-6 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {loading ? (
             <div className="text-center">
               <FontAwesomeIcon icon={faSpinner} spin size="3x" className="text-white" />
@@ -80,12 +84,12 @@ const CommunityBlogSection = () => {
             </div>
           ) : (
             blogPosts.map(blogPost => (
-              <div key={blogPost.id} className="flex flex-col items-start justify-between backdrop-filter backdrop-blur-lg rounded-md shadow-md p-6 hover:bg-indigo-800  transition duration-300 border-solid border-2 border-indigo-600 sm:mt-10 sm:mb-10">
+              <div key={blogPost.id} className="flex flex-col items-start justify-between backdrop-filter backdrop-blur-lg rounded-md shadow-md p-4 hover:bg-indigo-800  transition duration-300 border-solid border-2 border-indigo-700 sm:mt-10 sm:mb-10">
                 {blogPost.feature_image ? (
                   <img
                     src={`https://api.muralfinder.net/${blogPost.feature_image}`}
                     alt={blogPost.title}
-                    className=" object-cover w-full h-48 mb-4 rounded-md "
+                    className="object-cover w-full h-48 mb-4 rounded-md "
                   />
                 ) : (
                   <div className="bg-gray-200 w-full h-32 mb-4 rounded-md"></div>
