@@ -158,7 +158,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const [walls, setWalls] = useState([]);
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [mapCenter, setMapCenter] = useState([]);
   const [directions, setDirections] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [autocomplete, setAutocomplete] = useState(null);
