@@ -81,8 +81,13 @@ const ProfileSettings = () => {
                                                 {profileData && profileData.email }
                                             </p>
                                         </div>
+                                        <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
+                                            <p className="text-sm text-white">
+                                                City, Country
+                                            </p>
+                                        </div>
                                     </div>
-
+                                    <hr className="mt-10 mb-10" />
                                     <h2 className="font-raleway text-2xl font-bold sm:text-xl pt-4 pb-6">Password</h2>
                                     <div className="flex items-center">
                                         <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">

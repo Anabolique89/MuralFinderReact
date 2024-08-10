@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import { layout } from '../style';
@@ -14,6 +15,9 @@ const AddBlog = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+
+    // const navigate = useNavigate();
+
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -40,9 +44,15 @@ const AddBlog = () => {
 
             const response = await BlogService.createBlogPost(formData);
             setSuccessMessage(response);
+            // setSuccessMessage(response.message);
+
+
             setTitle('');
             setDescription('');
             setFeaturedImage(null);
+
+            // navigate(`/blog/${response.postId}`);
+
         } catch (error) {
             setError('Failed to create blog post');
         } finally {
@@ -57,7 +67,7 @@ const AddBlog = () => {
     return (
         <>
             <div className={`${layout.sectionImg} min-h-screen flex flex-col items-center justify-center `}>
-                <div className="max-w-4xl w-full bg-white rounded-lg shadow-md overflow-hidde shadow-lg mt-5">
+                <div className="max-w-4xl w-full bg-white rounded-lg overflow-hidde shadow-lg mt-5">
                     <h2 className="text-2xl font-bold text-center py-4 bg-indigo-800 text-white rounded-md">Add Blog</h2>
                     {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                         <strong className="font-bold">Error:</strong>

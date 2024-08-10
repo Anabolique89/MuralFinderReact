@@ -20,6 +20,7 @@
     "@vis.gl/react-google-maps": "^1.0.2",
     "axios": "^1.6.8",
     "clsx": "^2.1.1",
+    "deck.gl": "^9.0.25",
     "dompurify": "^3.1.6",
     "google-map-react": "^2.2.1",
     "ionicons": "^7.4.0",

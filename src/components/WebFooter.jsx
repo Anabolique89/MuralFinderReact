@@ -37,7 +37,7 @@ const WebFooter = () => (
 
       </div>
       <div className='flex flex-column flex-start'>
-      <p className="font-raleway font-normal text-dimWhite text-[14px] leading-[24.8px] mt-4"><span className="font-raleway font-bold text-purple-950 hover:text-orange-600 text-[18px] leading-[32.8px]">Disclaimer! <br /></span>All graffiti & streetart spots in this legal wall directory are contributed by users. 
+      <p className="font-raleway font-normal text-dimWhite text-[14px] leading-[24.8px] mt-4"><span className="font-raleway font-bold text-orange-400 text-[18px] leading-[32.8px]">Disclaimer! <br /></span>All graffiti & streetart spots in this legal wall directory are contributed by users. 
   Information you find here may be incorrect or outdated. 
   Always verify the legality of graffiti walls with local authorities before painting. 
   We do not take responsibility in any illegal activities performed based on the information on this site. 
