@@ -77,18 +77,18 @@ const EditBlog = () => {
             // Show success toast
             toast.success("Blog Post successfully edited");
     
-            // Navigate after a brief delay
             setTimeout(() => {
-                navigate('/community');
-            }, 5000); 
+                navigate('/blog/'+blogId);
+            }, 5000); // Delay for 5 seconds
     
         } catch (error) {
             // Show error toast
             toast.error(error.message || "An error occurred while editing the blog post");
     
+            // Optional: Navigate after a delay if you want to redirect even on error
             setTimeout(() => {
                 window.location.reload();
-            }, 5000);
+            }, 5000); // Delay for 5 seconds
         } finally {
             setLoading(false);
         }
