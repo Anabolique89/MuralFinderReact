@@ -96,7 +96,7 @@ const SearchBox = styled('input')({
   zIndex: '10',
 });
 
-const apiKey = import.meta.env.REACT_APP_MAP_KEY
+const apiKey = import.meta.env.VITE_MAP_KEY
 
 const AddWall = () => {
   const [title, setTitle] = useState('');

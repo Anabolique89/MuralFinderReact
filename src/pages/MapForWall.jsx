@@ -46,7 +46,7 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
     };
 
     const defaultCenter = { lat: latitude, lng: longitude };
-    mapKey = import.meta.env.REACT_APP_MAP_KEY
+    const mapKey = import.meta.env.VITE_MAP_KEY
 
     return (
         <Card>

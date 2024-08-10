@@ -164,8 +164,14 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const [autocomplete, setAutocomplete] = useState(null);
   const [searchMarker, setSearchMarker] = useState(null);
   const [cameraProps, setCameraProps] = React.useState(defaultProps);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const apiKey = import.meta.env.REACT_APP_MAP_KEY
+  // load environment vairables
+
+  const apiKey = import.meta.env.VITE_MAP_KEY;
+
+
+  console.log(apiKey)
 
   useEffect(() => {
     if (navigator.geolocation) {
