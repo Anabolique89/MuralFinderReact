@@ -21,7 +21,6 @@
     "axios": "^1.6.8",
     "clsx": "^2.1.1",
     "dompurify": "^3.1.6",
-    "dotenv": "^16.4.5",
     "google-map-react": "^2.2.1",
     "ionicons": "^7.4.0",
     "leaflet": "^1.9.4",

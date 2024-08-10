@@ -23,7 +23,7 @@ const WebFooter = () => (
     </h4>
     <ul>
       {footerLink.links.map((Link, index) => (
-        <li key={Link.name} className={`font-raleway font-normal text-[16px] leading-[24px] 
+        <li key={Link.id} className={`font-raleway font-normal text-[16px] leading-[24px] 
         text-dimWhite hover:text-secondary cursor-pointer`}>
             <a href={Link.link} className="block">
         {Link.name}

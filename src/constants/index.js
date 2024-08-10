@@ -127,22 +127,27 @@ export const footerLinks = [
     title: "Useful Links",
     links: [
       {
+        id:1,
         name: "Profile",
         link: "/Profile",
       },
       {
+        id: 2,
         name: "About",
         link: "/About",
       },
       {
+        id: 3,
         name: "Events",
         link: "/Events",
       },
       {
+        id:4,
         name: "Reviews",
         link: "/Reviews",
       },
       {
+        id: 5,
         name: "Contact",
         link: "/Contact",
       },
