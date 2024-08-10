@@ -126,7 +126,7 @@ const Trash = () => {
   // Rows for Users
   const UserTableRow = ({ user }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2 text-blue-600'>{user.name}</td>
+      <td className='py-2 text-blue-600'>{user.username}</td>
       <td className='py-2 text-blue-600'>{user.email}</td>
       <td className='py-2 text-blue-600'>{new Date(user.deleted_at).toDateString()}</td>
       <td className='py-2 text-blue-600 flex gap-1 justify-end'>

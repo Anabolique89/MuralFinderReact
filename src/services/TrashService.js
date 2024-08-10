@@ -6,7 +6,7 @@ const TrashService = {
   // Fetch all trashed items across different models
   getAll: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/trash`, {
+      const response = await axios.get(`${BASE_URL}admin/trash`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
