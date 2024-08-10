@@ -165,7 +165,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const [searchMarker, setSearchMarker] = useState(null);
   const [cameraProps, setCameraProps] = React.useState(defaultProps);
 
-  const apiKey = process.env.MAP_KEY
+  const apiKey = import.meta.env.REACT_APP_MAP_KEY
 
   useEffect(() => {
     if (navigator.geolocation) {
