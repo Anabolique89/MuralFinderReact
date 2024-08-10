@@ -57,11 +57,11 @@ const Trash = () => {
   const ArtworkTableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
-        <th className='py-2 text-blue-600'>Title</th>
-        <th className='py-2 text-blue-600'>Description</th>
-        <th className='py-2 text-blue-600'>Created By</th>
-        <th className='py-2 text-blue-600'>Date Trashed</th>
-        <th className='py-2 text-blue-600'>Actions</th>
+        <th className='py-2 text-yellow-600'>Title</th>
+        <th className='py-2 text-yellow-600'>Description</th>
+        <th className='py-2 text-yellow-600'>Created By</th>
+        <th className='py-2 text-yellow-600'>Date Trashed</th>
+        <th className='py-2 text-yellow-600'>Actions</th>
       </tr>
     </thead>
   );
@@ -70,10 +70,10 @@ const Trash = () => {
   const UserTableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
-        <th className='py-2 text-blue-600'>Name</th>
-        <th className='py-2 text-blue-600'>Email</th>
-        <th className='py-2 text-blue-600'>Date Trashed</th>
-        <th className='py-2 text-blue-600'>Actions</th>
+        <th className='py-2 text-yellow-600'>Name</th>
+        <th className='py-2 text-yellow-600'>Email</th>
+        <th className='py-2 text-yellow-600'>Date Trashed</th>
+        <th className='py-2 text-yellow-600'>Actions</th>
       </tr>
     </thead>
   );
@@ -82,10 +82,10 @@ const Trash = () => {
   const WallTableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
-        <th className='py-2 text-blue-600'>Title</th>
-        <th className='py-2 text-blue-600'>Location</th>
-        <th className='py-2 text-blue-600'>Date Trashed</th>
-        <th className='py-2 text-blue-600'>Actions</th>
+        <th className='py-2 text-yellow-600'>Title</th>
+        <th className='py-2 text-yellow-600'>Location</th>
+        <th className='py-2 text-yellow-600'>Date Trashed</th>
+        <th className='py-2 text-yellow-600'>Actions</th>
       </tr>
     </thead>
   );
@@ -94,11 +94,11 @@ const Trash = () => {
   const PostTableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
-        <th className='py-2 text-blue-600'>Title</th>
-        <th className='py-2 text-blue-600'>Content</th>
-        <th className='py-2 text-blue-600'>Author</th>
-        <th className='py-2 text-blue-600'>Date Trashed</th>
-        <th className='py-2 text-blue-600'>Actions</th>
+        <th className='py-2 text-yellow-600'>Title</th>
+        <th className='py-2 text-yellow-600'>Content</th>
+        <th className='py-2 text-yellow-600'>Author</th>
+        <th className='py-2 text-yellow-600'>Date Trashed</th>
+        <th className='py-2 text-yellow-600'>Actions</th>
       </tr>
     </thead>
   );
@@ -106,17 +106,17 @@ const Trash = () => {
   // Rows for Artworks
   const ArtworkTableRow = ({ artwork }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2 text-blue-600'>{artwork.title}</td>
-      <td className='py-2 text-blue-600'>{artwork.description}</td>
-      <td className='py-2 text-blue-600'>{artwork.createdBy?.name}</td>
-      <td className='py-2 text-blue-600'>{new Date(artwork.deleted_at).toDateString()}</td>
-      <td className='py-2 text-blue-600 flex gap-1 justify-end'>
+      <td className='py-2 text-yellow-600'>{artwork.title}</td>
+      <td className='py-2 text-yellow-600'>{artwork.description}</td>
+      <td className='py-2 text-yellow-600'>{artwork.createdBy?.name}</td>
+      <td className='py-2 text-yellow-600'>{new Date(artwork.deleted_at).toDateString()}</td>
+      <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
+          icon={<MdOutlineRestore className='text-xl text-white text-yellow-700' />}
           onClick={() => restoreClick('artwork', artwork._id)}
         />
         <Button
-          icon={<MdDelete className='text-xl text-white text-red-600' />}
+          icon={<MdDelete className='text-xl text-red-700' />}
           onClick={() => deleteClick('artwork', artwork._id)}
         />
       </td>
@@ -126,16 +126,16 @@ const Trash = () => {
   // Rows for Users
   const UserTableRow = ({ user }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2 text-blue-600'>{user.username}</td>
-      <td className='py-2 text-blue-600'>{user.email}</td>
-      <td className='py-2 text-blue-600'>{new Date(user.deleted_at).toDateString()}</td>
-      <td className='py-2 text-blue-600 flex gap-1 justify-end'>
+      <td className='py-2 text-yellow-600'>{user.username}</td>
+      <td className='py-2 text-yellow-600'>{user.email}</td>
+      <td className='py-2 text-yellow-600'>{new Date(user.deleted_at).toDateString()}</td>
+      <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
+          icon={<MdOutlineRestore className='text-xl text-white text-yellow-700' />}
           onClick={() => restoreClick('user', user._id)}
         />
         <Button
-          icon={<MdDelete className='text-xl text-white text-red-600' />}
+          icon={<MdDelete className='text-xl text-red-600' />}
           onClick={() => deleteClick('user', user._id)}
         />
       </td>
@@ -145,10 +145,10 @@ const Trash = () => {
   // Rows for Walls
   const WallTableRow = ({ wall }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2 text-blue-600'>{wall.title}</td>
-      <td className='py-2 text-blue-600'>{wall.location}</td>
-      <td className='py-2 text-blue-600'>{new Date(wall.deleted_at).toDateString()}</td>
-      <td className='py-2 text-blue-600 flex gap-1 justify-end'>
+      <td className='py-2 text-yellow-600'>{wall.title}</td>
+      <td className='py-2 text-yellow-600'>{wall.location}</td>
+      <td className='py-2 text-yellow-600'>{new Date(wall.deleted_at).toDateString()}</td>
+      <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
           icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
           onClick={() => restoreClick('wall', wall._id)}
@@ -164,11 +164,11 @@ const Trash = () => {
   // Rows for Posts
   const PostTableRow = ({ post }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2 text-blue-600'>{post.title}</td>
-      <td className='py-2 text-blue-600'>{post.content}</td>
-      <td className='py-2 text-blue-600'>{post.author?.name}</td>
-      <td className='py-2 text-blue-600'>{new Date(post.deleted_at).toDateString()}</td>
-      <td className='py-2 text-blue-600 flex gap-1 justify-end'>
+      <td className='py-2 text-yellow-600'>{post.title}</td>
+      <td className='py-2 text-yellow-600'>{post.content}</td>
+      <td className='py-2 text-yellow-600'>{post.author?.name}</td>
+      <td className='py-2 text-yellow-600'>{new Date(post.deleted_at).toDateString()}</td>
+      <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
           icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
           onClick={() => restoreClick('post', post._id)}
