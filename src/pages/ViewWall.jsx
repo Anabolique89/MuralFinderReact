@@ -34,7 +34,7 @@ const ViewWall = () => {
     };
 
     return (
-        <section className={` ${styles.paddingX} ${styles.boxWidth}`}>
+        <section className={` ${styles.paddingX} ${styles.boxWidth} m-auto` } >
     
             {isLoading || !wall ? (
                 <div className='flex justify-center items-center h-screen'>

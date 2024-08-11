@@ -19,6 +19,7 @@ export const artworkEndpoints = {
   getUserArtworks: (userId) => `artworks/users/${userId}`,
 };
 
+
 export const blogEndpoints = {
   getAllBlogPosts: "posts",
   getBlogPostById: (postId) => `posts/${postId}`,
