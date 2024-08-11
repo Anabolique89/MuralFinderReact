@@ -15,6 +15,7 @@ import BackToTopButton from '../components/BackToTopButton.jsx';
 import Sidebar from '../components/dashboard/Sidebar';
 import MobileSidebar from '../components/dashboard/MobileSidebar';
 import TrashService from '../services/TrashService'; // Import your TrashService
+import { ToastContainer, toast } from "react-toastify";
 
 const Trash = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -26,19 +27,19 @@ const Trash = () => {
   const [loading, setLoading] = useState(true); // State for loading indicator
 
   useEffect(() => {
-    const fetchTrashedItems = async () => {
-      try {
-        const response = await TrashService.getAll(); // Call the TrashService to get all trashed items
-        setTrashedItems(response.data); // Assuming response.data contains the trashed items
-      } catch (error) {
-        console.error("Error fetching trashed items:", error);
-      } finally {
-        setLoading(false); // Stop loading
-      }
-    };
-
     fetchTrashedItems();
   }, []);
+
+  const fetchTrashedItems = async () => {
+    try {
+      const response = await TrashService.getAll(); // Call the TrashService to get all trashed items
+      setTrashedItems(response.data); // Assuming response.data contains the trashed items
+    } catch (error) {
+      console.error("Error fetching trashed items:", error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
 
   const deleteClick = (model, id) => {
     setType("delete");
@@ -51,6 +52,39 @@ const Trash = () => {
     setType("restore");
     setMsg("Restore item?");
     setOpenDialog(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true)
+      const { model, id } = selected;
+      await TrashService.delete(model, id);
+      toast.success("Item Deleted permanently")
+      await fetchTrashedItems(); // Refresh the list after deletion
+
+    } catch (error) {
+      setMsg("Error deleting item.");
+      console.error("Error deleting item:", error);
+    } finally {
+      setOpenDialog(false);
+      setLoading(false)
+    }
+  };
+
+  const handleRestore = async () => {
+    try {
+      const { model, id } = selected;
+      console.log(selected)
+      setLoading(true)
+      await TrashService.restore(model, id);
+      toast.success("Item Restored")
+    } catch (error) {
+      toast.error("Error restoring item.");
+      console.error("Error restoring item:", error);
+    } finally {
+      setOpenDialog(false);
+      setLoading(false)
+    }
   };
 
   // Header row for Artworks
@@ -113,11 +147,11 @@ const Trash = () => {
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
           icon={<MdOutlineRestore className='text-xl text-white text-yellow-700' />}
-          onClick={() => restoreClick('artwork', artwork._id)}
+          onClick={() => restoreClick('artwork', artwork.id)}
         />
         <Button
           icon={<MdDelete className='text-xl text-red-700' />}
-          onClick={() => deleteClick('artwork', artwork._id)}
+          onClick={() => deleteClick('artwork', artwork.id)}
         />
       </td>
     </tr>
@@ -132,11 +166,11 @@ const Trash = () => {
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
           icon={<MdOutlineRestore className='text-xl text-white text-yellow-700' />}
-          onClick={() => restoreClick('user', user._id)}
+          onClick={() => restoreClick('user', user.id)}
         />
         <Button
           icon={<MdDelete className='text-xl text-red-600' />}
-          onClick={() => deleteClick('user', user._id)}
+          onClick={() => deleteClick('user', user.id)}
         />
       </td>
     </tr>
@@ -151,11 +185,11 @@ const Trash = () => {
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
           icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
-          onClick={() => restoreClick('wall', wall._id)}
+          onClick={() => restoreClick('wall', wall.id)}
         />
         <Button
           icon={<MdDelete className='text-xl text-white text-red-600' />}
-          onClick={() => deleteClick('wall', wall._id)}
+          onClick={() => deleteClick('wall', wall.id)}
         />
       </td>
     </tr>
@@ -171,11 +205,11 @@ const Trash = () => {
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
           icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
-          onClick={() => restoreClick('post', post._id)}
+          onClick={() => restoreClick('post', post.id)}
         />
         <Button
           icon={<MdDelete className='text-xl text-white text-red-600' />}
-          onClick={() => deleteClick('post', post._id)}
+          onClick={() => deleteClick('post', post.id)}
         />
       </td>
     </tr>
@@ -184,10 +218,11 @@ const Trash = () => {
   return (
     <>
       <div className='w-full flex flex-col md:flex-row flex-1'>
+        <ToastContainer />
         <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
-        
+
         <MobileSidebar
           isSidebarOpen={isSidebarOpen}
           closeSidebar={() => setIsSidebarOpen(false)}
@@ -222,7 +257,7 @@ const Trash = () => {
                         <ArtworkTableHeader />
                         <tbody>
                           {trashedItems.artworks?.map((artwork) => (
-                            <ArtworkTableRow key={artwork._id} artwork={artwork} />
+                            <ArtworkTableRow key={artwork.id} artwork={artwork} />
                           ))}
                         </tbody>
                       </table>
@@ -239,7 +274,7 @@ const Trash = () => {
                         <UserTableHeader />
                         <tbody>
                           {trashedItems.users?.map((user) => (
-                            <UserTableRow key={user._id} user={user} />
+                            <UserTableRow key={user.id} user={user} />
                           ))}
                         </tbody>
                       </table>
@@ -256,7 +291,7 @@ const Trash = () => {
                         <WallTableHeader />
                         <tbody>
                           {trashedItems.walls?.map((wall) => (
-                            <WallTableRow key={wall._id} wall={wall} />
+                            <WallTableRow key={wall.id} wall={wall} />
                           ))}
                         </tbody>
                       </table>
@@ -273,7 +308,7 @@ const Trash = () => {
                         <PostTableHeader />
                         <tbody>
                           {trashedItems.posts?.map((post) => (
-                            <PostTableRow key={post._id} post={post} />
+                            <PostTableRow key={post.id} post={post} />
                           ))}
                         </tbody>
                       </table>
@@ -297,14 +332,14 @@ const Trash = () => {
         type={type}
         setType={setType}
         onClick={() => {
-          // Call delete or restore based on the type
           if (type === "delete") {
-            // Call delete function here
+            handleDelete();
           } else if (type === "restore") {
-            
+            handleRestore();
           }
         }}
       />
+
     </>
   );
 };

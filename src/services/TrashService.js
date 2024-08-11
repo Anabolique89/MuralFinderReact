@@ -22,7 +22,7 @@ const TrashService = {
   restore: async (model, id) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/trash/${model}/${id}/restore`,
+        `${BASE_URL}admin/trash/${model}/${id}/restore`,
         null,
         {
           headers: {
@@ -41,7 +41,7 @@ const TrashService = {
   delete: async (model, id) => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/trash/${model}/${id}`,
+        `${BASE_URL}admin/trash/${model}/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ const TrashService = {
   restoreAll: async () => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/trash/restoreAll`, // Adjust this if you have a specific endpoint for restoring all
+        `${BASE_URL}admin/trash/restoreAll`, // Adjust this if you have a specific endpoint for restoring all
         null,
         {
           headers: {
@@ -78,7 +78,7 @@ const TrashService = {
   deleteAll: async () => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}/trash/deleteAll`, // Adjust this if you have a specific endpoint for deleting all
+        `${BASE_URL}admin/trash/deleteAll`, // Adjust this if you have a specific endpoint for deleting all
         {
           headers: {
             Authorization: `Bearer ${token}`,
