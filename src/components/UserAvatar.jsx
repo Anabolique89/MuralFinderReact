@@ -9,10 +9,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 // import ChangePassword from "./ChangePassword";
 
 const UserAvatar = () => {
-  const [open, setOpen] = useState(false);
-  const [openPassword, setOpenPassword] = useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
-  console.log(user);
   const userImage = user?.profile_image_url  || 'https://example.com/default-image.jpg';
 
   const navigate = useNavigate();

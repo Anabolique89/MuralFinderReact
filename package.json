@@ -47,7 +47,8 @@
     "styled-components": "^6.1.11",
     "sweetalert2": "^11.12.2",
     "sweetalert2-react-content": "^5.0.7",
-    "tslib": "^2.6.3"
+    "tslib": "^2.6.3",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
