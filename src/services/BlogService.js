@@ -6,8 +6,7 @@ const BlogService = {
     try {
       const response = await axios.get(
         `${BASE_URL}${blogEndpoints.getAllBlogPosts}`
-      ); // Adding BASE_URL to the endpoint
-      console.log(response.data.data.data);
+      );
       return response.data.data.data;
     } catch (error) {
       console.error("Error fetching blog posts:", error);
@@ -17,11 +16,9 @@ const BlogService = {
 
   getBlogPostById: async (postId) => {
     try {
-      console.log(`${BASE_URL}${blogEndpoints.getBlogPostById(postId)}`);
       const response = await axios.get(
         `${BASE_URL}${blogEndpoints.getBlogPostById(postId)}`
-      ); // Adding BASE_URL to the endpoint
-      console.log(response.data);
+      ); 
       return response.data.data;
     } catch (error) {
       console.error("Error fetching blog post:", error);
@@ -54,8 +51,6 @@ const BlogService = {
           },
         }
       );
-
-      console.log(response.data);
       return response.data.data.message;
 
 
@@ -66,7 +61,6 @@ const BlogService = {
         error.response.data &&
         error.response.data.message
       ) {
-        console.log(error);
         return error.response.data.message;
 
     // Ensure the ID is extracted correctly
@@ -76,7 +70,6 @@ const BlogService = {
       // };
 
       } else {
-        console.log(error);
         return error.response.data.error;
       }
     }
@@ -117,7 +110,7 @@ const BlogService = {
       return response.data;
     } catch (error) {
       console.error("Error deleting blog post:", error);
-      return error.data;
+      return error
     }
   },
   getCommentsForBlogPost: async (postId) => {
@@ -125,7 +118,6 @@ const BlogService = {
       const response = await axios.get(
         `${BASE_URL}${blogEndpoints.getCommentsForBlogPost(postId)}`
       );
-      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       console.error("Error fetching comments for blog post:", error);
@@ -155,7 +147,6 @@ const BlogService = {
   likeBlogPost: async (postId) => {
     try {
       const token = localStorage.getItem("token");
-      console.log(token);
       const response = await axios.post(
         `${BASE_URL}${blogEndpoints.likeBlogPost(postId)}`,
         null,
@@ -167,7 +158,6 @@ const BlogService = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error liking blog post:", error);
       throw new Error("Failed to like blog post");
     }
   },

@@ -97,14 +97,14 @@ const ArtworksTable = ({ artworks }) => {
 
       <td className='py-2'>
         <div className='flex gap-2'>
-          <button className='text-blue-500 hover:text-blue-700'>
+          <Link to={`/artworks/${artwork.id}`} className='text-blue-500 hover:text-blue-700'>
             <MdVisibility size={20} />
-          </button>
-          <button className='text-green-500 hover:text-green-700'>
+          </Link>
+          <Link  to={`/artwork/edit/${artwork.id}`} className='text-green-500 hover:text-green-700'>
             <MdEdit size={20} />
-          </button>
+          </Link>
           <button className='text-red-500 hover:text-red-700'>
-            <MdDelete size={20} />
+            <MdDelete size={20} onClick={console.log("You clicked me")} />
           </button>
         </div>
       </td>

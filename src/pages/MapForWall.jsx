@@ -46,12 +46,13 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
     };
 
     const defaultCenter = { lat: latitude, lng: longitude };
+    const mapKey = import.meta.env.VITE_MAP_KEY
 
     return (
         <Card>
             <h2 style={titleStyles}>{title}</h2>
             <div style={{ ...mapStyles }}>
-            <APIProvider apiKey="AIzaSyBEfyuMVyPbaYNEDUXgbEE_SCoNC1y6kaw">
+            <APIProvider apiKey={mapKey}>
                     <Map
                         defaultCenter={defaultCenter}
                         defaultZoom={15}

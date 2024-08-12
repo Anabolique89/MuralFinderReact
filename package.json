@@ -22,7 +22,6 @@
     "clsx": "^2.1.1",
     "deck.gl": "^9.0.25",
     "dompurify": "^3.1.6",
-    "dotenv": "^16.4.5",
     "google-map-react": "^2.2.1",
     "ionicons": "^7.4.0",
     "leaflet": "^1.9.4",
@@ -48,7 +47,8 @@
     "styled-components": "^6.1.11",
     "sweetalert2": "^11.12.2",
     "sweetalert2-react-content": "^5.0.7",
-    "tslib": "^2.6.3"
+    "tslib": "^2.6.3",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",

@@ -12,7 +12,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import moment from "moment";
 import clsx from "clsx";
 import UserInfo from "../components/dashboard/UserInfo";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import styles from '../style';
 import Footer from '../components/Footer.jsx';
 import BackToTopButton from '../components/BackToTopButton.jsx';
@@ -22,8 +22,46 @@ import DashboardService from "../services/DashboardService.js";
 import BlogService from '../services/BlogService.js';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
 
 const PostTable = ({ posts }) => {
+
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const deleteHandler = async (postId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to delete this post? This action cannot be undone.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          const response = await BlogService.deleteBlogPost(postId);
+          if (response?.response?.data?.success) {
+            toast.success("Post deleted successfully");
+            // Optionally, refresh the posts list here by re-fetching the data or removing the post from the state
+            navigate('/PostsDashboard');
+          } else {
+            toast.error("Failed to delete the post: " + (response?.response?.data?.message));
+          }
+        } catch (error) {
+          const errorMessage = error;
+          toast.error("Error occurred while deleting post: " + errorMessage);
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
+  };
+  
+  
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
@@ -71,19 +109,20 @@ const PostTable = ({ posts }) => {
       </td>
       <td className='py-2'>
         <div className='flex gap-2'>
-          <button className='text-blue-500 hover:text-blue-700'>
+          <button className='text-blue-500 hover:text-blue-700' onClick={() => navigate('/blog/' + post.id)}>
             <MdVisibility size={20} />
           </button>
           <button className='text-green-500 hover:text-green-700'>
             <MdEdit size={20} />
           </button>
-          <button className='text-red-500 hover:text-red-700'>
+          <button className='text-red-500 hover:text-red-700' onClick={() => deleteHandler(post.id)}>
             <MdDelete size={20} />
           </button>
         </div>
       </td>
     </tr>
   );
+  
 
   return (
     <div className='w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
@@ -101,28 +140,29 @@ const PostTable = ({ posts }) => {
 
 const PostsDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [postStats, setPostStats] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
+      setLoading(true);
       try {
         const postStatsData = await DashboardService.getPostsStatisticsData();
         const postsData = await BlogService.getAllBlogPosts();
         setPostStats(postStatsData);
         setPosts(postsData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        toast.error("Something went wrong")
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
+ 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -186,6 +226,7 @@ const PostsDashboard = () => {
 
   return (
     <section className='flex flex-col min-h-screen'>
+      <ToastContainer />
       <div className='w-full flex flex-col md:flex-row flex-1'>
         <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />

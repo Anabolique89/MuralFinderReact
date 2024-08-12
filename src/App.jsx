@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import styles from "./style";
 import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton } from "./components";
 import About from './pages/About';
@@ -42,21 +42,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]);
 
-
-//   const excludedPaths = ['/Map', '/Contact', '/Login', '/IndexSignup'];
-// return (
-//   <div>
-//     {!excludedPaths.includes(location.pathname) && <SearchBar />}
-//     <Switch>
-//       <Route path="/Map" component={Map} />
-//       <Route path="/Contact" component={Contact} />
-//       <Route path="/Login" component={Login} />
-//       <Route path="/IndexSignup" component={IndexSignup} />
-//       Add other routes as needed
-//     </Switch>
-//   </div>
-// );
-// };
 
 
 
@@ -124,7 +109,7 @@ const App = () => {
                   <Billing />
                   <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-2">
                     <Carousel />
-                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}><a href='/ArtworkFeed' >See All</a></button>
+                    <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}><Link to={'/ArtworkFeed'} >See All</Link></button>
                   </div>
 
                   <DragDropImageUploader />

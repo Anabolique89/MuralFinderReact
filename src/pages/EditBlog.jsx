@@ -6,8 +6,9 @@ import BlogService from '../services/BlogService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../components/Footer';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BackToTopButton } from '../components';
+import { ToastContainer, toast } from 'react-toastify';
 
 const EditBlog = () => {
      const {blogId } = useParams()
@@ -19,6 +20,7 @@ const EditBlog = () => {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchBlogDetails = async () => {
 
@@ -63,24 +65,32 @@ const EditBlog = () => {
         e.preventDefault();
         setLoading(true);
         setError(null);
+    
         try {
             const formData = new FormData();
             formData.append('title', title);
             formData.append('content', description);
             formData.append('feature_image', featuredImage);
-
+    
             const response = await BlogService.updateBlogPost(blogId, formData);
-            setSuccessMessage(response);
+            
+            // Show success toast
+            toast.success("Blog Post successfully edited");
+    
+            setTimeout(() => {
+                navigate('/blog/'+blogId);
+            }, 5000); // Delay for 5 seconds
+    
         } catch (error) {
-            setError('Failed to update blog post');
+            // Show error toast
+            toast.error(error.message || "An error occurred while editing the blog post");
+    
+            // Optional: Navigate after a delay if you want to redirect even on error
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000); // Delay for 5 seconds
         } finally {
             setLoading(false);
-            setTimeout(() => {
-                setSuccessMessage(null);
-                setError(null);
-            }, 5000); // Remove success and error messages after 5 seconds
-
-
         }
     };
 
@@ -124,6 +134,8 @@ const EditBlog = () => {
                         </button>
                     </form>
                 </div>
+        <ToastContainer />
+
                 <BackToTopButton />
     <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />
