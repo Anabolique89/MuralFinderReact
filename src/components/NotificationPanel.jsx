@@ -97,7 +97,7 @@ const NotificationPanel = () => {
           <PopoverPanel className='absolute -right-16 md:-right-2 z-10 mt-5 flex w-screen max-w-max  px-4'>
             {({ close }) =>
               data?.length > 0 && (
-                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-indigo-300 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 z-[99]'>
+                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl backdrop-filter backdrop-blur-lg border-solid border-2 border-indigo-700 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5 z-[99]'>
                   <div className='p-4'>
                     {data?.slice(0, 5).map((item, index) => (
                       <div
@@ -112,13 +112,13 @@ const NotificationPanel = () => {
                           className='cursor-pointer'
                           onClick={() => viewHandler(item)}
                         >
-                          <div className='flex items-center gap-3 font-semibold text-gray-900 capitalize'>
+                          <div className='flex items-center gap-3 font-semibold text-gray-900 capitalize font-raleway'>
                             <p> {item.notiType}</p>
-                            <span className='text-xs font-normal lowercase'>
+                            <span className='text-xs font-raleway lowercase '>
                               {moment(item.createdAt).fromNow()}
                             </span>
                           </div>
-                          <p className='line-clamp-1 mt-1 text-gray-600 '>
+                          <p className='line-clamp-1 mt-1 text-black font-raleway '>
                             {item.text}
                           </p>
                         </div>
@@ -126,14 +126,14 @@ const NotificationPanel = () => {
                     ))}
                   </div>
 
-                  <div className='grid grid-cols-2 divide-x bg-indigo-300'>
+                  <div className='grid grid-cols-2 divide-x backdrop-filter backdrop-blur-lg'>
                     {callsToAction.map((item) => (
                       <Link
                         key={item.name}
                         onClick={
                           item?.onClick ? () => item.onClick() : () => close()
                         }
-                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-600 hover:bg-gray-100'
+                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-black hover:bg-gray-100 font-raleway'
                       >
                         {item.name}
                       </Link>
