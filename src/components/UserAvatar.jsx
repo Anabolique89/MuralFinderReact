@@ -38,13 +38,13 @@ const UserAvatar = () => {
             leaveFrom='transform opacity-100 scale-100'
             leaveTo='transform opacity-0 scale-95'
           >
-            <MenuItems className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-indigo-300 dark:bg-[#1f1f1f] dark:text-white  shadow-2xl ring-1 ring-black/5 focus:outline-none z-[99]'>
+            <MenuItems className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md backdrop-filter backdrop-blur-lg border-solid border-2 border-indigo-700 dark:bg-[#1f1f1f] dark:text-white  shadow-2xl ring-1 ring-black/5 focus:outline-none z-[99]'>
               <div className='p-4'>
                 <MenuItem>
                   {({ active }) => (
                     <button
                       onClick={() => navigate('/profile')}
-                      className={`text-gray-700 dark:text-gray-200 group flex w-full items-center rounded-md px-2 py-2 text-base hover:text-indigo-600`}
+                      className={`text-dimWhite dark:text-gray-200 group flex w-full items-center rounded-md px-2 py-2 text-base hover:text-black`}
                     >
                       <FaUser className='mr-2' aria-hidden='true' />
                       Profile
@@ -56,7 +56,7 @@ const UserAvatar = () => {
                   {({ active }) => (
                     <button
                       onClick={() => setOpenPassword(true)}
-                      className={`text-gray-700 dark:text-gray-200  group flex w-full items-center rounded-md px-2 py-2 text-base hover:text-indigo-600`}
+                      className={`text-dimWhite dark:text-gray-200  group flex w-full items-center rounded-md px-2 py-2 text-base hover:text-black`}
                     >
                       <FaUserLock className='mr-2' aria-hidden='true' />
                       Change Password
@@ -68,7 +68,7 @@ const UserAvatar = () => {
                   {({ active }) => (
                     <button
                     //   onClick={logoutHandler}
-                      className={`text-red-600 group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                      className={`text-dimWhite group flex w-full items-center rounded-md px-2 py-2 text-base hover:text-orange-700`}
                     >
                       <IoLogOutOutline className='mr-2' aria-hidden='true' />
                       Logout

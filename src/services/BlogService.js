@@ -51,7 +51,7 @@ const BlogService = {
           },
         }
       );
-      return response.data.message;
+      return response.data.data.message;
 
 
     } catch (error) {

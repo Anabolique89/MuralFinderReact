@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import { layout } from '../style';
@@ -16,7 +16,7 @@ const AddBlog = () => {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
 
     const handleTitleChange = (e) => {
@@ -44,6 +44,7 @@ const AddBlog = () => {
 
             const response = await BlogService.createBlogPost(formData);
             setSuccessMessage(response);
+            console.log(response);
             // setSuccessMessage(response.message);
 
 
@@ -51,7 +52,7 @@ const AddBlog = () => {
             setDescription('');
             setFeaturedImage(null);
 
-            // navigate(`/blog/${response.postId}`);
+            navigate(`/blog/${response.data.data.id}`);
 
         } catch (error) {
             setError('Failed to create blog post');
