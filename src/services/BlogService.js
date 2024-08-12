@@ -18,7 +18,7 @@ const BlogService = {
     try {
       const response = await axios.get(
         `${BASE_URL}${blogEndpoints.getBlogPostById(postId)}`
-      ); 
+      );
       return response.data.data;
     } catch (error) {
       console.error("Error fetching blog post:", error);
@@ -51,9 +51,7 @@ const BlogService = {
           },
         }
       );
-      return response.data.data.message;
-
-
+      return response.data;
     } catch (error) {
       console.error("Error creating blog post:", error);
       if (
@@ -63,12 +61,11 @@ const BlogService = {
       ) {
         return error.response.data.message;
 
-    // Ensure the ID is extracted correctly
-      // return {
-      //   message: response.data.message,
-      //   postId: response.data.id, // Adjust this according to your actual response structure
-      // };
-
+        // Ensure the ID is extracted correctly
+        // return {
+        //   message: response.data.message,
+        //   postId: response.data.id, // Adjust this according to your actual response structure
+        // };
       } else {
         return error.response.data.error;
       }
@@ -110,7 +107,7 @@ const BlogService = {
       return response.data;
     } catch (error) {
       console.error("Error deleting blog post:", error);
-      return error
+      return error;
     }
   },
   getCommentsForBlogPost: async (postId) => {

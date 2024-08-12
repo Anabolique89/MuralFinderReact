@@ -14,6 +14,7 @@ import {
 import WallService from "../services/WallService";
 import Footer from "../components/Footer";
 import styles from "../style";
+import { Link } from "react-router-dom";
 
 // Example default bonds for each location
 const defaultBonds = [
@@ -157,6 +158,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [walls, setWalls] = useState([]);
   const [title, setTitle] = useState("");
+  const [id, setId] = useState("");
   const [image, setImage] = useState("");
   const [mapCenter, setMapCenter] = useState([]);
   const [directions, setDirections] = useState(null);
@@ -169,9 +171,6 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   // load environment vairables
 
   const apiKey = import.meta.env.VITE_MAP_KEY;
-
-
-  console.log(apiKey)
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -213,6 +212,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
     setSelectedMarker(index);
     setTitle(walls[index].location_text);
     setImage(`https://api.muralfinder.net/${walls[index].image_path}`);
+    setId(walls[index].id);
   };
 
   const handleDirections = async (destination) => {
@@ -220,12 +220,18 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
       alert("Please allow location access to get directions.");
       return;
     }
-
+   
+    // Ensure latitude and longitude are numbers
+    const finalDestination = {
+      lat: parseFloat(destination.latitude),
+      lng: parseFloat(destination.longitude)
+    };
+  
     const service = new google.maps.DirectionsService();
     service.route(
       {
         origin: userLocation,
-        destination: destination,
+        destination: finalDestination,  // Properly structured destination object
         travelMode: google.maps.TravelMode.DRIVING,
       },
       (result, status) => {
@@ -237,7 +243,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
       }
     );
   };
-
+  
   const handlePlaceChanged = () => {
     const place = autocomplete.getPlace();
     if (place && place.geometry) {
@@ -335,7 +341,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
                     display: "flex",
                     width: "250px",
                     height: "auto",
-                    zIndex: "20",
+                    zIndex: "100",
                   }}
                   position={{
                     lat: Number(walls[selectedMarker].latitude),
@@ -345,12 +351,15 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
                     setSelectedMarker(null);
                     setTitle("");
                     setImage("");
+                    setId("");
                   }}
                 >
                   <div className="flex justify-between flex-col px-2 py-2 rounded-[20px] md:mr-2 mr-0 my-2 overflow-hidden z-[25]">
+                    <Link to={`/wall/${id}`}>     
                     <h2 className="font-raleway font-semibold xs:text-[18px] text-[16px] text-white w-full p-2">
                       {title}
                     </h2>
+                    </Link>
                     <img
                       className="object-cover w-full h-40 mb-4 rounded-md"
                       src={image}
