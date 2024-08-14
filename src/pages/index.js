@@ -39,6 +39,7 @@ import Trash from "./Trash";
 import Users from "./Users";
 import PostsDashboard from "./PostsDashboard";
 import Shop from "./Shop";
+import Feed from "./Feed";
 
 export {
   About,
@@ -82,4 +83,5 @@ export {
   Users,
   PostsDashboard,
   Shop,
+  Feed,
 };

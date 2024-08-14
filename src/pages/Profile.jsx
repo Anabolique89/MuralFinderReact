@@ -163,10 +163,10 @@ const Profile = () => {
 
                     <div className="col-span-4 sm:col-span-9">
                         {/* <div className=' float-right'><RiMessage2Fill className='w-[30px] h-[30px] ' /></div> */}
-                        <div className='highlights flex flex-column mb-4 mt-2'>
+                        <div className='highlights flex flex-column mb-4 mt-2 w-full overflow-x-auto scrollbar-thin scrollbar-webkit'>
                             {!blogData ? (
                                 // Display spinners while blog data is being fetched
-                                <div className="flex justify-center">
+                                <div className="flex justify-center ">
                                     {[...Array(3)].map((_, index) => (
                                         <FontAwesomeIcon key={index} icon={faSpinner} className="text-gray-400 animate-spin mr-4" />
                                     ))}
@@ -184,7 +184,7 @@ const Profile = () => {
                             )}
                         </div>
 
-                        <div className="bg-white p-6 profile-content z-[20] w-full">
+                        <div className="bg-white p-6 profile-content z-[20] w-full max-h-[560px] overflow-y-auto scrollbar-thin scrollbar-webkit">
                             <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4 font-raleway">BLOG POSTS</h2>
 
                             {!blogData ? (
