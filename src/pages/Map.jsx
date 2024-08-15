@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Map,
   Marker,
   InfoWindow,
   APIProvider,
-} from "@vis.gl/react-google-maps";
+  // AdvancedMarker
+} from "@vis.gl/react-google-maps";5
 import {
   DirectionsRenderer,
   LoadScript,
@@ -15,6 +16,9 @@ import WallService from "../services/WallService";
 import Footer from "../components/Footer";
 import styles from "../style";
 import { Link } from "react-router-dom";
+
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
+// import trees from "../../data/trees";
 
 // Example default bonds for each location
 const defaultBonds = [
@@ -226,8 +230,9 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
       lat: parseFloat(destination.latitude),
       lng: parseFloat(destination.longitude)
     };
-  
+  console.log(finalDestination);
     const service = new google.maps.DirectionsService();
+
     service.route(
       {
         origin: userLocation,
@@ -235,10 +240,12 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
         travelMode: google.maps.TravelMode.DRIVING,
       },
       (result, status) => {
+        console.log(result);
         if (status === google.maps.DirectionsStatus.OK) {
           setDirections(result);
         } else {
-          console.error(`Error fetching directions ${result}`);
+          // console.error(`Error fetching directions ${result}`);
+          console.error(`Error fetching directions: ${status}`, result);
         }
       }
     );
@@ -266,12 +273,15 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
       <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
         <APIProvider apiKey={apiKey}>
           {/* for height we need to pass a concrete value header=48px and footer=405px*/}
-          <div style={{ width: "100%", height: "calc(100vh - 150px)" }}>
-            <Map {...cameraProps} onCameraChanged={handleCameraChange}>
+          <div style={{ width: "100%", height: "100vh" }}>
+            <Map {...cameraProps} onCameraChanged={handleCameraChange} 
+            // mapId={'bf51a910020fa25a'}
+            >
               <Autocomplete
                 onLoad={setAutocomplete}
                 onPlaceChanged={handlePlaceChanged}
                 className=""
+                
               >
                 <input
                   type="text"
