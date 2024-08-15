@@ -37,6 +37,10 @@ export const wallEndpoints = {
   getWallById: (wallId) => `walls/${wallId}`,
   addWall: "walls",
   updateWall: (wallId) => `walls/${wallId}`,
+  //added these for wall comments
+  getCommentsForWall: (wallId) => `/walls/${wallId}/comments`,  // Add this
+  commentOnWall: (wallId) => `/walls/${wallId}/comments`,       // Add this
+  likeWall: (wallId) => `/walls/${wallId}/like`,                // Add this
 };
 
 export const fellowshipEndpoints = {
