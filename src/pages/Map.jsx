@@ -219,38 +219,51 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
     setId(walls[index].id);
   };
 
-  const handleDirections = async (destination) => {
+  // const handleDirections = async (destination) => {
+  //   if (!userLocation) {
+  //     alert("Please allow location access to get directions.");
+  //     return;
+  //   }
+   
+  //   // Ensure latitude and longitude are numbers
+  //   const finalDestination = {
+  //     lat: parseFloat(destination.latitude),
+  //     lng: parseFloat(destination.longitude)
+  //   };
+  // console.log(finalDestination);
+  //   const service = new google.maps.DirectionsService();
+
+  //   service.route(
+  //     {
+  //       origin: userLocation,
+  //       destination: finalDestination,  // Properly structured destination object
+  //       travelMode: google.maps.TravelMode.DRIVING,
+  //     },
+  //     (result, status) => {
+  //       console.log(result);
+  //       if (status === google.maps.DirectionsStatus.OK) {
+  //         setDirections(result);
+  //       } else {
+  //         // console.error(`Error fetching directions ${result}`);
+  //         console.error(`Error fetching directions: ${status}`, result);
+  //       }
+  //     }
+  //   );
+  // };
+  
+
+  const handleDirections = (destination) => {
     if (!userLocation) {
       alert("Please allow location access to get directions.");
       return;
     }
-   
-    // Ensure latitude and longitude are numbers
-    const finalDestination = {
-      lat: parseFloat(destination.latitude),
-      lng: parseFloat(destination.longitude)
-    };
-  console.log(finalDestination);
-    const service = new google.maps.DirectionsService();
-
-    service.route(
-      {
-        origin: userLocation,
-        destination: finalDestination,  // Properly structured destination object
-        travelMode: google.maps.TravelMode.DRIVING,
-      },
-      (result, status) => {
-        console.log(result);
-        if (status === google.maps.DirectionsStatus.OK) {
-          setDirections(result);
-        } else {
-          // console.error(`Error fetching directions ${result}`);
-          console.error(`Error fetching directions: ${status}`, result);
-        }
-      }
-    );
-  };
   
+    const destinationLatLng = `${destination.latitude},${destination.longitude}`;
+    const userLatLng = `${userLocation.lat},${userLocation.lng}`;
+    const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatLng}&destination=${destinationLatLng}&travelmode=driving`;
+  
+    window.open(directionsUrl, "_blank");
+  };
   const handlePlaceChanged = () => {
     const place = autocomplete.getPlace();
     if (place && place.geometry) {
@@ -397,7 +410,17 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
                 </InfoWindow>
               )}
 
-              {directions && <DirectionsRenderer directions={directions} />}
+            {directions && (
+              <>
+                {console.log("Directions Data:", directions)}
+
+                <DirectionsRenderer 
+                key={`directions_${Date.now()}`}
+                directions={directions} 
+                />
+              </>
+            )}
+
             </Map>
           </div>
         </APIProvider>

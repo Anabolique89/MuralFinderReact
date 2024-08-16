@@ -85,10 +85,10 @@ const BlogService = {
           },
         }
       ); // Adding BASE_URL to the endpoint
-      return response.data.message;
+      return response.data;
     } catch (error) {
-      console.error("Error updating blog post:", error);
-      throw new Error("Failed to update blog post");
+      console.error("Error updating blog post:", error.response.data.message);
+      return error
     }
   },
 
