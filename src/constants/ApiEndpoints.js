@@ -33,11 +33,13 @@ export const blogEndpoints = {
 };
 
 export const wallEndpoints = {
-  getAllWalls: "walls",
+  getAllWalls: (page = 1, perPage = 10) => `walls?page=${page}&perPage=${perPage}`,
   getWallById: (wallId) => `walls/${wallId}`,
   addWall: "walls",
   updateWall: (wallId) => `walls/${wallId}`,
+  deleteWall: (wallId) => `walls/${wallId}`,
 };
+
 
 export const fellowshipEndpoints = {
   follow: "fellowships/follow",

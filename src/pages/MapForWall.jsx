@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Card from '../components/Card';
 import { Map, Marker, InfoWindow, APIProvider } from '@vis.gl/react-google-maps';
+import { FaCheckCircle } from 'react-icons/fa'; // Import green check icon
 
-const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
+const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight, isVerified }) => {
     const latitude = Number(lat);
     const longitude = Number(long);
 
@@ -19,7 +20,9 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
         fontSize: '2rem', // Large font size for visibility
         fontWeight: 'bold', // Bold font weight for the title
         marginBottom: '0.5rem', // Adds a small margin below the title
-        // fontColor:'White' 
+        display: 'flex',
+        alignItems: 'center', // Align items center to align the checkmark
+        justifyContent: 'center', // Center items horizontally
     };
 
     const mapStyles = {
@@ -46,13 +49,17 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight }) => {
     };
 
     const defaultCenter = { lat: latitude, lng: longitude };
-    const mapKey = import.meta.env.VITE_MAP_KEY
+    const mapKey = import.meta.env.VITE_MAP_KEY;
 
     return (
         <Card>
-            <h2 style={titleStyles}>{title}</h2>
+            <div style={titleStyles}>
+                <h2>{title}</h2>
+                {/* Conditionally render the green check icon */}
+                {isVerified && <FaCheckCircle size={24} color='white' size="40px" style={{ marginLeft: '10px' }} />}
+            </div>
             <div style={{ ...mapStyles }}>
-            <APIProvider apiKey={mapKey}>
+                <APIProvider apiKey={mapKey}>
                     <Map
                         defaultCenter={defaultCenter}
                         defaultZoom={15}

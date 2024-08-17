@@ -2,15 +2,16 @@ import axios from 'axios';
 import { BASE_URL, wallEndpoints } from '../constants/ApiEndpoints';
 
 const WallService = {
-  getAllWalls: async () => {
+  getAllWalls: async (page = 1, perPage = 10) => {
     try {
-        const response = await axios.get(`${BASE_URL}${wallEndpoints.getAllWalls}`);
-        return response.data; // Return the entire response
+      const response = await axios.get(`${BASE_URL}${wallEndpoints.getAllWalls(page, perPage)}`);
+      return response.data; // Return the entire response, which should include 'data'
     } catch (error) {
-        console.error('Error fetching walls:', error);
-        throw new Error('Failed to fetch walls');
-    }
+      console.error('Error fetching walls:', error);
+      throw new Error('Failed to fetch walls');
+    }  
 },
+
 
   getWallById: async (wallId) => {
     try {
@@ -53,6 +54,21 @@ const WallService = {
     } catch (error) {
       console.error('Error updating wall:', error);
       throw new Error('Failed to update wall');
+    }
+  },
+
+  deleteWall: async (wallId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(`${BASE_URL}${wallEndpoints.deleteWall(wallId)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting wall:', error);
+      throw new Error('Failed to delete wall');
     }
   }
 };

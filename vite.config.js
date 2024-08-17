@@ -7,4 +7,7 @@ export default defineConfig({
   build: {
     sourcemap: false, // or true
   },
+  rollupOptions: {
+    external: ['react-quill/dist/quill.snow.css']
+  }
 })
