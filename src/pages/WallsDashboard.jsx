@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  MdMenu
-} from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { MdMenu } from "react-icons/md";
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import RoomIcon from '@mui/icons-material/Room';
 import GroupIcon from '@mui/icons-material/Group';
@@ -9,13 +7,13 @@ import CheckCircleIcon from '@mui/icons-material/InsertPhoto';
 import moment from "moment";
 import clsx from "clsx";
 import UserInfo from "../components/dashboard/UserInfo";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from '../style';
 import Footer from '../components/Footer.jsx';
 import BackToTopButton from '../components/BackToTopButton.jsx';
 import Sidebar from '../components/dashboard/Sidebar';
 import MobileSidebar from '../components/dashboard/MobileSidebar';
-import WallService from "../services/WallService.js"; // Import your wall service
+import WallService from "../services/WallService.js";
 import DashboardService from "../services/DashboardService.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -24,8 +22,8 @@ import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 
 const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
-  const navigate = useNavigate(); // Use navigate from react-router-dom
-  const [loading, setLoading] = useState(false); // Add state for loading
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const deleteHandler = async (wallId) => {
     Swal.fire({
@@ -42,13 +40,13 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
         try {
           const response = await WallService.deleteWall(wallId);
           if (response?.success) {
-            toast.success("wall deleted successfully");
-            await refreshWalls()
+            toast.success("Wall deleted successfully");
+            await refreshWalls();
           } else {
-            toast.error("Failed to delete the post: " + response?.message);
+            toast.error("Failed to delete the wall: " + response?.message);
           }
         } catch (error) {
-          toast.error("Error occurred while deleting post: " + error.message);
+          toast.error("Error occurred while deleting wall: " + error.message);
         } finally {
           setLoading(false);
         }
@@ -77,7 +75,6 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
     }
   };
 
-  
   const TableHeader = () => (
     <thead className="bg-gray-100 border-b border-gray-300">
       <tr className="text-gray-600 text-left">
@@ -135,7 +132,7 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
       <table className="w-full">
         <TableHeader />
         <tbody>
-          {isLoading ? (
+          {loading ? (
             <tr>
               <td colSpan="6" className="text-center py-4">
                 <Spinner />
@@ -151,6 +148,7 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
     </div>
   );
 };
+
 const WallsDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [walls, setWalls] = useState([]);
