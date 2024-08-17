@@ -40,6 +40,7 @@ import Users from "./Users";
 import PostsDashboard from "./PostsDashboard";
 import Shop from "./Shop";
 import Feed from "./Feed";
+import { swimBlue } from "../assets";
 
 export {
   About,
