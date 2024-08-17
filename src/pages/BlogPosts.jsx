@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { blogEndpoints } from '../config/endpoints';
-// import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.snow.css';
 import DOMPurify from 'dompurify'; 
 import { BackToTopButton, CommunityBlogSection } from '../components';
 import styles, { layout } from '../style';
