@@ -33,6 +33,7 @@ import Feed from './pages/Feed';
 import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
 import EditUser from './pages/EditUser';
+import EditWall from './components/EditWall';
 
 
 
@@ -165,6 +166,12 @@ const App = () => {
           <Route path="/artwork/edit/:artworkId" element={
             <PrivateRoute>
               <EditArtworkUploader />
+            </PrivateRoute>
+          } />
+
+          <Route path="/walls/edit/:wallId" element={
+            <PrivateRoute>
+              <EditWall />
             </PrivateRoute>
           } />
           <Route path="/profile" element={

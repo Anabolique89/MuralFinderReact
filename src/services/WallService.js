@@ -18,7 +18,6 @@ const WallService = {
       const url = `${BASE_URL}${wallEndpoints.getWallById(wallId)}`;
       console.log(url)
       const response = await axios.get(`${BASE_URL}${wallEndpoints.getWallById(wallId)}`);
-      console.log(response.data)
       return response.data;
 
     } catch (error) {

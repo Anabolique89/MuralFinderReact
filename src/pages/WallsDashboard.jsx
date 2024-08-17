@@ -7,7 +7,7 @@ import CheckCircleIcon from '@mui/icons-material/InsertPhoto';
 import moment from "moment";
 import clsx from "clsx";
 import UserInfo from "../components/dashboard/UserInfo";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from '../style';
 import Footer from '../components/Footer.jsx';
 import BackToTopButton from '../components/BackToTopButton.jsx';
@@ -54,6 +54,7 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
     });
   };
 
+
   const refreshWalls = async () => {
     setLoading(true);
     try {
@@ -92,7 +93,7 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
     <tr className="border-b border-gray-300 text-gray-600 hover:bg-gray-100">
       <td className="py-2 px-4">
         <div className="flex items-center gap-2">
-          <p className="text-base text-black">{wall.title ?? "Anonymous"}</p>
+          <p className="text-base text-black">{wall.title ?? wall.location_text}</p>
         </div>
       </td>
       <td className="py-2 px-4">
@@ -114,12 +115,12 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
         <span className="text-gray-600">{moment(wall.created_at).fromNow()}</span>
       </td>
       <td className="py-2 px-4 flex items-center gap-2">
-        <button onClick={() => onView(wall)} className="text-gray-600 hover:text-blue-600">
+        <Link to={'/walls/'+wall.id} className="text-gray-600 hover:text-blue-600">
           <FontAwesomeIcon icon={faEye} />
-        </button>
-        <button onClick={() => onEdit(wall)} className="text-blue-600 hover:text-blue-800">
+        </Link>
+        <Link to={'/walls/edit/'+wall.id} className="text-blue-600 hover:text-blue-800">
           <FontAwesomeIcon icon={faPencil} />
-        </button>
+        </Link>
         <button onClick={() => deleteHandler(wall.id)} className="text-red-600 hover:text-red-800">
           <FontAwesomeIcon icon={faTrash} />
         </button>
