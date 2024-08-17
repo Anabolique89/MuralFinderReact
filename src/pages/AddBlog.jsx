@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+// import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import { layout } from '../style';
 import BlogService from '../services/BlogService'; // Assuming you have a service for creating blog posts
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
