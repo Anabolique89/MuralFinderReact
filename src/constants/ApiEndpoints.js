@@ -37,9 +37,9 @@ export const wallEndpoints = {
   getWallById: (wallId) => `walls/${wallId}`,
   addWall: "walls",
   updateWall: (wallId) => `walls/${wallId}`,
-  getCommentsForWall: (wallId) => `/walls/${wallId}/comments`,  // Add this
-  commentOnWall: (wallId) => `/walls/${wallId}/comments`,       // Add this
-  likeWall: (wallId) => `/walls/${wallId}/like`,                // Add this
+  getCommentsForWall: (wallId) => `walls/${wallId}/comments`,  // Add this
+  commentOnWall: (wallId) => `walls/${wallId}/comments`,       // Add this
+  likeWall: (wallId) => `walls/${wallId}/like`,                // Add this
   deleteWall: (wallId) => `walls/${wallId}`,
 };
 
