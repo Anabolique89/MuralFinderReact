@@ -34,6 +34,7 @@ const Trash = () => {
     try {
       const response = await TrashService.getAll(); // Call the TrashService to get all trashed items
       setTrashedItems(response.data); // Assuming response.data contains the trashed items
+      console.log(trashedItems)
     } catch (error) {
       console.error("Error fetching trashed items:", error);
     } finally {
@@ -179,16 +180,16 @@ const Trash = () => {
   // Rows for Walls
   const WallTableRow = ({ wall }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2 text-yellow-600'>{wall.title}</td>
-      <td className='py-2 text-yellow-600'>{wall.location}</td>
+      <td className='py-2 text-yellow-600'>{wall.location_text}</td>
+      <td className='py-2 text-yellow-600'>{wall.description ?? 'Empty'}</td>
       <td className='py-2 text-yellow-600'>{new Date(wall.deleted_at).toDateString()}</td>
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
+          icon={<MdOutlineRestore className='text-xle text-yellow-500' />}
           onClick={() => restoreClick('wall', wall.id)}
         />
         <Button
-          icon={<MdDelete className='text-xl text-white text-red-600' />}
+          icon={<MdDelete className='text-xl text-red-600' />}
           onClick={() => deleteClick('wall', wall.id)}
         />
       </td>

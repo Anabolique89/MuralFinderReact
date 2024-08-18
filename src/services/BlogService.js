@@ -2,17 +2,20 @@ import axios from "axios";
 import { BASE_URL, blogEndpoints } from "../constants/ApiEndpoints";
 
 const BlogService = {
-  getAllBlogPosts: async () => {
+  getAllBlogPosts: async (page = 1, pageSize = 10) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}${blogEndpoints.getAllBlogPosts}`
-      );
-      return response.data.data.data;
+      const response = await axios.get(`${BASE_URL}${blogEndpoints.getAllBlogPosts}`, {
+        params: { page, pageSize },
+      });
+      console.log(response.data)
+      return response.data;
+
     } catch (error) {
       console.error("Error fetching blog posts:", error);
       throw new Error("Failed to fetch blog posts");
     }
   },
+  
 
   getBlogPostById: async (postId) => {
     try {
@@ -85,10 +88,10 @@ const BlogService = {
           },
         }
       ); // Adding BASE_URL to the endpoint
-      return response.data.message;
+      return response.data;
     } catch (error) {
-      console.error("Error updating blog post:", error);
-      throw new Error("Failed to update blog post");
+      console.error("Error updating blog post:", error.response.data.message);
+      return error
     }
   },
 

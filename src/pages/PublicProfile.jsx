@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../style';
-import { defaultimg } from '../assets';
+import { defaultimg, swimBlue } from '../assets';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';

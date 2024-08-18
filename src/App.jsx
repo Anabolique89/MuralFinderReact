@@ -33,6 +33,7 @@ import Feed from './pages/Feed';
 import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
 import EditUser from './pages/EditUser';
+import EditWall from './components/EditWall';
 
 
 
@@ -141,11 +142,6 @@ const App = () => {
           <Route path="/ProfileSettings" element={<ProfileSettings />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsConditions" element={<TermsConditions />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/WallsDashboard" element={<WallsDashboard />} />
-          <Route path="/ArtworksDashboard" element={<ArtworksDashboard/>} />
-          <Route path="/PostsDashboard" element={<PostsDashboard/>} />
-          <Route path="/admin/artworks" element={<ArtworksDashboard/>} />
           <Route path="/ArtworkDetails" element={<ArtworkDetails />} />
           <Route path="/Trash" element={<Trash />} />
           <Route path="/Users" element={<Users />} />
@@ -172,6 +168,12 @@ const App = () => {
               <EditArtworkUploader />
             </PrivateRoute>
           } />
+
+          <Route path="/walls/edit/:wallId" element={
+            <PrivateRoute>
+              <EditWall />
+            </PrivateRoute>
+          } />
           <Route path="/profile" element={
             <PrivateRoute>
               <Profile />
@@ -188,6 +190,42 @@ const App = () => {
               <EditUser />
             </PrivateRoute>
           } />
+
+          <Route path='/dashboard' element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }/>
+
+          <Route path='/walls-dashboard' element={
+            <PrivateRoute>
+              <WallsDashboard />
+            </PrivateRoute>
+          }/>
+
+          <Route path='/artworks-dashboard' element={
+            <PrivateRoute>
+              <ArtworksDashboard />
+            </PrivateRoute>
+          }/>
+
+          <Route path='/post-dashboard' element={
+            <PrivateRoute>
+              <PostsDashboard />
+            </PrivateRoute>
+          }/>
+
+          <Route path='/artworks-dashboard' element={
+            <PrivateRoute>
+              <ArtworksDashboard />
+            </PrivateRoute>
+          }/>
+
+<Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/walls-dashboard" element={<WallsDashboard />} />
+          <Route path="/artworks-dashboard" element={<ArtworksDashboard/>} />
+          <Route path="/post-dashboard" element={<PostsDashboard/>} />
+          <Route path="/admin/artworks" element={<ArtworksDashboard/>} />
 
         </Routes>
       </div>

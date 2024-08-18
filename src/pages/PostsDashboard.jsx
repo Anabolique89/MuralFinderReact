@@ -47,7 +47,7 @@ const PostTable = ({ posts }) => {
           if (response?.response?.data?.success) {
             toast.success("Post deleted successfully");
             // Optionally, refresh the posts list here by re-fetching the data or removing the post from the state
-            navigate('/PostsDashboard');
+            navigate('/post-dashboard');
           } else {
             toast.error("Failed to delete the post: " + (response?.response?.data?.message));
           }
@@ -112,7 +112,7 @@ const PostTable = ({ posts }) => {
           <button className='text-blue-500 hover:text-blue-700' onClick={() => navigate('/blog/' + post.id)}>
             <MdVisibility size={20} />
           </button>
-          <button className='text-green-500 hover:text-green-700'>
+          <button className='text-green-500 hover:text-green-700' onClick={() => navigate('/blog/edit/' + post.id )} >
             <MdEdit size={20} />
           </button>
           <button className='text-red-500 hover:text-red-700' onClick={() => deleteHandler(post.id)}>

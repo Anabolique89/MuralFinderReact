@@ -73,22 +73,66 @@ const EditBlog = () => {
             formData.append('feature_image', featuredImage);
     
             const response = await BlogService.updateBlogPost(blogId, formData);
-            
-            // Show success toast
-            toast.success("Blog Post successfully edited");
     
-            setTimeout(() => {
-                navigate('/blog/'+blogId);
-            }, 5000); // Delay for 5 seconds
+            if (response.success) {
+                // Show success toast
+                toast.success("Blog Post successfully edited");
     
+                setTimeout(() => {
+                    navigate('/blog/' + blogId);
+                }, 5000); // Delay for 5 seconds
+            } else {
+                // Handle the case where the response is not successful
+                let errorMessage = "An error occurred while editing the blog post";
+                const errorData = response.response.data.message;
+    
+                if (typeof errorData === 'object') {
+                    // Iterate over the object and concatenate error messages
+                    errorMessage = Object.entries(errorData)
+                        .map(([field, messages]) => {
+                            // Check if the value is an array and join its elements
+                            if (Array.isArray(messages)) {
+                                return `${field}: ${messages.join(', ')}`;
+                            }
+                            return `${field}: ${messages}`;
+                        })
+                        .join('\n');
+                } else if (typeof errorData === 'string') {
+                    // If it's a string, use it directly
+                    errorMessage = errorData;
+                }
+    
+                // Log the error message
+                console.error("Error:", errorMessage);
+                toast.error(errorMessage);
+            }
         } catch (error) {
-            // Show error toast
-            toast.error(error.message || "An error occurred while editing the blog post");
+            let errorMessage = "An error occurred while editing the blog post";
     
-            // Optional: Navigate after a delay if you want to redirect even on error
-            setTimeout(() => {
-                window.location.reload();
-            }, 5000); // Delay for 5 seconds
+            if (error.response && error.response.data) {
+                const errorData = error.response.data;
+                if (typeof errorData === 'object') {
+                    // Iterate over the object and concatenate error messages
+                    errorMessage = Object.entries(errorData)
+                        .map(([field, messages]) => {
+                            // Check if the value is an array and join its elements
+                            if (Array.isArray(messages)) {
+                                return `${field}: ${messages.join(', ')}`;
+                            }
+                            return `${field}: ${messages}`;
+                        })
+                        .join('\n');
+                } else if (typeof errorData === 'string') {
+                    // If it's a string, use it directly
+                    errorMessage = errorData;
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+    
+            // Log the error message
+            console.error("Error:", errorMessage);
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
