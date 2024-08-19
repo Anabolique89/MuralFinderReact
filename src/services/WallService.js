@@ -9,13 +9,11 @@ const WallService = {
     } catch (error) {
       console.error('Error fetching walls:', error);
       throw new Error('Failed to fetch walls');
-    }  
-},
+    }
+  },
 
   getWallById: async (wallId) => {
     try {
-      const url = `${BASE_URL}${wallEndpoints.getWallById(wallId)}`;
-      console.log(url)
       const response = await axios.get(`${BASE_URL}${wallEndpoints.getWallById(wallId)}`);
       return response.data;
     } catch (error) {
@@ -57,12 +55,9 @@ const WallService = {
     }
   },
 
-  //fetching wall comments:
   getCommentsForWall: async (wallId) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}${wallEndpoints.getCommentsForWall(wallId)}`
-      );
+      const response = await axios.get(`${BASE_URL}${wallEndpoints.getCommentsForWall(wallId)}`);
       return response.data; // Assuming this returns the list of comments
     } catch (error) {
       console.error("Error fetching comments:", error);
