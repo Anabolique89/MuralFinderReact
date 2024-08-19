@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import BlogService from '../services/BlogService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faSpinner, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faEdit, faSpinner, faThumbsUp, faUser } from '@fortawesome/free-solid-svg-icons';
 import styles from '../style';
 import DOMPurify from 'dompurify';
 import { BackToTopButton, Footer } from '../components';
@@ -17,11 +17,8 @@ const SingleBlogPost = () => {
   const [liking, setLiking] = useState(false);
   const [commenting, setCommenting] = useState(false);
 
-
-
   const sanitizedContent = blogPost && blogPost.content ? DOMPurify.sanitize(blogPost.content) : '';
 
-  
   useEffect(() => {
     const fetchBlogPost = async () => {
       try {
@@ -98,8 +95,16 @@ const SingleBlogPost = () => {
           <div className="flex flex-col">
             <img src={`https://api.muralfinder.net/${blogPost.feature_image}`}
               alt={blogPost.title} className="w-full h-auto mb-4" />
+              <div className='flex flex-row'>
             <h3 className="text-2xl text-gray-200 font-semibold mb-2">{blogPost.title}</h3>
-        
+
+            <Link to={`/blog/edit/${postId}`}>
+          <FontAwesomeIcon 
+              icon={faEdit} 
+              className="text-purple-950 cursor-pointer ml-4 font-medium" 
+          />
+        </Link>
+        </div>
             <p className={`${styles.paragraph} mb-6`} dangerouslySetInnerHTML={{ __html: sanitizedContent }}></p>
                   
             <div className="flex items-center">
@@ -119,7 +124,7 @@ const SingleBlogPost = () => {
               <button onClick={handleLike} className="ml-4 bg-blue-500 text-white py-2 px-4 rounded-md">
                 {liking ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faThumbsUp} />} Like
               </button>
-              
+            
             </div> 
           </div>
           <div className="flex flex-col">

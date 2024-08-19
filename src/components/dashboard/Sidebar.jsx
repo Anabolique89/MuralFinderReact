@@ -85,10 +85,7 @@ const Sidebar = () => {
         ))}
       </div>
       <div>
-        <button className='w-full flex gap-2 p-2 items-center text-lg text-white'>
-          <MdSettings />
-          <span>Settings</span>
-        </button>
+  
       </div>
     </div>
   );

@@ -146,7 +146,7 @@ const Trash = () => {
       <td className='py-2 text-yellow-600'>{new Date(artwork.deleted_at).toDateString()}</td>
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-white text-yellow-700' />}
+          icon={<MdOutlineRestore className='text-xl text-yellow-700' />}
           onClick={() => restoreClick('artwork', artwork.id)}
         />
         <Button
@@ -159,13 +159,13 @@ const Trash = () => {
 
   // Rows for Users
   const UserTableRow = ({ user }) => (
-    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
+    <tr className='border-b border-gray-900 text-gray-600 hover:bg-gray-400/10'>
       <td className='py-2 text-yellow-600'>{user.username}</td>
       <td className='py-2 text-yellow-600'>{user.email}</td>
       <td className='py-2 text-yellow-600'>{new Date(user.deleted_at).toDateString()}</td>
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-white text-yellow-700' />}
+          icon={<MdOutlineRestore className='text-xl text-yellow-700' />}
           onClick={() => restoreClick('user', user.id)}
         />
         <Button
@@ -178,17 +178,17 @@ const Trash = () => {
 
   // Rows for Walls
   const WallTableRow = ({ wall }) => (
-    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
+    <tr className='border-b border-gray-900 text-gray-600 hover:bg-gray-400/10'>
       <td className='py-2 text-yellow-600'>{wall.title}</td>
       <td className='py-2 text-yellow-600'>{wall.location}</td>
       <td className='py-2 text-yellow-600'>{new Date(wall.deleted_at).toDateString()}</td>
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
+          icon={<MdOutlineRestore className='text-xl text-gray-500' />}
           onClick={() => restoreClick('wall', wall.id)}
         />
         <Button
-          icon={<MdDelete className='text-xl text-white text-red-600' />}
+          icon={<MdDelete className='text-xl text-red-600' />}
           onClick={() => deleteClick('wall', wall.id)}
         />
       </td>
@@ -197,18 +197,18 @@ const Trash = () => {
 
   // Rows for Posts
   const PostTableRow = ({ post }) => (
-    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
+    <tr className='border-b border-gray-900 text-gray-600 hover:bg-gray-400/10'>
       <td className='py-2 text-yellow-600'>{post.title}</td>
       <td className='py-2 text-yellow-600'>{post.content}</td>
       <td className='py-2 text-yellow-600'>{post.author?.name}</td>
       <td className='py-2 text-yellow-600'>{new Date(post.deleted_at).toDateString()}</td>
       <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
         <Button
-          icon={<MdOutlineRestore className='text-xl text-white text-gray-500' />}
+          icon={<MdOutlineRestore className='text-xl text-gray-500' />}
           onClick={() => restoreClick('post', post.id)}
         />
         <Button
-          icon={<MdDelete className='text-xl text-white text-red-600' />}
+          icon={<MdDelete className='text-xl text-red-600' />}
           onClick={() => deleteClick('post', post.id)}
         />
       </td>
@@ -267,7 +267,7 @@ const Trash = () => {
 
                 {/* Table for Users */}
                 <div className="mb-6">
-                  <h2 className="text-xl text-white text-white font-semibold mb-2">Users</h2>
+                  <h2 className="text-xl text-white font-semibold mb-2">Users</h2>
                   <div className='bg-white px-2 md:px-6 py-4 shadow-md rounded'>
                     <div className='overflow-x-auto'>
                       <table className='w-full mb-5'>

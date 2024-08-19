@@ -31,9 +31,9 @@ const Profile = () => {
             ArtworkService.loadCategories()
         ])
             .then(([artworksData, categoriesData]) => {
-                setImages(artworksData);
+                // setImages(artworksData);
                 setFilteredImages(artworksData);
-                setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
+                // setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
                 setIsLoading(false);
             })
             .catch(err => {
@@ -156,7 +156,7 @@ const Profile = () => {
                                 </div>
                             </div>
                             <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                                <a href="/ProfileSettings" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>PROFILE SETTINGS</a>
+                                <a href="/ProfileSettings" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-primary outline-none uppercase rounded-full ${styles}`}>PROFILE SETTINGS</a>
                             </div>
                         </div>
                     </div>
@@ -174,12 +174,14 @@ const Profile = () => {
                             ) : (
                                 // Display blog images once data is fetched
                                 blogData.map(blog => (
+                                    <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
                                     <img
                                         key={blog.id}
                                         src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
                                         alt={`Blog Image ${blog.id}`}
                                         className='object-cover highlight sm:mr-4 md:mr-6 mr-10 z-[20]'
                                     />
+                                    </Link>
                                 ))
                             )}
                         </div>
@@ -201,7 +203,7 @@ const Profile = () => {
                                 blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post z-[20]">
                                         <div className="flex justify-between flex-wrap gap-2 w-full z-[20]">
-                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-600 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
+                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <Link to={`/blog/edit/${blog.id}`}>
                                                     <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
@@ -218,8 +220,8 @@ const Profile = () => {
                                 ))
                             )}
                             <div className={`${styles.flexCenter} mt-6`}>
-                                <Link to={'/blog/create'} className={`flex py-2 px-4 mr-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</Link>
-                                <Link to={'/BlogPosts'} className={`flex py-2 px-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
+                                <Link to={'/blog/create'} className={`flex py-2 px-4 mr-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-primary outline-none uppercase rounded-full ${styles}`}>+ ADD POST</Link>
+                                <Link to={'/BlogPosts'} className={`flex py-2 px-4 xs:py-1 xs:px-2 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-primary outline-none uppercase rounded-full ${styles}`}>ALL POSTS</Link>
                             </div>
                         </div>
 
