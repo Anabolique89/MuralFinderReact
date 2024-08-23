@@ -26,7 +26,11 @@ const CommunityBlogSection = () => {
         
         // Use destructuring to extract the relevant data
         const { current_page, data, last_page, total } = response.data;
-        setBlogPosts(data);
+        
+        // Sort the blog posts by 'created_at' or 'updated_at' in descending order
+        const sortedData = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        
+        setBlogPosts(sortedData);
         setCurrentPage(current_page);
         setTotalPages(last_page);
         setTotalItems(total);
@@ -36,9 +40,10 @@ const CommunityBlogSection = () => {
         setLoading(false);
       }
     };
-
+  
     fetchBlogPosts(currentPage); // Fetch posts for the current page
   }, [currentPage]); // Refetch when `currentPage` changes
+  
 
   const handleDelete = async (blogId) => {
     if (window.confirm("Are you sure you want to delete this blog post?")) {
