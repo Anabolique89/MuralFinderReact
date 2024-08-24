@@ -40,6 +40,9 @@ export const wallEndpoints = {
   getCommentsForWall: (wallId) => `walls/${wallId}/comments`,  // Add this
   commentOnWall: (wallId) => `walls/${wallId}/comments`,       // Add this
   likeWall: (wallId) => `walls/${wallId}/like`,                // Add this
+
+  updateComment: (wallId, commentId) => `walls/${wallId}/comments/${commentId}`,
+  
   deleteWall: (wallId) => `walls/${wallId}`,
 };
 

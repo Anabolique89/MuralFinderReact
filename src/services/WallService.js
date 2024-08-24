@@ -5,7 +5,7 @@ const WallService = {
   getAllWalls: async (page = 1, perPage = 10) => {
     try {
       const response = await axios.get(`${BASE_URL}${wallEndpoints.getAllWalls(page, perPage)}`);
-      return response.data; // Return the entire response, which should include 'data'
+      return response.data;
     } catch (error) {
       console.error('Error fetching walls:', error);
       throw new Error('Failed to fetch walls');
@@ -62,6 +62,54 @@ const WallService = {
     } catch (error) {
       console.error("Error fetching comments:", error);
       throw new Error("Failed to fetch comments");
+    }
+  },
+
+  /** 
+   * Update a specific comment by its ID.
+   * @param {string} commentId - The ID of the comment to be updated.
+   * @param {Object} updatedData - The updated comment data.
+   * @returns {Object} - The response data from the server.
+   */
+  updateComment: async (wallId, commentId, updatedData) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `${BASE_URL}${wallEndpoints.updateComment(wallId, commentId)}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error updating comment:", error);
+      throw new Error("Failed to update comment");
+    }
+  },
+
+  /** 
+   * Delete a specific comment by its ID.
+   * @param {string} commentId - The ID of the comment to be deleted.
+   * @returns {Object} - The response data from the server.
+   */
+  deleteComment: async (wallId, commentId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(
+        `${BASE_URL}${wallEndpoints.updateComment(wallId, commentId)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      throw new Error("Failed to delete comment");
     }
   },
 
