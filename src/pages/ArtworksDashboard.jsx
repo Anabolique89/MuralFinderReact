@@ -25,16 +25,48 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatIcon from '@mui/icons-material/Chat';
+import ArtworkService from "../services/ArtworkService.js";
+import Swal from "sweetalert2";
 
-const ArtworksTable = ({ artworks }) => {
+const ArtworksTable = ({ artworks, onDelete }) => {
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
     low: <MdKeyboardArrowDown />,
   };
 
+  const deleteHandler = async (artworkId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to delete this post? This action cannot be undone.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await ArtworkService.deleteArtwork(artworkId);
+          Swal.fire(
+            'Deleted!',
+            'Artwork has been deleted.',
+            'success'
+          );
+          onDelete(artworkId); // Notify parent component about deletion
+        } catch (error) {
+          Swal.fire(
+            'Error!',
+            'Error occurred while deleting artwork: ' + error.message,
+            'error'
+          );
+        }
+      }
+    });
+  };
+
   const TableHeader = () => (
-    <thead className='border-b border-gray-300 '>
+    <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
         <th className='py-2'>Artwork Title</th>
         <th className='py-2'>Likes</th>
@@ -51,9 +83,6 @@ const ArtworksTable = ({ artworks }) => {
     <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
-          <div
-            // className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
-          />
           <p className='text-base text-black'>{artwork.title}</p>
         </div>
       </td>
@@ -73,7 +102,7 @@ const ArtworksTable = ({ artworks }) => {
               BGS[artwork.user.id % BGS.length]
             )}
           >
-            {artwork.user ? artwork.user.username : "faSpineer"}
+            {artwork.user ? artwork.user.username : "N/A"}
           </div>
         </div>
       </td>
@@ -82,29 +111,26 @@ const ArtworksTable = ({ artworks }) => {
           {moment(artwork?.created_at).fromNow()}
         </span>
       </td>
-
       <td className='py-2'>
         <span className='text-base text-gray-600'>
-          {artwork.description} 
+          {artwork.description}
         </span>
       </td>
-
       <td className='py-2 hidden md:block'>
         <span className='text-base text-gray-600'>
           {artwork.category?.name}
         </span>
       </td>
-
       <td className='py-2'>
         <div className='flex gap-2'>
           <Link to={`/artworks/${artwork.id}`} className='text-blue-500 hover:text-blue-700'>
             <MdVisibility size={20} />
           </Link>
-          <Link  to={`/artwork/edit/${artwork.id}`} className='text-green-500 hover:text-green-700'>
+          <Link to={`/artwork/edit/${artwork.id}`} className='text-green-500 hover:text-green-700'>
             <MdEdit size={20} />
           </Link>
-          <button className='text-red-500 hover:text-red-700'>
-            <MdDelete size={20} onClick={console.log("You clicked me")} />
+          <button onClick={() => deleteHandler(artwork.id)} className='text-red-500 hover:text-red-700'>
+            <MdDelete size={20} />
           </button>
         </div>
       </td>
@@ -131,13 +157,15 @@ const ArtworksDashboard = () => {
   const [chartData, setChartData] = useState([]);
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
         setIsLoading(true); // Set loading state to true before fetching data
         const statistics = await DashboardService.getArtworksStatistics();
-        const { artworks, deletedArtworks, artworksCount, wallsCount, likesCount, commentsCount } = statistics;
+        const { deletedArtworks, artworksCount, wallsCount, likesCount, commentsCount } = statistics;
 
         setStats([
           {
@@ -151,7 +179,7 @@ const ArtworksDashboard = () => {
             _id: "2",
             label: "LIKES",
             total: likesCount || 0,
-            icon: <ThumbUpIcon/>,
+            icon: <ThumbUpIcon />,
             bg: "bg-[#b444d0]",
           },
           {
@@ -166,7 +194,7 @@ const ArtworksDashboard = () => {
             label: "DELETED",
             total: deletedArtworks || 0,
             icon: <GroupIcon />,
-            bg: "bg-[#be185d]" || 0,
+            bg: "bg-[#be185d]",
           },
         ]);
 
@@ -193,7 +221,6 @@ const ArtworksDashboard = () => {
           },
         ]);
 
-        setArtworks(artworks);
         setIsLoading(false); 
       } catch (error) {
         console.error("Error fetching statistics: ", error);
@@ -202,8 +229,38 @@ const ArtworksDashboard = () => {
     };
 
     fetchStatistics();
-
   }, []);
+
+  useEffect(() => {
+    const fetchArtworks = async (page) => {
+      try {
+        setIsLoading(true);
+        const pageSize = 10; // Define the page size
+        const response = await ArtworkService.loadUngroupedArtworks(page, pageSize);
+        setArtworks(response.artworks);
+        setTotalPages(response.totalPages); // Set the total number of pages
+        console.log(artworks);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching ungrouped artworks: ", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchArtworks(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (direction) => {
+    if (direction === 'prev' && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } else if (direction === 'next' && currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handleDelete = (deletedId) => {
+    setArtworks(artworks.filter(({ id }) => id !== deletedId));
+  };
 
   const Card = ({ label, count, bg, icon }) => {
     return (
@@ -260,15 +317,12 @@ const ArtworksDashboard = () => {
                 </div>
               ) : (
                 <div className='h-64 w-full'>
-                <Chart chartData={chartData} />
-                <Link to="/admin/artworks" className="text-white hover:underline mt-4 inline-block">
-                  View all artworks
-                </Link>
+                  <Chart chartData={chartData} />
+                  <Link to="/admin/artworks" className="text-white hover:underline mt-4 inline-block">
+                    View all artworks
+                  </Link>
                 </div>
               )}
-
-
-
             </div>
             <div className='flex-1'>
               {isLoading ? (
@@ -276,9 +330,30 @@ const ArtworksDashboard = () => {
                   <span className="text-indigo-600 text-3xl"><FontAwesomeIcon icon={faSpinner} spin /></span>
                 </div>
               ) : (
-                <div className='bg-indigo-600 p-6'>
-                  <ArtworksTable artworks={artworks} /> {/* Pass artworks data */}
-                </div>
+                <>
+                  <div className='bg-white p-6 '>
+                    <ArtworksTable artworks={artworks} onDelete={handleDelete} />
+
+                    <div className='flex justify-between items-center py-4'>
+                    <button 
+                      onClick={() => handlePageChange('prev')} 
+                      disabled={currentPage === 1}
+                      className='bg-blue-500 text-white px-4 py-2 rounded'
+                    >
+                      Previous
+                    </button>
+                    <span className='text-gray-600'>Page {currentPage} of {totalPages}</span>
+                    <button 
+                      onClick={() => handlePageChange('next')} 
+                      disabled={currentPage === totalPages}
+                      className='bg-blue-500 text-white px-4 py-2 rounded'
+                    >
+                      Next
+                    </button>
+                  </div>
+                  </div>
+                  
+                </>
               )}
             </div>
           </div>
