@@ -160,7 +160,7 @@ const PublicProfile = () => {
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <button
                                         onClick={isFollowing ? handleUnfollow : handleFollow}
-                                        className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}
+                                        className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-primary outline-none uppercase rounded-full ${styles}`}
                                         disabled={loadingFollow}
                                     >
                                         {loadingFollow ? (
@@ -181,7 +181,7 @@ const PublicProfile = () => {
                                 <ul>
                                     <li className={`${styles.paragraph} mt-2 mb-2`}>FOLLOWERS <span className='followers'>{profileData.followers_count}</span></li>
                                     <li className={`${styles.paragraph}  mb-2`}>FOLLOWING <span className='following'>{profileData.followings_count}</span></li>
-                                    <li className={`${styles.paragraph}  mb-4`}>REVIEWS <span className='reviews'>5</span></li>
+                                    {/* <li className={`${styles.paragraph}  mb-4`}>REVIEWS <span className='reviews'>5</span></li> */}
                                 </ul>
                                 {/* social media icons */}
                                 <div className="flex justify-center items-center gap-6 my-6">
@@ -217,7 +217,7 @@ const PublicProfile = () => {
                     </div>
                     <div className="col-span-4 sm:col-span-9">
                         <h2 className="text-white text-xl font-raleway font-bold mb-4">Profile Description...</h2>
-                        <div className='highlights flex flex-column mb-4 mt-2'>
+                        <div className='highlights flex flex-column mb-4 mt-2 w-full overflow-x-auto scrollbar-thin scrollbar-webkit'>
                             {!blogData ? (
                                 // Display spinners while blog data is being fetched
                                 <div className="flex justify-center">
@@ -228,12 +228,14 @@ const PublicProfile = () => {
                             ) : (
                                 // Display blog images once data is fetched
                                 blogData.map(blog => (
+                                    <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
                                     <img
                                         key={blog.id}
                                         src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
                                         alt={`Blog Image ${blog.id}`}
                                         className='highlight sm:mr-4 md:mr-6 mr-10'
                                     />
+                                    </Link>
                                 ))
                             )}
                         </div>
@@ -241,7 +243,7 @@ const PublicProfile = () => {
 
 
 
-                        <div className="bg-white p-6 profile-content">
+                        <div className="bg-white p-6 profile-content z-[20] w-full max-h-[560px] overflow-y-auto scrollbar-thin scrollbar-webkit">
 
                             <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4">BLOG POSTS</h2>
                             <p className="text-white font-raleway font-regular mb-4">
@@ -258,7 +260,7 @@ const PublicProfile = () => {
                                 (blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post">
                                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-600 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
+                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
                                                 <span className="text-purple-950">{formatDate(blog.created_at)}</span>
@@ -275,10 +277,10 @@ const PublicProfile = () => {
                             {!AuthService.isAuthenticated && (
                                 <>
                                     {/* Render links for non-authenticated users */}
-                                    <a href="/IndexSignup" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+                                    <a href="/IndexSignup" className={`py-2 px-4 mr-4 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-primary outline-none uppercase rounded-full ${styles}`}>
                                         REGISTER
                                     </a>
-                                    <a href="/IndexLogin" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>
+                                    <a href="/IndexLogin" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-primary outline-none uppercase rounded-full ${styles}`}>
                                         LOGIN
                                     </a>
                                 </>

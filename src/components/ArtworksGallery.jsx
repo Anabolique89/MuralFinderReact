@@ -65,11 +65,13 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
       )}
 
       <div className='w-full'>
+      <Link to={`/artworks/${artwork.id}`}>
         <img
           className='w-full h-48 object-cover p-2'
           src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
           alt={artwork.title || 'Artwork'}
         />
+        </Link>
         <div className='px-6 py-4'>
           <div className='flex items-center'>
             <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton } from "./components";
+import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton, Adverts } from "./components";
+import { ArtSupplies, Books, Materials, PosterPrints, Wallpapers } from './components/ShopCategories';
 import About from './pages/About';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
@@ -30,6 +31,7 @@ import EditArtworkUploader from './pages/EditArtworkUploader';
 import ArtworkFeed from './pages/ArtworkFeed';
 import BlogPosts from './pages/BlogPosts';
 import Feed from './pages/Feed';
+import Shop from './pages/Shop';
 import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
 import EditUser from './pages/EditUser';
@@ -43,9 +45,6 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredImages, setFilteredImages] = useState([]);
-
-
-
 
   useEffect(() => {
     setIsLoading(true);
@@ -109,6 +108,7 @@ const App = () => {
                   <Stats />
                   <Business />
                   <Billing />
+                  <Adverts />
                   <div className="2xl:container 2xl:mx-auto 2xl:px-0 py-3 px-2">
                     <Carousel />
                     <button type="button" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}><Link to={'/ArtworkFeed'} >See All</Link></button>
@@ -150,6 +150,12 @@ const App = () => {
           <Route path="/ArtworkFeed" element={<ArtworkFeed />} />
           <Route path="/BlogPosts" element={<BlogPosts />} />
           <Route path="/Feed" element={<Feed />} />
+          <Route path="/Shop" element={<Shop />} />
+          <Route path="/Wallpapers" element={<Wallpapers />} />
+          <Route path="/PosterPrints" element={<PosterPrints />} />
+          <Route path="/Materials" element={<Materials />} />
+          <Route path="/Books" element={<Books />} />
+          <Route path="/ArtSupplies" element={<ArtSupplies />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
 

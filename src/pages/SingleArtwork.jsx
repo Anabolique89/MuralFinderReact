@@ -8,27 +8,6 @@ import ArtworkService from '../services/ArtworkService';
 import { useParams } from 'react-router-dom';
 import { BackToTopButton, Footer } from '../components';
 import { Link } from 'react-router-dom';
-// import {ShareSocial} from 'react-share-social';
-
-
-// const stylez = {
-//   root: {
-//     background: 'white',
-//     borderRadius: 3,
-//     border: 0,
-//     color: 'white',
-
-//   },
-//   copyContainer: {
-//     border: '1px solid blue',
-//     background: 'rgb(0,0,0,0.7)',
-//     display: 'none'
-//   },
-//   title: {
-//     color: 'aquamarine',
-//     fontStyle: 'italic'
-//   }
-// };
 
 
 
