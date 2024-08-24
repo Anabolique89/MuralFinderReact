@@ -12,6 +12,7 @@ export const authEndpoints = {
 
 export const artworkEndpoints = {
   getAllArtworks: "artworks?pageSize=50",
+  getUngroupedArtworks: (page, pageSize) => `artworks/artwork/ungrouped?page=${page}&pageSize=${pageSize}`,
   uploadArtwork: "artworks",
   getCategoires: "artworks/categories/fetch",
   searchArtworks: "artworks/artwork/search",
@@ -40,6 +41,9 @@ export const wallEndpoints = {
   getCommentsForWall: (wallId) => `walls/${wallId}/comments`,  // Add this
   commentOnWall: (wallId) => `walls/${wallId}/comments`,       // Add this
   likeWall: (wallId) => `walls/${wallId}/like`,                // Add this
+
+  updateComment: (wallId, commentId) => `walls/${wallId}/comments/${commentId}`,
+  
   deleteWall: (wallId) => `walls/${wallId}`,
 };
 
