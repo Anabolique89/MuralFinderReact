@@ -74,6 +74,18 @@ import graff3 from "./graff3.jpg";
 import graff4 from "./graff4.jpg";
 import graffwaall2 from "./graffwaall2.jpg";
 import graffWall from "./graffWall.jpg";
+import animalWall from "./animalWall.jpg";
+import japanese from "./japanese.jpg";
+import decoAC_ from "./decoAC_.jpg";
+import flowerWall from "./flowerWall.jpg";
+import monoWall from "./monoWall.jpg";
+import rainbow from "./rainbow.jpg";
+import spaceWall from "./spaceWall.jpg";
+import paintWALL from "./paintWALL.jpg";
+import nurseryWall from "./nurseryWall.jpg";
+import lego from "./lego.jpg";
+import featherWall from "./featherWall.jpg";
+import tree from "./tree.jpg";
 
 export {
   bill,
@@ -152,4 +164,16 @@ export {
   graff3,
   graff4,
   graffWall,
+  decoAC_,
+  rainbow,
+  flowerWall,
+  monoWall,
+  animalWall,
+  japanese,
+  spaceWall,
+  paintWALL,
+  nurseryWall,
+  lego,
+  featherWall,
+  tree,
 };

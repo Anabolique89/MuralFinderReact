@@ -23,7 +23,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import { ArtZoroLogoWhite, cute, Img1, mural, mural2, prints, prints2, streetartManual } from '../../assets';
+import { animalWall, ArtZoroLogoWhite, cute, decoAC_, featherWall, flowerWall, Img1, japanese, jhgfd, monoWall, mural, mural2, nurseryWall, paintWALL, prints, prints2, rainbow, streetartManual } from '../../assets';
 import styles, { layout } from '../../style';
 import WebFooter from '../WebFooter';
 import BackToTopButton from '../BackToTopButton';
@@ -65,8 +65,8 @@ const navigation = {
           {
             name: 'New Arrivals',
             href: '/Shop',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-01-men-category-01.jpg',
-            imageAlt: 'Hats and sweaters on wood shelves next to various colors of t-shirts on hangers.',
+            imageSrc: jhgfd,
+            imageAlt: 'new arrivals',
           },
           {
             name: 'Wallpaper',
@@ -97,62 +97,80 @@ const navigation = {
 const products1 = [
   {
     id: 1,
-    name: 'Focus Paper Refill',
-    href: '#',
-    price: '$13',
-    description: '3 sizes available',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-01.jpg',
-    imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
+    name: 'Floral Wallpaper for Living Room Bedroom',
+    href: 'https://amzn.to/3Z43fvk',
+    price: '£29.99',
+    imageSrc: flowerWall,
+    imageAlt: 'floral wallpaper red flowers',
   },
   {
     id: 2,
-    name: 'Focus Card Holder',
-    href: '#',
-    price: '$64',
-    description: 'Walnut',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-02.jpg',
-    imageAlt: 'Paper card sitting upright in walnut card holder on desk.',
+    name: 'Wall Painting Stereoscopic Relief Jewelry',
+    href: 'https://amzn.to/3Mhl2Yr',
+    price: '£121.68',
+    imageSrc: decoAC_,
+    imageAlt: 'Wall Painting Stereoscopic Relief Jewelry',
   },
   {
     id: 3,
-    name: 'Focus Carry Pouch',
-    href: '#',
-    price: '$32',
-    description: 'Heather Gray',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-03.jpg',
-    imageAlt: 'Textured gray felt pouch for paper cards with snap button flap and elastic pen holder loop.',
+    name: 'Wallpaper Galaxy Dreamy Rainbow Clouds Murals',
+    href: 'https://amzn.to/3T5Jy2z',
+    price: '£45.69',
+    imageSrc: rainbow,
+    imageAlt: 'Wallpaper Galaxy Dreamy Rainbow Clouds Murals',
+  },
+  {
+    id: 4,
+    name: 'Japanese Cherry Blossoms Wallpaper',
+    href: 'https://amzn.to/3MkOD3u',
+    price: '£41.39 (£9.45 / square meter)',
+    imageSrc: japanese,
+    imageAlt: 'Japanese Cherry Blossoms Wallpaper',
+  },
+  {
+    id: 5,
+    name: 'Custom Mural Wallpaper Nordic Hand-Painted Tropical Leaves',
+    href: 'https://amzn.to/4dEa0c2',
+    price: '£89.00',
+    imageSrc: monoWall,
+    imageAlt: 'Custom Mural Wallpaper Nordic Hand-Painted Tropical Leaves',
+  },
+  {
+    id: 6,
+    name: 'Walltastic Jungle Safari Wallpaper Mural',
+    href: 'https://amzn.to/3MgYibh',
+    price: '£44.00',
+    imageSrc: animalWall,
+    imageAlt: 'Walltastic Jungle Safari Wallpaper Mural',
   },
   // More products...
 ]
 const products2 = [
   {
     id: 7,
-    name: 'Electric Kettle',
-    href: '#',
-    price: '$149',
-    description: 'Black',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-07.jpg',
-    imageAlt: 'Close up of long kettle spout pouring boiling water into pour-over coffee mug with frothy coffee.',
+    name: 'Grandeco Feathers 3 Lane repeatable Textured Mural',
+    href: 'https://amzn.to/4dXsy6M',
+    price: '£44.99 (£9.61 / square meter)',
+    imageSrc: featherWall,
+    imageAlt: 'Grandeco Feathers 3 Lane repeatable Textured Mural',
   },
   {
     id: 8,
-    name: 'Leather Workspace Pad',
-    href: '#',
-    price: '$165',
-    description: 'Black',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-08.jpg',
+    name: 'Neukids FABRIC floral wall stickers',
+    href: 'https://amzn.to/3z3UkiW',
+    price: '£24.97',
+    imageSrc: nurseryWall,
     imageAlt:
-      'Extra large black leather workspace pad on desk with computer, wooden shelf, desk organizer, and computer peripherals.',
+      'white magnolia flower stickers, girls wall stickers, wall mural for bedrooms kitchen living room Office flower wall Decor',
   },
   {
     id: 9,
-    name: 'Leather Long Wallet',
-    href: '#',
-    price: '$118',
-    description: 'Natural',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-09.jpg',
+    name: '3D Wall Mural Wallpaper - Oil Painting Style Wood Texture',
+    href: 'https://amzn.to/3YXzfl5',
+    price: '£235.61',
+    imageSrc: paintWALL,
     imageAlt:
-      'Leather long wallet held open with hand-stitched card dividers, full-length bill pocket, and simple tab closure.',
+      'Bedroom Indoor and Tv Background Wall Art',
   },
   // More products...
 ]

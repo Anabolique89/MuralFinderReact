@@ -60,8 +60,8 @@ const navigation = {
         {
           name: 'New Arrivals',
           href: '/Shop',
-          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-01-men-category-01.jpg',
-          imageAlt: 'Hats and sweaters on wood shelves next to various colors of t-shirts on hangers.',
+          imageSrc: jhgfd,
+          imageAlt: 'new arrivals',
         },
         {
           name: 'Wallpaper',
@@ -194,7 +194,7 @@ export default function Shop() {
                           <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-100 group-hover:opacity-75">
                             <img alt={item.imageAlt} src={item.imageSrc} className="object-cover object-center" />
                           </div>
-                          <a href={item.href} className={`${styles.paragraph} mt-6 block text-sm`}>
+                          <a href={item.href} className={`${styles.paragraph} mt-6 block text-sm font-raleway`}>
                             <span aria-hidden="true" className="absolute inset-0 z-10" />
                             {item.name}
                           </a>
@@ -252,7 +252,7 @@ export default function Shop() {
                         <img
                           alt=""
                           src={ArtZoroLogoWhite}
-                          className="h-8 w-auto"
+                          className="h-8 w-auto "
                         />
                       </a>
                     </div>
@@ -264,7 +264,7 @@ export default function Shop() {
                           {navigation.categories.map((category) => (
                             <Popover key={category.name} className="flex">
                               <div className="relative flex">
-                                <PopoverButton className="group relative z-10 flex items-center justify-center text-sm font-medium text-white transition-colors duration-200 ease-out">
+                                <PopoverButton className="group relative z-10 flex items-center justify-center text-sm font-medium text-white transition-colors duration-200 ease-out font-raleway">
                                   {category.name}
                                   <span
                                     aria-hidden="true"
