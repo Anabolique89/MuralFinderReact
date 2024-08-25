@@ -166,7 +166,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const [image, setImage] = useState("");
   const [mapCenter, setMapCenter] = useState([]);
   const [directions, setDirections] = useState(null);
-  const [userLocation, setUserLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState('');
   const [autocomplete, setAutocomplete] = useState(null);
   const [searchMarker, setSearchMarker] = useState(null);
   const [cameraProps, setCameraProps] = React.useState(defaultProps);
@@ -186,6 +186,7 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
           };
           setUserLocation(currentLocation);
           setMapCenter(currentLocation);
+          console.log(currentLocation);
         },
         (error) => console.error("Error getting user location:", error)
       );
