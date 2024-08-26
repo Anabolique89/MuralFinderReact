@@ -167,20 +167,21 @@ const ViewWall = () => {
                                                 <p className="font-semibold font-raleway">{comment.user ? comment.user.username : '...'}</p>
                                                 <p className=''>{comment.comment}</p>
                                             </div>
-                                            {comment.user && comment?.user?.id === currentUser.id && (
-                                                <div className="flex">
-                                                    <FontAwesomeIcon
-                                                        icon={faEdit}
-                                                        onClick={() => handleEdit(comment)}
-                                                        className='text-blue-500 hover:text-blue-700 cursor-pointer mr-2'
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        icon={faTrash}
-                                                        onClick={() => handleDelete(comment.wall_id, comment.id)}
-                                                        className={`text-red-500 hover:text-red-700 cursor-pointer ${isDeleting ? 'cursor-not-allowed opacity-50' : ''}`} // Disable and style the button when deleting
-                                                    />
-                                                </div>
+                                            {comment.user && currentUser && comment?.user?.id === currentUser.id && (
+                                            <div className="flex">
+                                                <FontAwesomeIcon
+                                                icon={faEdit}
+                                                onClick={() => handleEdit(comment)}
+                                                className="text-blue-500 hover:text-blue-700 cursor-pointer mr-2"
+                                                />
+                                                <FontAwesomeIcon
+                                                icon={faTrash}
+                                                onClick={() => handleDelete(comment.wall_id, comment.id)}
+                                                className={`text-red-500 hover:text-red-700 cursor-pointer ${isDeleting ? 'cursor-not-allowed opacity-50' : ''}`} // Disable and style the button when deleting
+                                                />
+                                            </div>
                                             )}
+
                                         </div>
                                     ))
                                 ) : (
