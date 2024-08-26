@@ -154,7 +154,7 @@ const ViewWall = () => {
                                                 {comment.user && comment.user.profile?.profile_image_url ? (
                                                     <a href={`/profile/${comment.user.id}`}>
                                                         <img
-                                                            src={`https://api.muralfinder.net/${comment.user.profile?.profile_image_url}`}
+                                                            src={`https://api.muralfinder.net/${comment.user?.profile?.profile_image_url}`}
                                                             alt={comment.user.username}
                                                             className="h-8 w-8 rounded-full object-cover"
                                                         />
@@ -167,7 +167,7 @@ const ViewWall = () => {
                                                 <p className="font-semibold font-raleway">{comment.user ? comment.user.username : '...'}</p>
                                                 <p className=''>{comment.comment}</p>
                                             </div>
-                                            {comment.user && comment.user.id === currentUser.id && (
+                                            {comment.user && comment?.user?.id === currentUser.id && (
                                                 <div className="flex">
                                                     <FontAwesomeIcon
                                                         icon={faEdit}
