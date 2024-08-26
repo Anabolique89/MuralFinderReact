@@ -47,7 +47,8 @@ const ArtworksTable = ({ artworks, onDelete }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await ArtworkService.deleteArtwork(artworkId);
+          const response = await ArtworkService.deleteArtwork(artworkId);
+          console.log(response)
           Swal.fire(
             'Deleted!',
             'Artwork has been deleted.',
