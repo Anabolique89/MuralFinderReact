@@ -224,7 +224,7 @@ export default function Shop() {
       </Dialog>
 
       {/* Hero section */}
-      <div className="relative bg-indigo-600 h-[80vh]">
+      <div className="relative bg-indigo-600 h-[70vh]">
         {/* Decorative image and overlay */}
         <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
           <img
@@ -367,11 +367,14 @@ export default function Shop() {
           </nav>
         </header>
 
-        <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-16 text-center sm:py-24 lg:px-0">
+        <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-10 text-center sm:py-16 lg:px-0">
           <h1 className={`${styles.heading2} lg:text-6xl tracking-tight text-4xl font-bold`}>New arrivals are here</h1>
           <p className="mt-4 text-xl text-white font-raleway" >
             The new arrivals have, well, newly arrived. Check out the latest options from our summer small-batch release
             while they're still in stock.
+          </p>
+          <p className="mt-4 text-sm italic text-dimWhite font-raleway" >
+       As an Amazon Associate I earn from qualifying purchases. 
           </p>
           {/* <a
             href="#"

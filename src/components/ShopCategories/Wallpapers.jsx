@@ -23,10 +23,11 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import { animalWall, ArtZoroLogoWhite, cute, decoAC_, featherWall, flowerWall, Img1, japanese, jhgfd, monoWall, mural, mural2, nurseryWall, paintWALL, prints, prints2, rainbow, streetartManual } from '../../assets';
+import { animalWall, ArtZoroLogoWhite, cute, decoAC_, featherWall, flowerWall, forestWall, Img1, japanese, jhgfd, monoWall, mural, mural2, nurseryWall, paintWALL, prints, prints2, rainbow, spaceWall, streetartManual, tree, vvgh } from '../../assets';
 import styles, { layout } from '../../style';
 import WebFooter from '../WebFooter';
 import BackToTopButton from '../BackToTopButton';
+import { WallpapersRow } from '.';
 
 const navigation = {
     categories: [
@@ -70,7 +71,7 @@ const navigation = {
           },
           {
             name: 'Wallpaper',
-            href: '/Wallpaper',
+            href: '/Wallpapers',
             imageSrc: mural2,
             imageAlt: 'Wallpaper oriental',
           },
@@ -98,7 +99,7 @@ const products1 = [
   {
     id: 1,
     name: 'Floral Wallpaper for Living Room Bedroom',
-    href: 'https://amzn.to/3Z43fvk',
+    href: 'https://amzn.to/4g31TYa',
     price: '£29.99',
     imageSrc: flowerWall,
     imageAlt: 'floral wallpaper red flowers',
@@ -106,7 +107,7 @@ const products1 = [
   {
     id: 2,
     name: 'Wall Painting Stereoscopic Relief Jewelry',
-    href: 'https://amzn.to/3Mhl2Yr',
+    href: 'https://amzn.to/4fXvAtr',
     price: '£121.68',
     imageSrc: decoAC_,
     imageAlt: 'Wall Painting Stereoscopic Relief Jewelry',
@@ -114,7 +115,7 @@ const products1 = [
   {
     id: 3,
     name: 'Wallpaper Galaxy Dreamy Rainbow Clouds Murals',
-    href: 'https://amzn.to/3T5Jy2z',
+    href: 'https://amzn.to/4707fiq',
     price: '£45.69',
     imageSrc: rainbow,
     imageAlt: 'Wallpaper Galaxy Dreamy Rainbow Clouds Murals',
@@ -122,7 +123,7 @@ const products1 = [
   {
     id: 4,
     name: 'Japanese Cherry Blossoms Wallpaper',
-    href: 'https://amzn.to/3MkOD3u',
+    href: 'https://amzn.to/46ZsBfS',
     price: '£41.39 (£9.45 / square meter)',
     imageSrc: japanese,
     imageAlt: 'Japanese Cherry Blossoms Wallpaper',
@@ -130,7 +131,7 @@ const products1 = [
   {
     id: 5,
     name: 'Custom Mural Wallpaper Nordic Hand-Painted Tropical Leaves',
-    href: 'https://amzn.to/4dEa0c2',
+    href: 'https://amzn.to/4fVKn7T',
     price: '£89.00',
     imageSrc: monoWall,
     imageAlt: 'Custom Mural Wallpaper Nordic Hand-Painted Tropical Leaves',
@@ -138,7 +139,7 @@ const products1 = [
   {
     id: 6,
     name: 'Walltastic Jungle Safari Wallpaper Mural',
-    href: 'https://amzn.to/3MgYibh',
+    href: 'https://amzn.to/3AD4Lul',
     price: '£44.00',
     imageSrc: animalWall,
     imageAlt: 'Walltastic Jungle Safari Wallpaper Mural',
@@ -149,7 +150,7 @@ const products2 = [
   {
     id: 7,
     name: 'Grandeco Feathers 3 Lane repeatable Textured Mural',
-    href: 'https://amzn.to/4dXsy6M',
+    href: 'https://amzn.to/3z5Ahka',
     price: '£44.99 (£9.61 / square meter)',
     imageSrc: featherWall,
     imageAlt: 'Grandeco Feathers 3 Lane repeatable Textured Mural',
@@ -157,7 +158,7 @@ const products2 = [
   {
     id: 8,
     name: 'Neukids FABRIC floral wall stickers',
-    href: 'https://amzn.to/3z3UkiW',
+    href: 'https://amzn.to/3WYwYDn',
     price: '£24.97',
     imageSrc: nurseryWall,
     imageAlt:
@@ -166,12 +167,40 @@ const products2 = [
   {
     id: 9,
     name: '3D Wall Mural Wallpaper - Oil Painting Style Wood Texture',
-    href: 'https://amzn.to/3YXzfl5',
+    href: 'https://amzn.to/3T4RRvB',
     price: '£235.61',
     imageSrc: paintWALL,
     imageAlt:
       'Bedroom Indoor and Tv Background Wall Art',
   },
+  {
+    id: 10,
+    name: 'Vincent Van Gogh Almond Blossom Mural',
+    href: 'https://amzn.to/3Mkm5H7',
+    price: '£121.99',
+    imageSrc: vvgh,
+    imageAlt:
+      'Wall Mural Vincent Van Gogh Almond Blossom Self-Adhesive Wallpaper 190cm x 288cm',
+  },
+  {
+    id: 11,
+    name: 'Starry Sky Star Cloud Photo Wallpaper',
+    href: 'https://amzn.to/3AF3mn6',
+    price: '£79.66 (£8.95 / square meter)',
+    imageSrc: spaceWall,
+    imageAlt:
+      'Wall Murals Starry Sky Star Cloud Photo Wallpaper 350 x 256 cm Non-Woven Modern 3D Effect',
+  },
+  {
+    id: 12,
+    name: 'Dawn Wood View Trees Living Room',
+    href: 'https://amzn.to/3MnoPU4',
+    price: '£39.95',
+    imageSrc: forestWall,
+    imageAlt:
+      'Wallpaper Fog Forest Dawn Wood View Trees Living Room Kitchen Bedroom Wall Mural',
+  },
+
   // More products...
 ]
 
@@ -492,6 +521,8 @@ export default function Wallpapers() {
                 ))}
               </div>
             </section>
+<WallpapersRow />
+
           </div>
         </main>
         <BackToTopButton />

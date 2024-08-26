@@ -84,11 +84,11 @@ const products = [
           <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
             {products.map((product) => (
               <div key={product.id} className="group relative">
-                <div className="h-100 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-82 xl:h-90">
+                <div className="h-100 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-82 xl:h-90 ">
                   <img
                     alt={product.imageAlt}
                     src={product.imageSrc}
-                    className="h-full w-full object-cover object-center"
+                    className="h-full w-full object-cover object-center "
                   />
                 </div>
                 <h3 className={`${styles.paragraph} mt-4 font-semibold`}>
@@ -98,8 +98,9 @@ const products = [
                   </a>
                 </h3>
                 {/* <p className="mt-1 text-sm text-gray-500">{product.color}</p> */}
-                <p className="mt-1 text-sm font-medium text-white">{product.price}</p>
+                <p className="mt-1 text-sm font-medium text-white mb-8">{product.price}</p>
               </div>
+              
             ))}
           </div>
   

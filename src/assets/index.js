@@ -86,6 +86,13 @@ import nurseryWall from "./nurseryWall.jpg";
 import lego from "./lego.jpg";
 import featherWall from "./featherWall.jpg";
 import tree from "./tree.jpg";
+import vvgh from "./vvgh.jpg";
+import retroGraff from "./retroGraff.jpg";
+import ModernGraffWall from "./ModernGraffWall.jpg";
+import graffs from "./graffs.jpg";
+import n from "./n.jpg"; 
+import forestWall from "./forestWall.jpg";
+
 
 export {
   bill,
@@ -176,4 +183,11 @@ export {
   lego,
   featherWall,
   tree,
+  vvgh,
+  retroGraff,
+  graffs,
+  ModernGraffWall,
+  n,
+  forestWall,
+
 };

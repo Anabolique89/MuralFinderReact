@@ -70,7 +70,7 @@ const navigation = {
           },
           {
             name: 'Wallpaper',
-            href: '/Wallpaper',
+            href: '/Wallpapers',
             imageSrc: mural2,
             imageAlt: 'Wallpaper oriental',
           },
