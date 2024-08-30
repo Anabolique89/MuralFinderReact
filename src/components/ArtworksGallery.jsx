@@ -92,7 +92,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
           </div>
           <ul className='flex'>
             <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {artwork.likes_count}</strong></span></li>
-            <li className='flex'><FaComments className=' text-blue-500' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span></li>
+            <li className='flex'><FaComments className=' text-white' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span></li>
           </ul>
           {isAuthenticated && user.id === artwork.user_id && (
             <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">

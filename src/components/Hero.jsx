@@ -2,8 +2,13 @@ import styles from '../style';
 import {google, Interlinked} from '../assets';
 import GetStarted from './GetStarted';
 import { Button } from '@headlessui/react';
+import AuthService from '../services/AuthService'; 
+
+
+const isLoggedIn = AuthService.isAuthenticated(); // Check if the user is authenticated
 
 const Hero = () => (
+ 
    <section id="home" className={`flex md:flex-row flex-col ${styles.paddingY}`}>
     
     <div className={`flex-1 ${styles.flexStart} flex-col xl:px-0 sm:px-16 px-6 `}>
@@ -27,9 +32,13 @@ const Hero = () => (
   the while meeting new people and sharing new experiences with fellow artists.</p>
   <div className='flex flex-row justify-centre'>
   <img src={google} alt="googleplay" className='w-[100px] h-auto object-contain mr-5 cursor-pointer mt-2' />
-  <a href="/IndexSignup">
-  <button type="button" className={`py-1 px-2 mt-2 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>Signup</button>
-  </a>
+  {!isLoggedIn && (
+            <a href="/IndexSignup">
+              <button type="button" className={`py-1 px-2 mt-2 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>
+                Signup
+              </button>
+            </a>
+          )}
   </div>
     </div>
     <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}>

@@ -6,7 +6,7 @@ import {
   InfoWindow,
   APIProvider,
   // AdvancedMarker
-} from "@vis.gl/react-google-maps";5
+} from "@vis.gl/react-google-maps";
 import {
   DirectionsRenderer,
   LoadScript,
@@ -164,12 +164,15 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
   const [title, setTitle] = useState("");
   const [id, setId] = useState("");
   const [image, setImage] = useState("");
-  const [mapCenter, setMapCenter] = useState([]);
+  const [mapCenter, setMapCenter] = useState(center || defaultCenter);
   const [directions, setDirections] = useState(null);
   const [userLocation, setUserLocation] = useState('');
   const [autocomplete, setAutocomplete] = useState(null);
   const [searchMarker, setSearchMarker] = useState(null);
-  const [cameraProps, setCameraProps] = React.useState(defaultProps);
+  const [cameraProps, setCameraProps] = useState({
+    ...defaultProps,
+    center: mapCenter,
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   // load environment vairables
@@ -187,6 +190,10 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
           setUserLocation(currentLocation);
           setMapCenter(currentLocation);
           console.log(currentLocation);
+          setCameraProps((prevProps) => ({
+            ...prevProps,
+            center: currentLocation,
+          }));
         },
         (error) => console.error("Error getting user location:", error)
       );
@@ -288,9 +295,9 @@ const Maps = ({ locations, defaultCenter, center, style }) => {
         <APIProvider apiKey={apiKey}>
           {/* for height we need to pass a concrete value header=48px and footer=405px*/}
           <div style={{ width: "100%", height: "100vh" }}>
-            <Map {...cameraProps} onCameraChanged={handleCameraChange} 
-            // mapId={'bf51a910020fa25a'}
-            >
+          <Map {...cameraProps} onCameraChanged={(ev) => setCameraProps(ev.detail)}>
+            {/* mapId={'bf51a910020fa25a'} */}
+            
               <Autocomplete
                 onLoad={setAutocomplete}
                 onPlaceChanged={handlePlaceChanged}

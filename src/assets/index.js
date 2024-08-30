@@ -90,9 +90,17 @@ import vvgh from "./vvgh.jpg";
 import retroGraff from "./retroGraff.jpg";
 import ModernGraffWall from "./ModernGraffWall.jpg";
 import graffs from "./graffs.jpg";
-import n from "./n.jpg"; 
+import n from "./n.jpg";
 import forestWall from "./forestWall.jpg";
-
+import ghmtw from "./ghmtw.jpg";
+import blackMarker from "./blackMarker.jpg";
+import chromeMarker from "./chromeMarker.jpg";
+import MegaSet from "./MegaSet.jpg";
+import MolotovThick from "./MolotovThick.jpg";
+import MolotowOneForAll from "./MolotowOneForAll.jpg";
+import molotowSet from "./molotowSet.jpg";
+import sharpie from "./sharpie.jpg";
+import ThickSIngleMolotov from "./ThickSIngleMolotov.jpg";
 
 export {
   bill,
@@ -189,5 +197,13 @@ export {
   ModernGraffWall,
   n,
   forestWall,
-
+  blackMarker,
+  ghmtw,
+  sharpie,
+  ThickSIngleMolotov,
+  molotowSet,
+  MolotowOneForAll,
+  MolotovThick,
+  MegaSet,
+  chromeMarker,
 };
