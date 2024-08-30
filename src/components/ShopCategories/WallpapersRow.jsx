@@ -1,22 +1,20 @@
-import { graff3, graff4, graffwaall2, graffWall } from '../../assets';
+import { graff3, graff4, graffs, graffwaall2, graffWall, ModernGraffWall, n, retroGraff } from '../../assets';
 import styles, { layout } from '../../style';
 
 const products = [
     {
       id: 1,
       name: 'Wallpaper Graffiti',
-    //   size: '366 x 254 cm',
       price: '£39.95',
-      href: 'https://amzn.to/3ZfzBnl',
+      href: 'https://amzn.to/3T1RJwI',
       imageSrc: graffWall,
       imageAlt: 'murimage Photo Wallpaper Graffiti 366 x 254 cm Including Paste Wall Mural Grafitti',
     },
     {
         id: 2,
         name: 'Graffiti Wall Urban Art Wall Mural Photo Wallpaper ',
-        // size: '1500mm x (H) 1150mm',
         price: '£38.99',
-        href: 'https://amzn.to/3WX37LF',
+        href: 'https://amzn.to/3T4RwJl',
         imageSrc: graffwaall2,
         imageAlt: 'Wall Art Desire Graffiti Wall Urban Art Wall Mural Photo Wallpaper',
       },
@@ -24,21 +22,50 @@ const products = [
         id: 3,
         name: 'Graffiti Style Curtain for Bedroom Kids',
         price: '£32.99',
-        href: 'https://amzn.to/3MjLmS0',
+        href: 'https://amzn.to/4dStIkt',
         imageSrc: graff4,
         imageAlt: 'Hippie Graffiti Style Curtain for Bedroom Kids',
       },
       {
         id: 4,
         name: 'Graffiti Urban Art Black and White Photo Wallpaper',
-        // size: '300cm Wide x 240cm high',
         price: '£39.99',
-        href: 'https://amzn.to/3WZlsaN',
+        href: 'https://amzn.to/3AAHcCC',
         imageSrc: graff3,
         imageAlt: 'Graffiti Urban Art Black and White Photo Wallpaper',
       },
-
-
+      {
+        id: 5,
+        name: 'Colorful Graffiti Photography Backdrop Retro',
+        price: '£10.99',
+        href: 'https://amzn.to/472WDzx',
+        imageSrc: retroGraff,
+        imageAlt: 'Colorful Graffiti Photography Backdrop Retro',
+      },
+      {
+        id: 6,
+        name: 'Modern Graffiti Colorful Wallpaper',
+        price: '£36.99 (£13.21 / square meter)',
+        href: 'https://amzn.to/3ADP5XT',
+        imageSrc: ModernGraffWall,
+        imageAlt: 'Wall Mural Decoration Poster Picture Design',
+      },
+      {
+        id: 7,
+        name: '80s Backdrop Retro Hip Hop Graffiti',
+        price: '£20.99',
+        href: 'https://amzn.to/4dtKzcZ',
+        imageSrc: n,
+        imageAlt: ' Graffiti Photoshoot Banner 80s Themed Party Supplies Photography Props',
+      },
+      {
+        id: 8,
+        name: 'Wallpaper - Murals - Wall',
+        price: '£36.99(£13.21 / square meter)',
+        href: 'https://amzn.to/3yUYRV6',
+        imageSrc: graffs,
+        imageAlt: 'Wallpaper - Murals - Wall - Mural - Photo - 3D - modern - Graffiti',
+      },
 
 
     // More products...
@@ -73,7 +100,7 @@ const products = [
                   </a>
                 </h3>
                 {/* <p className="mt-1 text-sm text-gray-500">{product.color}</p> */}
-                <p className="mt-1 text-sm font-medium text-white">{product.price}</p>
+                <p className="mt-1 text-sm font-medium text-white mb-8 font-raleway">{product.price}</p>
               </div>
             ))}
           </div>

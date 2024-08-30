@@ -24,7 +24,7 @@ const SearchBar = () => {
               </a>
             
         {/* Search Bar */}
-        <div className={`w-[170px] 2xl:w-[200px] max-w-[100%] flex items-center gap-2 rounded-full bg-[#f3f4f6] ml-1 mr-1 ${searchExpanded ? 'search-bar-expanded' : 'hide-on-small'}`}>
+        <div className={`w-[170px] 2xl:w-[200px] max-w-[100%] flex items-center gap-2 rounded-full bg-[#f3f4f6] ml-1 mr-1 mb-2 ${searchExpanded ? 'search-bar-expanded' : 'hide-on-small'}`}>
         <MdOutlineSearch className='text-gray-500 text-xl' onClick={() => setSearchExpanded(!searchExpanded)} />
         <input
           type='text'

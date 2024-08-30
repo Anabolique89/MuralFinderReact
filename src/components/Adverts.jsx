@@ -13,7 +13,7 @@ const Adverts = () => {
         { name: 'PosterPrints', description: 'And of course, if you are looking for high quality prints have a look around.' },
       ]
         return (
-          <div className="rounded-md backdrop-filter backdrop-blur-lg dark:bg-[#1f1f1f] dark:text-white  shadow-2xl ring-1 ring-black/5 focus:outline-none">
+          <div className=" bg-indigo-600 rounded-md backdrop-filter backdrop-blur-lg dark:bg-[#1f1f1f] dark:text-white shadow-2xl ring-1 ring-black/5 focus:outline-none">
             <div className="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-10 px-4 py-20 sm:px-6 sm:py-30 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
               <div>
                 <h2 className={`${styles.heading2} sm:text-4xl tracking-tight`}>Shop Categories</h2>

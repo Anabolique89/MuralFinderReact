@@ -22,6 +22,7 @@ import WebFooter from '../components/WebFooter';
 import { BackToTopButton } from '../components';
 import WallpaperRow from '../components/ShopCategories/WallpapersRow';
 import { BooksRow } from '../components/ShopCategories';
+import ArtSuppliesRow from '../components/ShopCategories/ArtSuppliesRow';
 
 const navigation = {
   categories: [
@@ -224,7 +225,7 @@ export default function Shop() {
       </Dialog>
 
       {/* Hero section */}
-      <div className="relative bg-indigo-600 h-[80vh]">
+      <div className="relative bg-indigo-600 h-[70vh]">
         {/* Decorative image and overlay */}
         <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
           <img
@@ -367,11 +368,14 @@ export default function Shop() {
           </nav>
         </header>
 
-        <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-16 text-center sm:py-24 lg:px-0">
+        <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-10 text-center sm:py-16 lg:px-0">
           <h1 className={`${styles.heading2} lg:text-6xl tracking-tight text-4xl font-bold`}>New arrivals are here</h1>
           <p className="mt-4 text-xl text-white font-raleway" >
             The new arrivals have, well, newly arrived. Check out the latest options from our summer small-batch release
             while they're still in stock.
+          </p>
+          <p className="mt-4 text-sm italic text-dimWhite font-raleway" >
+       As an Amazon Associate I earn from qualifying purchases. 
           </p>
           {/* <a
             href="#"
@@ -427,6 +431,7 @@ export default function Shop() {
             </a>
           </div>
         </section>
+<ArtSuppliesRow />
 <WallpaperRow />
 <BooksRow />
         {/* Featured section */}
@@ -449,15 +454,14 @@ export default function Shop() {
                   <span className="block sm:inline font-raleway"> your game</span>
                 </h2>
                 <p className={`${styles.paragraph} mt-3 text-2xl text-white`}>
-                  Make your desk beautiful and organized. Post a picture to social media and watch it get more likes
-                  than life-changing announcements. Reflect on the shallow nature of existence. At least you have a
-                  really nice desk setup.
+                We support local and global artists and help them develop their 
+                online presence on a social media app dedicated to visual arts of all kinds. 
                 </p>
                 <a
-                  href="#"
+                  href="/Login"
                   className={`py-1 px-2 mt-6 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full sm:w-auto ${styles}`}
                 >
-                  Shop Workspace
+                  CREATE PROFILE
                 </a>
               </div>
             </div>

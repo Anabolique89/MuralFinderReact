@@ -81,7 +81,7 @@ const App = () => {
     setPage(1); // Reset page when page size changes
   };
 
-  const showSearchBarRoutes = ['/', '/about']; // set the pages where the searchbar should be included.
+  const showSearchBarRoutes = ['/', '/About']; // set the pages where the searchbar should be included.
 
   return (
     <Router>
