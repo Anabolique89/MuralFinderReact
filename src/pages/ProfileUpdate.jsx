@@ -4,13 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { ToastContainer, toast } from 'react-toastify'; 
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '../style';
+import { useNavigate } from "react-router-dom";
 
 const MySwal = withReactContent(Swal);
 
 const ProfileUpdate = ({ profile, onProfileUpdated }) => {
+
+    const navigate = useNavigate()
     const [profileData, setProfileData] = useState({
         first_name: profile?.first_name || '',
         last_name: profile?.last_name || '',
@@ -35,7 +38,8 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
             await AuthService.updateProfile(userId, profileData);
             console.log('Profile updated successfully');
             toast.success('Profile updated successfully!');
-            onProfileUpdated(); // Call the callback function
+            onProfileUpdated();
+            // console.log(userId, profileData) // Call the callback function
         } catch (error) {
             console.error('Error updating profile:', error.message);
             toast.error('Error updating profile!');
@@ -74,6 +78,8 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                         'Your account has been deleted.',
                         'success'
                     );
+
+                    navigate('/login')
                 } catch (error) {
                     console.error('Error deleting account:', error);
                     Swal.fire(
@@ -165,8 +171,8 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                         name="location"
                         className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                         placeholder="Your Location"
-                        // value={profileData.proffession}
-                        // onChange={handleInputChange}
+                        value={profileData.location}
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -179,45 +185,45 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                     </label>
                     <input
                         type="text"
-                        id="location"
-                        name="location"
+                        id="facebook"
+                        name="facebook"
                         className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                         placeholder="Your Facebook Profile Link"
-                        // value={profileData.proffession}
-                        // onChange={handleInputChange}
+                        value={profileData.facebook}
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
 
                 <div className="mb-2 sm:mb-6">
                     <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
-                       Instagram
+                        Instagram
                     </label>
                     <input
                         type="text"
-                        id="location"
-                        name="location"
+                        id="instagram"
+                        name="instagram"
                         className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                         placeholder="Your Instagram Profile Link"
-                        // value={profileData.proffession}
-                        // onChange={handleInputChange}
+                        value={profileData.instagram}
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
 
-                
+
                 <div className="mb-2 sm:mb-6">
                     <label htmlFor="proffession" className="block mb-2 text-sm font-medium text-slate-200 dark:text-white">
-                       X
+                        X
                     </label>
                     <input
                         type="text"
-                        id="location"
-                        name="location"
+                        id="twitter"
+                        name="twitter"
                         className="bg-indigo-50 border border-indigo-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                         placeholder="Your X Profile Link"
-                        // value={profileData.proffession}
-                        // onChange={handleInputChange}
+                        value={profileData.twitter}
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -271,7 +277,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                     <hr className="mt-4 mb-8" />
                 </div>
             </div>
-            <ToastContainer /> 
+            <ToastContainer />
         </div>
     );
 };

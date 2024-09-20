@@ -187,7 +187,10 @@ const ArtworkService = {
 
   loadComments: async (artworkId) => {
     try {
-      const response = await axios.get(`${BASE_URL}artworks/${artworkId}/comments`);4
+      const response = await axios.get(
+        `${BASE_URL}artworks/${artworkId}/comments`
+      );
+      4;
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -203,20 +206,49 @@ const ArtworkService = {
   addComment: async (artworkId, commentData) => {
     try {
       const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `${BASE_URL}artworks/${artworkId}/comment`,
-            commentData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
-                }
-            }
-        );
-        return response.data;
+      const response = await axios.post(
+        `${BASE_URL}artworks/${artworkId}/comment`,
+        commentData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
     } catch (error) {
-        console.error('Error adding comment:', error);
-        return { success: false, message: error.message };
+      console.error("Error adding comment:", error);
+      return { success: false, message: error.message };
+    }
+  },
+
+  likeArtwork: async (artworkId) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("User is not authenticated");
+      }
+      const url = `${BASE_URL}${artworkEndpoints.likeArtworks(artworkId)}`;
+      const response = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response, "response");
+      if (response.success) {
+        console.log("Artwork liked successfully");
+        return response.data.success;
+      } else {
+        return response.message || "Failed to like artwork";
+      }
+    } catch (error) {
+      console.error("Error liking artwork:", error);
+      return error.response?.data?.message || "Unknown error";
     }
   },
 };

@@ -15,7 +15,13 @@ const ProfileSettings = () => {
         first_name: '',
         last_name: '',
         profession: '',
-        bio: ''
+        bio: '',
+        location: '',
+        facebook: '',
+        instagram: '',
+        twitter: '',
+
+
     });
     const [isProfileUpdated, setIsProfileUpdated] = useState(false);
 
@@ -25,28 +31,28 @@ const ProfileSettings = () => {
             ...prevState,
             [name]: value
         }));
-    };delete
+    }; delete
 
-    useEffect(() => {
-        const fetchProfileData = async () => {
-            try {
-                const userId = AuthService.getUser()?.id;
-                if (!userId) {
-                    throw new Error('User ID not found');
+        useEffect(() => {
+            const fetchProfileData = async () => {
+                try {
+                    const userId = AuthService.getUser()?.id;
+                    if (!userId) {
+                        throw new Error('User ID not found');
+                    }
+                    const profile = await AuthService.getProfile(userId);
+                    setProfileData(profile);
+                } catch (error) {
+                    console.error('Error fetching profile data:', error.message);
                 }
-                const profile = await AuthService.getProfile(userId);
-                setProfileData(profile);
-            } catch (error) {
-                console.error('Error fetching profile data:', error.message);
-            }
-        };
-        fetchProfileData();
-    }, []);
+            };
+            fetchProfileData();
+        }, []);
 
     return (
         <section className='font-raleway'>
             <div className="bg-indigo-600 w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-slate-800">
-             <a href="/Profile"><ChevronLeftIcon className='text-white'/></a> 
+                <a href="/Profile"><ChevronLeftIcon className='text-white' /></a>
                 {/* <aside className="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
                     <div className="sticky flex flex-col gap-2 p-4 text-sm border-r border-slate-800 top-12">
                         <h2 className="pl-3 mb-4 text-2xl font-semibold font-raleway">Settings</h2>
@@ -73,12 +79,12 @@ const ProfileSettings = () => {
                                         <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Bio</label>
                                         <div className="rounded-lg border border-indigo-300 p-2.5">
                                             <p className="text-sm text-white">
-                                                {profileData && profileData.profile && profileData.profile.bio} 
+                                                {profileData && profileData.profile && profileData.profile.bio}
                                             </p>
                                         </div>
                                         <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
                                             <p className="text-sm text-white">
-                                                {profileData && profileData.email }
+                                                {profileData && profileData.email}
                                             </p>
                                         </div>
                                         <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
@@ -112,7 +118,7 @@ const ProfileSettings = () => {
                                     <button className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white">Save Password</button>
                                     <hr className="mt-4 mb-8" />
                                     <div className="flex justify-end">
-                                      
+
                                     </div>
                                 </div>
                             </div>
