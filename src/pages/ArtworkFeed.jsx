@@ -45,6 +45,7 @@ const ArtworkFeed = () => {
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
+    // console.log(newPage);
   };
 
   const handlePageSizeChange = (newPageSize) => {
