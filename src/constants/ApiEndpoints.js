@@ -18,6 +18,7 @@ export const artworkEndpoints = {
   artworkById: (artworkId) => `artworks/${artworkId}`,
   getUserArtworks: (userId) => `artworks/users/${userId}`,
   likeArtworks: (artworkId) => `artworks/${artworkId}/like`,
+  unLikeArtworks: (artworkId) => `artworks/${artworkId}/unlike`,
 };
 
 export const blogEndpoints = {

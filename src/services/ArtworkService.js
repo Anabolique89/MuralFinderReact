@@ -45,7 +45,7 @@ const ArtworkService = {
       const response = await axios.get(
         `${BASE_URL}${artworkEndpoints.getCategoires}`
       );
-      console.log(response.data);
+      // console.log(response.data);
       return response.data.data;
     } catch (error) {
       if (
@@ -191,7 +191,7 @@ const ArtworkService = {
         `${BASE_URL}artworks/${artworkId}/comments`
       );
       4;
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error loading comments:", error);
@@ -226,6 +226,7 @@ const ArtworkService = {
   likeArtwork: async (artworkId) => {
     try {
       const token = localStorage.getItem("token");
+      console.log(token, "token when Like artwork");
       if (!token) {
         throw new Error("User is not authenticated");
       }
@@ -248,6 +249,35 @@ const ArtworkService = {
       }
     } catch (error) {
       console.error("Error liking artwork:", error);
+      return error.response?.data?.message || "Unknown error";
+    }
+  },
+  unLikeArtwork: async (artworkId) => {
+    try {
+      const token = localStorage.getItem("token");
+      console.log(token, "token when unLike artwork");
+      if (!token) {
+        throw new Error("User is not authenticated");
+      }
+      const url = `${BASE_URL}${artworkEndpoints.unLikeArtworks(artworkId)}`;
+      const response = await axios.delete(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response, "response");
+      if (response.success) {
+        console.log("Artwork unliked successfully");
+        return response.data.success;
+      } else {
+        return response.message || "Failed to unlike artwork";
+      }
+    } catch (error) {
+      console.error("Error unliking artwork:", error);
       return error.response?.data?.message || "Unknown error";
     }
   },

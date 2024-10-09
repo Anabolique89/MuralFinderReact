@@ -56,6 +56,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
   const likeArtwork = async (artworkId) => {
     try {
       const likeResponse = await ArtworkService.likeArtwork(artworkId);
+      console.log(likeResponse, 'likeResponseeeeeeeee')
 
       if (likeResponse.success) {
         setSuccessMessage('Artwork liked successfully');
@@ -80,6 +81,34 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
 
     }
   }
+  const unLikeArtwork = async (artworkId) => {
+    try {
+      const unlikeResponse = await ArtworkService.unLikeArtwork(artworkId);
+      console.log(unlikeResponse, 'unlikeResponse');
+
+      // Access success from the correct part of the response
+      if (unlikeResponse.data?.success) {
+        setSuccessMessage('Artwork unliked successfully');
+        setErrorMessage('');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+      } else {
+        setErrorMessage('Failed to unlike artwork');
+        setSuccessMessage('');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 5000);
+      }
+
+    } catch (error) {
+      setErrorMessage('Error unliking artwork');
+      setSuccessMessage('');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
+    }
+  };
 
   return (
     <div className='rounded-xl overflow-hidden shadow-lg w-50 relative cta-block box-shadow p-2 sm:p-0 xs:m-2 sm:w-full'>
@@ -128,7 +157,17 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
               <span className='ml-2 mr-2'>
                 <strong>{artwork.likes_count}</strong>
               </span>
-            </li>            <li className='flex'><FaComments className=' text-white' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span></li>
+
+            </li>
+            <li className='flex'>
+              <FaComments className=' text-white' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span>
+            </li>
+
+            <li>
+              <span onClick={() => unLikeArtwork(artwork?.id)}>
+                <h1 className='cursor-pointer'>Unlike</h1>
+              </span>
+            </li>
           </ul>
           {isAuthenticated && user.id === artwork.user_id && (
             <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">

@@ -10,7 +10,7 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton } from '../components';
+import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton, Stories } from '../components';
 import ArtworkService from '../services/ArtworkService';
 import { slider } from '../assets';
 import { toast } from 'react-toastify';
@@ -125,7 +125,7 @@ const Profile = () => {
                                 <h1 className="text-xl username-name">{profileData.username}</h1>
                                 <p className={`${styles.paragraph} mt-0 text-center`}><br />{profileData.profile.bio}</p>
                                 <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
-                                {/* <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.location}</p> */}
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.location}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     {/* <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a> */}
                                 </div>
@@ -178,7 +178,7 @@ const Profile = () => {
 
                     <div className="col-span-4 sm:col-span-9">
                         {/* <div className=' float-right'><RiMessage2Fill className='w-[30px] h-[30px] ' /></div> */}
-                        <div className='highlights flex flex-column mb-4 mt-2 w-full overflow-x-auto scrollbar-thin scrollbar-webkit'>
+                        {/* <div className='highlights flex flex-column mb-4 mt-2 w-full overflow-x-auto scrollbar-thin scrollbar-webkit'>
                             {!blogData ? (
                                 // Display spinners while blog data is being fetched
                                 <div className="flex justify-center ">
@@ -199,7 +199,8 @@ const Profile = () => {
                                     </Link>
                                 ))
                             )}
-                        </div>
+                        </div> */}
+                        <Stories />
 
                         <div className="bg-white p-6 profile-content z-[20] w-full max-h-[560px] overflow-y-auto scrollbar-thin scrollbar-webkit">
                             <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4 font-raleway">BLOG POSTS</h2>
@@ -223,8 +224,8 @@ const Profile = () => {
                                         <div key={blog.id} className="mb-6 profile-post z-[20]">
                                             <div className="flex justify-between flex-wrap gap-2 w-full z-[20]">
                                                 <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
-                                                <p>
-                                                    <div onClick={() => deletePost(blog.id)}>
+                                                <p className='flex'>
+                                                    <div onClick={() => deletePost(blog.id)} className='cursor-pointer'>
                                                         <FontAwesomeIcon icon={faTrashCan} className="text-red-600 mr-2" />
                                                     </div>
                                                     <Link to={`/blog/edit/${blog.id}`}>
