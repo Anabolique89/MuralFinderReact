@@ -32,14 +32,29 @@ const ArtworkService = {
         throw new Error(`HTTP error ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
       return data.data;
     } catch (error) {
       console.error("Error fetching user artworks:", error);
       throw error;
     }
   },
+  unGroupedArtworks: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}artworks/artwork/ungrouped`);
 
+      if (response.status !== 200) {
+        throw new Error(`HTTP error ${response.status}`);
+      }
+
+      // Axios automatically parses the response body to JSON
+      const data = response.data;
+      // console.log(data, "unGroupeArtworks");
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching unGrouped Artworks :", error);
+      throw error;
+    }
+  },
   loadCategories: async () => {
     try {
       const response = await axios.get(

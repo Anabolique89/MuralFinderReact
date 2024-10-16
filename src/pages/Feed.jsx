@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { defaultimg } from '../assets';
 import DashboardService from '../services/DashboardService';
-import UserTable from '../components/UserTable';
 import UsersData from '../components/UsersData';
 import UngroupedArtworks from '../components/UngroupedArtworks';
 // import { UserTable } from './Dashboard';
@@ -91,7 +90,7 @@ const Feed = () => {
                 <h1 className="text-xl username-name">{profileData.username}</h1>
                 <p className={`${styles.paragraph} mt-0 text-center`}><br />{profileData.profile.bio}</p>
                 <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
-                {/* <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.location}</p> */}
+                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.location}</p>
                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                   {/* <a href="#" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] text-primary outline-none uppercase rounded-full ${styles}`}>FOLLOW</a> */}
                 </div>

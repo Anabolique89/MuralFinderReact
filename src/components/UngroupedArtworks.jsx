@@ -1,49 +1,73 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComments, faEllipsisVertical, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import SampleImage from '../assets/brickWall.jpg';
+// import SampleImage from '../assets/brickWall.jpg';
+import ArtworkService from '../services/ArtworkService';
 
-const artworks = [
-    {
-        id: 1,
-        title: "Beautiful Landscape",
-        description: "A stunning landscape showcasing mountains and valleys.",
-        image: SampleImage,
-        username: "Artist1",
-        likes: 120,
-        comments: 45,
-    },
-    {
-        id: 2,
-        title: "Abstract Art",
-        description: "A mesmerizing abstract painting with bold colors.",
-        image: SampleImage,
-        username: "Artist2",
-        likes: 85,
-        comments: 20,
-    },
-    {
-        id: 3,
-        title: "City Skyline",
-        description: "A city skyline under a golden sunset.",
-        image: SampleImage,
-        username: "Artist3",
-        likes: 200,
-        comments: 60,
-    },
-];
+// const artworks = [
+//     {
+//         id: 1,
+//         title: "Beautiful Landscape",
+//         description: "A stunning landscape showcasing mountains and valleys.",
+//         image: SampleImage,
+//         username: "Artist1",
+//         likes: 120,
+//         comments: 45,
+//     },
+//     {
+//         id: 2,
+//         title: "Abstract Art",
+//         description: "A mesmerizing abstract painting with bold colors.",
+//         image: SampleImage,
+//         username: "Artist2",
+//         likes: 85,
+//         comments: 20,
+//     },
+//     {
+//         id: 3,
+//         title: "City Skyline",
+//         description: "A city skyline under a golden sunset.",
+//         image: SampleImage,
+//         username: "Artist3",
+//         likes: 200,
+//         comments: 60,
+//     },
+// ];
 
 const UngroupedArtworks = () => {
+    const [unGroupedArtwork, setUnGroupedArtwork] = useState(null)
+    useEffect(() => {
+        const fetchUngroupedArtwork = async () => {
+            try {
+                const data = await ArtworkService.unGroupedArtworks();
+                setUnGroupedArtwork(data); // set the state with fetched data
+                // log the fetched data
+            } catch (error) {
+                console.error('There was an error fetching the Ungrouped Artwork!', error);
+            }
+        };
+
+        fetchUngroupedArtwork(); // Call the function to fetch data
+
+        // No need to log `unGroupedArtwork` here as state updates are async.
+        // If you want to see the updated state, use another `useEffect` for that.
+    }, []);
+    useEffect(() => {
+        if (unGroupedArtwork) {
+            console.log(unGroupedArtwork.data, 'Updated unGroupedArtwork');
+        }
+    }, [unGroupedArtwork]);
+    console.log(unGroupedArtwork, 'unGroupedArtwork')
     return (
         <section className="h-[770px] overflow-scroll">
             <div className="mx-auto px-4 py-8 max-w-4xl">
-                {artworks.map((artwork) => (
+                {unGroupedArtwork?.data.map((artwork) => (
                     <div key={artwork.id} className="backdrop-filter backdrop-blur-lg shadow-2xl rounded-lg mb-6 tracking-wide">
                         {/* Image */}
                         <div className="md:flex-shrink-0">
                             <img
-                                src={artwork.image}
+                                src={artwork.image_path}
                                 alt={artwork.title}
                                 className="w-full h-100 rounded-lg rounded-b-none"
                             />

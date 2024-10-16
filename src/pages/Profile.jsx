@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../style';
-import { defaultimg, swimBlue, swimWhite } from '../assets';
+import { defaultimg, swimBlue, } from '../assets';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
 import { formatDate } from '../utils/dateUtils';
-import { RiMessage2Fill } from "react-icons/ri";
 import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton, Stories } from '../components';
 import ArtworkService from '../services/ArtworkService';
-import { slider } from '../assets';
 import { toast } from 'react-toastify';
 
 
@@ -31,7 +29,7 @@ const Profile = () => {
             ArtworkService.getUserArtworks(AuthService.getUser()?.id),
             ArtworkService.loadCategories()
         ])
-            .then(([artworksData, categoriesData]) => {
+            .then(([artworksData,]) => {
                 // setImages(artworksData);
                 setFilteredImages(artworksData);
                 // setCategories([{ id: 'all', name: 'All' }, ...categoriesData]);
@@ -66,7 +64,7 @@ const Profile = () => {
         const fetchBlogsByUser = async () => {
             try {
                 const user = AuthService.getUser();
-                console.log(user)
+                // console.log(user)
                 const data = await BlogService.getBlogPostByUserId(user.id)
                 setBlogData(data.data)
             } catch (error) {
@@ -164,7 +162,7 @@ const Profile = () => {
                                                 d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
                                             </path>
                                         </svg>
-                                        <svg className='h-6' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" xml:space="preserve">
+                                        <svg className='h-6' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" xmlSpace="preserve">
                                             <path fill="currentColor" d="M14.095479,10.316482L22.286354,1h-1.940718l-7.115352,8.087682L7.551414,1H1l8.589488,12.231093L1,23h1.940717  l7.509372-8.542861L16.448587,23H23L14.095479,10.316482z M11.436522,13.338465l-0.871624-1.218704l-6.924311-9.68815h2.981339  l5.58978,7.82155l0.867949,1.218704l7.26506,10.166271h-2.981339L11.436522,13.338465z" />
                                         </svg>
                                     </a>

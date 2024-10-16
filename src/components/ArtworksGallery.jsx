@@ -1,6 +1,5 @@
 import styles from '../style';
 import { FaComments } from "react-icons/fa";
-import { FcLike } from "react-icons/fc";
 import { FaHeart } from "react-icons/fa";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,8 +12,8 @@ import { Link, useNavigate } from 'react-router-dom';
 const ArtworksGallery = ({ artwork, onDelete }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
-  const userImage = artwork.user?.profile?.profile_image_url || '';
-  const defaultImage = 'https://example.com/default-image.jpg';
+  const userImage = artwork.user?.profile_image_url || '';
+  const defaultImage = 'http://via.placeholder.com/640x360';
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -127,7 +126,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
         <Link to={`/artworks/${artwork.id}`}>
           <img
             className='w-full h-48 object-cover p-2'
-            src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
+            src={artwork.user?.profile_image_url ? `https://api.muralfinder.net${artwork.user?.profile_image_url}` : defaultImage}
             alt={artwork.title || 'Artwork'}
           />
         </Link>

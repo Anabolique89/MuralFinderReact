@@ -14,7 +14,7 @@ const ProfileSettings = () => {
     const [profileData, setProfileData] = useState({
         first_name: '',
         last_name: '',
-        profession: '',
+        proffession: '',
         bio: '',
         location: '',
         facebook: '',
