@@ -67,9 +67,11 @@ const UngroupedArtworks = () => {
                         {/* Image */}
                         <div className="md:flex-shrink-0">
                             <img
-                                src={artwork.image_path}
+                                src={`https://api.muralfinder.net${artwork.user?.profile.profile_image_url}`}
                                 alt={artwork.title}
-                                className="w-full h-100 rounded-lg rounded-b-none"
+                                className=" rounded-lg rounded-b-none"
+                                width='100%'
+                                height='50%'
                             />
                         </div>
                         {/* Author */}

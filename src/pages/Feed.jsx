@@ -79,7 +79,7 @@ const Feed = () => {
 
       <div className='container mx-auto py-8'>
         <div className='grid grid-cols-4 sm:grid-cols-12 gap-6 px-4'>
-          <div className='col-span-4 sm:col-span-3'>
+          <div className='col-span-4 sm:col-span-3 hidden sm:block'>
             <div className="bg-white profile-content p-6 ">
               <div className="flex flex-col items-center object-cover">
                 <img
