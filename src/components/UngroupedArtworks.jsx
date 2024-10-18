@@ -53,12 +53,7 @@ const UngroupedArtworks = () => {
         // No need to log `unGroupedArtwork` here as state updates are async.
         // If you want to see the updated state, use another `useEffect` for that.
     }, []);
-    useEffect(() => {
-        if (unGroupedArtwork) {
-            console.log(unGroupedArtwork.data, 'Updated unGroupedArtwork');
-        }
-    }, [unGroupedArtwork]);
-    console.log(unGroupedArtwork, 'unGroupedArtwork')
+
     return (
         <section className="h-[770px] overflow-scroll">
             <div className="mx-auto px-4 py-8 max-w-4xl">

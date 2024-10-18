@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
-import { MdMenu, MdEdit, MdDelete } from "react-icons/md";
+import { useState, useEffect } from "react";
 import { getInitials } from "../utils/index.js";
 import DashboardService from "../services/DashboardService.js";
 import AuthService from "../services/AuthService.js";
 import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
-import Sidebar from "./dashboard/Sidebar.jsx";
 import MobileSidebar from "./dashboard/MobileSidebar.jsx";
 import Spinner from "./Spinner.jsx";
-import GroupIcon from "@mui/icons-material/Group";
 import BackToTopButton from "./BackToTopButton.jsx";
 import clsx from "clsx";
-import styles from '../style.js';
 
 const UsersData = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);

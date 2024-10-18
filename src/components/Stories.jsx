@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../style';
-import { defaultimg, swimBlue, swimWhite } from '../assets';
+import { defaultimg, } from '../assets';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '../services/BlogService';
-import { cleanHTML, trimContent } from '../utils/blogUtils';
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer';
-import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton } from '../components';
-import { slider } from '../assets';
 
 
 const Stories = () => {
@@ -24,7 +20,7 @@ const Stories = () => {
         const fetchBlogsByUser = async () => {
             try {
                 const user = AuthService.getUser();
-                console.log(user)
+                // console.log(user)
                 const data = await BlogService.getBlogPostByUserId(user.id)
                 setBlogData(data.data)
             } catch (error) {

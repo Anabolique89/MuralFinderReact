@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Stories } from '../components';
+import { SearchBar, Stories } from '../components';
 import styles from '../style';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,7 +56,7 @@ const Feed = () => {
     };
 
     loadStatistics();
-    console.log(statistics, 'statistics')
+    // console.log(statistics, 'statistics')
   }, []);
 
 
@@ -78,7 +78,7 @@ const Feed = () => {
 
 
       <div className='container mx-auto py-8'>
-        <div className='grid grid-cols-4 sm:grid-cols-12 gap-6 px-4'>
+        <div className='sm:grid  sm:grid-cols-12 gap-6 px-4'>
           <div className='col-span-4 sm:col-span-3 hidden sm:block'>
             <div className="bg-white profile-content p-6 ">
               <div className="flex flex-col items-center object-cover">
@@ -142,12 +142,12 @@ const Feed = () => {
           </div>
           <div className='col-span-4 sm:col-span-6'>
             < Stories />
+            <div className='block sm:hidden'><SearchBar /></div>
             <UngroupedArtworks />
 
 
           </div>
-          <div className='col-span-4 sm:col-span-3'>
-            {/* <UserTable users={statistics.users} /> */}
+          <div className='col-span-4 sm:col-span-3 hidden sm:block'>
             <UsersData />
 
           </div>
