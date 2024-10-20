@@ -34,6 +34,7 @@ const Trash = () => {
     try {
       const response = await TrashService.getAll(); // Call the TrashService to get all trashed items
       setTrashedItems(response.data); // Assuming response.data contains the trashed items
+      console.log(response.data.walls);
     } catch (error) {
       console.error("Error fetching trashed items:", error);
     } finally {
@@ -178,21 +179,29 @@ const Trash = () => {
 
   // Rows for Walls
   const WallTableRow = ({ wall }) => (
-    <tr className='border-b border-gray-900 text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2 text-yellow-600'>{wall.title}</td>
-      <td className='py-2 text-yellow-600'>{wall.location}</td>
-      <td className='py-2 text-yellow-600'>{new Date(wall.deleted_at).toDateString()}</td>
-      <td className='py-2 text-yellow-600 flex gap-1 justify-end'>
-        <Button
-          icon={<MdOutlineRestore className='text-xl text-gray-500' />}
-          onClick={() => restoreClick('wall', wall.id)}
-        />
-        <Button
-          icon={<MdDelete className='text-xl text-red-600' />}
-          onClick={() => deleteClick('wall', wall.id)}
-        />
-      </td>
-    </tr>
+  
+<tr className="border-b border-gray-900 text-gray-600 hover:bg-gray-400/10">
+  <td className="py-2">
+    <img
+      src={`https://api.muralfinder.net${wall.image_path}`}
+      alt="Wall Preview"
+      className="w-12 h-12 rounded-full object-cover"
+    />
+  </td>
+  <td className="py-2 text-yellow-600">{wall.location_text}</td>
+  <td className="py-2 text-yellow-600">{new Date(wall.deleted_at).toDateString()}</td>
+  <td className="py-2 text-yellow-600 flex gap-1 justify-end">
+    <Button
+      icon={<MdOutlineRestore className="text-xl text-gray-500" />}
+      onClick={() => restoreClick('wall', wall.id)}
+    />
+    <Button
+      icon={<MdDelete className="text-xl text-red-600" />}
+      onClick={() => deleteClick('wall', wall.id)}
+    />
+  </td>
+</tr>
+
   );
 
   // Rows for Posts
