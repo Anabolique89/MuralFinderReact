@@ -18,8 +18,9 @@ export const artworkEndpoints = {
   searchArtworks: "artworks/artwork/search",
   artworkById: (artworkId) => `artworks/${artworkId}`,
   getUserArtworks: (userId) => `artworks/users/${userId}`,
+  likeArtworks: (artworkId) => `artworks/${artworkId}/like`,
+  unLikeArtworks: (artworkId) => `artworks/${artworkId}/unlike`,
 };
-
 
 export const blogEndpoints = {
   getAllBlogPosts: "posts",
@@ -34,19 +35,17 @@ export const blogEndpoints = {
 };
 
 export const wallEndpoints = {
-  getAllWalls: (page = 1, perPage = 10) => `walls?page=${page}&perPage=${perPage}`,
+  getAllWalls: (page = 1, perPage = 10) =>
+    `walls?page=${page}&perPage=${perPage}`,
   getWallById: (wallId) => `walls/${wallId}`,
   addWall: "walls",
   updateWall: (wallId) => `walls/${wallId}`,
-  getCommentsForWall: (wallId) => `walls/${wallId}/comments`,  // Add this
-  commentOnWall: (wallId) => `walls/${wallId}/comments`,       // Add this
-  likeWall: (wallId) => `walls/${wallId}/like`,                // Add this
-
   updateComment: (wallId, commentId) => `walls/${wallId}/comments/${commentId}`,
-  
+  getCommentsForWall: (wallId) => `walls/${wallId}/comments`, // Add this
+  commentOnWall: (wallId) => `walls/${wallId}/comments`, // Add this
+  likeWall: (wallId) => `walls/${wallId}/like`, // Add this
   deleteWall: (wallId) => `walls/${wallId}`,
 };
-
 
 export const fellowshipEndpoints = {
   follow: "fellowships/follow",

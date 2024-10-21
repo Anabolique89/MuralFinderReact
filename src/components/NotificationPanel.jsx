@@ -1,7 +1,7 @@
-import { Popover, PopoverPanel, PopoverButton,  Transition } from "@headlessui/react";
+import { Popover, PopoverPanel, PopoverButton, Transition } from "@headlessui/react";
 import moment from "moment";
 import { Fragment, useState } from "react";
-import { BiSolidMessageRounded } from "react-icons/bi";
+import { BiSolidComment, BiSolidHeart, BiSolidMessageRounded } from "react-icons/bi";
 import { HiBellAlert } from "react-icons/hi2";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -41,13 +41,49 @@ const data = [
     updatedAt: "2024-02-09T09:32:26.810Z",
     __v: 0,
   },
+  {
+    _id: "65d8f8b3400006a234de5671",
+    user: "John Doe",
+    text: "John Doe liked your post.",
+    post: {
+      _id: "65d8f8b3400006a234de5672",
+      title: "How to Improve Your Coding Skills",
+    },
+    notiType: "like",
+    isRead: [],
+    createdAt: "2024-09-12T10:00:00.000Z",
+    updatedAt: "2024-09-12T10:00:00.000Z",
+    __v: 0,
+  },
+  {
+    _id: "65d8f8b3400006a234de5673",
+    user: "Jane Smith",
+    text: "Jane Smith commented on your post.",
+    post: {
+      _id: "65d8f8b3400006a234de5674",
+      title: "10 Tips for Remote Work Productivity",
+    },
+    comment: "This is really helpful! Thanks for sharing.",
+    notiType: "comment",
+    isRead: [],
+    createdAt: "2024-09-12T12:15:00.000Z",
+    updatedAt: "2024-09-12T12:15:00.000Z",
+    __v: 0,
+  },
 ];
+
 const ICONS = {
   alert: (
     <HiBellAlert className='h-5 w-5 text-gray-600 group-hover:text-indigo-600' />
   ),
   message: (
     <BiSolidMessageRounded className='h-5 w-5 text-gray-600 group-hover:text-indigo-600' />
+  ),
+  like: (
+    <BiSolidHeart className='h-5 w-5 text-gray-600 group-hover:text-red-500' />
+  ),
+  comment: (
+    <BiSolidComment className='h-5 w-5 text-gray-600 group-hover:text-blue-500' />
   ),
 };
 
@@ -58,8 +94,8 @@ const NotificationPanel = () => {
   //  const { data, refetch } = useGetNotificationsQuery();
   //  const [markAsRead] = useMarkNotiAsReadMutation();
 
-  const readHandler = () => {};
-  const viewHandler = () => {};
+  const readHandler = () => { };
+  const viewHandler = () => { };
 
   const callsToAction = [
     { name: "Cancel", href: "#", icon: "" },

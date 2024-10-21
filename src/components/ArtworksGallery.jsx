@@ -1,6 +1,7 @@
 import styles from '../style';
 import { FaComments } from "react-icons/fa";
-import { FcLike } from "react-icons/fc";
+import { FaHeart } from "react-icons/fa";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useState, useCallback } from 'react';
@@ -11,8 +12,8 @@ import { Link, useNavigate } from 'react-router-dom';
 const ArtworksGallery = ({ artwork, onDelete }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
-  const userImage = artwork.user?.profile?.profile_image_url || '';
-  const defaultImage = 'https://example.com/default-image.jpg';
+  const userImage = artwork.user?.profile_image_url || '';
+  const defaultImage = 'http://via.placeholder.com/640x360';
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,63 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
     }
   }, [onDelete]);
 
+  const likeArtwork = async (artworkId) => {
+    try {
+      const likeResponse = await ArtworkService.likeArtwork(artworkId);
+      console.log(likeResponse, 'likeResponseeeeeeeee')
+
+      if (likeResponse.success) {
+        setSuccessMessage('Artwork liked successfully');
+        setErrorMessage('');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+      } else {
+        setErrorMessage('Failed to like artwork');
+        setSuccessMessage('');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 5000);
+      }
+
+    } catch (error) {
+      setErrorMessage('Error liking artwork');
+      setSuccessMessage('');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
+
+    }
+  }
+  const unLikeArtwork = async (artworkId) => {
+    try {
+      const unlikeResponse = await ArtworkService.unLikeArtwork(artworkId);
+      console.log(unlikeResponse, 'unlikeResponse');
+
+      // Access success from the correct part of the response
+      if (unlikeResponse.data?.success) {
+        setSuccessMessage('Artwork unliked successfully');
+        setErrorMessage('');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 5000);
+      } else {
+        setErrorMessage('Failed to unlike artwork');
+        setSuccessMessage('');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 5000);
+      }
+
+    } catch (error) {
+      setErrorMessage('Error unliking artwork');
+      setSuccessMessage('');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
+    }
+  };
+
   return (
     <div className='rounded-xl overflow-hidden shadow-lg w-50 relative cta-block box-shadow p-2 sm:p-0 xs:m-2 sm:w-full'>
       {successMessage && (
@@ -65,12 +123,12 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
       )}
 
       <div className='w-full'>
-      <Link to={`/artworks/${artwork.id}`}>
-        <img
-          className='w-full h-48 object-cover p-2'
-          src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
-          alt={artwork.title || 'Artwork'}
-        />
+        <Link to={`/artworks/${artwork.id}`}>
+          <img
+            className='w-full h-48 object-cover p-2'
+            src={artwork.user?.profile_image_url ? `https://api.muralfinder.net${artwork.user?.profile_image_url}` : defaultImage}
+            alt={artwork.title || 'Artwork'}
+          />
         </Link>
         <div className='px-6 py-4'>
           <div className='flex items-center'>
@@ -91,8 +149,24 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
             </Link>
           </div>
           <ul className='flex'>
-            <li className='flex'><FcLike /> <span className='ml-2 mr-2'><strong> {artwork.likes_count}</strong></span></li>
-            <li className='flex'><FaComments className=' text-white' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span></li>
+            <li className='flex items-center'>
+              <span onClick={() => likeArtwork(artwork?.id)}>
+                <FaHeart color='#fff' />
+              </span>
+              <span className='ml-2 mr-2'>
+                <strong>{artwork.likes_count}</strong>
+              </span>
+
+            </li>
+            <li className='flex'>
+              <FaComments className=' text-white' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span>
+            </li>
+
+            <li>
+              <span onClick={() => unLikeArtwork(artwork?.id)}>
+                <h1 className='cursor-pointer'>Unlike</h1>
+              </span>
+            </li>
           </ul>
           {isAuthenticated && user.id === artwork.user_id && (
             <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">

@@ -52,12 +52,12 @@ const AddBlog = () => {
             setTitle('');
             setDescription('');
             setFeaturedImage(null);
-            toast.success(response.message); 
-            setTimeout(()=>{
+            toast.success(response.message);
+            setTimeout(() => {
                 navigate(`/blog/${response.data.id}`);
 
             }, 4000)
-           
+
 
         } catch (error) {
             setError('Failed to create blog post');
@@ -74,7 +74,7 @@ const AddBlog = () => {
         <>
             <div className={`${layout.sectionImg} min-h-screen flex flex-col items-center justify-center `}>
                 <div className="max-w-4xl w-full bg-white rounded-lg overflow-hidde shadow-lg mt-5">
-                <ToastContainer />
+                    <ToastContainer />
                     <h2 className="text-2xl font-bold text-center py-4 bg-indigo-800 text-white rounded-md">Add Blog</h2>
                     {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                         <strong className="font-bold">Error:</strong>
@@ -104,7 +104,7 @@ const AddBlog = () => {
                         </button>
                     </form>
                 </div>
-            <Footer />
+                <Footer />
 
             </div>
         </>

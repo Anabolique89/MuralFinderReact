@@ -93,13 +93,13 @@ const Carousel = () => {
                             <div className="flex items-center mt-4 w-full text-white justify-between">
                               <div className="flex items-center">
                                 <Link to={`/profile/${artwork.user.id}`} className="flex items-center">
-                                  {artwork.user.profile.profile_image_url ? (
+                                  {artwork?.user?.profile?.profile_image_url ? (
                                     <img src={`https://api.muralfinder.net${artwork.user.profile.profile_image_url}`} alt={artwork.user.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
                                   ) : (
                                     <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
                                   )}
                                   <div>
-                                    <p className="font-semibold font-raleway">{artwork.user.username.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
+                                    <p className="font-semibold font-raleway">{artwork?.user?.username?.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</p>
                                   </div>
                                 </Link>
                               </div>

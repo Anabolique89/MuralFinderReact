@@ -93,11 +93,11 @@ const DragDropImageUploader = () => {
       formData.append('title', title);
       formData.append('description', description);
       formData.append('artwork_category_id', category);
-  
+
       images.forEach((image, index) => {
         formData.append(`images[${index}]`, image.file);
       });
-  
+
       const message = await ArtworkService.uploadArtwork(formData);
       setResponseMessage(message);
 
@@ -124,7 +124,6 @@ const DragDropImageUploader = () => {
       setLoading(false);
     }
   }
-
   return (
     <div className="flex flex-col w-full border border-gray-600 rounded-md mt-3">
       <div className="w-full p-4 text-center text-white">
@@ -192,13 +191,13 @@ const DragDropImageUploader = () => {
                   required
                 >
                   <option value="">Select Category</option>
-                  {categories.map((cat) => (
+                  {Array.isArray(categories) && categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
                     </option>
                   ))}
                 </select>
-                
+
                 <button onClick={uploadImages} type="submit" className="my-7 py-2 px-4 text-white w-full p-4 rounded border border-blue-300">
                   {loading ? <FontAwesomeIcon icon={faSpinner} spin size="1x" className="mr-2" /> : 'Submit'}
                 </button>
@@ -226,7 +225,7 @@ const DragDropImageUploader = () => {
           ))}
         </div>
       </div>
-      <ToastContainer /> 
+      <ToastContainer />
     </div>
   );
 };

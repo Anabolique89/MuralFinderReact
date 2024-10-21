@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar, ArtworksGallery, ImageSearch, DragDropImageUploader } from "../components";
+import { useState, useEffect } from 'react';
+import { ArtworksGallery, ImageSearch, DragDropImageUploader } from "../components";
 import ArtworkService from '../services/ArtworkService';
 import Footer from '../components/Footer';
 import styles from "../style";
@@ -31,6 +31,7 @@ const ArtworkFeed = () => {
       });
   }, []);
 
+
   const searchText = async (text) => {
     setIsLoading(true);
     try {
@@ -45,6 +46,7 @@ const ArtworkFeed = () => {
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
+    console.log(newPage);
   };
 
   const handlePageSizeChange = (newPageSize) => {
@@ -61,12 +63,12 @@ const ArtworkFeed = () => {
       setFilteredImages(filtered);
     }
   };
-
+  // console.log(filteredImages, 'filteredImages')
   return (
     <div className="bg-indigo-600 w-full overflow-hidden">
       <h2 className={`${styles.heading2} ${styles.flexCenter} py-8 text-white`}>Artworks Feed</h2>
 
-      <div className="flex flex-wrap justify-center mb-8 px-4">
+      {/* <div className="flex flex-wrap justify-center mb-8 px-4">
         {categories.map((category) => (
           <button
             key={category.id}
@@ -83,7 +85,7 @@ const ArtworkFeed = () => {
             {category.name}
           </button>
         ))}
-      </div>
+      </div> */}
       <ImageSearch
         searchText={searchText}
         page={page}
