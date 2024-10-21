@@ -26,10 +26,9 @@ import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 
 const PostTable = ({ posts }) => {
-
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
+
   const deleteHandler = async (postId) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -44,24 +43,19 @@ const PostTable = ({ posts }) => {
         setLoading(true);
         try {
           const response = await BlogService.deleteBlogPost(postId);
-          if (response?.response?.data?.success) {
             toast.success("Post deleted successfully");
-            // Optionally, refresh the posts list here by re-fetching the data or removing the post from the state
-            navigate('/post-dashboard');
-          } else {
-            toast.error("Failed to delete the post: " + (response?.response?.data?.message));
-          }
-        } catch (error) {
-          const errorMessage = error;
-          toast.error("Error occurred while deleting post: " + errorMessage);
+            setTimeout(() => {
+              window.location.reload();
+            }, 5000);
+          } catch (error) {
+          toast.error("Error occurred while deleting post: " + error.message);
         } finally {
           setLoading(false);
         }
       }
     });
   };
-  
-  
+
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
@@ -122,7 +116,6 @@ const PostTable = ({ posts }) => {
       </td>
     </tr>
   );
-  
 
   return (
     <div className='w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
@@ -150,11 +143,18 @@ const PostsDashboard = () => {
       setLoading(true);
       try {
         const postStatsData = await DashboardService.getPostsStatisticsData();
-        const postsData = await BlogService.getAllBlogPosts();
-        setPostStats(postStatsData);
-        setPosts(postsData);
+        const response = await BlogService.getAllBlogPosts();
+        
+        // Check the response structure and extract posts array
+        if (response?.data?.data && Array.isArray(response.data.data)) {
+          setPostStats(postStatsData);
+          setPosts(response.data.data); // Set posts from the nested data property
+        } else {
+          console.error("Posts data is not in the expected format:", response);
+          setPosts([]);
+        }
       } catch (error) {
-        toast.error("Something went wrong")
+        toast.error("Something went wrong");
       } finally {
         setLoading(false);
       }
@@ -162,14 +162,13 @@ const PostsDashboard = () => {
     fetchData();
   }, []);
 
- 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredPosts = posts.filter(post =>
+  const filteredPosts = Array.isArray(posts) ? posts.filter(post =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) : [];
 
   const { postsCount, commentsCount, likesCount, deletedPosts } = postStats;
 
@@ -204,25 +203,18 @@ const PostsDashboard = () => {
     },
   ];
 
-  const Card = ({ label, count, bg, icon }) => {
-    return (
-      <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
-         <div className='h-full flex flex-1 flex-col justify-between'>
-         <p className={` text-black text-base font-semibold`}>{label}</p>
-         <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>
-         <span className='text-sm text-gray-400'>{"110 last month"}</span>
-         </div>
-        <div
-          className={clsx(
-            "w-10 h-10 rounded-full flex items-center justify-center text-white",
-            bg
-          )}
-        >
-          {icon}
-        </div>
+  const Card = ({ label, count, bg, icon }) => (
+    <div className='w-full h-32 backdrop-filter backdrop-blur-lg md:p-8 sm:p-10 ss:p-30 bg-white border-solid border-2 border-indigo-600 p-5 shadow-md rounded-md flex items-center justify-between'>
+      <div className='h-full flex flex-1 flex-col justify-between'>
+        <p className='text-black text-base font-semibold'>{label}</p>
+        <span className='text-2xl font-regular text-gray-800 font-raleway'>{count}</span>
+        <span className='text-sm text-gray-400'>{"110 last month"}</span>
       </div>
-    );
-  };
+      <div className={clsx("w-10 h-10 rounded-full flex items-center justify-center text-white", bg)}>
+        {icon}
+      </div>
+    </div>
+  );
 
   return (
     <section className='flex flex-col min-h-screen'>
@@ -231,13 +223,11 @@ const PostsDashboard = () => {
         <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
           <Sidebar />
         </div>
-        {/* Mobile Sidebar */}
         <MobileSidebar
           isSidebarOpen={isSidebarOpen}
           closeSidebar={() => setIsSidebarOpen(false)}
         />
 
-        {/* Main Content */}
         <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
           <header className='w-full flex justify-between items-center p-4 bg-white shadow-md md:hidden'>
             <button onClick={() => setIsSidebarOpen(true)} className='text-2xl'>
@@ -245,21 +235,18 @@ const PostsDashboard = () => {
             </button>
           </header>
           <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
+            {isLoading ? (
+              <div className="flex justify-center items-center h-full">
+                <FontAwesomeIcon icon={faSpinner} spin className="text-2xl text-white"/>
+              </div>
+            ) : (
               <>
-                {isLoading ? (
-                  <div className="">
-                    <FontAwesomeIcon icon={faSpinner} spin  className="text-2xl text-white"/>
-                  </div>
-                ) : (
-  
                 <div className='grid grid-cols-1 md:grid-cols-4 gap-5 mb-4'>
                   {stats.map(({ icon, bg, label, total }, index) => (
                     <Card key={index} icon={icon} bg={bg} label={label} count={total} />
                   ))}
                 </div>
-                )}
-
-                <div className=' p-4 mb-4 rounded'>
+                <div className='p-4 mb-4 rounded'>
                   <input
                     type='text'
                     placeholder='Search posts...'
@@ -269,15 +256,10 @@ const PostsDashboard = () => {
                   />
                 </div>
                 <div className='bg-indigo-600 p-6'>
-                  {isLoading ? (
-                    <div className="">
-                      <FontAwesomeIcon icon={faSpinner} spin />
-                    </div>
-                  ) : (
-                    <PostTable posts={filteredPosts} />
-                  )}
+                  <PostTable posts={filteredPosts} />
                 </div>
               </>
+            )}
           </div>
         </div>
       </div>

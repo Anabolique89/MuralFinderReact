@@ -182,12 +182,15 @@ const AuthService = {
         },
       });
 
+      console.log(response)
+
       if (response.status === 200) {
         return response.data.message;
       } else {
         throw new Error('Failed to update profile');
       }
     } catch (error) {
+      console.log(error)
       throw error;
     }
   },

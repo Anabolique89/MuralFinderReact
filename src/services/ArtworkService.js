@@ -2,12 +2,13 @@ import axios from "axios";
 import { BASE_URL, artworkEndpoints } from "../constants/ApiEndpoints";
 
 const ArtworkService = {
-  loadArtworks: async () => {
+  loadArtworks: async (page) => {
     try {
       const response = await fetch(
         `${BASE_URL}${artworkEndpoints.getAllArtworks}`
       );
       const data = await response.json();
+      console.log(data);
       if (data.success && data.data) {
         const sortedData = data.data.map((categoryData) => ({
           ...categoryData,
@@ -25,6 +26,39 @@ const ArtworkService = {
     }
   },
 
+  loadUngroupedArtworks: async (page, pageSize) => {
+    try {
+
+      const url = `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(page, pageSize)}`
+      console.log(url)
+      const response = await axios.get(
+        `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(page, pageSize)}`
+      );
+      const data = response.data;
+
+      if (data.success && data.data) {
+        // If needed, you can process data here before returning
+        return {
+          artworks: data.data.data, // Adjust based on your API's data structure
+          totalPages: data.data.last_page, // Adjust based on your API's pagination data
+          currentPage: data.data.current_page,
+        };
+      } else {
+        return {
+          artworks: [],
+          totalPages: 0,
+          currentPage: page,
+        };
+      }
+    } catch (error) {
+      console.error("Error loading ungrouped artworks:", error);
+      return {
+        artworks: [],
+        totalPages: 0,
+        currentPage: page,
+      };
+    }
+  },
   getUserArtworks: async (userId) => {
     try {
       const response = await fetch(`${BASE_URL}artworks/users/${userId}`);

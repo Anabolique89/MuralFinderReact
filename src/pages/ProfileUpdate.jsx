@@ -35,7 +35,7 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
             if (!userId) {
                 throw new Error('User ID not found');
             }
-            await AuthService.updateProfile(userId, profileData);
+            const update = await AuthService.updateProfile(userId, profileData);
             console.log('Profile updated successfully');
             toast.success('Profile updated successfully!');
             onProfileUpdated();

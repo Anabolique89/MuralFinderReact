@@ -115,7 +115,7 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
         <span className="text-gray-600">{moment(wall.created_at).fromNow()}</span>
       </td>
       <td className="py-2 px-4 flex items-center gap-2">
-        <Link to={'/walls/'+wall.id} className="text-gray-600 hover:text-blue-600">
+        <Link to={'/wall/'+wall.id} className="text-gray-600 hover:text-blue-600">
           <FontAwesomeIcon icon={faEye} />
         </Link>
         <Link to={'/walls/edit/'+wall.id} className="text-blue-600 hover:text-blue-800">
