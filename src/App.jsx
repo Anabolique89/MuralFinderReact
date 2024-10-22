@@ -37,6 +37,7 @@ import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDe
 import EditUser from './pages/EditUser';
 import EditWall from './components/EditWall';
 import Product1Easel from './pages/singleProduct';
+import UnsupportedAuth from './components/Unsuported';
 
 
 
@@ -161,7 +162,7 @@ const App = () => {
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
 
-          Product1Easel
+          <Route path="/unsuported" element={<UnsupportedAuth />} />
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />
