@@ -162,7 +162,7 @@ const App = () => {
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
 
-          <Route path="/unsuported" element={<UnsupportedAuth />} />
+          <Route path="/unsupported" element={<UnsupportedAuth />} />
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />
