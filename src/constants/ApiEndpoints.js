@@ -40,10 +40,12 @@ export const wallEndpoints = {
   getWallById: (wallId) => `walls/${wallId}`,
   addWall: "walls",
   updateWall: (wallId) => `walls/${wallId}`,
+
   updateComment: (wallId, commentId) => `walls/${wallId}/comments/${commentId}`,
   getCommentsForWall: (wallId) => `walls/${wallId}/comments`, // Add this
   commentOnWall: (wallId) => `walls/${wallId}/comments`, // Add this
-  likeWall: (wallId) => `walls/${wallId}/like`, // Add this
+  likeWall: (wallId) => `walls/${wallId}/like`, // Add this              // Add this
+
   deleteWall: (wallId) => `walls/${wallId}`,
 };
 
