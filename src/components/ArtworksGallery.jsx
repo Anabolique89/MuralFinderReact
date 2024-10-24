@@ -126,7 +126,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
         <Link to={`/artworks/${artwork.id}`}>
           <img
             className='w-full h-48 object-cover p-2'
-            src={artwork.user?.profile_image_url ? `https://api.muralfinder.net${artwork.user?.profile_image_url}` : defaultImage}
+            src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
             alt={artwork.title || 'Artwork'}
           />
         </Link>
@@ -139,7 +139,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
                 <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
               )}
               <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                {artwork.user?.username || 'Unknown'}
+                {artwork.user?.first_name || 'Unknown'}
               </div>
             </Link>
           </div>

@@ -96,6 +96,7 @@ const AuthService = {
       });
 
       if (response.status === 200) {
+        console.log(response.data.data);
         return response.data.data;
       } else {
         throw new Error('Failed to fetch profile data');

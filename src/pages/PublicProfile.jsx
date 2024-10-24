@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../style';
-import { defaultimg, swimBlue } from '../assets';
+import { defaultimg, profile, swimBlue } from '../assets';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -148,15 +148,15 @@ const PublicProfile = () => {
                             <div className="flex flex-col items-center">
 
                                 <img
-                                    src={(profileData && profileData.profile)
-                                        ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}`
+                                    src={(profileData && profileData?.profile)
+                                        ? `https://api.muralfinder.net/${profileData?.profile?.profile_image_url}`
                                         : defaultimg}
                                     className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img object-cover"
                                     alt="Bordered avatar"
                                 />
 
-                                <h1 className="text-xl username-name">{profileData.username}</h1>
-                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
+                                <h1 className="text-xl username-name">{profileData?.username}</h1>
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData?.profile?.proffession}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <button
                                         onClick={isFollowing ? handleUnfollow : handleFollow}
@@ -179,8 +179,8 @@ const PublicProfile = () => {
                             <div className="flex flex-col">
                                 <span className="text-white uppercase font-bold tracking-wider mb-2">Details</span>
                                 <ul>
-                                    <li className={`${styles.paragraph} mt-2 mb-2`}>FOLLOWERS <span className='followers'>{profileData.followers_count}</span></li>
-                                    <li className={`${styles.paragraph}  mb-2`}>FOLLOWING <span className='following'>{profileData.followings_count}</span></li>
+                                    <li className={`${styles.paragraph} mt-2 mb-2`}>FOLLOWERS <span className='followers'>{profileData?.followers_count}</span></li>
+                                    <li className={`${styles.paragraph}  mb-2`}>FOLLOWING <span className='following'>{profileData?.followings_count}</span></li>
                                     {/* <li className={`${styles.paragraph}  mb-4`}>REVIEWS <span className='reviews'>5</span></li> */}
                                 </ul>
                                 {/* social media icons */}
