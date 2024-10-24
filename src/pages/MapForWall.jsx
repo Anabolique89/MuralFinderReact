@@ -51,6 +51,9 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight, isVerified }
     const defaultCenter = { lat: latitude, lng: longitude };
     const mapKey = import.meta.env.VITE_MAP_KEY;
 
+    // Google Maps directions URL
+    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+
     return (
         <Card>
             <div style={titleStyles}>
@@ -76,7 +79,17 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight, isVerified }
                                 position={defaultCenter}
                                 onCloseClick={() => setSelected(null)}
                             >
-                                <div>{title}</div>
+                                <div className='text-black'>
+                                    <div>{title}</div>
+                                    <a 
+                                        href={directionsUrl} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        style={{ color: 'blue', textDecoration: 'underline', marginTop: '5px' }}
+                                    >
+                                        Get Directions
+                                    </a>
+                                </div>
                             </InfoWindow>
                         )}
                     </Map>
