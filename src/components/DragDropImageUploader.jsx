@@ -108,9 +108,7 @@ const DragDropImageUploader = () => {
         setTitle('');
         setDescription('');
         setCategory('');
-        setTimeout(() => {
-          navigate(`/artworks/${response?.data?.id}`); // Redirect to My Artwork page
-        }, 2000); // Delay for toast display
+        navigate(`/artworks/${response?.data?.id}`); // Redirect to My Artwork page
       } else {
         toast.error('Failed to upload artwork.');
       }

@@ -173,7 +173,6 @@ const ArtworkService = {
       );
       if (response.data.success) {
         console.log("Artwork uploaded successfully");
-        console.log(response?.data);
         return response?.data;
       } else {
         return response.data.message || "Failed to upload artwork";
