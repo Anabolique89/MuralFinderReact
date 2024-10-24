@@ -139,7 +139,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
                 <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
               )}
               <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                {artwork.user?.first_name || 'Unknown'}
+                {artwork.user?.username || artwork.user?.first_name || artwork.user?.last_name}
               </div>
             </Link>
           </div>

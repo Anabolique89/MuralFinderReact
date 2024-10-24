@@ -152,7 +152,7 @@ const SingleArtwork = () => {
                                     <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
                                 )}
                                 <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                                    {artwork.user?.username || 'Unknown'}
+                                    {artwork.user?.username || artwork.user?.first_name}
                                 </div>
                             </Link>
                             <h2 className="tracking-tighter font-raleway font-bold text-purple-500 text-l mb-2">
