@@ -123,25 +123,25 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
       )}
 
       <div className='w-full'>
-        <Link to={`/artworks/${artwork.id}`}>
+        <Link to={`/artworks/${artwork?.id}`}>
           <img
             className='w-full h-48 object-cover p-2'
 
 
-            src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
-            alt={artwork.title || 'Artwork'}
+            src={artwork?.image_path ? `https://api.muralfinder.net${artwork?.image_path}` : defaultImage}
+            alt={artwork?.title || 'Artwork'}
           />
         </Link>
         <div className='px-6 py-4'>
           <div className='flex items-center'>
-            <Link to={`/profile/${artwork.user?.id}`} className="flex items-center">
+            <Link to={`/profile/${artwork?.user?.id}`} className="flex items-center">
               {userImage ? (
-                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork.user?.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
+                <img src={`https://api.muralfinder.net${userImage}`} alt={artwork?.user?.username} className='w-8 h-8 rounded-full mr-2 object-cover' />
               ) : (
                 <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
               )}
               <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                {artwork.user?.username || artwork.user?.first_name || artwork.user?.last_name}
+                {artwork.user?.username || artwork?.user?.first_name || artwork?.user?.last_name}
               </div>
             </Link>
           </div>
