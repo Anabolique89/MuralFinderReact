@@ -28,9 +28,11 @@ const ArtworkService = {
 
   loadUngroupedArtworks: async (page, pageSize) => {
     try {
-
-      const url = `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(page, pageSize)}`
-      console.log(url)
+      const url = `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(
+        page,
+        pageSize
+      )}`;
+      console.log(url);
       const response = await axios.get(
         `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(page, pageSize)}`
       );
@@ -171,7 +173,7 @@ const ArtworkService = {
       );
       if (response.data.success) {
         console.log("Artwork uploaded successfully");
-        return response.data.message;
+        return response?.data;
       } else {
         return response.data.message || "Failed to upload artwork";
       }

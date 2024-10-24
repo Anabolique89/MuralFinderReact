@@ -33,7 +33,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
         setTimeout(() => {
           setSuccessMessage('');
         }, 5000);
-        onDelete(artworkId);
+        // onDelete(artworkId);
       } else {
         setErrorMessage('Failed to delete artwork');
         setSuccessMessage('');
