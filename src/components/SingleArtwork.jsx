@@ -191,12 +191,12 @@ const SingleArtwork = () => {
                         <div key={comment.id} className="mb-4 p-4 border rounded-lg shadow-sm">
                             <div className="flex items-center mb-2">
                                 <FontAwesomeIcon icon={faUser} className="text-gray-500 mr-2" />
-                                <span className="font-semibold">{comment.user.username}</span>
+                                <span className="font-semibold">{comment?.user?.username || comment?.user?.username}</span>
                             </div>
-                            <p className="text-gray-700 mb-2">{comment.content}</p>
+                            <p className="text-gray-700 mb-2">{comment?.content}</p>
                             <div className="flex items-center">
                                 <button 
-                                    onClick={() => handleLikeComment(comment.id, index)} 
+                                    onClick={() => handleLikeComment(comment?.id, index)} 
                                     className="flex items-center text-gray-700 mr-4"
                                 >
                                     <FontAwesomeIcon 
