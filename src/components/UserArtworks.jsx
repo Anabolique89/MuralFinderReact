@@ -21,7 +21,7 @@ const UserArtworks = ({ image }) => {
           </div>
           {/* Assuming you want to keep displaying user information */}
           <div className='font-raleway font-bold text-purple-500 text-xl mb-2'>
-            Artist: {image.user?.username || 'Unknown'}
+            Artist: {image.user?.username || $image.user?.first_name}
           </div>
           <ul className='flex'>
             {/* Updated to use `likes_count` and `comments_count` */}
