@@ -126,6 +126,8 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
         <Link to={`/artworks/${artwork.id}`}>
           <img
             className='w-full h-48 object-cover p-2'
+
+
             src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : defaultImage}
             alt={artwork.title || 'Artwork'}
           />

@@ -228,13 +228,13 @@ const PublicProfile = () => {
                             ) : (
                                 // Display blog images once data is fetched
                                 blogData.map(blog => (
-                                    <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
-                                    <img
-                                        key={blog.id}
-                                        src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
-                                        alt={`Blog Image ${blog.id}`}
-                                        className='highlight sm:mr-4 md:mr-6 mr-10'
-                                    />
+                                    <Link key={blog.id} to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
+                                        <img
+                                            key={blog.id}
+                                            src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
+                                            alt={`Blog Image ${blog.id}`}
+                                            className='highlight sm:mr-4 md:mr-6 mr-10'
+                                        />
                                     </Link>
                                 ))
                             )}
@@ -260,7 +260,7 @@ const PublicProfile = () => {
                                 (blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post">
                                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
+                                            <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
                                                 <span className="text-purple-950">{formatDate(blog.created_at)}</span>
@@ -284,7 +284,7 @@ const PublicProfile = () => {
                                         LOGIN
                                     </a>
                                 </>
-                                
+
                             )}
                         </div>
                         <div className='relative z-[1] mt-6'>
