@@ -108,10 +108,9 @@ const DragDropImageUploader = () => {
         setTitle('');
         setDescription('');
         setCategory('');
-        // setTimeout(() => {
-        //   window.location.reload(); // Reload the page
-        // }, 2000); // Delay for toast display
-        navigate(`/artworks/${response?.data?.images[0]?.artwork_id}`); // Redirect to My Artwork page
+        setTimeout(() => {
+          navigate(`/artworks/${response?.data?.images[0]?.artwork_id}`); // Redirect to My Artwork page
+        }, 2000); // Delay for toast display
       } else {
         toast.error('Failed to upload artwork.');
       }
