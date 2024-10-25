@@ -28,15 +28,15 @@ const EditArtworkUploader = () => {
     const fetchArtwork = async () => {
       try {
         const fetchedArtwork = await ArtworkService.getArtworkById(artworkId);
-        setArtwork(fetchedArtwork.data);
-        setTitle(fetchedArtwork.data.title);
-        setDescription(fetchedArtwork.data.description);
-        setCategory(fetchedArtwork.data?.category?.name);
-        if (fetchedArtwork.data.image_path) {
-          setImages([{ 
-            name: fetchedArtwork.data.title, 
-            url: `https://api.muralfinder.net${fetchedArtwork.data.image_path}`, 
-            file: null 
+        setArtwork(fetchedArtwork?.data);
+        setTitle(fetchedArtwork?.data.title);
+        setDescription(fetchedArtwork?.data.description);
+        setCategory(fetchedArtwork?.data?.category?.name);
+        if (fetchedArtwork?.data.image_path) {
+          setImages([{
+            name: fetchedArtwork?.data.title,
+            url: `https://api.muralfinder.net${fetchedArtwork?.data.image_path}`,
+            file: null
           }]);
         }
       } catch (error) {
@@ -110,7 +110,7 @@ const EditArtworkUploader = () => {
       setTimeout(() => navigate(-1), 2000);
     } catch (error) {
       console.error('Error editing artwork:', error);
-      toast.error('Failed to edit artwork. Please try again.');
+      toast.error('Failed to edit Artwork?. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -197,13 +197,13 @@ const EditArtworkUploader = () => {
                     onChange={(e) => setDescription(e.target.value)}
                   />
 
-                <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full p-4 rounded-md border border-gray-300'>
-                        {categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
+                  <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full p-4 rounded-md border border-gray-300'>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
                   <button onClick={editArtwork} type="submit" className="my-7 py-2 px-4 text-white w-full p-4 rounded border border-blue-300">
                     {loading ? <FontAwesomeIcon icon={faSpinner} spin size="1x" className="mr-2" /> : 'Submit'}
                   </button>

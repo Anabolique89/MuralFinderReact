@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const ArtworksGallery = ({ artwork, onDelete }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
-  const userImage = artwork.user?.profile_image_url || '';
+  const userImage = artwork?.user?.profile_image_url || '';
   const defaultImage = 'http://via.placeholder.com/640x360';
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -141,13 +141,13 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
                 <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
               )}
               <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                {artwork.user?.username || artwork?.user?.first_name || artwork?.user?.last_name}
+                {artwork?.user?.username || artwork?.user?.first_name || artwork?.user?.last_name}
               </div>
             </Link>
           </div>
           <div className='font-bold text-white text-xl mb-2'>
-            <Link to={`/artworks/${artwork.id}`}>
-              {artwork.title}
+            <Link to={`/artworks/${artwork?.id}`}>
+              {artwork?.title}
             </Link>
           </div>
           <ul className='flex'>
@@ -156,12 +156,12 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
                 <FaHeart color='#fff' />
               </span>
               <span className='ml-2 mr-2'>
-                <strong>{artwork.likes_count}</strong>
+                <strong>{artwork?.likes_count}</strong>
               </span>
 
             </li>
             <li className='flex'>
-              <FaComments className=' text-white' /><span className='ml-2'><strong>{artwork.comments_count}</strong></span>
+              <FaComments className=' text-white' /><span className='ml-2'><strong>{artwork?.comments_count}</strong></span>
             </li>
 
             <li>
@@ -170,27 +170,38 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
               </span>
             </li>
           </ul>
-          {isAuthenticated && user.id === artwork.user_id && (
+          {isAuthenticated && user.id === artwork?.user_id && (
             <div className="absolute bottom-5 right-10 mt-2 mr-2 text-white flex space-x-4">
-              <Link to={`/artwork/edit/${artwork.id}`}>
+              <Link to={`/artwork/edit/${artwork?.id}`}>
                 <FontAwesomeIcon
                   icon={faPencil}
                 />
               </Link>
 
-              <FontAwesomeIcon
+
+
+              {!loading ? (<FontAwesomeIcon
                 icon={faTrash}
                 className="cursor-pointer text-red-700"
-                onClick={() => handleDelete(artwork.id)}
+                onClick={() => handleDelete(artwork?.id)}
+              />) : (<div className="">  <FontAwesomeIcon
+                icon={faSpinner}
+                className="cursor-pointer text-gray-400 animate-spin "
+              /></div>)}
+
+              {/* <FontAwesomeIcon
+                icon={faTrash}
+                className="cursor-pointer text-red-700"
+                onClick={() => handleDelete(artwork?.id)}
               />
               {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <div className="loader">  <FontAwesomeIcon
-                    icon={faSpinner}
-                    className="cursor-pointer text-red-100"
-                  />.</div>
+                <div className="">  <FontAwesomeIcon
+                  icon={faSpinner}
+                  className="cursor-pointer text-gray-400 animate-spin mr-4"
+                />.</div>
                 </div>
-              )}
+              )} */}
             </div>
           )}
         </div>
