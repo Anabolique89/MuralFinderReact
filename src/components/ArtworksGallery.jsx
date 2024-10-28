@@ -10,6 +10,8 @@ import ArtworkService from '../services/ArtworkService';
 import { Link, useNavigate } from 'react-router-dom';
 
 const ArtworksGallery = ({ artwork, onDelete }) => {
+
+  // console.log("artwork Gallery", artwork);
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
   const userImage = artwork?.user?.profile_image_url || '';
@@ -55,16 +57,17 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
   const likeArtwork = async (artworkId) => {
     try {
       const likeResponse = await ArtworkService.likeArtwork(artworkId);
-      console.log(likeResponse, 'likeResponseeeeeeeee')
+      console.log(likeResponse, 'likeResponseeeeeeeeeData')
+      // console.log(likeResponse, 'likeResponseeeeeeeee')
 
-      if (likeResponse.success) {
-        setSuccessMessage('Artwork liked successfully');
+      if (likeResponse?.data?.success) {
+        setSuccessMessage(likeResponse?.data?.message || 'Artwork liked successfully');
         setErrorMessage('');
         setTimeout(() => {
           setSuccessMessage('');
         }, 5000);
       } else {
-        setErrorMessage('Failed to like artwork');
+        setErrorMessage(likeResponse || 'Failed to like artwork');
         setSuccessMessage('');
         setTimeout(() => {
           setErrorMessage('');
@@ -85,21 +88,23 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
       const unlikeResponse = await ArtworkService.unLikeArtwork(artworkId);
       console.log(unlikeResponse, 'unlikeResponse');
 
-      // Access success from the correct part of the response
-      if (unlikeResponse.data?.success) {
-        setSuccessMessage('Artwork unliked successfully');
+      // Check success in response data and update messages accordingly
+      if (unlikeResponse?.success) {
+        setSuccessMessage(unlikeResponse?.message || 'Artwork unliked successfully');
         setErrorMessage('');
         setTimeout(() => {
           setSuccessMessage('');
         }, 5000);
       } else {
-        setErrorMessage('Failed to unlike artwork');
+        setErrorMessage(unlikeResponse || 'Failed to unlike artwork');
         setSuccessMessage('');
         setTimeout(() => {
           setErrorMessage('');
         }, 5000);
       }
 
+      // Return response after handling success/error messages
+      return unlikeResponse;
     } catch (error) {
       setErrorMessage('Error unliking artwork');
       setSuccessMessage('');

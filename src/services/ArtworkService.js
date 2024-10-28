@@ -292,12 +292,13 @@ const ArtworkService = {
         }
       );
       console.log(response, "response");
-      if (response.success) {
-        console.log("Artwork liked successfully");
-        return response.data.success;
-      } else {
-        return response.message || "Failed to like artwork";
-      }
+      return response;
+      // if (response.success) {
+      //   console.log("Artwork liked successfully");
+      //   return response;
+      // } else {
+      //   return response || "Failed to like artwork";
+      // }
     } catch (error) {
       console.error("Error liking artwork:", error);
       return error.response?.data?.message || "Unknown error";
@@ -310,26 +311,19 @@ const ArtworkService = {
       if (!token) {
         throw new Error("User is not authenticated");
       }
+
       const url = `${BASE_URL}${artworkEndpoints.unLikeArtworks(artworkId)}`;
-      const response = await axios.delete(
-        url,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      console.log(`URL: ${url}`, `Authorization: Bearer ${token}`);
+
+      const response = await axios.delete(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       console.log(response, "response");
-      if (response.success) {
-        console.log("Artwork unliked successfully");
-        return response.data.success;
-      } else {
-        return response.message || "Failed to unlike artwork";
-      }
+      return response.data;
     } catch (error) {
       console.error("Error unliking artwork:", error);
-      return error.response?.data?.message || "Unknown error";
+      return error?.response?.data?.message || "Unknown error";
     }
   },
 };
