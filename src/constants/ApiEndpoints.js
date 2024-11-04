@@ -63,4 +63,11 @@ export const dashboardEndpoints = {
   getUsersStatisticsData: (page) => `admin/statistics/users?page=${page}`,
 };
 
+export const notificationEndpoints = {
+  getNotifications: "notifications", 
+  markNotificationAsRead: (notificationId) => `notifications/${notificationId}/read`, 
+  markAllNotificationsAsRead: "notifications/read",
+};
+
+
 export const contactEndpoint = "/contact";
