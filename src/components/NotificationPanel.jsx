@@ -51,21 +51,23 @@ const NotificationPanel = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     loadNotifications();
-
+    
+    console.log(token);
+    
     window.Pusher = Pusher;
     const echo = new Echo({
       broadcaster: 'pusher',
       key: '557321c61466429ce693',
       cluster: 'eu',
       encrypted: true,
-
-      authEndpoint: '/broadcasting/auth', // Ensure this endpoint is correctly set
+      
+      authEndpoint: 'https://api.muralfinder.net/broadcasting/auth', // Use the full API URL with prefix
       auth: {
-          headers: {
-              Authorization: `Bearer ${token}`, // Or any other headers your authentication requires
-          },
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass your token as a Bearer token
+        },
       },
-    });
+    });    
 
     const pusher = echo.connector.pusher;
     pusher.connection.bind('connected', () => {
