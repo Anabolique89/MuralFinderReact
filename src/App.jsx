@@ -36,8 +36,8 @@ import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
 import EditUser from './pages/EditUser';
 import EditWall from './components/EditWall';
-import Product1Easel from './pages/singleProduct';
 import UnsupportedAuth from './components/Unsuported';
+import Product1Easel from './pages/singleProduct/Product1Easel';
 
 
 

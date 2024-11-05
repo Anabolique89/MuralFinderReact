@@ -59,7 +59,18 @@ const NotificationPanel = () => {
       encrypted: true,
     });
 
-    echo.channel(`user.${userId}`).listen('ActivityNotification', (event) => {
+    const pusher = echo.connector.pusher;
+    pusher.connection.bind('connected', () => {
+      console.log('Pusher connected');
+    });
+
+    pusher.connection.bind('disconnected', () => {
+      console.log('Pusher disconnected');
+    });
+
+    echo.private(`user.${userId}`).listen('ActivityNotification', (event) => {
+      console.log('Received event:', event);
+
       const newNotification = {
         id: event.notification.id,
         data: event.notification.data,
@@ -78,15 +89,17 @@ const NotificationPanel = () => {
     });
 
     return () => {
-      echo.disconnect();
+      pusher.connection.unbind('connected');
+      pusher.connection.unbind('disconnected');
     };
   }, [userId]);
+
 
   const handleMarkAsRead = async (notificationId) => {
     try {
       await NotificationService.markNotificationAsRead(notificationId);
-      setNotifications(notifications.map(noti => 
-        noti.id === notificationId ? { ...noti, read_at: new Date() } : noti 
+      setNotifications(notifications.map(noti =>
+        noti.id === notificationId ? { ...noti, read_at: new Date() } : noti
       ));
       setUnreadCount(prev => prev - 1);
     } catch (error) {
@@ -120,7 +133,7 @@ const NotificationPanel = () => {
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-1"
       >
-         <PopoverPanel className="absolute -right-16 md:-right-2 z-10 mt-5 w-screen max-w-md px-4">
+        <PopoverPanel className="absolute -right-16 md:-right-2 z-10 mt-5 w-screen max-w-md px-4">
           {({ close }) =>
             notifications.length > 0 && (
               <div className="w-full bg-white rounded-lg shadow-lg ring-1 ring-gray-900/5">
