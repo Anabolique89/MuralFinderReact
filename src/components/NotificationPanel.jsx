@@ -49,6 +49,7 @@ const NotificationPanel = () => {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     loadNotifications();
 
     window.Pusher = Pusher;
@@ -57,6 +58,13 @@ const NotificationPanel = () => {
       key: '557321c61466429ce693',
       cluster: 'eu',
       encrypted: true,
+
+      authEndpoint: '/broadcasting/auth', // Ensure this endpoint is correctly set
+      auth: {
+          headers: {
+              Authorization: `Bearer ${token}`, // Or any other headers your authentication requires
+          },
+      },
     });
 
     const pusher = echo.connector.pusher;
