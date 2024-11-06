@@ -7,6 +7,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import NotificationService from "../services/NotificationService";
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import AuthService from "../services/AuthService";
 
 const ICONS = {
   alert: <HiBellAlert className="h-5 w-5 text-gray-600 group-hover:text-indigo-600" />,
@@ -21,7 +22,6 @@ const NotificationPanel = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [notificationIds, setNotificationIds] = useState(new Set());
-  const userId = 35; // Replace with dynamic user ID as needed
 
   const loadNotifications = async () => {
     setLoading(true);
@@ -48,26 +48,21 @@ const NotificationPanel = () => {
     }
   };
 
+  const userId = 34 ?? AuthService.getUser()?.id;
+
+  console.log('userId:', userId);
+
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
     loadNotifications();
-    
-    console.log(token);
-    
+
     window.Pusher = Pusher;
     const echo = new Echo({
       broadcaster: 'pusher',
       key: '557321c61466429ce693',
       cluster: 'eu',
       encrypted: true,
-      
-      authEndpoint: 'https://api.muralfinder.net/broadcasting/auth', // Use the full API URL with prefix
-      auth: {
-        headers: {
-          Authorization: `Bearer ${token}`, // Pass your token as a Bearer token
-        },
-      },
-    });    
+    });
 
     const pusher = echo.connector.pusher;
     pusher.connection.bind('connected', () => {
@@ -80,14 +75,14 @@ const NotificationPanel = () => {
 
     echo.private(`user.${userId}`).listen('ActivityNotification', (event) => {
       console.log('Received event:', event);
-
+    
       const newNotification = {
         id: event.notification.id,
         data: event.notification.data,
         created_at: event.notification.created_at,
         read_at: null,
       };
-
+    
       setNotifications(prev => {
         if (!notificationIds.has(newNotification.id)) {
           notificationIds.add(newNotification.id);
@@ -96,7 +91,7 @@ const NotificationPanel = () => {
         }
         return prev;
       });
-    });
+    });       
 
     return () => {
       pusher.connection.unbind('connected');
