@@ -226,7 +226,7 @@ const ArtworkService = {
       });
       if (response.data.success) {
         console.log("Artwork deleted successfully");
-        return response.data.success;
+        return response?.data;
       } else {
         return response.data.message || "Failed to delete artwork";
       }

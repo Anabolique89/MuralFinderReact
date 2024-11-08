@@ -14,7 +14,9 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
   // console.log("artwork Gallery", artwork);
   const isAuthenticated = AuthService.isAuthenticated();
   const user = AuthService.getUser() ?? null;
-  const userImage = artwork?.user?.profile_image_url || '';
+  const userImage = artwork?.user?.profile_image_url || artwork?.user?.profile?.profile_image_url || '';
+
+
   const defaultImage = 'http://via.placeholder.com/640x360';
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -170,9 +172,9 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
             </li>
 
             <li>
-              <span onClick={() => unLikeArtwork(artwork?.id)}>
+              {/* <span onClick={() => unLikeArtwork(artwork?.id)}>
                 <h1 className='cursor-pointer'>Unlike</h1>
-              </span>
+              </span> */}
             </li>
           </ul>
           {isAuthenticated && user.id === artwork?.user_id && (
