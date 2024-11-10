@@ -94,7 +94,7 @@ const EditArtworkUploader = () => {
       }
     } catch (error) {
       console.error('Error editing artwork:', error);
-      toast.error('Failed to edit artwork. Please try again.');
+      toast.error('Failed to edit Artwork?. Please try again.');
     } finally {
       setLoading(false);
     }
