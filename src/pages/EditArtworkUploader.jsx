@@ -22,7 +22,7 @@ const EditArtworkUploader = () => {
   const [loading, setLoading] = useState(true);
   const isAuthenticated = AuthService.isAuthenticated();
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     const fetchArtwork = async () => {
@@ -31,7 +31,7 @@ const EditArtworkUploader = () => {
         setArtwork(fetchedArtwork.data);
         setTitle(fetchedArtwork.data.title);
         setDescription(fetchedArtwork.data.description);
-        setCategory(fetchedArtwork.data?.category?.name);
+        setCategory(fetchedArtwork.data?.category?.id || ''); // Set category ID
         if (fetchedArtwork.data.image_path) {
           setImages([{ 
             name: fetchedArtwork.data.title, 
@@ -53,46 +53,19 @@ const EditArtworkUploader = () => {
 
   const onFileSelect = (event) => {
     const files = event.target.files;
-    if (files.length === 0) return;
-
-    Array.from(files).forEach(file => {
-      if (file.type.split('/')[0] === 'image') {
-        setImages(prevImages => [
-          ...prevImages,
-          { name: file.name, url: URL.createObjectURL(file), file }
-        ]);
-      }
-    });
-  };
-
-  const deleteImage = (index) => {
-    setImages(prevImages => prevImages.filter((_, i) => i !== index));
-  };
-
-  const onDragOver = (event) => {
-    event.preventDefault();
-    setIsDragging(true);
-    event.dataTransfer.dropEffect = 'copy';
-  };
-
-  const onDragLeave = (event) => {
-    event.preventDefault();
-    setIsDragging(false);
+    if (files.length > 0 && files[0].type.startsWith('image')) {
+      const file = files[0];
+      setImages([{ name: file.name, url: URL.createObjectURL(file), file }]);
+    }
   };
 
   const onDrop = (event) => {
     event.preventDefault();
     setIsDragging(false);
-    const files = event.dataTransfer.files;
-
-    Array.from(files).forEach(file => {
-      if (file.type.split('/')[0] === 'image') {
-        setImages(prevImages => [
-          ...prevImages,
-          { name: file.name, url: URL.createObjectURL(file), file }
-        ]);
-      }
-    });
+    const file = event.dataTransfer.files[0];
+    if (file && file.type.startsWith('image')) {
+      setImages([{ name: file.name, url: URL.createObjectURL(file), file }]);
+    }
   };
 
   const editArtwork = async () => {
@@ -101,13 +74,24 @@ const EditArtworkUploader = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
-      const firstImage = images.find(image => image.file);
-      if (firstImage) {
-        formData.append('image', firstImage.file);
+      formData.append('category', category); // Append the selected category
+      if (images[0]?.file) {
+        formData.append('image', images[0].file);
       }
-      await ArtworkService.editArtwork(artworkId, formData);
-      toast.success('Artwork edited successfully!');
-      setTimeout(() => navigate(-1), 2000);
+
+      // Log each entry in formData to verify content before sending
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      // Send formData to backend
+      const response = await ArtworkService.editArtwork(artworkId, formData);
+      if (response.status === 200) {
+        toast.success('Artwork edited successfully!');
+        setTimeout(() => navigate(-1), 2000);
+      } else {
+        throw new Error('Failed to update artwork');
+      }
     } catch (error) {
       console.error('Error editing artwork:', error);
       toast.error('Failed to edit artwork. Please try again.');
@@ -115,6 +99,16 @@ const EditArtworkUploader = () => {
       setLoading(false);
     }
   };
+
+  const deleteImage = () => setImages([]);
+
+  const onDragOver = (event) => {
+    event.preventDefault();
+    setIsDragging(true);
+    event.dataTransfer.dropEffect = 'copy';
+  };
+
+  const onDragLeave = () => setIsDragging(false);
 
   useEffect(() => {
     setLoading(true);
@@ -128,7 +122,6 @@ const EditArtworkUploader = () => {
         setLoading(false);
       });
   }, []);
-
 
   if (loading) {
     return (
@@ -168,11 +161,9 @@ const EditArtworkUploader = () => {
                       {isDragging ? (
                         <span className="max-w-[470px] m-4 select">Drop image here</span>
                       ) : (
-                        <>
-                          Click or drag & drop image here
-                        </>
+                        <>Click or drag & drop image here</>
                       )}
-                      <input name="file" type="file" multiple ref={fileInputRef} onChange={onFileSelect} className="file" />
+                      <input name="file" type="file" ref={fileInputRef} onChange={onFileSelect} className="file" />
                     </div>
                   </div>
                 </div>
@@ -196,14 +187,13 @@ const EditArtworkUploader = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
-
-                <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full p-4 rounded-md border border-gray-300'>
-                        {categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
+                  <select value={category} onChange={(e) => setCategory(e.target.value)} className='w-full p-4 rounded-md border border-gray-300'>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
                   <button onClick={editArtwork} type="submit" className="my-7 py-2 px-4 text-white w-full p-4 rounded border border-blue-300">
                     {loading ? <FontAwesomeIcon icon={faSpinner} spin size="1x" className="mr-2" /> : 'Submit'}
                   </button>
@@ -219,23 +209,10 @@ const EditArtworkUploader = () => {
             </div>
           )}
         </div>
-        <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
-          <div className="test-image-container">
-            {images.map((image, index) => (
-              <div className="image" key={index}>
-                <span className="delete" onClick={() => deleteImage(index)}>
-                  &times;
-                </span>
-                <img className='object-cover' src={image.url} alt={image.name} />
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className={`${styles.flexCenter} flex-col mb-0 mt-2`}><Footer /></div>
         <BackToTopButton />
-        <Footer />
       </div>
     </>
   );
 };
-
 export default EditArtworkUploader;
