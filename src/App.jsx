@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton, Adverts } from "./components";
+import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel, MuiBottomNavigation, BackToTopButton, Adverts } from "./components";
 import { ArtSupplies, Books, Materials, PosterPrints, Wallpapers } from './components/ShopCategories';
 import About from './pages/About';
 import Community from './pages/Community';
@@ -95,7 +95,7 @@ const App = () => {
         </div>
 
         {/* conditionally render the searchbar based on the searbhar enabled routes */}
-         {showSearchBarRoutes.includes(location.pathname) && <SearchBar />}
+        {showSearchBarRoutes.includes(location.pathname) && <SearchBar />}
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={
@@ -120,9 +120,9 @@ const App = () => {
 
                   <CardDeal />
                   <Testimonials />
-                 
+
                   <CTA />
-               
+
                   <BackToTopButton />
                   <Footer />
                 </div>
@@ -157,7 +157,7 @@ const App = () => {
           <Route path="/PosterPrints" element={<PosterPrints />} />
           <Route path="/Materials" element={<Materials />} />
           <Route path="/Books" element={<Books />} />
-          <Route path="/Easel1" element={<Product1Easel/>} />
+          <Route path="/Easel1" element={<Product1Easel />} />
           <Route path="/ArtSupplies" element={<ArtSupplies />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
@@ -166,6 +166,11 @@ const App = () => {
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />
+            </PrivateRoute>
+          } />
+          <Route path="/add/artwork" element={
+            <PrivateRoute>
+              <DragDropImageUploader />
             </PrivateRoute>
           } />
           <Route path="/blog/edit/:blogId" element={
@@ -205,37 +210,37 @@ const App = () => {
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
-          }/>
+          } />
 
           <Route path='/walls-dashboard' element={
             <PrivateRoute>
               <WallsDashboard />
             </PrivateRoute>
-          }/>
+          } />
 
           <Route path='/artworks-dashboard' element={
             <PrivateRoute>
               <ArtworksDashboard />
             </PrivateRoute>
-          }/>
+          } />
 
           <Route path='/post-dashboard' element={
             <PrivateRoute>
               <PostsDashboard />
             </PrivateRoute>
-          }/>
+          } />
 
           <Route path='/artworks-dashboard' element={
             <PrivateRoute>
               <ArtworksDashboard />
             </PrivateRoute>
-          }/>
+          } />
 
-<Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/walls-dashboard" element={<WallsDashboard />} />
-          <Route path="/artworks-dashboard" element={<ArtworksDashboard/>} />
-          <Route path="/post-dashboard" element={<PostsDashboard/>} />
-          <Route path="/admin/artworks" element={<ArtworksDashboard/>} />
+          <Route path="/artworks-dashboard" element={<ArtworksDashboard />} />
+          <Route path="/post-dashboard" element={<PostsDashboard />} />
+          <Route path="/admin/artworks" element={<ArtworksDashboard />} />
 
         </Routes>
       </div>
