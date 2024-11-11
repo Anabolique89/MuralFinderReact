@@ -38,6 +38,7 @@ import EditUser from './pages/EditUser';
 import EditWall from './components/EditWall';
 import UnsupportedAuth from './components/Unsuported';
 import Product1Easel from './pages/singleProduct/Product1Easel';
+import AdminRoute from './utils/AdminRoute';
 
 
 
@@ -202,40 +203,36 @@ const App = () => {
           } />
 
           <Route path='/dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <Dashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/walls-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <WallsDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/artworks-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <ArtworksDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/post-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <PostsDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/artworks-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <ArtworksDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
-<Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/walls-dashboard" element={<WallsDashboard />} />
-          <Route path="/artworks-dashboard" element={<ArtworksDashboard/>} />
-          <Route path="/post-dashboard" element={<PostsDashboard/>} />
-          <Route path="/admin/artworks" element={<ArtworksDashboard/>} />
+
 
         </Routes>
       </div>
