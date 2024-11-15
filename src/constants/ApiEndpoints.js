@@ -60,6 +60,7 @@ export const dashboardEndpoints = {
   getArtworksStatistics: "admin/statistics/artworks",
   getWallsStatisticsData: "admin/statistics/walls",
   getPostsStatisticsData: "admin/statistics/posts",
+  getProductsStatisticsData: 'admin/statistics/products',
   getUsersStatisticsData: (page) => `admin/statistics/users?page=${page}`,
 };
 
