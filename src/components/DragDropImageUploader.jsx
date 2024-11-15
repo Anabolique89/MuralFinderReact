@@ -125,7 +125,7 @@ const DragDropImageUploader = () => {
     }
   }
   return (
-    <div className="flex flex-col w-full border border-gray-600 rounded-md mt-3">
+    <div className="pl-6 pr-6 flex flex-col w-full border border-gray-600 rounded-md mt-3 ml-4 mr-4">
       <div className="w-full p-4 text-center text-white">
         <h2 className="font-bold text-lg mb-2">Have an artwork you'd like to show to the world?</h2>
 

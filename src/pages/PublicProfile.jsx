@@ -151,7 +151,7 @@ const PublicProfile = () => {
                                     src={(profileData && profileData.profile)
                                         ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}`
                                         : defaultimg}
-                                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img object-cover"
+                                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img object-cover "
                                     alt="Bordered avatar"
                                 />
 

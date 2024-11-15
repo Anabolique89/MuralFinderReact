@@ -36,9 +36,11 @@ import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
 import EditUser from './pages/EditUser';
 import EditWall from './components/EditWall';
-import Product1Easel from './pages/singleProduct';
-
-
+import Product1Easel from './pages/singleProduct/Product1Easel';
+import Product2Easel from './pages/singleProduct/Product2Easel';
+import Product3Easel from './pages/singleProduct/Product3Easel';
+import Product4Easel from './pages/singleProduct/Product4Easel';
+import Product5 from './pages/singleProduct/Product5';
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -156,12 +158,14 @@ const App = () => {
           <Route path="/PosterPrints" element={<PosterPrints />} />
           <Route path="/Materials" element={<Materials />} />
           <Route path="/Books" element={<Books />} />
-          <Route path="/Easel1" element={<Product1Easel/>} />
+          <Route path="/Product1Easel" element={<Product1Easel/>} />
+          <Route path="/Product2Easel" element={<Product2Easel/>} />
+          <Route path="/Product3Easel" element={<Product3Easel/>} />
+          <Route path="/Product4Easel" element={<Product4Easel/>} />
+          <Route path="/Product5" element={<Product5/>} />
           <Route path="/ArtSupplies" element={<ArtSupplies />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
-
-          Product1Easel
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />

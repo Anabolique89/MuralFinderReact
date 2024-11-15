@@ -17,40 +17,41 @@ import {
 // import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 
 const product = {
-  name: 'MEEDEN Deluxe Crank Adjusting Master Artist Easel - Mahogany',
-  price: '£469.99',
+  name: 'Mabef M02 Heavyweight Studio Easel',
+  price: '£952.00',
   rating: 4,
   images: [
     {
       id: 1,
       name: 'Angled view',
-      src: 'https://artdiscount.co.uk/cdn/shop/files/MEEDEN-Deluxe-Crank-Adjusting-Master-Artist-Easel-Stand-Dark-Walnut-W15S-MEEDEN-1692307411234_1600x1600_c566c2b0-044f-41f3-b3c4-038bb56c052c_1200x.jpg?v=1696322251',
+      src: 'https://cdn.shopify.com/s/files/1/1751/8993/files/Mabef_M02_Heavyweight_Studio_Easel_1.jpg?v=1697730787',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     {
       id: 2,
       name: 'Angled view',
-      src: 'https://artdiscount.co.uk/cdn/shop/files/MEEDEN-Deluxe-Crank-Adjusting-Master-Artist-Easel-Stand-Dark-Walnut-W15S-MEEDEN-1692307415750_1500x1500_783f13ab-bb12-477b-9e75-98bf2de8291a_5000x.jpg?v=1696322251',
+      src: 'https://artdiscount.co.uk/cdn/shop/files/MO2_5_5000x.jpg?v=1701862384',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     {
       id: 3,
       name: 'Angled view',
-      src: 'https://artdiscount.co.uk/cdn/shop/files/MEEDEN-Deluxe-Crank-Adjusting-Master-Artist-Easel-Stand-Dark-Walnut-W15S-MEEDEN-1692307426980_990x990_7aafd201-0fcb-401c-af7f-efdc223e3ed6_5000x.jpg?v=1696322251',
+      src: 'https://artdiscount.co.uk/cdn/shop/files/MO2_1_5000x.jpg?v=1701862384',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     {
       id: 4,
       name: 'Angled view',
-      src: 'https://artdiscount.co.uk/cdn/shop/files/MEEDEN-Deluxe-Crank-Adjusting-Master-Artist-Easel-Stand-Dark-Walnut-W15S-MEEDEN-1692307422266_990x990_0103bb0b-a140-4f44-822c-791b0d393b87_1200x.jpg?v=1696322251',
+      src: 'https://artdiscount.co.uk/cdn/shop/files/MO2_3_5000x.jpg?v=1701862384',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     // More images...
   ],
  
   description: `
-    <p>MAGNIFICENT Deluxe Crank Adjusting Wooden Easel is a high-quality, versatile easel designed for professional or experienced artists.
-The easel is finely handcrafted with European seasoned Beechwood and has a polished Mahogany finish, giving it a stunning rich colour. This elegant appearance adds aesthetic value to any studio.
+    <p>The Mabef Heavyweight Studio Easel M/02 is a sturdy studio easel with a Lifetime Guarantee that will take canvases up to 92". 
+    PLEASE NOTE THE FOLLOWING IMPORTANT INFORMATION: 
+    This easel is sent directly from the manufacturer. Please allow 5-7 business days for your order to be delivered. 
 </p>
   `,
   // details: [
@@ -74,7 +75,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Product1Easel() {
+export default function Product3Easel() {
   // const [selectedColor, setSelectedColor] = useState(product.colors[0])
 
   return (
@@ -103,7 +104,7 @@ export default function Product1Easel() {
                 ))}
               </TabList>
             </div>
-            <a href="https://click.linksynergy.com/link?id=JQtDC3CcG3s&offerid=674330.4382140550534938706&type=2&murl=https%3a%2f%2fartdiscount.co.uk%2fproducts%2fdeluxe-crank-adjusting-master-artist-easel%3fvariant%3d40550534938706">
+            <a href="https://click.linksynergy.com/link?id=JQtDC3CcG3s&offerid=674330.4382142353359689&type=2&murl=https%3a%2f%2fartdiscount.co.uk%2fproducts%2fmabef-m-05-studio-easel%3fvariant%3d42353359689">
             <TabPanels className="aspect-h-1 aspect-w-1 w-full">
               {product.images.map((image) => (
                 <TabPanel key={image.id}>
@@ -148,7 +149,8 @@ export default function Product1Easel() {
             <form className="mt-6">
 
               <div className="mt-10 flex">
-              <a href="https://click.linksynergy.com/link?id=JQtDC3CcG3s&offerid=674330.4382140550534938706&type=2&murl=https%3a%2f%2fartdiscount.co.uk%2fproducts%2fdeluxe-crank-adjusting-master-artist-easel%3fvariant%3d40550534938706">
+                
+              <a href="https://click.linksynergy.com/link?id=JQtDC3CcG3s&offerid=674330.4382142358001161&type=2&murl=https%3a%2f%2fartdiscount.co.uk%2fproducts%2fmabef-heavyweight-studio-easel-m-02%3fvariant%3d42358001161">
                 <button
                   type="button"
                   className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-800 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
@@ -156,7 +158,6 @@ export default function Product1Easel() {
                 View Offer
                 </button>
 </a>
-{/* <a href="https://click.linksynergy.com/link?id=JQtDC3CcG3s&offerid=674330.4382142353359689&type=2&murl=https%3a%2f%2fartdiscount.co.uk%2fproducts%2fmabef-m-05-studio-easel%3fvariant%3d42353359689">Mabef M05 Studio Easel</a> */}
               </div>
             </form>
 

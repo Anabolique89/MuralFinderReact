@@ -33,7 +33,7 @@ const Stories = () => {
 
 
     return (
-        <div className='lg:max-w-[41vw] md:mx-w-[70] sm:max-w-full max-w-full w-full h-auto flex items-center gap-x-3.5 overflow-x-scroll'>
+        <div className='lg:max-w-full md:mx-w-[70] sm:max-w-full max-w-full w-full h-auto flex items-center gap-x-3.5 overflow-x-scroll scrollbar-thin'>
 
 
             <div className='highlights flex flex-column mb-4 mt-2 w-full overflow-x-auto scrollbar-thin scrollbar-webkit'>
