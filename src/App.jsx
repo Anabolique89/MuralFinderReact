@@ -93,11 +93,8 @@ const App = () => {
           </div>
         </div>
 
-<<<<<<< HEAD
-        {/* conditionally render the searchbar based on the searbhar enabled routes */}
-        {showSearchBarRoutes.includes(location.pathname) && <SearchBar />}
-=======
->>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
+
+        {/* {showSearchBarRoutes.includes(location.pathname) && <SearchBar />} */}
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={
@@ -211,69 +208,68 @@ const App = () => {
           <Route path='/dashboard' element={
             <AdminRoute>
               <Dashboard />
-<<<<<<< HEAD
-            </PrivateRoute>
-          } />
-=======
+
+
             </AdminRoute>
-          }/>
->>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
+          } />
+
 
           <Route path='/walls-dashboard' element={
             <AdminRoute>
               <WallsDashboard />
-<<<<<<< HEAD
-            </PrivateRoute>
-          } />
-=======
+
+              < Route path='/walls-dashboard' element={
+                < AdminRoute >
+                  <WallsDashboard />
+
+                </AdminRoute>
+              } />
             </AdminRoute>
-          }/>
->>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
+          } />
 
           <Route path='/artworks-dashboard' element={
             <AdminRoute>
               <ArtworksDashboard />
-<<<<<<< HEAD
-            </PrivateRoute>
-          } />
-=======
+
+              < Route path='/artworks-dashboard' element={
+                < AdminRoute >
+                  <ArtworksDashboard />
+
+                </AdminRoute>
+              } />
             </AdminRoute>
-          }/>
->>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
+          } />
 
           <Route path='/post-dashboard' element={
             <AdminRoute>
               <PostsDashboard />
-<<<<<<< HEAD
-            </PrivateRoute>
-          } />
-=======
+
             </AdminRoute>
-          }/>
->>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
+          } />
 
           <Route path='/artworks-dashboard' element={
             <AdminRoute>
               <ArtworksDashboard />
-<<<<<<< HEAD
-            </PrivateRoute>
+
+            </AdminRoute>
           } />
 
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/walls-dashboard" element={<WallsDashboard />} />
-          <Route path="/artworks-dashboard" element={<ArtworksDashboard />} />
-          <Route path="/post-dashboard" element={<PostsDashboard />} />
-          <Route path="/admin/artworks" element={<ArtworksDashboard />} />
-=======
+
+          < Route path='/post-dashboard' element={
+            < AdminRoute >
+              <PostsDashboard />
             </AdminRoute>
-          }/>
+          } />
+          < Route path='/artworks-dashboard' element={
+            < AdminRoute >
+              <ArtworksDashboard />
 
+            </AdminRoute>
+          } />
 
->>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
-
-        </Routes>
-      </div>
-    </Router>
+        </Routes >
+      </div >
+    </Router >
   );
 };
 
