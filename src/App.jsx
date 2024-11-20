@@ -38,6 +38,7 @@ import EditUser from './pages/EditUser';
 import EditWall from './components/EditWall';
 import UnsupportedAuth from './components/Unsuported';
 import Product1Easel from './pages/singleProduct/Product1Easel';
+import AdminRoute from './utils/AdminRoute';
 
 
 
@@ -83,8 +84,6 @@ const App = () => {
     setPage(1); // Reset page when page size changes
   };
 
-  const showSearchBarRoutes = ['/', '/About']; // set the pages where the searchbar should be included.
-
   return (
     <Router>
       <div className="bg-indigo-600 w-full overflow-hidden">
@@ -94,8 +93,11 @@ const App = () => {
           </div>
         </div>
 
+<<<<<<< HEAD
         {/* conditionally render the searchbar based on the searbhar enabled routes */}
         {showSearchBarRoutes.includes(location.pathname) && <SearchBar />}
+=======
+>>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={
@@ -207,32 +209,53 @@ const App = () => {
           } />
 
           <Route path='/dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <Dashboard />
+<<<<<<< HEAD
             </PrivateRoute>
           } />
+=======
+            </AdminRoute>
+          }/>
+>>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
 
           <Route path='/walls-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <WallsDashboard />
+<<<<<<< HEAD
             </PrivateRoute>
           } />
+=======
+            </AdminRoute>
+          }/>
+>>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
 
           <Route path='/artworks-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <ArtworksDashboard />
+<<<<<<< HEAD
             </PrivateRoute>
           } />
+=======
+            </AdminRoute>
+          }/>
+>>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
 
           <Route path='/post-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <PostsDashboard />
+<<<<<<< HEAD
             </PrivateRoute>
           } />
+=======
+            </AdminRoute>
+          }/>
+>>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
 
           <Route path='/artworks-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <ArtworksDashboard />
+<<<<<<< HEAD
             </PrivateRoute>
           } />
 
@@ -241,6 +264,12 @@ const App = () => {
           <Route path="/artworks-dashboard" element={<ArtworksDashboard />} />
           <Route path="/post-dashboard" element={<PostsDashboard />} />
           <Route path="/admin/artworks" element={<ArtworksDashboard />} />
+=======
+            </AdminRoute>
+          }/>
+
+
+>>>>>>> e02899e52a3a87d7e1aa4ce1d37657ebe00c9bff
 
         </Routes>
       </div>

@@ -115,60 +115,49 @@ const ArtworksTable = ({ artworks }) => {
       </div>
     </div>
   )
+}
+
+const ProductsTable = ({ products }) => {
+  const TableHeader = () => (
+    <thead className='border-b border-gray-300 p-8'>
+      <tr className='text-black text-left p-2'>
+        <th className='py-2 px-2'>Name</th>
+        <th className='py-2 px-2'>Price</th>
+        <th className='py-2 px-2'>Category</th>
+        <th className='py-2 px-2 hidden md:block'>Created At</th>
+      </tr>
+    </thead>
+  );
+
+  const TableRow = ({ product }) => (
+    <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
+      <td className='py-2 px-2'>{product.name}</td>
+      <td className='py-2 px-2'>${product.price}</td>
+      <td className='py-2 px-2'>{product.category}</td>
+      <td className='py-2 px-2 hidden md:block'>{moment(product?.date).fromNow()}</td>
+    </tr>
+  );
+  return (
+    <div className='w-full md:w-2/3 bg-white px-2 md:px-4 p-4 shadow-md rounded'>
+      <table className='w-full'>
+        <TableHeader />
+        <tbody>
+          {products?.data?.map((product, id) => (
+            <TableRow key={id} product={product} />
+          ))}
+          {products?.length === 0 && (
+            <tr>
+              <td colSpan="4" className='py-2 text-center text-gray-600'>
+                No Products
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
-//  const UserTable = ({ users }) => {
-//   console.log(users, 'users')
-//   const TableHeader = () => (
-//     <thead className='border-b border-gray-300'>
-//       <tr className='text-black text-left'>
-//         <th className='py-2 px-2'>Username</th>
-//         <th className='py-2 px-2'>Role (User or Admin?)</th>
-//         <th className='py-2 px-2'>Created At</th>
-//       </tr>
-//     </thead>
-//   );
-
-//   const TableRow = ({ user }) => (
-//     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
-//       <td className='py-2 '>
-//         <div className='flex items-center gap-3'>
-//           <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
-//             <span className='text-center'>{getInitials(user?.username)}</span>
-//           </div>
-//           <div>
-//             <p >{user.username}</p>
-//             <span className='text-xs text-black'>{user?.role}</span>
-//           </div>
-//         </div>
-//       </td>
-//       <td>
-//         <p
-//           className={clsx(
-//             'w-fit px-2 py-1 rounded-full text-sm',
-//             user?.isActive ? 'bg-blue-200' : 'bg-yellow-100'
-//           )}
-//         >
-//           {user?.role}
-//         </p>
-//       </td>
-//       <td className='py-2 px-2 text-sm'>{moment(user?.createdAt).fromNow()}</td>
-//     </tr>
-//   );
-
-//   return (
-//     <div className='w-full md:w-1/3 bg-white h-fit px-4 md:px-6 py-4 shadow-md rounded'>
-//       <table className='w-full mb-5'>
-//         <TableHeader />
-//         <tbody>
-//           {users.data?.map((user, index) => (
-//             <TableRow key={index + user?._id} user={user} />
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -178,8 +167,12 @@ const Dashboard = () => {
     userCount: 0,
     wallsCount: 0,
     recentArtworks: [],
+    productsCount: 0,
     users: [],
+    products: [],
   });
+
+  console.log(statistics)
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -222,6 +215,14 @@ const Dashboard = () => {
       icon: <GroupIcon />,
       bg: 'bg-[#be185d]',
     },
+
+    {
+      label: "Products",
+      total: statistics.productsCount,
+      icon: <ArticleIcon />,
+      bg: 'bg-[#be185d]',
+
+    }
   ];
 
   const chartData = [
@@ -241,6 +242,10 @@ const Dashboard = () => {
       name: 'Users',
       total: statistics.userCount,
     },
+    {
+      name: 'Products',
+      total: statistics.productsCount,
+    }
   ];
 
 
@@ -311,12 +316,27 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <><ArtworksTable artworks={statistics.recentArtworks} />
-                  <UserTable users={statistics.users} /></>
+                  <UserTable users={statistics.users} />
+                </>
 
               )}
 
             </div>
           </div>
+          <div className='w-full p-5 '>
+          {isLoading ? (
+               <div className="text-center py-4">
+               <span className="text-indigo-600 text-3xl"><FontAwesomeIcon icon={faSpinner} spin /></span>
+             </div>
+            ):
+            (
+              <>
+              <ProductsTable products={statistics.products} />
+              </>
+
+            )
+            }
+           </div>
         </div>
 
       </div>
