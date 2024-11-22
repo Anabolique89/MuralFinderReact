@@ -2,6 +2,7 @@ import React from 'react';
 import {
   MdDashboard,
   MdOutlineAddTask,
+  MdReport,
   MdSettings,
   MdTaskAlt,
 } from "react-icons/md";
@@ -39,6 +40,11 @@ const linkData = [
     label: "Trash",
     link: "/Trash",
     icon: <FaTrashAlt />,
+  },
+  {
+    label: "Report Artworks",
+    link: "/reported-artworks",
+    icon: <MdReport />,
   },
 ];
 
@@ -85,7 +91,7 @@ const Sidebar = () => {
         ))}
       </div>
       <div>
-  
+
       </div>
     </div>
   );

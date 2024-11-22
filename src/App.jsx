@@ -39,6 +39,7 @@ import EditWall from './components/EditWall';
 import UnsupportedAuth from './components/Unsuported';
 import Product1Easel from './pages/singleProduct/Product1Easel';
 import AdminRoute from './utils/AdminRoute';
+import ReportedArtworks from './components/ReportedArtworks';
 
 
 
@@ -145,6 +146,7 @@ const App = () => {
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/ArtworkDetails" element={<ArtworkDetails />} />
           <Route path="/Trash" element={<Trash />} />
+          <Route path="/reported-artworks" element={<ReportedArtworks />} />
           <Route path="/Users" element={<Users />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/addWall" element={<AddWall />} />
@@ -208,64 +210,42 @@ const App = () => {
           <Route path='/dashboard' element={
             <AdminRoute>
               <Dashboard />
-
-
             </AdminRoute>
           } />
 
 
-          <Route path='/walls-dashboard' element={
-            <AdminRoute>
-              <WallsDashboard />
+          <Route
+            path='/walls-dashboard'
+            element={
+              <AdminRoute>
+                <WallsDashboard />
+              </AdminRoute>
+            }
+          />
 
-              < Route path='/walls-dashboard' element={
-                < AdminRoute >
-                  <WallsDashboard />
 
-                </AdminRoute>
-              } />
-            </AdminRoute>
-          } />
+          <Route
+            path='/artworks-dashboard'
+            element={
+              <AdminRoute>
+                <ArtworksDashboard />
+              </AdminRoute>
+            }
+          />
 
-          <Route path='/artworks-dashboard' element={
-            <AdminRoute>
-              <ArtworksDashboard />
 
-              < Route path='/artworks-dashboard' element={
-                < AdminRoute >
-                  <ArtworksDashboard />
-
-                </AdminRoute>
-              } />
-            </AdminRoute>
-          } />
 
           <Route path='/post-dashboard' element={
             <AdminRoute>
               <PostsDashboard />
-
             </AdminRoute>
           } />
-
-          <Route path='/artworks-dashboard' element={
+          {/* <Route path='/reported-artworks' element={
             <AdminRoute>
-              <ArtworksDashboard />
-
+              <ReportedArtworks />
             </AdminRoute>
-          } />
+          } /> */}
 
-
-          < Route path='/post-dashboard' element={
-            < AdminRoute >
-              <PostsDashboard />
-            </AdminRoute>
-          } />
-          < Route path='/artworks-dashboard' element={
-            < AdminRoute >
-              <ArtworksDashboard />
-
-            </AdminRoute>
-          } />
 
         </Routes >
       </div >

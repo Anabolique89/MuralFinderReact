@@ -54,7 +54,7 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
     } finally {
       setLoading(false);
     }
-  }, [onDelete]);
+  }, []);
 
   const likeArtwork = async (artworkId) => {
     try {
