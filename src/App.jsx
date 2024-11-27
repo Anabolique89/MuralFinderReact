@@ -240,11 +240,7 @@ const App = () => {
               <PostsDashboard />
             </AdminRoute>
           } />
-          {/* <Route path='/reported-artworks' element={
-            <AdminRoute>
-              <ReportedArtworks />
-            </AdminRoute>
-          } /> */}
+
 
 
         </Routes >
