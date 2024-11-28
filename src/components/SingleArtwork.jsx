@@ -9,23 +9,23 @@ import AuthService from '../services/AuthService';
 import ArtworkService from '../services/ArtworkService';
 import styles from '../style';
 import BackToTopButton from './BackToTopButton';
-import {ShareSocial} from 'react-share-social';
+import { ShareSocial } from 'react-share-social';
 
-
+import DropdownMenu from '../components/DropdownMenu'
 const stylez = {
-  root: {
-    width: '100%',
-    background: 'transparent',
-    borderRadius: 3,
-    border: 0,
-    color: 'white',
+    root: {
+        width: '100%',
+        background: 'transparent',
+        borderRadius: 3,
+        border: 0,
+        color: 'white',
 
-  },
-  copyContainer: {
-    border: '1px solid blue',
-    background: 'rgb(0,0,0,0.7)',
-    display: 'none'
-  },
+    },
+    copyContainer: {
+        border: '1px solid blue',
+        background: 'rgb(0,0,0,0.7)',
+        display: 'none'
+    },
 };
 
 const SingleArtwork = () => {
@@ -43,6 +43,7 @@ const SingleArtwork = () => {
         fetchArtwork();
         fetchComments();
     }, [artworkId]);
+
 
     const fetchArtwork = async () => {
         try {
@@ -117,8 +118,25 @@ const SingleArtwork = () => {
         }
     };
 
-    const userImage = artwork.user?.profile?.profile_image_url 
-        ? `https://api.muralfinder.net/${artwork.user?.profile?.profile_image_url}` 
+    const likeArtwork = async (artworkId) => {
+        try {
+            const likeResponse = await ArtworkService.likeArtwork(artworkId);
+            console.log(likeResponse, 'likeResponseeeeeeeeeData')
+            if (likeResponse?.data?.success) {
+                toast.success(likeResponse?.data?.message || 'Artwork liked successfully')
+            } else {
+                toast.error(likeResponse || 'Failed to like artwork')
+
+            }
+
+        } catch (error) {
+            toast.error(error || 'error to like artwork')
+
+        }
+    }
+
+    const userImage = artwork.user?.profile?.profile_image_url
+        ? `https://api.muralfinder.net/${artwork.user?.profile?.profile_image_url}`
         : '';
 
     return (
@@ -132,18 +150,19 @@ const SingleArtwork = () => {
                     <div className="backdrop-filter backdrop-blur-lg shadow-2xl rounded-lg mb-6 tracking-wide">
                         {/* Image */}
                         <div className="md:flex-shrink-0">
-                            <img 
+                            <img
                                 src={artwork.image_path ? `${'https://api.muralfinder.net'}${artwork.image_path}` : 'https://example.com/default-image.jpg'}
                                 alt={artwork.title || 'Artwork'}
                                 className="w-full h-100 rounded-lg rounded-b-none"
                             />
                         </div>
                         {/* Author */}
-                        <div className="flex items-center justify-end mt-2 mr-3">
+                        {/* <div className="flex items-center justify-end mt-2 mr-3">
                             <a href="#" className="flex text-gray-700">
                                 <FontAwesomeIcon icon={faEllipsisVertical} className="text-purple-950 mr-2 ml-4" />
                             </a>
-                        </div>
+                        </div> */}
+                        <DropdownMenu artworkId={artwork?.id} />
                         <div className="author flex items-center px-2">
                             <Link to={`/profile/${artwork.user?.id}`} className="flex items-center ml-4">
                                 {userImage ? (
@@ -152,7 +171,7 @@ const SingleArtwork = () => {
                                     <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
                                 )}
                                 <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                                    {artwork.user?.username || 'Unknown'}
+                                    {artwork.user?.username || artwork.user?.first_name}
                                 </div>
                             </Link>
                             <h2 className="tracking-tighter font-raleway font-bold text-purple-500 text-l mb-2">
@@ -167,10 +186,10 @@ const SingleArtwork = () => {
                             <p className={`text-sm px-2 pb-2 mr-1 ${styles.paragraph}`}>{artwork.description}</p>
                             {/* Likes and Comments */}
                             <div className="flex items-center justify-start mt-2 mx-2">
-                                <a href="#" className="flex text-gray-700">
-                                    <FontAwesomeIcon icon={faHeart} className="text-purple-950 mr-2" />
-                                    <span>{artwork.likes}</span>
-                                </a>
+                                <div className="flex text-gray-700">
+                                    <span onClick={() => likeArtwork(artwork?.id)}><FontAwesomeIcon icon={faHeart} className="text-purple-950 mr-2 cursor-pointer" /></span>
+                                    <span>{artwork?.likes_count}</span>
+                                </div>
                                 <a href="#" className="flex text-gray-700">
                                     <FontAwesomeIcon icon={faComments} className="text-purple-950 mr-2 ml-4" />
                                     <span>{comments.length}</span>
@@ -191,23 +210,23 @@ const SingleArtwork = () => {
                         <div key={comment.id} className="mb-4 p-4 border rounded-lg shadow-sm">
                             <div className="flex items-center mb-2">
                                 <FontAwesomeIcon icon={faUser} className="text-gray-500 mr-2" />
-                                <span className="font-semibold">{comment.user.username}</span>
+                                <span className="font-semibold">{comment?.user?.username || comment?.user?.username}</span>
                             </div>
-                            <p className="text-gray-700 mb-2">{comment.content}</p>
+                            <p className="text-gray-700 mb-2">{comment?.content}</p>
                             <div className="flex items-center">
-                                <button 
-                                    onClick={() => handleLikeComment(comment.id, index)} 
+                                <button
+                                    onClick={() => handleLikeComment(comment?.id, index)}
                                     className="flex items-center text-gray-700 mr-4"
                                 >
-                                    <FontAwesomeIcon 
-                                        icon={faHeart} 
-                                        className={likedComments[comment.id] ? "text-red-500 mr-1" : "text-purple-950 mr-1"} 
+                                    <FontAwesomeIcon
+                                        icon={faHeart}
+                                        className={likedComments[comment.id] ? "text-red-500 mr-1" : "text-purple-950 mr-1"}
                                     />
                                     <span>{comment.likes}</span>
                                 </button>
-                 
+
                             </div>
-                
+
                         </div>
                     ))
                 ) : (
@@ -230,15 +249,15 @@ const SingleArtwork = () => {
                 )}
             </div>
 
-{/* share your artwork */}
-<div className='px-4 py-2 max-w-4xl mx-auto'>
-            <div className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col cta-block rounded-[20px] box-shadow `}>
-            <h2 className={styles.heading2}>Share your artwork!</h2>  
+            {/* share your artwork */}
+            <div className='px-4 py-2 max-w-4xl mx-auto'>
+                <div className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col cta-block rounded-[20px] box-shadow `}>
+                    <h2 className={styles.heading2}>Share your artwork!</h2>
 
-            <ShareSocial url={`https://api.muralfinder.net${artwork.image_path}`} socialTypes={["whatsapp", "facebook", "email", "reddit"]} 
-                   style={stylez}
-                  />
-                  </div></div>
+                    <ShareSocial url={`https://api.muralfinder.net${artwork.image_path}`} socialTypes={["whatsapp", "facebook", "email", "reddit"]}
+                        style={stylez}
+                    />
+                </div></div>
             <BackToTopButton />
             <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
                 <Footer />

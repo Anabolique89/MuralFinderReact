@@ -40,10 +40,12 @@ export const wallEndpoints = {
   getWallById: (wallId) => `walls/${wallId}`,
   addWall: "walls",
   updateWall: (wallId) => `walls/${wallId}`,
+
   updateComment: (wallId, commentId) => `walls/${wallId}/comments/${commentId}`,
   getCommentsForWall: (wallId) => `walls/${wallId}/comments`, // Add this
   commentOnWall: (wallId) => `walls/${wallId}/comments`, // Add this
-  likeWall: (wallId) => `walls/${wallId}/like`, // Add this
+  likeWall: (wallId) => `walls/${wallId}/like`, // Add this              // Add this
+
   deleteWall: (wallId) => `walls/${wallId}`,
 };
 
@@ -58,7 +60,15 @@ export const dashboardEndpoints = {
   getArtworksStatistics: "admin/statistics/artworks",
   getWallsStatisticsData: "admin/statistics/walls",
   getPostsStatisticsData: "admin/statistics/posts",
+  getProductsStatisticsData: 'admin/statistics/products',
   getUsersStatisticsData: (page) => `admin/statistics/users?page=${page}`,
 };
+
+export const notificationEndpoints = {
+  getNotifications: "notifications", 
+  markNotificationAsRead: (notificationId) => `notifications/${notificationId}/read`, 
+  markAllNotificationsAsRead: "notifications/read",
+};
+
 
 export const contactEndpoint = "/contact";

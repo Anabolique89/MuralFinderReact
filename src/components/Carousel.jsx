@@ -62,6 +62,7 @@ const Carousel = () => {
     setIsLoading(true);
     ArtworkService.loadArtworks()
       .then(data => {
+        console.log(data)
         setArtworks(data);
         setIsLoading(false);
       })

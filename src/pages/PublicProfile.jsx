@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../style';
-import { defaultimg, swimBlue } from '../assets';
+import { defaultimg, profile, swimBlue } from '../assets';
 import AuthService from '../services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -148,15 +148,15 @@ const PublicProfile = () => {
                             <div className="flex flex-col items-center">
 
                                 <img
-                                    src={(profileData && profileData.profile)
-                                        ? `https://api.muralfinder.net/${profileData.profile.profile_image_url}`
+                                    src={(profileData && profileData?.profile)
+                                        ? `https://api.muralfinder.net/${profileData?.profile?.profile_image_url}`
                                         : defaultimg}
                                     className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img object-cover "
                                     alt="Bordered avatar"
                                 />
 
-                                <h1 className="text-xl username-name">{profileData.username}</h1>
-                                <p className={`${styles.paragraph} mt-0`}><br />{profileData.profile.proffession}</p>
+                                <h1 className="text-xl username-name">{profileData?.username}</h1>
+                                <p className={`${styles.paragraph} mt-0`}><br />{profileData?.profile?.proffession}</p>
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <button
                                         onClick={isFollowing ? handleUnfollow : handleFollow}
@@ -179,8 +179,8 @@ const PublicProfile = () => {
                             <div className="flex flex-col">
                                 <span className="text-white uppercase font-bold tracking-wider mb-2">Details</span>
                                 <ul>
-                                    <li className={`${styles.paragraph} mt-2 mb-2`}>FOLLOWERS <span className='followers'>{profileData.followers_count}</span></li>
-                                    <li className={`${styles.paragraph}  mb-2`}>FOLLOWING <span className='following'>{profileData.followings_count}</span></li>
+                                    <li className={`${styles.paragraph} mt-2 mb-2`}>FOLLOWERS <span className='followers'>{profileData?.followers_count}</span></li>
+                                    <li className={`${styles.paragraph}  mb-2`}>FOLLOWING <span className='following'>{profileData?.followings_count}</span></li>
                                     {/* <li className={`${styles.paragraph}  mb-4`}>REVIEWS <span className='reviews'>5</span></li> */}
                                 </ul>
                                 {/* social media icons */}
@@ -228,13 +228,13 @@ const PublicProfile = () => {
                             ) : (
                                 // Display blog images once data is fetched
                                 blogData.map(blog => (
-                                    <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
-                                    <img
-                                        key={blog.id}
-                                        src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
-                                        alt={`Blog Image ${blog.id}`}
-                                        className='highlight sm:mr-4 md:mr-6 mr-10'
-                                    />
+                                    <Link key={blog.id} to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
+                                        <img
+                                            key={blog.id}
+                                            src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
+                                            alt={`Blog Image ${blog.id}`}
+                                            className='highlight sm:mr-4 md:mr-6 mr-10'
+                                        />
                                     </Link>
                                 ))
                             )}
@@ -260,7 +260,7 @@ const PublicProfile = () => {
                                 (blogData.map(blog => (
                                     <div key={blog.id} className="mb-6 profile-post">
                                         <div className="flex justify-between flex-wrap gap-2 w-full">
-                                        <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
+                                            <Link to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">{blog.title}</Link>
                                             <p>
                                                 <FontAwesomeIcon icon={faEdit} className="text-purple-950 mr-2" />
                                                 <span className="text-purple-950">{formatDate(blog.created_at)}</span>
@@ -284,7 +284,7 @@ const PublicProfile = () => {
                                         LOGIN
                                     </a>
                                 </>
-                                
+
                             )}
                         </div>
                         <div className='relative z-[1] mt-6'>

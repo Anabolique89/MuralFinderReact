@@ -36,11 +36,11 @@ import AddWall from './components/AddWall';
 import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
 import EditUser from './pages/EditUser';
 import EditWall from './components/EditWall';
+import UnsupportedAuth from './components/Unsuported';
 import Product1Easel from './pages/singleProduct/Product1Easel';
-import Product2Easel from './pages/singleProduct/Product2Easel';
-import Product3Easel from './pages/singleProduct/Product3Easel';
-import Product4Easel from './pages/singleProduct/Product4Easel';
-import Product5 from './pages/singleProduct/Product5';
+import AdminRoute from './utils/AdminRoute';
+
+
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -84,8 +84,6 @@ const App = () => {
     setPage(1); // Reset page when page size changes
   };
 
-  const showSearchBarRoutes = ['/', '/About']; // set the pages where the searchbar should be included.
-
   return (
     <Router>
       <div className="bg-indigo-600 w-full overflow-hidden">
@@ -95,8 +93,6 @@ const App = () => {
           </div>
         </div>
 
-        {/* conditionally render the searchbar based on the searbhar enabled routes */}
-         {showSearchBarRoutes.includes(location.pathname) && <SearchBar />}
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={
@@ -158,14 +154,12 @@ const App = () => {
           <Route path="/PosterPrints" element={<PosterPrints />} />
           <Route path="/Materials" element={<Materials />} />
           <Route path="/Books" element={<Books />} />
-          <Route path="/Product1Easel" element={<Product1Easel/>} />
-          <Route path="/Product2Easel" element={<Product2Easel/>} />
-          <Route path="/Product3Easel" element={<Product3Easel/>} />
-          <Route path="/Product4Easel" element={<Product4Easel/>} />
-          <Route path="/Product5" element={<Product5/>} />
+          <Route path="/Easel1" element={<Product1Easel/>} />
           <Route path="/ArtSupplies" element={<ArtSupplies />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
+
+          <Route path="/unsupported" element={<UnsupportedAuth />} />
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />
@@ -205,40 +199,36 @@ const App = () => {
           } />
 
           <Route path='/dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <Dashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/walls-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <WallsDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/artworks-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <ArtworksDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/post-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <PostsDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
           <Route path='/artworks-dashboard' element={
-            <PrivateRoute>
+            <AdminRoute>
               <ArtworksDashboard />
-            </PrivateRoute>
+            </AdminRoute>
           }/>
 
-<Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/walls-dashboard" element={<WallsDashboard />} />
-          <Route path="/artworks-dashboard" element={<ArtworksDashboard/>} />
-          <Route path="/post-dashboard" element={<PostsDashboard/>} />
-          <Route path="/admin/artworks" element={<ArtworksDashboard/>} />
+
 
         </Routes>
       </div>

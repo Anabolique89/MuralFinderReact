@@ -6,6 +6,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css';  // Import toastify CSS
 import styles from '../style';
+import { useNavigate } from 'react-router-dom';
 
 const DragDropImageUploader = () => {
   const [images, setImages] = useState([]);
@@ -17,8 +18,9 @@ const DragDropImageUploader = () => {
   const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
-
   const isAuthenticated = AuthService.isAuthenticated();
+
+  const navigate = useNavigate()
 
   function selectFiles() {
     fileInputRef.current.click();
@@ -98,18 +100,15 @@ const DragDropImageUploader = () => {
         formData.append(`images[${index}]`, image.file);
       });
 
-      const message = await ArtworkService.uploadArtwork(formData);
-      setResponseMessage(message);
-
-      if (message.includes('successfully')) {
+      const response = await ArtworkService.uploadArtwork(formData);
+      setResponseMessage(response);
+      if (response?.message.includes('successfully')) {
         toast.success('Artwork uploaded successfully!'); // Show success toast
         setImages([]);
         setTitle('');
         setDescription('');
         setCategory('');
-        setTimeout(() => {
-          window.location.reload(); // Reload the page
-        }, 2000); // Delay for toast display
+        navigate(`/artworks/${response?.data?.id}`); // Redirect to My Artwork page
       } else {
         toast.error('Failed to upload artwork.');
       }
@@ -127,7 +126,7 @@ const DragDropImageUploader = () => {
   return (
     <div className="pl-6 pr-6 flex flex-col w-full border border-gray-600 rounded-md mt-3 ml-4 mr-4">
       <div className="w-full p-4 text-center text-white">
-        <h2 className="font-bold text-lg mb-2">Have an artwork you'd like to show to the world?</h2>
+        <h2 className="font-bold text-lg mb-2">Have an artwork you&apos;d like to show to the world?</h2>
 
         {responseMessage && (
           <div className="absolute top-0 right-0 m-8 bg-green-500 text-white px-4 py-2 rounded-md shadow-md">
