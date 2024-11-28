@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import styles from "./style";
-import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton, Adverts } from "./components";
+import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel, MuiBottomNavigation, BackToTopButton, Adverts } from "./components";
 import { ArtSupplies, Books, Materials, PosterPrints, Wallpapers } from './components/ShopCategories';
 import About from './pages/About';
 import Community from './pages/Community';
@@ -39,6 +39,7 @@ import EditWall from './components/EditWall';
 import UnsupportedAuth from './components/Unsuported';
 import Product1Easel from './pages/singleProduct/Product1Easel';
 import AdminRoute from './utils/AdminRoute';
+import ReportedArtworks from './components/ReportedArtworks';
 
 
 
@@ -93,6 +94,8 @@ const App = () => {
           </div>
         </div>
 
+
+        {/* {showSearchBarRoutes.includes(location.pathname) && <SearchBar />} */}
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
           <Route path="/" element={
@@ -117,9 +120,9 @@ const App = () => {
 
                   <CardDeal />
                   <Testimonials />
-                 
+
                   <CTA />
-               
+
                   <BackToTopButton />
                   <Footer />
                 </div>
@@ -143,6 +146,7 @@ const App = () => {
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/ArtworkDetails" element={<ArtworkDetails />} />
           <Route path="/Trash" element={<Trash />} />
+          <Route path="/reported-artworks" element={<ReportedArtworks />} />
           <Route path="/Users" element={<Users />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/addWall" element={<AddWall />} />
@@ -154,7 +158,7 @@ const App = () => {
           <Route path="/PosterPrints" element={<PosterPrints />} />
           <Route path="/Materials" element={<Materials />} />
           <Route path="/Books" element={<Books />} />
-          <Route path="/Easel1" element={<Product1Easel/>} />
+          <Route path="/Easel1" element={<Product1Easel />} />
           <Route path="/ArtSupplies" element={<ArtSupplies />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
@@ -163,6 +167,11 @@ const App = () => {
           <Route path="/blog/create" element={
             <PrivateRoute>
               <AddBlog />
+            </PrivateRoute>
+          } />
+          <Route path="/add/artwork" element={
+            <PrivateRoute>
+              <DragDropImageUploader />
             </PrivateRoute>
           } />
           <Route path="/blog/edit/:blogId" element={
@@ -202,37 +211,41 @@ const App = () => {
             <AdminRoute>
               <Dashboard />
             </AdminRoute>
-          }/>
+          } />
 
-          <Route path='/walls-dashboard' element={
-            <AdminRoute>
-              <WallsDashboard />
-            </AdminRoute>
-          }/>
 
-          <Route path='/artworks-dashboard' element={
-            <AdminRoute>
-              <ArtworksDashboard />
-            </AdminRoute>
-          }/>
+          <Route
+            path='/walls-dashboard'
+            element={
+              <AdminRoute>
+                <WallsDashboard />
+              </AdminRoute>
+            }
+          />
+
+
+          <Route
+            path='/artworks-dashboard'
+            element={
+              <AdminRoute>
+                <ArtworksDashboard />
+              </AdminRoute>
+            }
+          />
+
+
 
           <Route path='/post-dashboard' element={
             <AdminRoute>
               <PostsDashboard />
             </AdminRoute>
-          }/>
-
-          <Route path='/artworks-dashboard' element={
-            <AdminRoute>
-              <ArtworksDashboard />
-            </AdminRoute>
-          }/>
+          } />
 
 
 
-        </Routes>
-      </div>
-    </Router>
+        </Routes >
+      </div >
+    </Router >
   );
 };
 

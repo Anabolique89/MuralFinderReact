@@ -33,10 +33,10 @@ const EditArtworkUploader = () => {
         setDescription(fetchedArtwork.data.description);
         setCategory(fetchedArtwork.data?.category?.id || ''); // Set category ID
         if (fetchedArtwork.data.image_path) {
-          setImages([{ 
-            name: fetchedArtwork.data.title, 
-            url: `https://api.muralfinder.net${fetchedArtwork.data.image_path}`, 
-            file: null 
+          setImages([{
+            name: fetchedArtwork.data.title,
+            url: `https://api.muralfinder.net${fetchedArtwork.data.image_path}`,
+            file: null
           }]);
         }
       } catch (error) {
@@ -142,6 +142,9 @@ const EditArtworkUploader = () => {
       <div className="flex flex-col w-4/5 m-auto rounded-md mt-3">
         <div className="3/4 p-4 text-center text-white">
           <h2 className="font-bold text-lg mb-2">Edit your artwork</h2>
+        </div>
+        <div className='flex justify-center shadow'>
+          <img src={images[0]?.url} alt="" className='md:h-56 object-cover' />
         </div>
         <div className="flex flex-col md:flex-row p-5 bg-transparent">
           {isAuthenticated ? (

@@ -1,15 +1,22 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import AuthService from '../services/AuthService'; 
+
+import AuthService from '../services/AuthService';
+
+
 
 const AdminRoute = ({ children, ...rest }) => {
+  const location = useLocation();
   const isAuth = AuthService.isAuthenticated();
   const user = AuthService.getUser()?.role;
+
+
 
   if (user !== 'admin') {
     return <Navigate to="/" replace />
   }
 
-  const location = useLocation();
+
+
 
   return isAuth ? (
     children
