@@ -99,7 +99,7 @@ const categories = [
   {
     name: 'Materials',
     href: '/Materials',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-02.jpg',
+    imageSrc: 'https://artdiscount.co.uk/cdn/shop/files/Mabef_M05_Studio_Easel_1_1200x.jpg?v=1697730737',
   },
   {
     name: 'Wallpaper',
@@ -118,7 +118,7 @@ const categories = [
   },
   { name: 'Books', 
     href: '/Books', 
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-01-category-03.jpg' },
+    imageSrc: 'https://www.graff-city.com/images/urban-media-graffiti-avantgarde-moses-taps-p4078-22032_image.jpg' },
 ]
 // const collections = [
 //   {
@@ -375,7 +375,7 @@ export default function Shop() {
             while they're still in stock.
           </p>
           <p className="mt-4 text-sm italic text-dimWhite font-raleway" >
-       As an Amazon Associate I earn from qualifying purchases. 
+       As an Associate I earn from qualifying purchases. 
           </p>
           {/* <a
             href="#"

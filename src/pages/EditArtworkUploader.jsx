@@ -139,7 +139,7 @@ const EditArtworkUploader = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex flex-col w-4/5 m-auto rounded-md mt-3">
+      <div className={`${styles.paddingX} flex flex-col w-4/5 m-auto rounded-md mt-3 `}>
         <div className="3/4 p-4 text-center text-white">
           <h2 className="font-bold text-lg mb-2">Edit your artwork</h2>
         </div>
@@ -171,7 +171,7 @@ const EditArtworkUploader = () => {
                   </div>
                 </div>
               </section>
-              <section className="w-full md:w-1/2 px-4">
+              <section className= {`${styles.paddingX} w-full md:w-1/2 px-4`} >
                 <div className="flex flex-col justify-center items-center mt-5">
                   <input
                     name="title"
