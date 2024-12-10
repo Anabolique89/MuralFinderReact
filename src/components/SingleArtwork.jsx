@@ -150,11 +150,22 @@ const SingleArtwork = () => {
                     <div className="backdrop-filter backdrop-blur-lg shadow-2xl rounded-lg mb-6 tracking-wide">
                         {/* Image */}
                         <div className="md:flex-shrink-0">
-                            <img
-                                src={artwork.image_path ? `${'https://api.muralfinder.net'}${artwork.image_path}` : 'https://example.com/default-image.jpg'}
-                                alt={artwork.title || 'Artwork'}
-                                className="w-full h-100 rounded-lg rounded-b-none"
-                            />
+
+                            {artwork?.image_path?.includes('.mp4') ? (
+                                <video
+                                    src={`https://api.muralfinder.net${artwork.image_path}`}
+                                    alt={artwork.title || 'Artwork'}
+                                    className="w-full h-100 rounded-lg rounded-b-none"
+                                    controls
+                                />
+                            ) : (
+                                <img
+                                    src={artwork.image_path ? `https://api.muralfinder.net${artwork.image_path}` : 'https://example.com/default-image.jpg'}
+                                    alt={artwork.title || 'Artwork'}
+                                    className="w-full h-100 rounded-lg rounded-b-none"
+                                />
+                            )}
+
                         </div>
                         {/* Author */}
                         {/* <div className="flex items-center justify-end mt-2 mr-3">

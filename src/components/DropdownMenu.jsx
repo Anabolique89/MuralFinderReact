@@ -76,6 +76,15 @@ const DropdownMenu = ({ artworkId }) => {
                         >
                             Delete
                         </li>
+                        <li
+                            className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => {
+                                setIsOpen(false);
+                                console.log('report clicked')
+                            }}
+                        >
+                            Report
+                        </li>
                     </ul>
                 </div>
             )}

@@ -132,10 +132,9 @@ const EditArtworkUploader = () => {
     );
   }
 
-  if (!artwork) {
-    return <div>Error loading artwork</div>;
-  }
-
+  // if (!artwork) {
+  //   return <div>Error loading artwork</div>;
+  // }
   return (
     <>
       <ToastContainer />
@@ -144,7 +143,20 @@ const EditArtworkUploader = () => {
           <h2 className="font-bold text-lg mb-2">Edit your artwork</h2>
         </div>
         <div className='flex justify-center shadow'>
-          <img src={images[0]?.url} alt="" className='md:h-56 object-cover' />
+          {images[0]?.url?.includes('.mp4') ? (
+            <video
+              src={images[0]?.url}
+              alt="Artwork"
+              className="md:h-56 object-cover"
+              controls
+            />
+          ) : (
+            <img
+              src={images[0]?.url}
+              alt="Artwork"
+              className="md:h-56 object-cover"
+            />
+          )}
         </div>
         <div className="flex flex-col md:flex-row p-5 bg-transparent">
           {isAuthenticated ? (
@@ -171,7 +183,7 @@ const EditArtworkUploader = () => {
                   </div>
                 </div>
               </section>
-              <section className= {`${styles.paddingX} w-full md:w-1/2 px-4`} >
+              <section className={`${styles.paddingX} w-full md:w-1/2 px-4`} >
                 <div className="flex flex-col justify-center items-center mt-5">
                   <input
                     name="title"

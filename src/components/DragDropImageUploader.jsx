@@ -31,7 +31,7 @@ const DragDropImageUploader = () => {
 
     if (files.length === 0) return;
     for (let i = 0; i < files.length; i++) {
-      if (files[i].type.split('/')[0] !== 'image') continue;
+      // if (files[i].type.split('/')[0] !== 'image') continue;
       setImages((prevImages) => [
         ...prevImages,
         {

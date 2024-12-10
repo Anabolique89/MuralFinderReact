@@ -7,82 +7,62 @@ import { ToastContainer } from 'react-toastify';
 import Sidebar from './dashboard/Sidebar';
 import MobileSidebar from './dashboard/MobileSidebar';
 import { useState } from 'react';
+import { MdMenu } from 'react-icons/md';
+import Title from './dashboard/Title';
 
 
 
 
 
-const artwork = [
+const reportedArtworks = [
     {
         id: 1,
-        title: "Sunset Serenity",
-        image_path: "/images/artwork1.jpg",
-        likes_count: 120,
-        comments_count: 15,
-        user: {
-            id: 101,
-            username: "artist_sam",
-            profile_image_url: "/images/user1.jpg",
-            first_name: "Sam",
-            last_name: "Doe",
-        },
+        name: 'Earthen Bottle',
+        price: '$48',
+        imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/category-page-04-image-card-01.jpg',
+        imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.'
     },
     {
         id: 2,
-        title: "Ocean Waves",
-        image_path: "/images/artwork2.jpg",
-        likes_count: 85,
-        comments_count: 8,
-        user: {
-            id: 102,
-            username: "creative_kate",
-            profile_image_url: "/images/user2.jpg",
-            first_name: "Kate",
-            last_name: "Smith",
-        },
+        name: 'Nomad Tumbler',
+        price: '$35',
+        imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/category-page-04-image-card-02.jpg',
+        imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.'
     },
     {
         id: 3,
-        title: "Mountain Majesty",
-        image_path: "/images/artwork3.jpg",
-        likes_count: 200,
-        comments_count: 25,
-        user: {
-            id: 103,
-            username: "nature_lover",
-            profile_image_url: "/images/user3.jpg",
-            first_name: "Tom",
-            last_name: "Brown",
-        },
+        name: 'Productivity Planner',
+        price: '$29',
+        imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/category-page-04-image-card-03.jpg',
+        imageAlt: 'Person using a pen to cross a task off a productivity paper'
     },
     {
         id: 4,
-        title: "Abstract Dreams",
-        image_path: "/images/artwork4.jpg",
-        likes_count: 45,
-        comments_count: 5,
-        user: {
-            id: 104,
-            username: "abstract_annie",
-            profile_image_url: "/images/user4.jpg",
-            first_name: "Annie",
-            last_name: "Clark",
-        },
+        name: 'Scented Candles',
+        price: '$22',
+        imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/category-page-04-image-card-04.jpg',
+        imageAlt: 'Set of assorted scented candles in elegant containers'
     },
+    {
+        id: 5,
+        name: 'candles',
+        price: '$22',
+        imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/category-page-04-image-card-04.jpg',
+        imageAlt: 'Set of assorted scented candles in elegant containers'
+    }
 ];
 
 
 const ReportedArtworks = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const defaultImage = 'http://via.placeholder.com/640x360';
-    const userImage = artwork?.user?.profile_image_url || artwork?.user?.profile?.profile_image_url || '';
+    // const defaultImage = 'http://via.placeholder.com/640x360';
+    // const userImage = artwork?.user?.profile_image_url || artwork?.user?.profile?.profile_image_url || '';
 
     return (
 
-        <section className='flex flex-col min-h-screen'>
-            <ToastContainer />
+        <>
             <div className='w-full flex flex-col md:flex-row flex-1'>
-
+                <ToastContainer />
                 <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>
                     <Sidebar />
                 </div>
@@ -90,64 +70,45 @@ const ReportedArtworks = () => {
                     isSidebarOpen={isSidebarOpen}
                     closeSidebar={() => setIsSidebarOpen(false)}
                 />
-                <div className=''>
-                    <div className='flex flex-col'>
-                        <Link to={`/artworks/${artwork?.id}`}>
-                            <img
-                                className='w-full h-48 object-cover p-2'
-                                src={artwork?.image_path ? `https://api.muralfinder.net${artwork?.image_path}` : defaultImage}
-                                alt={artwork?.title || 'Artwork'}
-                            />
-                        </Link>
-                        <div className='px-1 py-4 flex justify-between'>
-                            <div className='flex items-center'>
-                                <div className='flex items-center'>
-                                    <Link to={`/profile/${artwork?.user?.id}`} className="flex items-center">
-                                        {userImage ? (
-                                            <img
-                                                src={`https://api.muralfinder.net${userImage}`}
-                                                alt={artwork?.user?.username}
-                                                className='w-8 h-8 rounded-full mr-2 object-cover'
-                                            />
-                                        ) : (
-                                            <FontAwesomeIcon icon={faUser} className="h-5 w-5 rounded-full mr-2 bg-gray-200 p-1" />
-                                        )}
-                                        <div className='font-raleway font-bold text-purple-400 text-sm mb-2'>
-                                            {artwork?.user?.username || artwork?.user?.first_name || artwork?.user?.last_name}
-                                        </div>
-                                    </Link>
-                                </div>
-                                <div className='font-bold text-white text-xl mb-2'>
-                                    <Link to={`/artworks/${artwork?.id}`}>
-                                        {artwork?.title}
-                                    </Link>
-                                </div>
-                                <ul className='flex'>
-                                    <li className='flex items-center'>
-                                        <FaHeart color='#fff' />
-                                        <span className='ml-2 mr-2'>
-                                            <strong>{artwork?.likes_count}</strong>
-                                        </span>
-                                    </li>
-                                    <li className='flex'>
-                                        <FaComments className='text-white' />
-                                        <span className='ml-2'>
-                                            <strong>{artwork?.comments_count}</strong>
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className=" mt-2 mr-2 text-white flex space-x-4">
 
-                                <FontAwesomeIcon icon={faTrash} className="cursor-pointer text-red-700" />
-                            </div>
+                <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
+                    <header className='w-full flex justify-between items-center p-4 bg-white shadow-md md:hidden'>
+                        <button onClick={() => setIsSidebarOpen(true)} className='text-2xl'>
+                            <MdMenu />
+                        </button>
+                    </header>
 
+
+
+                    <div className='w-full md:px-1 px-0 mb-6'>
+                        <div className=' text-white'>
+                            <Title title='Reported  Artworks' />
                         </div>
 
+                        <div className="">
+                            <div className=" py-8">
+
+                                <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                                    {reportedArtworks.map(product => (
+                                        <a key={product.id} href="#" className="group">
+                                            <img
+                                                src={product.imageSrc}
+                                                alt={product.imageAlt}
+                                                className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
+                                            />
+                                            <h3 className="mt-4 text-sm text-white">{product.name}</h3>
+                                            {/* <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p> */}
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
-        </section>
+        </>
 
     );
 };

@@ -115,7 +115,6 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
       }, 5000);
     }
   };
-
   return (
     <div className='rounded-xl overflow-hidden shadow-lg w-50 relative cta-block box-shadow p-2 sm:p-0 xs:m-2 sm:w-full'>
       {successMessage && (
@@ -130,14 +129,23 @@ const ArtworksGallery = ({ artwork, onDelete }) => {
       )}
 
       <div className='w-full'>
+
         <Link to={`/artworks/${artwork?.id}`}>
-          <img
-            className='w-full h-48 object-cover p-2'
+          {artwork?.image_path?.includes('.mp4') ? (
+            <video
+              className="w-full h-48 object-cover py-4"
+              controls
+              src={`https://api.muralfinder.net${artwork?.image_path}`}
+              alt={artwork?.title || 'Artwork'}
+            />
 
-
-            src={artwork?.image_path ? `https://api.muralfinder.net${artwork?.image_path}` : defaultImage}
-            alt={artwork?.title || 'Artwork'}
-          />
+          ) : (
+            <img
+              className="w-full h-48 object-cover p-2"
+              src={artwork?.image_path ? `https://api.muralfinder.net${artwork?.image_path}` : defaultImage}
+              alt={artwork?.title || 'Artwork'}
+            />
+          )}
         </Link>
         <div className='px-6 py-4'>
           <div className='flex items-center'>

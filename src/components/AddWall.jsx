@@ -164,14 +164,14 @@ const AddWall = () => {
     const formData = new FormData();
     formData.append('location_text', title);
     formData.append('description', description);
-    formData.append('latitude', Number(location.lat));
-    formData.append('longitude', Number(location.lng));
+    formData.append('latitude', Number(location?.lat));
+    formData.append('longitude', Number(location?.lng));
     formData.append('is_verified', isLegal ? 1 : 0);
     if (photo) {
       formData.append('image', photo); // Append the File object directly
     }
-  
-    
+
+
     try {
       const response = await WallService.addWall(formData);
       console.log(response)
@@ -179,7 +179,7 @@ const AddWall = () => {
       setToastMessage('Wall added successfully');
       setToastType('success');
       setOpenToast(true);
-      setTimeout(()=>{
+      setTimeout(() => {
         navigate(`/wall/${wallId}`); // redirect to the wall page
       }, 5000)
     } catch (error) {

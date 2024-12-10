@@ -179,28 +179,28 @@ const Trash = () => {
 
   // Rows for Walls
   const WallTableRow = ({ wall }) => (
-  
-<tr className="border-b border-gray-900 text-gray-600 hover:bg-gray-400/10">
-  <td className="py-2">
-    <img
-      src={`https://api.muralfinder.net${wall.image_path}`}
-      alt="Wall Preview"
-      className="w-12 h-12 rounded-full object-cover"
-    />
-  </td>
-  <td className="py-2 text-yellow-600">{wall.location_text}</td>
-  <td className="py-2 text-yellow-600">{new Date(wall.deleted_at).toDateString()}</td>
-  <td className="py-2 text-yellow-600 flex gap-1 justify-end">
-    <Button
-      icon={<MdOutlineRestore className="text-xl text-gray-500" />}
-      onClick={() => restoreClick('wall', wall.id)}
-    />
-    <Button
-      icon={<MdDelete className="text-xl text-red-600" />}
-      onClick={() => deleteClick('wall', wall.id)}
-    />
-  </td>
-</tr>
+
+    <tr className="border-b border-gray-900 text-gray-600 hover:bg-gray-400/10">
+      <td className="py-2">
+        <img
+          src={`https://api.muralfinder.net${wall.image_path}`}
+          alt="Wall Preview"
+          className="w-12 h-12 rounded-full object-cover"
+        />
+      </td>
+      <td className="py-2 text-yellow-600">{wall.location_text}</td>
+      <td className="py-2 text-yellow-600">{new Date(wall.deleted_at).toDateString()}</td>
+      <td className="py-2 text-yellow-600 flex gap-1 justify-end">
+        <Button
+          icon={<MdOutlineRestore className="text-xl text-gray-500" />}
+          onClick={() => restoreClick('wall', wall.id)}
+        />
+        <Button
+          icon={<MdDelete className="text-xl text-red-600" />}
+          onClick={() => deleteClick('wall', wall.id)}
+        />
+      </td>
+    </tr>
 
   );
 
@@ -293,7 +293,7 @@ const Trash = () => {
 
                 {/* Table for Walls */}
                 <div className="mb-6">
-                  <h2 className="text-xl text-white text-white font-semibold mb-2">Walls</h2>
+                  <h2 className="text-xl text-white font-semibold mb-2">Walls</h2>
                   <div className='bg-white px-2 md:px-6 py-4 shadow-md rounded'>
                     <div className='overflow-x-auto'>
                       <table className='w-full mb-5'>

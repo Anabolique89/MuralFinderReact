@@ -146,7 +146,6 @@ const App = () => {
           <Route path="/TermsConditions" element={<TermsConditions />} />
           <Route path="/ArtworkDetails" element={<ArtworkDetails />} />
           <Route path="/Trash" element={<Trash />} />
-          <Route path="/reported-artworks" element={<ReportedArtworks />} />
           <Route path="/Users" element={<Users />} />
           <Route path="/FAQS" element={<FAQS />} />
           <Route path="/addWall" element={<AddWall />} />
@@ -240,6 +239,14 @@ const App = () => {
               <PostsDashboard />
             </AdminRoute>
           } />
+
+          <Route path='/reported-artworks' element={
+            <AdminRoute>
+              <ReportedArtworks />
+            </AdminRoute>
+          } />
+
+
 
 
 
