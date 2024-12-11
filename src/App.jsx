@@ -40,6 +40,7 @@ import UnsupportedAuth from './components/Unsuported';
 import Product1Easel from './pages/singleProduct/Product1Easel';
 import AdminRoute from './utils/AdminRoute';
 import ReportedArtworks from './components/ReportedArtworks';
+import ReportArtwork from './components/singleReport';
 
 
 
@@ -161,6 +162,8 @@ const App = () => {
           <Route path="/ArtSupplies" element={<ArtSupplies />} />
           <Route path="/wall/:wallId" element={<ViewWall />} />
           <Route path="/artworks/:artworkId" element={<SingleArtwork />} />
+          <Route path="/report/:reportId" element={<ReportArtwork />} />
+
 
           <Route path="/unsupported" element={<UnsupportedAuth />} />
           <Route path="/blog/create" element={

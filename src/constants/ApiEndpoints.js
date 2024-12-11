@@ -12,7 +12,8 @@ export const authEndpoints = {
 
 export const artworkEndpoints = {
   getAllArtworks: "artworks?pageSize=50",
-  getUngroupedArtworks: (page, pageSize) => `artworks/artwork/ungrouped?page=${page}&pageSize=${pageSize}`,
+  getUngroupedArtworks: (page, pageSize) =>
+    `artworks/artwork/ungrouped?page=${page}&pageSize=${pageSize}`,
   uploadArtwork: "artworks",
   getCategoires: "artworks/categories/fetch",
   searchArtworks: "artworks/artwork/search",
@@ -60,15 +61,20 @@ export const dashboardEndpoints = {
   getArtworksStatistics: "admin/statistics/artworks",
   getWallsStatisticsData: "admin/statistics/walls",
   getPostsStatisticsData: "admin/statistics/posts",
-  getProductsStatisticsData: 'admin/statistics/products',
+  getProductsStatisticsData: "admin/statistics/products",
   getUsersStatisticsData: (page) => `admin/statistics/users?page=${page}`,
 };
 
 export const notificationEndpoints = {
-  getNotifications: "notifications", 
-  markNotificationAsRead: (notificationId) => `notifications/${notificationId}/read`, 
+  getNotifications: "notifications",
+  markNotificationAsRead: (notificationId) =>
+    `notifications/${notificationId}/read`,
   markAllNotificationsAsRead: "notifications/read",
 };
-
+export const ReportsEndpoints = {
+  getAllReports: "reports",
+  reportById: (id) => `reports/${id}`,
+  addReport: "reports",
+};
 
 export const contactEndpoint = "/contact";

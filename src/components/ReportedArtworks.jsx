@@ -1,15 +1,16 @@
 import styles from '../style';
-import { FaComments, FaHeart } from "react-icons/fa";
+import { FaComments, FaEye, FaHeart, FaTrash } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Sidebar from './dashboard/Sidebar';
 import MobileSidebar from './dashboard/MobileSidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdMenu } from 'react-icons/md';
 import Title from './dashboard/Title';
 
+import ReportService from '../services/ReportService';
 
 
 
@@ -53,11 +54,44 @@ const reportedArtworks = [
 ];
 
 
+
 const ReportedArtworks = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    // const defaultImage = 'http://via.placeholder.com/640x360';
-    // const userImage = artwork?.user?.profile_image_url || artwork?.user?.profile?.profile_image_url || '';
+    const [reports, setReports] = useState([]);
+    const [loading, setLoading] = useState(true);
 
+
+
+
+    const handleView = async (reportId) => {
+
+        try {
+            const reportById = await ReportService.getReportById(reportId); // Assuming deleteReport is a function in your service
+            console.log(reportById)
+        } catch (error) {
+            console.error("Error deleting report:", error);
+        }
+        // console.log(reportId);
+    };
+
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                setLoading(true);
+                const response = await ReportService.getAllReports();
+                setReports(response); // Assuming the reports are in response.data
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching reports:', error);
+                setError("Error fetching reports");
+                setLoading(false);
+            }
+        };
+
+        fetchReports();
+    }, []);
+    // console.log(reports?.data?.data, 'reports')
     return (
 
         <>
@@ -87,20 +121,36 @@ const ReportedArtworks = () => {
 
                         <div className="">
                             <div className=" py-8">
+                                <table className="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
+                                    <thead>
+                                        <tr className="text-left bg-gray-100 text-gray-600">
+                                            <th className="px-6 py-3">ID</th>
+                                            <th className="px-6 py-3">User ID</th>
+                                            <th className="px-6 py-3">Type</th>
+                                            <th className="px-6 py-3">Reason</th>
+                                            <th className="px-6 py-3">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    {loading ? "loading" : (<tbody>
 
-                                <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                                    {reportedArtworks.map(product => (
-                                        <a key={product.id} href="#" className="group">
-                                            <img
-                                                src={product.imageSrc}
-                                                alt={product.imageAlt}
-                                                className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
-                                            />
-                                            <h3 className="mt-4 text-sm text-white">{product.name}</h3>
-                                            {/* <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p> */}
-                                        </a>
-                                    ))}
-                                </div>
+                                        {reports?.data?.data.map((report, index) => (
+                                            <tr key={index}>
+                                                <td className="px-6 py-4">{report?.id}</td>
+                                                <td className="px-6 py-4">{report?.user_id}</td>
+                                                <td className="px-6 py-4">{report?.reportable_type}</td>
+                                                <td className="px-6 py-4">{report?.reason}</td>
+                                                <td className="px-6 py-4 flex gap-2">
+                                                    {/* <FaTrash color='red' className='cursor-pointer' /> */}
+                                                    <Link to={`/report/${report?.id}`} >
+                                                        <FaEye className='cursor-pointer' onClick={() => handleView(report?.id)} />
+
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))
+                                        }
+                                    </tbody>)}
+                                </table>
                             </div>
                         </div>
                     </div>
