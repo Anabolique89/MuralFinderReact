@@ -8,6 +8,7 @@ export const authEndpoints = {
   login: "login",
   register: "register",
   logout: "logout",
+  refreshToken: "refresh-token",
   profile: (userId) => `profiles/${userId}`,
   updateProfile: (userId) => `profiles/${userId}`,
   uploadProfileImage: (userId) => `profiles/${userId}/image`,
@@ -40,17 +41,17 @@ export const blogEndpoints = {
 
 export const wallEndpoints = {
   getAllWalls: (page = 1, perPage = 10) =>
-    `api/walls?page=${page}&perPage=${perPage}`,
-  getWallById: (wallId) => `api/walls/${wallId}`,
-  addWall: "api/walls",
-  updateWall: (wallId) => `api/walls/${wallId}`,
+    `v1/walls?page=${page}&perPage=${perPage}`,
+  getWallById: (wallId) => `v1/walls/${wallId}`,
+  addWall: "walls", // This uses the legacy endpoint for creating
+  updateWall: (wallId) => `walls/${wallId}`, // Legacy endpoint
 
-  updateComment: (wallId, commentId) => `api/walls/${wallId}/comments/${commentId}`,
-  getCommentsForWall: (wallId) => `api/walls/${wallId}/comments`, // Add this
-  commentOnWall: (wallId) => `api/walls/${wallId}/comments`, // Add this
-  likeWall: (wallId) => `api/walls/${wallId}/like`, // Add this              // Add this
+  updateComment: (wallId, commentId) => `walls/${wallId}/comments/${commentId}`,
+  getCommentsForWall: (wallId) => `walls/${wallId}/comments`,
+  commentOnWall: (wallId) => `walls/${wallId}/comments`,
+  likeWall: (wallId) => `walls/${wallId}/like`,
 
-  deleteWall: (wallId) => `api/walls/${wallId}`,
+  deleteWall: (wallId) => `walls/${wallId}`,
 };
 
 export const fellowshipEndpoints = {

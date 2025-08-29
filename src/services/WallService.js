@@ -57,7 +57,8 @@ const WallService = {
 
   getCommentsForWall: async (wallId) => {
     try {
-      const response = await axios.get(`${BASE_URL}${wallEndpoints.getCommentsForWall(wallId)}`);
+      // Comments are public, no auth required for viewing
+      const response = await axios.get(`${BASE_URL}v1/${wallEndpoints.getCommentsForWall(wallId)}`);
       return response.data; // Assuming this returns the list of comments
     } catch (error) {
       console.error("Error fetching comments:", error);

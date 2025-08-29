@@ -3,6 +3,7 @@ import { BASE_URL, authEndpoints } from "../constants/ApiEndpoints";
 
 const AuthService = {
   login: async (email, password) => {
+    // eslint-disable-next-line no-useless-catch
     try {
       const inputObj = { email, password };
 
@@ -26,6 +27,7 @@ const AuthService = {
   },
 
   signup: async (username, email, role, password, passwordConfirmation) => {
+    // eslint-disable-next-line no-useless-catch
     try {
       const inputObj = {
         username,
@@ -78,6 +80,7 @@ const AuthService = {
   },
 
   getProfile: async () => {
+    // eslint-disable-next-line no-useless-catch
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -193,7 +196,6 @@ const AuthService = {
   },
 
   deleteAccount: async (userId) => {
-    try {
       if (!userId) {
         throw new Error('Missing userId parameter');
       }
@@ -217,13 +219,9 @@ const AuthService = {
       } else {
         throw new Error('Failed to delete profile');
       }
-    } catch (error) {
-      throw error;
-    }
   },
 
-  updateUser: async (userId, userData) => {
-    try {
+  updateUser: async (userId, userData) => { 
       if (!userId) {
         throw new Error('Missing userId parameter');
       }
@@ -249,10 +247,57 @@ const AuthService = {
       } else {
         throw new Error('Failed to update user');
       }
+  },
+
+  // Token refresh method
+  refreshToken: async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await fetch(`${BASE_URL}${authEndpoints.refreshToken}`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const newToken = data.data.token;
+        localStorage.setItem('token', newToken);
+        return { token: newToken };
+      } else {
+        throw new Error(data.message || 'Token refresh failed');
+      }
     } catch (error) {
+      // If refresh fails, clear token and redirect to login
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       throw error;
     }
-  }, 
+  },
+
+  // Check if token is expired or about to expire
+  isTokenExpired: () => {
+    const token = localStorage.getItem('token');
+    if (!token) return true;
+
+    try {
+      // Decode JWT token to check expiration
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Date.now() / 1000;
+
+      // Check if token expires in the next 5 minutes
+      return payload.exp < (currentTime + 300);
+    } catch (error) {
+      return true;
+    }
+  },
 };
 
 export default AuthService;

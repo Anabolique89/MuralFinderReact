@@ -24,6 +24,7 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight, isVerified }
         display: 'flex',
         alignItems: 'center', // Align items center to align the checkmark
         justifyContent: 'center', // Center items horizontally
+        color: '#1f2937', // Dark gray text color for better readability
     };
 
     const mapStyles = {
@@ -60,7 +61,7 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight, isVerified }
             <div style={titleStyles}>
                 <h2>{title}</h2>
                 {/* Conditionally render the green check icon */}
-                {isVerified && <FaCheckCircle size={24} color='white' style={{ marginLeft: '10px' }} />}
+                {isVerified && <FaCheckCircle size={24} color='#10b981' style={{ marginLeft: '10px' }} />}
             </div>
             <div style={{ ...mapStyles }}>
                 <APIProvider apiKey={mapKey}>
