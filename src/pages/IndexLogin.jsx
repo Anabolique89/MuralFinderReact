@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import styles, { layout } from '../style';
-import { fadeintoyouWhite } from '../assets';
-import AuthService from '../services/AuthService';
-import SocialLogin from '../components/SocialLogin';
-import Footer from '../components/Footer';
-import { BackToTopButton } from '../components';
+import styles, { layout } from '@styles';
+import { fadeintoyouWhite } from '@assets';
+import AuthService from '@services/AuthService';
+import SocialLogin from '@components/SocialLogin';
+import Footer from '@components/Footer';
+import { BackToTopButton } from '@components';
 
 const IndexLogin = () => {
   const [email, setEmail] = useState('');

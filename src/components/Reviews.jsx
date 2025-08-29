@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaUser } from 'react-icons/fa';
-import styles from '../style';
+import styles from '@styles';
 
 const Reviews = () => {
     return (

@@ -1,5 +1,5 @@
-import { snake } from '../assets';
-import styles, { layout } from '../style';
+import { snake } from '@assets';
+import styles, { layout } from '@styles';
 
 const AboutSection2 = () => (
   <section id="why" className={layout.sectionReverse}>

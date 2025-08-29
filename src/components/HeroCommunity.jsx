@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../style';
-import { catWhite } from '../assets';
+import styles from '@styles';
+import { catWhite } from '@assets';
 import Button2 from './Button2';
 
 const HeroCommunity = () => (

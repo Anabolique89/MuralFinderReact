@@ -1,5 +1,5 @@
-import { faeWhite} from '../assets';
-import styles, { layout } from '../style';
+import { faeWhite} from '@assets';
+import styles, { layout } from '@styles';
 
 const CommunitySection2 = () => (
   <section id="product" className={layout.sectionReverse}>

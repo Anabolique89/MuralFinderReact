@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getInitials } from "../utils/index.js";
-import DashboardService from "../services/DashboardService.js";
-import AuthService from "../services/AuthService.js";
+import { getInitials } from '@utils/index.js';
+import DashboardService from '@services/DashboardService.js';
+import AuthService from '@services/AuthService.js';
 import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import MobileSidebar from "./dashboard/MobileSidebar.jsx";

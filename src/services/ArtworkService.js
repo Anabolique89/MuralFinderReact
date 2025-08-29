@@ -4,8 +4,15 @@ import { BASE_URL, artworkEndpoints } from "../constants/ApiEndpoints";
 const ArtworkService = {
   loadArtworks: async (page) => {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(
-        `${BASE_URL}${artworkEndpoints.getAllArtworks}`
+        `${BASE_URL}${artworkEndpoints.getAllArtworks}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
       const data = await response.json();
       console.log(data);
@@ -21,35 +28,40 @@ const ArtworkService = {
         return [];
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error loading artworks:", error);
       return [];
     }
   },
 
   loadUngroupedArtworks: async (page, pageSize) => {
     try {
-      const url = `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(
-        page,
-        pageSize
-      )}`;
-      console.log(url);
-      const response = await axios.get(
-        `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(page, pageSize)}`
-      );
-      const data = response.data;
+      const token = localStorage.getItem('token');
+      const url = `${BASE_URL}${artworkEndpoints.getUngroupedArtworks(page, pageSize)}`;
+      console.log('Loading artworks from:', url);
+
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      console.log('Ungrouped artworks API response:', data);
 
       if (data.success && data.data) {
-        // If needed, you can process data here before returning
         return {
-          artworks: data.data.data, // Adjust based on your API's data structure
-          totalPages: data.data.last_page, // Adjust based on your API's pagination data
+          artworks: data.data.data, // The actual artworks array
+          totalPages: data.data.last_page,
           currentPage: data.data.current_page,
+          hasMore: data.data.next_page_url !== null,
         };
       } else {
         return {
           artworks: [],
           totalPages: 0,
           currentPage: page,
+          hasMore: false,
         };
       }
     } catch (error) {
@@ -58,17 +70,28 @@ const ArtworkService = {
         artworks: [],
         totalPages: 0,
         currentPage: page,
+        hasMore: false,
       };
     }
   },
-  getUserArtworks: async (userId) => {
+  getUserArtworks: async (username) => {
     try {
-      const response = await fetch(`${BASE_URL}artworks/users/${userId}`);
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${BASE_URL}${artworkEndpoints.getUserArtworks(username)}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);
       }
       const data = await response.json();
-      return data.data;
+      // Handle paginated response structure
+      if (data.success && data.data && data.data.data) {
+        return data.data.data; // Return the actual artworks array from paginated response
+      }
+      return data.data || [];
     } catch (error) {
       console.error("Error fetching user artworks:", error);
       throw error;
@@ -93,11 +116,19 @@ const ArtworkService = {
   },
   loadCategories: async () => {
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.get(
-        `${BASE_URL}${artworkEndpoints.getCategoires}`
+        `${BASE_URL}${artworkEndpoints.getCategoires}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
       // console.log(response.data);
-      return response.data.data;
+      // Categories API returns direct array, not wrapped in data object
+      return response.data;
     } catch (error) {
       if (
         error.response &&
@@ -238,10 +269,16 @@ const ArtworkService = {
 
   loadComments: async (artworkId) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${BASE_URL}artworks/${artworkId}/comments`
+        `${BASE_URL}artworks/${artworkId}/comments`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
       );
-      4;
       // console.log(response.data);
       return response.data;
     } catch (error) {
@@ -258,7 +295,7 @@ const ArtworkService = {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${BASE_URL}artworks/${artworkId}/comment`,
+        `${BASE_URL}artworks/${artworkId}/comments`,
         commentData,
         {
           headers: {

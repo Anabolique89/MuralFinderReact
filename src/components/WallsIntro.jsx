@@ -1,5 +1,5 @@
-import styles from '../style';
-import {bulbWhite} from '../assets';
+import styles from '@styles';
+import {bulbWhite} from '@assets';
 import GetStarted from './GetStarted';
 
 const WallsIntro = () => (

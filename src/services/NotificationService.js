@@ -15,8 +15,8 @@ const NotificationService = {
             console.log(response.data.notifications.data); // Changed to response.data.data
             return response.data.notifications; // Change this line too
         } catch (error) {
-            console.error('Error fetching notifications:', error.response.data);
-            throw new Error(error.response.data.message || 'Failed to fetch notifications');
+            console.error('Error fetching notifications:', error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || error.message || 'Failed to fetch notifications');
         }
     },
     
@@ -40,7 +40,7 @@ const NotificationService = {
     markAllNotificationsAsRead: async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.post(`${BASE_URL}${notificationEndpoints.markAllAsRead}`, {}, {
+            await axios.post(`${BASE_URL}${notificationEndpoints.markAllNotificationsAsRead}`, {}, {
                 headers: {
                     'Authorization': `Bearer ${token}`, // Include token for authentication
                 },

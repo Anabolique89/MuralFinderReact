@@ -1,6 +1,7 @@
-import styles from '../style';
+import styles from '@styles';
 import { FaComments } from "react-icons/fa6";
 import { FcLike } from "react-icons/fc";
+import { getFileUrl } from '../utils/apiConfig';
 
 
 const UserArtworks = ({ image }) => {
@@ -13,7 +14,7 @@ const UserArtworks = ({ image }) => {
 
       <div className='w-full'>
         {/* Adjusted to use `image_path` and added hostname if needed. Adjust `alt` to use `title` */}
-        <img className='w-full h-48 object-cover' src={`https://api.muralfinder.net${image.image_path}`} alt={image.title || 'Artwork'} />
+        <img className='w-full h-48 object-cover' src={getFileUrl(image.image_path)} alt={image.title || 'Artwork'} />
         <div className='px-6 py-4'>
           <div className='font-bold text-white text-xl mb-2'>
             {/* Adjust to show `title` */}

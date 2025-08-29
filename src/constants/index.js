@@ -11,7 +11,7 @@ import {
   send,
   shield,
   star,
-} from "../assets";
+} from '@assets';
 
 export const navLinks = [
   {
@@ -185,7 +185,7 @@ export const footerLinks = [
       },
       {
         name: "Artwork Feed",
-        link: "/ArtworkFeed",
+        link: "/artworks",
       },
     ],
   },

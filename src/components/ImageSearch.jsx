@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../style';
+import styles from '@styles';
 
 const ImageSearch = ({ searchText, page, pageSize, onPageChange, onPageSizeChange }) => {
     const [text, setText] = useState('');

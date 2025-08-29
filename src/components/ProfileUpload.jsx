@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import AuthService from '../services/AuthService';
+import AuthService from '@services/AuthService';
+import { getFileUrl } from '../utils/apiConfig';
 
 const ProfileImageUpload = ({ imageUrl }) => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -9,7 +10,7 @@ const ProfileImageUpload = ({ imageUrl }) => {
 
     useEffect(() => {
         if (imageUrl && !preview) {
-            setPreview(`https://api.muralfinder.net/${imageUrl}`); // Set preview to imageUrl if available and preview is not already set
+            setPreview(getFileUrl(imageUrl)); // Set preview to imageUrl if available and preview is not already set
         }
     }, [imageUrl, preview]);
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styles, { layout } from '../style';
-import { libraWhite } from '../assets';
-import AuthService from '../services/AuthService';
-import { BackToTopButton, Footer } from '../components';
-import SocialLogin from '../components/SocialLogin';
+import styles, { layout } from '@styles';
+import { libraWhite } from '@assets';
+import AuthService from '@services/AuthService';
+import { BackToTopButton, Footer } from '@components';
+import SocialLogin from '@components/SocialLogin';
 
 const IndexSignup = () => {
   const [username, setUsername] = useState("");

@@ -1,6 +1,6 @@
 import React from 'react';
-import styles, { layout } from '../style';
-import {jhgfd, prints, prints2, wallpaper2} from '../assets';
+import styles, { layout } from '@styles';
+import {jhgfd, prints, prints2, wallpaper2} from '@assets';
 import { Link } from 'react-router-dom';
 
 const Adverts = () => {

@@ -1,4 +1,4 @@
-import styles from '../style';
+import styles from '@styles';
 import Button from './Button';
 import {ShareSocial} from 'react-share-social';
 

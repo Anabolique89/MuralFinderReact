@@ -4,9 +4,9 @@ import { Button, TextField, Typography, Paper, IconButton, CircularProgress, Sna
 import { useDropzone } from 'react-dropzone';
 import { styled } from '@mui/system';
 import LegalCheckbox from './LegalCheckbox';
-import WallService from '../services/WallService';
-import Footer from '../components/Footer';
-import styles from '../style';
+import WallService from '@services/WallService';
+import Footer from '@components/Footer';
+import styles from '@styles';
 import BackToTopButton from './BackToTopButton';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

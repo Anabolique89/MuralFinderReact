@@ -1,5 +1,5 @@
-import { city } from '../assets';
-import styles, { layout } from '../style';
+import { city } from '@assets';
+import styles, { layout } from '@styles';
 import Button from './Button';
 import Button3 from './Button3';
 import { Link} from 'react-router-dom';

@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../style';
-import { libraWhite, google } from '../assets';
+import styles from '@styles';
+import { libraWhite, google } from '@assets';
 
 const HeroAbout = () => (
 

@@ -33,6 +33,18 @@ import SearchBar from "./SearchBar.jsx";
 import Stories from "./Stories.jsx";
 import Adverts from "./Adverts.jsx";
 
+// Modern Components (Redux-based)
+import ModernButton from "./atoms/Button";
+import ModernInput from "./atoms/Input";
+import ModernAvatar from "./atoms/Avatar";
+import ModernSearchBar from "./molecules/SearchBar";
+import ArtworkCard from "./molecules/ArtworkCard";
+import ModernHeader from "./organisms/Header";
+import ModernLayout from "./layout/ModernLayout";
+import ModernRoute from "./layout/ModernRoute";
+import LoadingSpinner from "./ui/LoadingSpinner";
+import NotificationToast from "./ui/NotificationToast";
+
 export {
   Navbar,
   Billing,
@@ -69,4 +81,15 @@ export {
   SearchBar,
   Stories,
   Adverts,
+  // Modern Components
+  ModernButton,
+  ModernInput,
+  ModernAvatar,
+  ModernSearchBar,
+  ArtworkCard,
+  ModernHeader,
+  ModernLayout,
+  ModernRoute,
+  LoadingSpinner,
+  NotificationToast,
 };

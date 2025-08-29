@@ -4,10 +4,10 @@ import { Fragment, useEffect, useState } from "react";
 import { BiSolidComment, BiSolidHeart, BiSolidMessageRounded } from "react-icons/bi";
 import { HiBellAlert } from "react-icons/hi2";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import NotificationService from "../services/NotificationService";
+import NotificationService from '@services/NotificationService';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
-import AuthService from "../services/AuthService";
+import AuthService from '@services/AuthService';
 
 const ICONS = {
     alert: <HiBellAlert className="h-5 w-5 text-gray-600 group-hover:text-indigo-600" />,

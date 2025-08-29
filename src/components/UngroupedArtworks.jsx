@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComments, faEllipsisVertical, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-// import SampleImage from '../assets/brickWall.jpg';
-import ArtworkService from '../services/ArtworkService';
+// import SampleImage from '@assets/brickWall.jpg';
+import ArtworkService from '@services/ArtworkService';
+import { getFileUrl } from '../utils/apiConfig';
 
 // const artworks = [
 //     {
@@ -62,7 +63,7 @@ const UngroupedArtworks = () => {
                         {/* Image */}
                         <div className="md:flex-shrink-0">
                             <img
-                                src={`https://api.muralfinder.net${artwork?.image_path}`}
+                                src={getFileUrl(artwork?.image_path)}
                                 alt={artwork.title}
                                 className=" rounded-lg rounded-b-none"
                                 width='100%'

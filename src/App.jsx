@@ -1,44 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
-import styles from "./style";
-import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton, Adverts } from "./components";
-import { ArtSupplies, Books, Materials, PosterPrints, Wallpapers } from './components/ShopCategories';
-import About from './pages/About';
-import Community from './pages/Community';
-import Profile from './pages/Profile';
-import PublicProfile from './pages/PublicProfile';
-import Map from './pages/Map';
-import Walls from './pages/Walls';
-import IndexLogin from './pages/IndexLogin';
-import IndexSignup from './pages/IndexSignup';
-import Onboarding1 from './pages/Onboarding1';
-import Onboarding2 from './pages/Onboarding2';
-import Onboarding3 from './pages/Onboarding3';
-import Contact from './pages/Contact';
+import styles from '@styles';
+import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton, Adverts } from '@components';
+import { ArtSupplies, Books, Materials, PosterPrints, Wallpapers } from '@components/ShopCategories';
+import About from '@pages/public/About';
+import Community from '@pages/public/Community';
+import Profile from '@pages/user/Profile';
+import PublicProfile from '@pages/user/PublicProfile';
+import Map from '@pages/user/Map';
+import Walls from '@pages/user/Walls';
+import IndexLogin from '@pages/IndexLogin';
+import IndexSignup from '@pages/IndexSignup';
+import Onboarding1 from '@pages/auth/Onboarding1';
+import Onboarding2 from '@pages/auth/Onboarding2';
+import Onboarding3 from '@pages/auth/Onboarding3';
+import Contact from '@pages/public/Contact';
 import { ToastContainer } from 'react-toastify';
-import ArtworkService from './services/ArtworkService';
-import SingleBlogPost from './pages/SingleBlogPost';
-import ProfileSettings from './pages/ProfileSettings';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import FAQS from './pages/FAQS';
-import TermsConditions from './pages/TermsConditions';
-import ViewWall from './pages/ViewWall';
-import AddBlog from './pages/AddBlog';
-import PrivateRoute from './utils/PrivateRoute';
-import Footer from './components/Footer';
-import EditBlog from './pages/EditBlog';
-import EditArtworkUploader from './pages/EditArtworkUploader';
-import ArtworkFeed from './pages/ArtworkFeed';
-import BlogPosts from './pages/BlogPosts';
-import Feed from './pages/Feed';
-import Shop from './pages/Shop';
-import AddWall from './components/AddWall';
-import { WallsDashboard, Dashboard, ArtworksDashboard, PostsDashboard, ArtworkDetails, Trash, Users } from './pages';
-import EditUser from './pages/EditUser';
-import EditWall from './components/EditWall';
-import UnsupportedAuth from './components/Unsuported';
-import Product1Easel from './pages/singleProduct/Product1Easel';
-import AdminRoute from './utils/AdminRoute';
+import ArtworkService from '@services/ArtworkService';
+import SingleBlogPost from '@pages/blog/SingleBlogPost';
+import ProfileSettings from '@pages/user/ProfileSettings';
+import PrivacyPolicy from '@pages/legal/PrivacyPolicy';
+import FAQS from '@pages/public/FAQS';
+import TermsConditions from '@pages/legal/TermsConditions';
+import ViewWall from '@pages/user/ViewWall';
+import AddBlog from '@pages/blog/AddBlog';
+import PrivateRoute from '@utils/PrivateRoute';
+import Footer from '@components/Footer';
+import EditBlog from '@pages/blog/EditBlog';
+import EditArtworkUploader from '@pages/admin/EditArtworkUploader';
+import ArtworkFeed from '@pages/user/ArtworkFeed';
+import BlogPosts from '@pages/blog/BlogPosts';
+import Feed from '@pages/user/Feed';
+import Shop from '@pages/shop/Shop';
+import AddWall from '@components/AddWall';
+import WallsDashboard from '@pages/admin/WallsDashboard';
+import Dashboard from '@pages/admin/Dashboard';
+import ArtworksDashboard from '@pages/admin/ArtworksDashboard';
+import PostsDashboard from '@pages/admin/PostsDashboard';
+import ArtworkDetails from '@pages/user/ArtworkDetails';
+import Trash from '@pages/admin/Trash';
+import Users from '@pages/admin/Users';
+import EditUser from '@pages/admin/EditUser';
+import EditWall from '@components/EditWall';
+import UnsupportedAuth from '@components/Unsuported';
+
+// Modern Pages - Updated Structure
+import ModernHome from '@pages/ModernHome';
+import ModernArtworkFeed from '@pages/user/ModernArtworkFeed';
+
+// Auth Pages (organized)
+import AuthLogin from '@pages/auth/Login';
+import AuthSignup from '@pages/auth/Signup';
+
+// User Pages (organized)
+import UserProfile from '@pages/user/Profile';
+import Product1Easel from '@pages/singleProduct/Product1Easel';
+import AdminRoute from '@utils/AdminRoute';
 
 
 
@@ -84,6 +101,8 @@ const App = () => {
     setPage(1); // Reset page when page size changes
   };
 
+  // const showSearchBarRoutes = ['/', '/About']; // set the pages where the searchbar should be included.
+
   return (
     <Router>
       <div className="bg-indigo-600 w-full overflow-hidden">
@@ -93,9 +112,12 @@ const App = () => {
           </div>
         </div>
 
+        {/* conditionally render the searchbar based on the searbhar enabled routes */}
+         {/*showSearchBarRoutes.includes(location.pathname) && <SearchBar />*/}
         <ToastContainer className='w-[20px] center-align'></ToastContainer>
         <Routes>
-          <Route path="/" element={
+          <Route path="/" element={<ModernHome />} />
+          <Route path="/legacy-home" element={
             <>
               <div className={`bg-indigo-600 ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth}`}>
@@ -117,9 +139,9 @@ const App = () => {
 
                   <CardDeal />
                   <Testimonials />
-                 
+
                   <CTA />
-               
+
                   <BackToTopButton />
                   <Footer />
                 </div>
@@ -131,8 +153,21 @@ const App = () => {
           <Route path="/profile/:userId" element={<PublicProfile />} />
           <Route path="/Map" element={<Map />} />
           <Route path="/Walls" element={<Walls />} />
-          <Route path="/Login" element={<IndexLogin />} />
+          <Route path="/Login" element={<AuthLogin />} />
+          <Route path="/IndexLogin" element={<IndexLogin />} />
           <Route path="/IndexSignup" element={<IndexSignup />} />
+          <Route path="/Signup" element={<AuthSignup />} />
+
+          {/* Modern Routes */}
+          <Route path="/modern-home" element={<ModernHome />} />
+          <Route path="/modern-login" element={<AuthLogin />} />
+          <Route path="/modern-signup" element={<AuthSignup />} />
+          <Route path="/modern-profile" element={<UserProfile />} />
+          <Route path="/modern-artworks" element={<ModernArtworkFeed />} />
+
+          {/* Updated Routes - Using Modern Components */}
+          <Route path="/artworks" element={<ModernArtworkFeed />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/Onboarding1" element={<Onboarding1 />} />
           <Route path="/Onboarding2" element={<Onboarding2 />} />
           <Route path="/Onboarding3" element={<Onboarding3 />} />

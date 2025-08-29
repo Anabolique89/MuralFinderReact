@@ -77,21 +77,17 @@ const AuthService = {
     return userString ? JSON.parse(userString) : null;
   },
 
-  getProfile: async (userId) => {
+  getProfile: async () => {
     try {
-      if (!userId) {
-        throw new Error('Missing userId parameter');
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('User not authenticated');
       }
 
-      // const token = localStorage.getItem('token');
-      // if (!token) {
-      //   throw new Error('User not authenticated');
-      // }
-
-      const response = await axios.get(`${BASE_URL}${authEndpoints.profile(userId)}`, {
+      const response = await axios.get(`${BASE_URL}user/profile`, {
         headers: {
           'Content-Type': 'application/json',
-
+          'Authorization': `Bearer ${token}`,
         }
       });
 

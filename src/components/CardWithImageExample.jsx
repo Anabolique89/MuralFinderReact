@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../style';
+import styles from '@styles';
 import Button2 from './Button2';
-import {  swimWhite, fadeintoyouWhite, steampunk} from '../assets';
+import {  swimWhite, fadeintoyouWhite, steampunk} from '@assets';
 
 const CardWithImageExample  = () => (
 <section className='flex flex-wrap  justify-center w-full feedback-container relative z-[1]'>

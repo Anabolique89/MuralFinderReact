@@ -1,5 +1,5 @@
-import {  DigitalTrauma } from '../assets';
-import styles, { layout } from '../style';
+import {  DigitalTrauma } from '@assets';
+import styles, { layout } from '@styles';
 import Button from './Button';
 import Button2 from './Button2';
 

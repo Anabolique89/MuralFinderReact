@@ -1,8 +1,8 @@
-import styles from '../style';
-import {google, Interlinked} from '../assets';
+import styles from '@styles';
+import {google, Interlinked} from '@assets';
 import GetStarted from './GetStarted';
 import { Button } from '@headlessui/react';
-import AuthService from '../services/AuthService'; 
+import AuthService from '@services/AuthService'; 
 
 
 const isLoggedIn = AuthService.isAuthenticated(); // Check if the user is authenticated

@@ -1,5 +1,5 @@
 import { about } from '../constants';
-import styles, { layout } from '../style';
+import styles, { layout } from '@styles';
 import Button from './Button';
 import { Link} from 'react-router-dom';
 

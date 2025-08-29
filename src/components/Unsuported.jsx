@@ -1,5 +1,5 @@
-import { DigitalTrauma } from '../assets';
-import styles, { layout } from '../style';
+import { DigitalTrauma } from '@assets';
+import styles, { layout } from '@styles';
 import { Link } from 'react-router-dom';
 
 const UnsupportedAuth = () => (

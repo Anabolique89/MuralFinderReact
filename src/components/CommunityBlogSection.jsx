@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEye, faThumbsUp, faComment, faUser, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import BlogService from '../services/BlogService';
-import { cleanHTML, trimContent } from '../utils/blogUtils';
-import AuthService from '../services/AuthService';
-import styles from '../style';
+import BlogService from '@services/BlogService';
+import { cleanHTML, trimContent } from '@utils/blogUtils';
+import AuthService from '@services/AuthService';
+import styles from '@styles';
 
 const CommunityBlogSection = () => {
   const [blogPosts, setBlogPosts] = useState([]);

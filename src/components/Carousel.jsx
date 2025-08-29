@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import styles from '../style';
-import ArtworkService from '../services/ArtworkService';
-import AuthService from '../services/AuthService';
+import styles from '@styles';
+import ArtworkService from '@services/ArtworkService';
+import AuthService from '@services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faEye, faThumbsUp, faComment, faUser, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';

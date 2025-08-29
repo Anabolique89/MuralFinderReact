@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import { Facebook, Google } from '@mui/icons-material';
+import { getAuthUrl } from '../utils/apiConfig';
 
 const SocialLogin = () => {
     const [loginError, setLoginError] = useState(null);
@@ -41,9 +42,9 @@ const SocialLogin = () => {
 
 
     const handleLogin = (provider) => {
-        const apiUrl = "https://api.muralfinder.net/api/auth/";
-        console.log(apiUrl)
-        const newTab = window.open(`${apiUrl}${provider}`, '_blank');
+        const authUrl = getAuthUrl(provider);
+        console.log(authUrl)
+        const newTab = window.open(authUrl, '_blank');
         if (newTab) {
             newTab.focus();
         } else {

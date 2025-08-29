@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "../style";
+import styles from '@styles';
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineSearch } from "react-icons/md";
-import AuthService from "../services/AuthService";
-import { ArtZoroLogoWhite } from "../assets";
+import AuthService from '@services/AuthService';
+import { ArtZoroLogoWhite } from '@assets';
 
 const SearchBar = () => {
 

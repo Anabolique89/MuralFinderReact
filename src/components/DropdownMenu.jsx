@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import ArtworkService from '../services/ArtworkService';
+import ArtworkService from '@services/ArtworkService';
 import { toast } from 'react-toastify';
 
 const DropdownMenu = ({ artworkId }) => {

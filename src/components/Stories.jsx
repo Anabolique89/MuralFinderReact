@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import styles from '../style';
-import { defaultimg, } from '../assets';
-import AuthService from '../services/AuthService';
+import styles from '@styles';
+import { defaultimg, } from '@assets';
+import AuthService from '@services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import BlogService from '../services/BlogService';
+import BlogService from '@services/BlogService';
 import { Link } from 'react-router-dom';
+import { getFileUrl } from '../utils/apiConfig';
 
 
 const Stories = () => {
@@ -50,7 +51,7 @@ const Stories = () => {
                         <Link key={blog.id} to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
                             <img
                                 key={blog.id}
-                                src={blog.feature_image ? `https://api.muralfinder.net/${blog.feature_image}` : defaultimg}
+                                src={blog.feature_image ? getFileUrl(blog.feature_image) : defaultimg}
                                 alt={`Blog Image ${blog.id}`}
                                 className='object-cover highlight sm:mr-2 md:mr-4 mr-6 z-[20]'
                             />

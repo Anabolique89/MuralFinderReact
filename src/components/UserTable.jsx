@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import clsx from 'clsx';
-import { getInitials } from '../utils/index.js';
+import { getInitials } from '@utils/index.js';
 
 const UserTable = ({ users }) => {
     const TableHeader = () => (
