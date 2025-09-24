@@ -54,7 +54,7 @@ const HomePage = () => {
   };
 
   const handleSignupClick = () => {
-    navigate('/IndexSignup');
+    navigate('/Signup');
     dispatch(addNotification({
       type: 'success',
       message: 'Join our creative community!',
@@ -258,7 +258,7 @@ const HomePage = () => {
   return (
     <>
       {/* Modern Hero Section with Subtle Background */}
-      <div className={`bg-indigo-600 ${styles.flexStart} relative overflow-hidden`}>
+      <div className={`bg-indigo-600 ${styles.flexStart} relative overflow-hidden pt-20`}>
         {/* Subtle Modern Background Elements */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-20 w-40 h-40 bg-blue-400 rounded-full blur-3xl animate-pulse"></div>

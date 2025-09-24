@@ -114,7 +114,7 @@ const IndexLogin = () => {
             </button>
           </div>
           <SocialLogin />
-          <p className={`font-raleway font-normal text-[14px] leading-[25.8px] text-black mt-2`}>Don't have an account? <Link className={`font-raleway font-normal text-[14px] leading-[25.8px] text-black hover:text-orange-600 underline`} to='/IndexSignup'> Register </Link> Or <Link className={`font-raleway font-normal text-[14px] leading-[25.8px] text-black hover:text-orange-600 underline`} to='/IndexSignup'> Reset Password</Link></p>
+          <p className={`font-raleway font-normal text-[14px] leading-[25.8px] text-black mt-2`}>Don't have an account? <Link className={`font-raleway font-normal text-[14px] leading-[25.8px] text-black hover:text-orange-600 underline`} to='/Signup'> Register </Link> Or <Link className={`font-raleway font-normal text-[14px] leading-[25.8px] text-black hover:text-orange-600 underline`} to='/Signup'> Reset Password</Link></p>
           {/* <p className={`font-raleway font-normal text-[14px] leading-[25.8px] text-black mt-0`}>Forgot your password? </p> */}
         </form>
         <div className={layout.sectionImg}>

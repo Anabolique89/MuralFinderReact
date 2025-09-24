@@ -105,7 +105,8 @@ const DragDropImageUploader = () => {
       formData.append('style', style);
       formData.append('technique', technique);
       formData.append('location_text', locationText);
-      formData.append('is_commissioned', isCommissioned);
+      // Convert boolean to string for FormData
+      formData.append('is_commissioned', isCommissioned ? '1' : '0');
       formData.append('commissioner', commissioner);
       formData.append('created_date', createdDate);
 
@@ -366,27 +367,41 @@ const DragDropImageUploader = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Style
                         </label>
-                        <input
+                        <select
                           name="style"
-                          type="text"
-                          placeholder="e.g., Graffiti, Mural..."
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                           value={style}
                           onChange={(e) => setStyle(e.target.value)}
-                        />
+                        >
+                          <option value="">Select a style...</option>
+                          <option value="graffiti">Graffiti</option>
+                          <option value="mural">Mural</option>
+                          <option value="stencil">Stencil</option>
+                          <option value="mosaic">Mosaic</option>
+                          <option value="sculpture">Sculpture</option>
+                          <option value="installation">Installation</option>
+                          <option value="other">Other</option>
+                        </select>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Technique
                         </label>
-                        <input
+                        <select
                           name="technique"
-                          type="text"
-                          placeholder="e.g., Spray Paint, Brush..."
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                           value={technique}
                           onChange={(e) => setTechnique(e.target.value)}
-                        />
+                        >
+                          <option value="">Select a technique...</option>
+                          <option value="spray_paint">Spray Paint</option>
+                          <option value="brush">Brush</option>
+                          <option value="marker">Marker</option>
+                          <option value="stencil">Stencil</option>
+                          <option value="digital">Digital</option>
+                          <option value="mixed_media">Mixed Media</option>
+                          <option value="other">Other</option>
+                        </select>
                       </div>
                     </div>
 

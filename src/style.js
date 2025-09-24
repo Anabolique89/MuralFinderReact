@@ -15,6 +15,7 @@ const styles = {
   inputText: "input-text",
   inputError: "input-error",
   errorMessage: "error-message",
+  navbarOffset: "pt-16 sm:pt-20", // Add padding-top to account for fixed navbar
 };
 
 export const layout = {

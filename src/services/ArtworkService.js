@@ -5,26 +5,38 @@ const ArtworkService = {
   loadArtworks: async (page) => {
     try {
       const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      // Only add authorization header if token exists
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(
         `${BASE_URL}${artworkEndpoints.getAllArtworks}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
+        { headers }
       );
+
       const data = await response.json();
-      console.log(data);
+      console.log('ArtworkService.loadArtworks response:', data);
+
       if (data.success && data.data) {
-        const sortedData = data.data.map((categoryData) => ({
-          ...categoryData,
-          artworks: categoryData.artworks.sort(
+        // Handle paginated response
+        const artworks = data.data.data || data.data;
+        
+        if (Array.isArray(artworks)) {
+          // If it's a simple array, return it sorted
+          return artworks.sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at)
-          ),
-        }));
-        return sortedData;
+          );
+        } else {
+          // If it's paginated data, return the artworks array
+          return artworks.artworks ? artworks.artworks : [];
+        }
       } else {
+        console.log('No artworks data or unsuccessful response:', data);
         return [];
       }
     } catch (error) {

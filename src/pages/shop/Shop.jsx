@@ -148,7 +148,7 @@ export default function Shop() {
 
   return (
     <ModernRoute title="Shop" showHeader={false}>
-      <div className="bg-indigo-600 min-h-screen">
+      <div className="bg-indigo-600 min-h-screen pt-20">
         {/* Shop Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 

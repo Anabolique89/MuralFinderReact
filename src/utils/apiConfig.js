@@ -20,11 +20,21 @@ export const getServerBaseUrl = () => {
 // Helper function to construct full file URLs
 export const getFileUrl = (relativePath) => {
   if (!relativePath) return null;
-  
+
   const serverUrl = getServerBaseUrl();
-  const cleanPath = relativePath.startsWith('/') ? relativePath : `/${relativePath}`;
-  
-  return `${serverUrl}${cleanPath}`;
+
+  // If the path already starts with /storage/, use it as is
+  if (relativePath.startsWith('/storage/')) {
+    return `${serverUrl}${relativePath}`;
+  }
+
+  // If the path starts with /, use it as is
+  if (relativePath.startsWith('/')) {
+    return `${serverUrl}${relativePath}`;
+  }
+
+  // For relative paths (like artworks/1/image.png), add /storage/ prefix
+  return `${serverUrl}/storage/${relativePath}`;
 };
 
 // Helper function for auth URLs

@@ -247,11 +247,16 @@ export const muralFinderApi = createApi({
     globalSearch: builder.query({
       query: ({ query, type, filters } = {}) => {
         const params = new URLSearchParams();
-        if (query) params.append('q', query);
+        if (query) params.append('query', query);
         if (type) params.append('type', type);
+        params.append('per_page', '20');
+        
+        // Add filters to params
         if (filters) {
           Object.entries(filters).forEach(([key, value]) => {
-            params.append(key, value);
+            if (value !== null && value !== undefined && value !== '') {
+              params.append(key, value);
+            }
           });
         }
         
@@ -280,6 +285,135 @@ export const muralFinderApi = createApi({
         method: 'POST',
       }),
       invalidatesTags: ['Notification'],
+    }),
+
+    // Admin endpoints - using existing backend endpoints
+    getAdminStats: builder.query({
+      query: () => 'admin/statistics',
+      providesTags: ['Admin'],
+    }),
+
+    // Use admin user statistics endpoint for user management
+    getAdminUsers: builder.query({
+      query: ({ page = 1 } = {}) => {
+        const params = new URLSearchParams();
+        if (page > 1) params.append('page', page.toString());
+
+        return `admin/statistics/users?${params}`;
+      },
+      providesTags: ['User'],
+    }),
+
+    // Admin CRUD operations
+    createUser: builder.mutation({
+      query: (userData) => ({
+        url: 'auth/register',
+        method: 'POST',
+        body: userData,
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `admin/users/${userId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    updateUserRole: builder.mutation({
+      query: ({ userId, role }) => ({
+        url: `admin/users/${userId}/role`,
+        method: 'PUT',
+        body: { role },
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    banUser: builder.mutation({
+      query: (userId) => ({
+        url: `admin/users/${userId}/ban`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    unbanUser: builder.mutation({
+      query: (userId) => ({
+        url: `admin/users/${userId}/unban`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // Artwork admin actions
+    updateArtworkStatus: builder.mutation({
+      query: ({ artworkId, status, rejectionReason }) => ({
+        url: `admin/artworks/${artworkId}/status`,
+        method: 'PUT',
+        body: { status, rejection_reason: rejectionReason },
+      }),
+      invalidatesTags: ['Artwork'],
+    }),
+
+    deleteArtworkAdmin: builder.mutation({
+      query: (artworkId) => ({
+        url: `admin/artworks/${artworkId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Artwork'],
+    }),
+
+    // Wall admin actions
+    updateWallStatus: builder.mutation({
+      query: ({ wallId, status, rejectionReason }) => ({
+        url: `admin/walls/${wallId}/status`,
+        method: 'PUT',
+        body: { status, rejection_reason: rejectionReason },
+      }),
+      invalidatesTags: ['Wall'],
+    }),
+
+    deleteWallAdmin: builder.mutation({
+      query: (wallId) => ({
+        url: `admin/walls/${wallId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Wall'],
+    }),
+
+    // Post admin actions
+    updatePostStatus: builder.mutation({
+      query: ({ postId, status }) => ({
+        url: `admin/posts/${postId}/status`,
+        method: 'PUT',
+        body: { status },
+      }),
+      invalidatesTags: ['Post'],
+    }),
+
+    deletePostAdmin: builder.mutation({
+      query: (postId) => ({
+        url: `admin/posts/${postId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Post'],
+    }),
+
+    // Settings
+    getAdminSettings: builder.query({
+      query: () => 'admin/settings',
+      providesTags: ['Settings'],
+    }),
+
+    updateAdminSettings: builder.mutation({
+      query: (settings) => ({
+        url: 'admin/settings',
+        method: 'PUT',
+        body: settings,
+      }),
+      invalidatesTags: ['Settings'],
     }),
   }),
 });
@@ -311,4 +445,21 @@ export const {
   useGetNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
+  // Admin hooks
+  useGetAdminStatsQuery,
+  useGetAdminUsersQuery,
+  useCreateUserMutation,
+  // Admin mutations
+  useDeleteUserMutation,
+  useUpdateUserRoleMutation,
+  useBanUserMutation,
+  useUnbanUserMutation,
+  useUpdateArtworkStatusMutation,
+  useDeleteArtworkAdminMutation,
+  useUpdateWallStatusMutation,
+  useDeleteWallAdminMutation,
+  useUpdatePostStatusMutation,
+  useDeletePostAdminMutation,
+  useGetAdminSettingsQuery,
+  useUpdateAdminSettingsMutation,
 } = muralFinderApi;

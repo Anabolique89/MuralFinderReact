@@ -1,59 +1,91 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from '@reduxjs/toolkit';
-
-// Import slices
-import authSlice from './slices/authSlice';
-import artworkSlice from './slices/artworkSlice';
-import wallSlice from './slices/wallSlice';
-import uiSlice from './slices/uiSlice';
-import searchSlice from './slices/searchSlice';
-import notificationSlice from './slices/notificationSlice';
-
-// Import API
 import { muralFinderApi } from './api/muralFinderApi';
+import authReducer from './slices/authSlice';
+import uiReducer from './slices/uiSlice';
+import searchReducer from './slices/searchSlice';
+
+// Simple reducers for missing slices
+const themeReducer = (state = { mode: 'light' }, action) => {
+  switch (action.type) {
+    case 'theme/toggle':
+      return { mode: state.mode === 'light' ? 'dark' : 'light' };
+    case 'theme/set':
+      return { mode: action.payload };
+    default:
+      return state;
+  }
+};
+
+const notificationsReducer = (state = { items: [], unreadCount: 0 }, action) => {
+  switch (action.type) {
+    case 'notifications/add':
+      return {
+        ...state,
+        items: [...state.items, action.payload],
+        unreadCount: state.unreadCount + 1
+      };
+    case 'notifications/markAsRead':
+      return {
+        ...state,
+        unreadCount: Math.max(0, state.unreadCount - 1)
+      };
+    default:
+      return state;
+  }
+};
+
+const artworksReducer = (state = { items: [], loading: false }, action) => {
+  switch (action.type) {
+    case 'artworks/setLoading':
+      return { ...state, loading: action.payload };
+    case 'artworks/setItems':
+      return { ...state, items: action.payload };
+    default:
+      return state;
+  }
+};
+
 
 // Persist configuration
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'ui'], // Only persist auth and UI preferences
+  whitelist: ['auth', 'ui', 'theme'], // Only persist these reducers
 };
 
-// Root reducer
+// Combine reducers
 const rootReducer = combineReducers({
-  auth: authSlice,
-  artworks: artworkSlice,
-  walls: wallSlice,
-  ui: uiSlice,
-  search: searchSlice,
-  notifications: notificationSlice,
+  auth: authReducer,
+  ui: uiReducer,
+  search: searchReducer,
+  theme: themeReducer,
+  notifications: notificationsReducer,
+  artworks: artworksReducer,
   [muralFinderApi.reducerPath]: muralFinderApi.reducer,
 });
 
-// Persisted reducer
+// Create persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Configure store
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        ignoredActions: [
+          muralFinderApi.util.resetApiState.type,
+          'persist/PERSIST',
+          'persist/REHYDRATE',
+          'persist/REGISTER',
+        ],
       },
     }).concat(muralFinderApi.middleware),
-  devTools: process.env.NODE_ENV !== 'production',
 });
 
-// Create persistor
 export const persistor = persistStore(store);
 
-// Export types for hooks
-export const selectAuth = (state) => state.auth;
-export const selectArtworks = (state) => state.artworks;
-export const selectWalls = (state) => state.walls;
-export const selectUI = (state) => state.ui;
-export const selectSearch = (state) => state.search;
-export const selectNotifications = (state) => state.notifications;
+setupListeners(store.dispatch);

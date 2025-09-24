@@ -69,7 +69,6 @@ const EditUser = () => {
 
   return (
     <section>
-      <ToastContainer />
       <div className={`flex flex-col items-center mb-2 md:ml-10 ml-0 md:mt-0 mt-2 relative bg-indigo-600 w-full min-h-screen`}>
         <form
           className="login-form w-[90%] max-w-[800px] backdrop-filter backdrop-blur-lg p-4 md:p-8 sm:p-10 ss:p-34 rounded-2xl border-2 border-indigo-600 grid grid-cols-1 md:grid-cols-2 gap-4 bg-white mt-5"

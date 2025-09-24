@@ -155,7 +155,6 @@ const UsersData = () => {
                         </div>
                     </div>
                     <BackToTopButton />
-                    <ToastContainer />
                 </div>
             </div>
         </>

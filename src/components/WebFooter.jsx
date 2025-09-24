@@ -39,7 +39,8 @@ const WebFooter = () => {
         <div className="absolute bottom-10 right-10 w-16 h-16 bg-purple-400 rounded-full blur-lg"></div>
       </div>
 
-      <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full relative z-10`}>
+      <div className="max-w-7xl mx-auto w-full relative z-10">
+        <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full`}>
         {/* Brand Section */}
         <div className='flex-1 flex flex-col justify-start mr-10 mb-8 md:mb-0'>
           <Link to="/" className="hover:scale-105 transition-transform duration-300 inline-block">
@@ -160,6 +161,7 @@ const WebFooter = () => {
           <p className="text-dimWhite text-sm">
             © 2024 ArtZoro MuralFinder. All rights reserved. Made with ❤️ for the street art community.
           </p>
+        </div>
         </div>
       </div>
     </section>

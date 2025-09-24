@@ -268,7 +268,7 @@ const ViewWall = () => {
   return (
     <div className="min-h-screen bg-indigo-600">
       {/* Hero Section with Wall Info */}
-      <div className={`${styles.paddingX} bg-indigo-600 py-12`}>
+      <div className={`${styles.paddingX} bg-indigo-600 py-12 pt-24`}>
         <div className={`${styles.boxWidth} mx-auto`}>
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
             <div className="flex items-start space-x-4 mb-6 lg:mb-0">

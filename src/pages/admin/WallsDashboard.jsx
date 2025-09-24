@@ -259,7 +259,6 @@ const WallsDashboard = () => {
 
   return (
     <section className='flex flex-col min-h-screen'>
-      <ToastContainer />
 
       <div className='w-full flex flex-col md:flex-row flex-1'>
         <div className='w-1/5 bg-indigo-600 sticky top-0 hidden md:block'>

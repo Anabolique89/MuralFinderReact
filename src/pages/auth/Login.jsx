@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAuth, useTheme } from '../../hooks/redux';
 import { loginUser, clearError, resetLoading } from '../../store/slices/authSlice';
 import { addNotification } from '../../store/slices/uiSlice';
 import { ModernRoute, ModernInput, ModernButton } from '../../components';
-import styles, { layout } from '../../style';
 import { fadeintoyouWhite } from '../../assets';
 
 const ModernLogin = () => {
@@ -14,6 +13,7 @@ const ModernLogin = () => {
   const location = useLocation();
   const { theme } = useTheme();
   const { isAuthenticated, isLoading, error } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -21,10 +21,25 @@ const ModernLogin = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated based on user role
   useEffect(() => {
     if (isAuthenticated) {
-      const from = location.state?.from?.pathname || '/profile';
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const userRole = user.role;
+
+      // Determine redirect path based on role
+      let redirectPath = '/profile'; // default for regular users
+
+      if (userRole === 'admin') {
+        redirectPath = '/admin/dashboard';
+      } else if (userRole === 'artist') {
+        redirectPath = '/profile';
+      } else if (userRole === 'artlover') {
+        redirectPath = '/profile';
+      }
+
+      // Use intended path if available, otherwise use role-based path
+      const from = location.state?.from?.pathname || redirectPath;
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, navigate, location]);
@@ -38,11 +53,26 @@ const ModernLogin = () => {
     if (token && user) {
       // Handle social login success
       localStorage.setItem('token', token);
+      const userData = JSON.parse(user);
+      localStorage.setItem('user', user);
+
       dispatch(addNotification({
         type: 'success',
         message: 'Successfully logged in!',
       }));
-      navigate('/profile');
+
+      // Determine redirect path based on role
+      let redirectPath = '/profile'; // default for regular users
+
+      if (userData.role === 'admin') {
+        redirectPath = '/admin/dashboard';
+      } else if (userData.role === 'artist') {
+        redirectPath = '/profile';
+      } else if (userData.role === 'artlover') {
+        redirectPath = '/profile';
+      }
+
+      navigate(redirectPath);
     }
   }, [location.search, navigate, dispatch]);
 
@@ -56,7 +86,9 @@ const ModernLogin = () => {
 
   // Show error notifications
   useEffect(() => {
+    console.log('Error state changed:', error);
     if (error) {
+      console.log('Dispatching error notification:', error);
       dispatch(addNotification({
         type: 'error',
         message: error,
@@ -102,24 +134,57 @@ const ModernLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Login form submitted with data:', formData);
     
     if (!validateForm()) {
+      console.log('Form validation failed');
       return;
     }
 
+    setIsSubmitting(true);
+    console.log('Form validation passed, attempting login...');
     try {
-      await dispatch(loginUser(formData)).unwrap();
+      const result = await dispatch(loginUser(formData)).unwrap();
       
+      console.log('Login result:', result);
+
+      // Store token and user data in localStorage for AuthService compatibility
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('user', JSON.stringify(result.user));
+      
+      console.log('Token stored in localStorage:', localStorage.getItem('token'));
+      console.log('User stored in localStorage:', localStorage.getItem('user'));
+
       dispatch(addNotification({
         type: 'success',
         message: 'Welcome back!',
       }));
 
-      // Redirect to intended page or profile
-      const from = location.state?.from?.pathname || '/profile';
+      // Get user role from the login result
+      const userRole = result.user?.role;
+
+      // Determine redirect path based on role
+      let redirectPath = '/profile'; // default for regular users
+
+      if (userRole === 'admin') {
+        redirectPath = '/admin/dashboard';
+      } else if (userRole === 'artist') {
+        redirectPath = '/profile';
+      } else if (userRole === 'artlover') {
+        redirectPath = '/profile';
+      }
+
+      // Use intended page if available, otherwise use role-based path
+      const from = location.state?.from?.pathname || redirectPath;
+      console.log('Redirecting to:', from);
       navigate(from, { replace: true });
     } catch (error) {
+      console.error('Login error caught in handleSubmit:', error);
+      console.error('Error message:', error.message);
+      console.error('Error type:', typeof error);
       // Error is handled by the slice and useEffect above
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -137,8 +202,8 @@ const ModernLogin = () => {
 
   return (
     <ModernRoute title="Login" showHeader={false}>
-      <div className="min-h-screen bg-indigo-600 py-8">
-        <div className="h-auto flex mx-auto max-w-5xl rounded-lg overflow-hidden shadow-xl">
+      <div className="min-h-screen bg-indigo-600 flex items-center justify-center pt-20 px-4">
+        <div className="w-full max-w-5xl flex rounded-lg overflow-hidden shadow-xl my-8">
         {/* Left Side - Blue Background with Image */}
         <div className="hidden lg:block relative w-0 flex-1 bg-indigo-600 min-h-[600px] p-8">
           <div className="h-full flex items-center justify-center">
@@ -238,22 +303,30 @@ const ModernLogin = () => {
                 </div>
               </div>
 
+              {/* Error Display */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm font-raleway">
+                  Error: {error}
+                </div>
+              )}
+              {console.log('Rendering form - error state:', error)}
+
               <ModernButton
                 type="submit"
                 variant="primary"
                 size="lg"
                 fullWidth
-                loading={isLoading}
+                loading={isSubmitting}
                 className="bg-blue-gradient text-primary font-raleway font-bold uppercase"
               >
-                Sign in
+                {isSubmitting ? 'Signing In...' : 'Sign in'}
               </ModernButton>
 
               <div className="text-center">
                 <p className={`text-sm font-raleway ${
                   theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                 }`}>
-                  Don't have an account?{' '}
+                  Don&apos;t have an account?{' '}
                   <Link
                     to="/Signup"
                     className="font-raleway font-medium text-blue-600 hover:text-blue-500"

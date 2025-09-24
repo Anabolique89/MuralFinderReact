@@ -5,7 +5,7 @@ import { Footer, AboutSection2, CardWithImageExample, HeroAbout, BackToTopButton
 const About = () => {
   return (
 
-    <section>
+    <section className="pt-20">
       <div className="bg-indigo-600 w-full overflow-hidden">
         <div className={`bg-indigo-600 ${styles.flexStart}`}>
           <div className={`${styles.boxWidth}`}>

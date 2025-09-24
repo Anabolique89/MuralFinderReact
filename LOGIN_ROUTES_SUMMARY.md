@@ -40,16 +40,16 @@
 ---
 
 ### **🗂️ Legacy Routes (Old Design):**
-- **Route**: `/IndexLogin`
-- **Component**: `IndexLogin` (from `/pages/IndexLogin.jsx`)
+- **Route**: `/Login`
+- **Component**: `IndexLogin` (from `/pages/Login.jsx`)
 - **Features**: 
   - ❌ **Old design** without modern enhancements
   - ❌ **Basic styling** and limited animations
   - ❌ **No Redux integration**
   - ⚠️ **Still functional** but not recommended
 
-- **Route**: `/IndexSignup`
-- **Component**: `IndexSignup` (from `/pages/IndexSignup.jsx`)
+- **Route**: `/Signup`
+- **Component**: `IndexSignup` (from `/pages/Signup.jsx`)
 - **Features**:
   - ❌ **Old design** without modern enhancements
   - ❌ **Basic styling** and limited animations
@@ -92,7 +92,7 @@
 - Mobile responsive
 ```
 
-### **📄 Legacy Pages (`/IndexLogin`, `/IndexSignup`):**
+### **📄 Legacy Pages (`/Login`, `/Signup`):**
 ```
 Basic Features:
 - Simple form layout
@@ -116,8 +116,8 @@ Basic Features:
 2. **`/modern-signup`** - For testing signup features
 
 ### **⚠️ Legacy Routes (Avoid):**
-1. **`/IndexLogin`** - Old login page (keep for backward compatibility)
-2. **`/IndexSignup`** - Old signup page (keep for backward compatibility)
+1. **`/Login`** - Old login page (keep for backward compatibility)
+2. **`/Signup`** - Old signup page (keep for backward compatibility)
 
 ---
 

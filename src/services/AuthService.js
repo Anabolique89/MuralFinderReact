@@ -6,6 +6,8 @@ const AuthService = {
     // eslint-disable-next-line no-useless-catch
     try {
       const inputObj = { email, password };
+      console.log('AuthService.login called with:', inputObj);
+      console.log('API URL:', `${BASE_URL}${authEndpoints.login}`);
 
       const response = await fetch(`${BASE_URL}${authEndpoints.login}`, {
         method: "POST",
@@ -13,11 +15,27 @@ const AuthService = {
         body: JSON.stringify(inputObj)
       });
 
+      console.log('Login response status:', response.status);
       const data = await response.json();
+      console.log('Login response data:', data);
 
       if (response.ok) {
         const dataObj = data.data;
-        return { user: dataObj.user, token: dataObj.token };
+        // Handle both token structures from backend
+        const token = dataObj.tokens?.access_token || dataObj.token;
+        console.log('Extracted token:', token);
+
+        if (token) {
+          // Store token in localStorage for backward compatibility
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(dataObj.user));
+        }
+
+        return {
+          user: dataObj.user,
+          token: token,
+          tokens: dataObj.tokens // Include full tokens object
+        };
       } else {
         throw new Error(data.message);
       }
@@ -83,6 +101,7 @@ const AuthService = {
     // eslint-disable-next-line no-useless-catch
     try {
       const token = localStorage.getItem('token');
+      console.log('AuthService.getProfile - token from localStorage:', token);
       if (!token) {
         throw new Error('User not authenticated');
       }
@@ -268,9 +287,18 @@ const AuthService = {
       const data = await response.json();
 
       if (response.ok) {
-        const newToken = data.data.token;
-        localStorage.setItem('token', newToken);
-        return { token: newToken };
+        // Handle both token structures from backend
+        const newToken = data.data.tokens?.access_token || data.data.token;
+        console.log('Refreshed token:', newToken);
+
+        if (newToken) {
+          localStorage.setItem('token', newToken);
+        }
+
+        return {
+          token: newToken,
+          tokens: data.data.tokens // Include full tokens object
+        };
       } else {
         throw new Error(data.message || 'Token refresh failed');
       }

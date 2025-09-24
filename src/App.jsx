@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import styles from '@styles';
 import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton, Adverts } from '@components';
+import SearchPage from './pages/SearchPage';
 import { ArtSupplies, Books, Materials, PosterPrints, Wallpapers } from '@components/ShopCategories';
 import About from '@pages/public/About';
 import Community from '@pages/public/Community';
@@ -9,13 +10,12 @@ import Profile from '@pages/user/Profile';
 import PublicProfile from '@pages/user/PublicProfile';
 import Map from '@pages/user/Map';
 import Walls from '@pages/user/Walls';
-import IndexLogin from '@pages/IndexLogin';
-import IndexSignup from '@pages/IndexSignup';
 import Onboarding1 from '@pages/auth/Onboarding1';
 import Onboarding2 from '@pages/auth/Onboarding2';
 import Onboarding3 from '@pages/auth/Onboarding3';
 import Contact from '@pages/public/Contact';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ArtworkService from '@services/ArtworkService';
 import SingleBlogPost from '@pages/blog/SingleBlogPost';
 import ProfileSettings from '@pages/user/ProfileSettings';
@@ -33,12 +33,19 @@ import BlogPosts from '@pages/blog/BlogPosts';
 import Feed from '@pages/user/Feed';
 import Shop from '@pages/shop/Shop';
 import AddWall from '@components/AddWall';
-import WallsDashboard from '@pages/admin/WallsDashboard';
-import Dashboard from '@pages/admin/Dashboard';
-import ArtworksDashboard from '@pages/admin/ArtworksDashboard';
-import PostsDashboard from '@pages/admin/PostsDashboard';
-import ArtworkDetails from '@pages/user/ArtworkDetails';
+import ModernDashboard from '@pages/admin/ModernDashboard';
+import ModernUsers from '@pages/admin/ModernUsers';
+import ModernArtworks from '@pages/admin/ModernArtworks';
+import ModernWalls from '@pages/admin/ModernWalls';
+import ModernPosts from '@pages/admin/ModernPosts';
+import ModernSettings from '@pages/admin/ModernSettings';
 import Trash from '@pages/admin/Trash';
+import AddUser from '@pages/admin/AddUser';
+import AddArtwork from '@pages/admin/AddArtwork';
+import AdminAddWall from '@pages/admin/AddWall';
+import AddPost from '@pages/admin/AddPost';
+import { ToastProvider } from './contexts/ToastContext';
+import ArtworkDetails from '@pages/user/ArtworkDetails';
 import Users from '@pages/admin/Users';
 import EditUser from '@pages/admin/EditUser';
 import EditWall from '@components/EditWall';
@@ -60,11 +67,8 @@ import AdminRoute from '@utils/AdminRoute';
 
 
 const App = () => {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filteredImages, setFilteredImages] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -77,45 +81,114 @@ const App = () => {
         console.log(err);
         setIsLoading(false);
       });
-  }, []);
-
-  const searchText = async (text) => {
-    setIsLoading(true);
-    try {
-      const filtered = await ArtworkService.searchArtworksOnBackend(text, page, pageSize);
-      setFilteredImages(filtered);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
-
-  // Add functions to handle pagination
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
-
-  const handlePageSizeChange = (newPageSize) => {
-    setPageSize(newPageSize);
-    setPage(1); // Reset page when page size changes
-  };
+  }, []); 
 
   // const showSearchBarRoutes = ['/', '/About']; // set the pages where the searchbar should be included.
 
   return (
-    <Router>
-      <div className="bg-indigo-600 w-full overflow-hidden">
-        <div className={`${styles.paddingX} ${styles.flexCenter}`}>
-          <div className={`${styles.boxWidth}`}>
-            <Navbar />
-          </div>
-        </div>
+    <ToastProvider>
+      <Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          toastStyle={{
+            backgroundColor: '#ffffff',
+            color: '#1f2937',
+            borderRadius: '12px',
+            boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            border: '1px solid #e5e7eb',
+            fontFamily: 'Raleway, sans-serif',
+            fontSize: '14px',
+            fontWeight: '500',
+            minWidth: '300px',
+            maxWidth: '400px',
+          }}
+        />
+      <Routes>
+        {/* Admin Routes - No Navbar */}
+        <Route path='/admin/dashboard' element={
+          <AdminRoute>
+            <ModernDashboard />
+          </AdminRoute>
+        }/>
 
-        {/* conditionally render the searchbar based on the searbhar enabled routes */}
-         {/*showSearchBarRoutes.includes(location.pathname) && <SearchBar />*/}
-        <ToastContainer className='w-[20px] center-align'></ToastContainer>
-        <Routes>
+        <Route path='/admin/users' element={
+          <AdminRoute>
+            <ModernUsers />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/artworks' element={
+          <AdminRoute>
+            <ModernArtworks />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/walls' element={
+          <AdminRoute>
+            <ModernWalls />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/posts' element={
+          <AdminRoute>
+            <ModernPosts />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/settings' element={
+          <AdminRoute>
+            <ModernSettings />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/trash' element={
+          <AdminRoute>
+            <Trash />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/users/add' element={
+          <AdminRoute>
+            <AddUser />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/artworks/add' element={
+          <AdminRoute>
+            <AddArtwork />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/walls/add' element={
+          <AdminRoute>
+            <AdminAddWall />
+          </AdminRoute>
+        }/>
+
+        <Route path='/admin/posts/add' element={
+          <AdminRoute>
+            <AddPost />
+          </AdminRoute>
+        }/>
+
+        {/* Main App Routes - With Navbar */}
+        <Route path="*" element={
+          <div className="bg-indigo-600 w-full overflow-hidden">
+            <div className={`${styles.paddingX} ${styles.flexCenter}`}>
+              <div className={`${styles.boxWidth}`}>
+                <Navbar />
+              </div>
+            </div>
+            <Routes>
           <Route path="/" element={<ModernHome />} />
           <Route path="/legacy-home" element={
             <>
@@ -150,12 +223,11 @@ const App = () => {
           } />
           <Route path="/About" element={<About />} />
           <Route path="/Community" element={<Community />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/profile/:userId" element={<PublicProfile />} />
           <Route path="/Map" element={<Map />} />
           <Route path="/Walls" element={<Walls />} />
           <Route path="/Login" element={<AuthLogin />} />
-          <Route path="/IndexLogin" element={<IndexLogin />} />
-          <Route path="/IndexSignup" element={<IndexSignup />} />
           <Route path="/Signup" element={<AuthSignup />} />
 
           {/* Modern Routes */}
@@ -233,41 +305,21 @@ const App = () => {
             </PrivateRoute>
           } />
 
+          {/* Legacy admin routes for backward compatibility */}
           <Route path='/dashboard' element={
             <AdminRoute>
-              <Dashboard />
-            </AdminRoute>
-          }/>
-
-          <Route path='/walls-dashboard' element={
-            <AdminRoute>
-              <WallsDashboard />
-            </AdminRoute>
-          }/>
-
-          <Route path='/artworks-dashboard' element={
-            <AdminRoute>
-              <ArtworksDashboard />
-            </AdminRoute>
-          }/>
-
-          <Route path='/post-dashboard' element={
-            <AdminRoute>
-              <PostsDashboard />
-            </AdminRoute>
-          }/>
-
-          <Route path='/artworks-dashboard' element={
-            <AdminRoute>
-              <ArtworksDashboard />
+              <ModernDashboard />
             </AdminRoute>
           }/>
 
 
 
-        </Routes>
-      </div>
-    </Router>
+            </Routes>
+          </div>
+        } />
+      </Routes>
+      </Router>
+    </ToastProvider>
   );
 };
 

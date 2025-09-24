@@ -125,10 +125,9 @@ const PublicProfile = () => {
 
     return (
         <div className="min-h-screen bg-indigo-600">
-            <ToastContainer />
 
             {/* Hero Section */}
-            <div className="bg-indigo-600">
+            <div className="bg-indigo-600 pt-20">
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     {loading ? (
                         <div className="flex justify-center items-center h-96">

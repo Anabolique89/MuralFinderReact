@@ -5,10 +5,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000
 export const BASE_URL = API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`;
 
 export const authEndpoints = {
-  login: "login",
-  register: "register",
-  logout: "logout",
-  refreshToken: "refresh-token",
+  login: "auth/login",
+  register: "auth/register",
+  logout: "auth/logout",
+  refreshToken: "auth/refresh-token",
   profile: (userId) => `profiles/${userId}`,
   updateProfile: (userId) => `profiles/${userId}`,
   uploadProfileImage: (userId) => `profiles/${userId}/image`,

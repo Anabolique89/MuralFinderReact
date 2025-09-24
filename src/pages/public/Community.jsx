@@ -4,7 +4,7 @@ import Footer from '../../components/Footer';
 
 
 const Community = () => (
-<section>
+<section className="pt-20">
 <div className={`bg-indigo-600 ${styles.flexStart}`}>
 <div className={`${styles.boxWidth}`}>
   <HeroCommunity />

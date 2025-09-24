@@ -57,7 +57,30 @@ const DashboardService = {
         }
     },
 
+    // Get all statistics for admin dashboard
+    getStatistics: async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${BASE_URL}admin/statistics`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching admin statistics:', error);
+            // Return mock data if API fails
+            return {
+                data: {
+                    userCount: 0,
+                    artworkCount: 0,
+                    wallsCount: 0,
+                    postCount: 0,
+                }
+            };
+        }
+    },
 
 }
 
-export default DashboardService
+export default DashboardService;

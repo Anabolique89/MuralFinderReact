@@ -393,7 +393,7 @@ const Maps = () => {
   }
 
   return (
-    <div className={`min-h-screen bg-indigo-600 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div className={`min-h-screen bg-indigo-600 ${isFullscreen ? 'fixed inset-0 z-50' : 'pt-20'}`}>
       <APIProvider apiKey={apiKey} libraries={["places"]}>
           {/* Map Container */}
           <div className="relative w-full h-screen">

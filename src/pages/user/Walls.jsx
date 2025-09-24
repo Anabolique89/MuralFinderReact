@@ -6,7 +6,7 @@ import DisplayWalls from './DisplayWalls';
 
 const Walls = () => (
 
-<section>
+<section className="pt-20">
   <div className={`bg-indigo-600 ${styles.flexStart}`}>
   <div className={`${styles.boxWidth}`}>
   <WallsIntro />

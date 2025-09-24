@@ -1,15 +1,30 @@
 import axios from "axios";
 import { BASE_URL } from "../constants/ApiEndpoints";
 
-const token = localStorage.getItem("token");
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+};
+
+const getModelName = (type) => {
+  // Convert plural frontend types to singular backend model names
+  const modelMap = {
+    'artworks': 'artwork',
+    'walls': 'wall',
+    'users': 'user',
+    'posts': 'post'
+  };
+  return modelMap[type] || type;
+};
+
 const TrashService = {
   // Fetch all trashed items across different models
   getAll: async () => {
     try {
       const response = await axios.get(`${BASE_URL}admin/trash`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -19,15 +34,14 @@ const TrashService = {
   },
 
   // Restore a soft-deleted item
-  restore: async (model, id) => {
+  restore: async (type, id) => {
     try {
+      const model = getModelName(type);
       const response = await axios.post(
         `${BASE_URL}admin/trash/${model}/${id}/restore`,
         null,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -38,14 +52,13 @@ const TrashService = {
   },
 
   // Permanently delete a soft-deleted item
-  delete: async (model, id) => {
+  delete: async (type, id) => {
     try {
+      const model = getModelName(type);
       const response = await axios.delete(
         `${BASE_URL}admin/trash/${model}/${id}`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -59,12 +72,10 @@ const TrashService = {
   restoreAll: async () => {
     try {
       const response = await axios.post(
-        `${BASE_URL}admin/trash/restoreAll`, // Adjust this if you have a specific endpoint for restoring all
+        `${BASE_URL}admin/trash/restoreAll`,
         null,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: getAuthHeaders(),
         }
       );
       return response.data;
@@ -78,11 +89,9 @@ const TrashService = {
   deleteAll: async () => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}admin/trash/deleteAll`, // Adjust this if you have a specific endpoint for deleting all
+        `${BASE_URL}admin/trash/deleteAll`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: getAuthHeaders(),
         }
       );
       return response.data;

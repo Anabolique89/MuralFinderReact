@@ -144,8 +144,8 @@ const ModernSignup = () => {
 
   return (
     <ModernRoute title="Sign Up" showHeader={false}>
-      <div className="min-h-screen bg-indigo-600 py-8">
-        <div className="h-auto flex mx-auto max-w-5xl rounded-lg overflow-hidden shadow-xl">
+      <div className="min-h-screen bg-indigo-600 flex items-center justify-center pt-20 px-4">
+        <div className="w-full max-w-5xl flex rounded-lg overflow-hidden shadow-xl my-8">
         {/* Left Side - Blue Background with Image */}
         <div className="hidden lg:block relative w-0 flex-1 bg-indigo-600 min-h-[700px] p-8">
           <div className="h-full flex items-center justify-center">

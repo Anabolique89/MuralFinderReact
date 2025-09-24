@@ -36,8 +36,9 @@ const SingleArtwork = () => {
     }
 
     return (
-        <section className={`rounded-xl overflow-hidden shadow-md p-4 ${styles}`}>
-            <div className="mx-auto px-4 py-8 max-w-2xl my-20">
+        <div className="min-h-screen bg-gray-50 pt-20">
+            <section className={`rounded-xl overflow-hidden shadow-md p-4 ${styles}`}>
+                <div className="mx-auto px-4 py-8 max-w-2xl">
                 <div className="backdrop-filter backdrop-blur-lg shadow-2xl rounded-lg mb-6 tracking-wide">
                     <div className="md:flex-shrink-0">
                         <img
@@ -91,11 +92,12 @@ const SingleArtwork = () => {
                     </div>
                 </div>
             </div>
-            <BackToTopButton />
-            <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
-                <Footer />
-            </div>
-        </section>
+                <BackToTopButton />
+                <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
+                    <Footer />
+                </div>
+            </section>
+        </div>
     );
 };
 

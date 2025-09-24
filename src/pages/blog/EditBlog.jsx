@@ -178,7 +178,6 @@ const EditBlog = () => {
                         </button>
                     </form>
                 </div>
-        <ToastContainer />
 
                 <BackToTopButton />
     <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>

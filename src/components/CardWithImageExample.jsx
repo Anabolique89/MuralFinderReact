@@ -7,7 +7,7 @@ const CardWithImageExample  = () => (
 <section className='flex flex-wrap  justify-center w-full feedback-container relative z-[1]'>
       <div
         className=" flex flex-col justify-between max-w-[320px] md:m-2 sm:max-w-[350px] xs:max-w-[400px] feedback-card m-2 backdrop-filter backdrop-blur-lg md:p-4 sm:p-6 ss:p-8 p-2 rounded-2xl border-solid border-2 border-indigo-600 ">
-        <a href="/IndexSignup">
+        <a href="/Signup">
           <img
             className="rounded-t-lg"
             src={steampunk}

@@ -110,7 +110,7 @@
 Legacy Route          → Modern Route
 /                     → /modern-home
 /Login               → /modern-login
-/IndexSignup         → /modern-signup
+/Signup         → /modern-signup
 /profile             → /modern-profile
 /ArtworkFeed         → /modern-artworks
 /Map                 → /modern-map

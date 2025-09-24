@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { removeNotification } from '../../store/slices/uiSlice';
 import { useUI } from '../../hooks/redux';
@@ -52,7 +53,7 @@ const NotificationToast = () => {
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2 w-96 max-w-sm">
+    <div className="fixed bottom-4 right-4 z-50 space-y-2 w-96 max-w-sm">
       {notifications.map((notification) => (
         <NotificationItem
           key={notification.id}
@@ -67,6 +68,27 @@ const NotificationToast = () => {
 };
 
 const NotificationItem = ({ notification, onRemove, getIcon, getStyles }) => {
+  NotificationItem.propTypes = {
+    notification: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      type: PropTypes.string,
+      title: PropTypes.string,
+      message: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+      ]).isRequired,
+      autoClose: PropTypes.bool,
+      duration: PropTypes.number,
+      action: PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        onClick: PropTypes.func.isRequired
+      })
+    }).isRequired,
+    onRemove: PropTypes.func.isRequired,
+    getIcon: PropTypes.func.isRequired,
+    getStyles: PropTypes.func.isRequired
+  };
+
   useEffect(() => {
     if (notification.autoClose !== false) {
       const timer = setTimeout(() => {
@@ -80,7 +102,7 @@ const NotificationItem = ({ notification, onRemove, getIcon, getStyles }) => {
   return (
     <div
       className={`
-        max-w-sm w-full shadow-lg rounded-lg pointer-events-auto border
+        w-full shadow-lg rounded-lg pointer-events-auto border
         transform transition-all duration-300 ease-in-out
         ${getStyles(notification.type)}
       `}

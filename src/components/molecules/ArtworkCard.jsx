@@ -7,6 +7,7 @@ import { addNotification } from '../../store/slices/uiSlice';
 import { useAuth, useTheme } from '../../hooks/redux';
 import Avatar from '../atoms/Avatar';
 import Button from '../atoms/Button';
+import { getFileUrl } from '../../utils/apiConfig';
 
 const ArtworkCard = ({ 
   artwork, 
@@ -122,7 +123,7 @@ const ArtworkCard = ({
         
         {!imageError ? (
           <img
-            src={artwork.image_path}
+            src={getFileUrl(artwork.primary_image_path || artwork.image_path)}
             alt={artwork.title}
             className={`
               w-full h-full object-cover transition-transform duration-300
