@@ -67,19 +67,10 @@ import AdminRoute from '@utils/AdminRoute';
 
 
 const App = () => {
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
-    setIsLoading(true);
     ArtworkService.loadArtworks()
-      .then(data => {
-        setImages(data);
-        setIsLoading(false);
-      })
       .catch(err => {
         console.log(err);
-        setIsLoading(false);
       });
   }, []); 
 
