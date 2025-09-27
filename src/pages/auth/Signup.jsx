@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAuth, useTheme } from '../../hooks/redux';
@@ -88,6 +88,10 @@ const ModernSignup = () => {
       errors.password_confirmation = 'Please confirm your password';
     } else if (formData.password !== formData.password_confirmation) {
       errors.password_confirmation = 'Passwords do not match';
+    }
+
+    if (!formData.role) {
+      errors.role = 'Please select a role';
     }
 
     setFormErrors(errors);
@@ -243,7 +247,8 @@ const ModernSignup = () => {
                 >
                   <option value="">Select a role</option>
                   <option value="artist">Artist</option>
-                  <option value="art_lover">Art Lover</option>
+                  <option value="artlover">Art Lover</option>
+                  <option value="moderator">Moderator</option>
                 </select>
                 {formErrors.role && (
                   <p className="text-red-500 text-sm font-raleway">{formErrors.role}</p>

@@ -44,10 +44,26 @@ const ModernLogin = () => {
     }
   }, [isAuthenticated, navigate, location]);
 
-  // Handle URL params for social login
+  // Handle URL params for social login and email verification
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const token = urlParams.get('token');
+    const verified = urlParams.get('verified');
+    
+    // Handle email verification status
+    if (verified === '1') {
+      dispatch(addNotification({
+        type: 'success',
+        message: 'Email verified successfully! You can now log in.',
+        duration: 5000,
+      }));
+    } else if (verified === '0') {
+      dispatch(addNotification({
+        type: 'error',
+        message: 'Email verification failed. Please try again or request a new verification email.',
+        duration: 5000,
+      }));
+    }
     const user = urlParams.get('user');
 
     if (token && user) {
