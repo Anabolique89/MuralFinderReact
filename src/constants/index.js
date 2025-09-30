@@ -39,6 +39,11 @@ export const navLinks = [
     title: "COMMUNITY",
     link: "/Community",
   },
+  {
+    id: "ai-generator",
+    title: "AI GENERATOR",
+    link: "/ai-generator",
+  },
 
   {
     id: "shop",
@@ -186,6 +191,10 @@ export const footerLinks = [
       {
         name: "Artwork Feed",
         link: "/artworks",
+      },
+      {
+        name: "AI Generator",
+        link: "/ai-generator",
       },
     ],
   },

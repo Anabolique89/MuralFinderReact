@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loadUserFromStorage } from './store/slices/authSlice';
 import styles from '@styles';
 import { Billing, Business, CardDeal, SearchBar, CTA, Navbar, Stats, Testimonials, Hero, DragDropImageUploader, SingleArtwork, Carousel,  MuiBottomNavigation, BackToTopButton, Adverts } from '@components';
 import SearchPage from './pages/SearchPage';
@@ -64,15 +66,23 @@ import UserProfile from '@pages/user/Profile';
 import Product1Easel from '@pages/singleProduct/Product1Easel';
 import AdminRoute from '@utils/AdminRoute';
 
+// AI Pages
+import DesignGenerator from '@pages/ai/DesignGenerator';
+
 
 
 const App = () => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    // Initialize authentication state from localStorage
+    dispatch(loadUserFromStorage());
+    
     ArtworkService.loadArtworks()
       .catch(err => {
         console.log(err);
       });
-  }, []); 
+  }, [dispatch]); 
 
   // const showSearchBarRoutes = ['/', '/About']; // set the pages where the searchbar should be included.
 
@@ -231,6 +241,11 @@ const App = () => {
           {/* Updated Routes - Using Modern Components */}
           <Route path="/artworks" element={<ModernArtworkFeed />} />
           <Route path="/profile" element={<UserProfile />} />
+          
+          {/* AI Generator Routes */}
+          <Route path="/ai-generator" element={<DesignGenerator />} />
+          <Route path="/forge-saga" element={<DesignGenerator />} />
+          <Route path="/design-generator" element={<DesignGenerator />} />
           <Route path="/Onboarding1" element={<Onboarding1 />} />
           <Route path="/Onboarding2" element={<Onboarding2 />} />
           <Route path="/Onboarding3" element={<Onboarding3 />} />

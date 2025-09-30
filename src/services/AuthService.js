@@ -29,6 +29,11 @@ const AuthService = {
           // Store token in localStorage for backward compatibility
           localStorage.setItem('token', token);
           localStorage.setItem('user', JSON.stringify(dataObj.user));
+          
+          // Store refresh token if available
+          if (dataObj.tokens?.refresh_token) {
+            localStorage.setItem('refresh_token', dataObj.tokens.refresh_token);
+          }
         }
 
         return {
@@ -89,7 +94,21 @@ const AuthService = {
   isAuthenticated() {
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    return user && token;
+    
+    if (!user || !token) {
+      return false;
+    }
+    
+    // Check if token is expired
+    if (this.isTokenExpired()) {
+      // Clear expired tokens
+      localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('user');
+      return false;
+    }
+    
+    return true;
   },
 
   getUser() {
@@ -169,6 +188,7 @@ const AuthService = {
 
       // Remove the token from session storage
       localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');
 
       // You can also perform any other necessary cleanup, such as clearing the user's data from the application state
@@ -293,6 +313,11 @@ const AuthService = {
 
         if (newToken) {
           localStorage.setItem('token', newToken);
+          
+          // Store new refresh token if available
+          if (data.data.tokens?.refresh_token) {
+            localStorage.setItem('refresh_token', data.data.tokens.refresh_token);
+          }
         }
 
         return {
@@ -305,6 +330,7 @@ const AuthService = {
     } catch (error) {
       // If refresh fails, clear token and redirect to login
       localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');
       throw error;
     }
@@ -316,12 +342,11 @@ const AuthService = {
     if (!token) return true;
 
     try {
-      // Decode JWT token to check expiration
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const currentTime = Date.now() / 1000;
-
-      // Check if token expires in the next 5 minutes
-      return payload.exp < (currentTime + 300);
+      // Laravel Sanctum tokens are not JWT tokens, they're plain text
+      // We can't decode them to check expiration on the frontend
+      // Instead, we'll assume tokens are valid if they exist
+      // The backend will handle actual expiration validation
+      return false;
     } catch (error) {
       return true;
     }

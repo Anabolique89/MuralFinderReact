@@ -46,7 +46,11 @@ export const loadUserFromStorage = createAsyncThunk(
       const token = localStorage.getItem('token');
       
       if (user && token) {
-        return { user, token };
+        // For Laravel Sanctum tokens, we can't validate expiration on frontend
+        // The backend will handle expiration validation
+        // Get refresh token if available
+        const refreshToken = localStorage.getItem('refresh_token');
+        return { user, token, refreshToken };
       }
       
       return null;
@@ -77,6 +81,7 @@ const authSlice = createSlice({
 
       // Clear localStorage
       localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');
     },
     clearError: (state) => {
@@ -121,16 +126,23 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        console.log('Auth slice - loginUser.fulfilled triggered with payload:', action.payload);
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
         state.error = null;
+        console.log('Auth slice - state updated, isAuthenticated:', state.isAuthenticated);
 
         // Store in localStorage for persistence
         if (action.payload.token) {
           localStorage.setItem('token', action.payload.token);
           localStorage.setItem('user', JSON.stringify(action.payload.user));
+          
+          // Store refresh token if available
+          if (action.payload.tokens?.refresh_token) {
+            localStorage.setItem('refresh_token', action.payload.tokens.refresh_token);
+          }
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -152,6 +164,7 @@ const authSlice = createSlice({
 
         // Clear localStorage
         localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
       })
       .addCase(logoutUser.rejected, (state, action) => {
@@ -164,6 +177,7 @@ const authSlice = createSlice({
 
         // Clear localStorage even if logout fails
         localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
       })
       

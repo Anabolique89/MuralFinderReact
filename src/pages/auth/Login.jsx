@@ -2,10 +2,11 @@ import  { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAuth, useTheme } from '../../hooks/redux';
-import { loginUser, clearError, resetLoading } from '../../store/slices/authSlice';
+import { loginUser, clearError, resetLoading, clearAuth } from '../../store/slices/authSlice';
 import { addNotification } from '../../store/slices/uiSlice';
 import { ModernRoute, ModernInput, ModernButton } from '../../components';
 import { fadeintoyouWhite } from '../../assets';
+import AuthService from '../../services/AuthService';
 
 const ModernLogin = () => {
   const dispatch = useDispatch();
@@ -21,9 +22,13 @@ const ModernLogin = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  // Redirect if already authenticated based on user role
+  // Redirect if already authenticated based on user role (runs after token clearing)
   useEffect(() => {
-    if (isAuthenticated) {
+    console.log('Auth redirect check - isAuthenticated:', isAuthenticated, 'AuthService.isAuthenticated():', AuthService.isAuthenticated());
+    console.log('Redux auth state:', { isAuthenticated, isLoading, error });
+    
+    // Only check for redirect if we're authenticated AND have valid tokens
+    if (isAuthenticated && AuthService.isAuthenticated()) {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       const userRole = user.role;
 
@@ -40,7 +45,10 @@ const ModernLogin = () => {
 
       // Use intended path if available, otherwise use role-based path
       const from = location.state?.from?.pathname || redirectPath;
+      console.log('Redirecting authenticated user to:', from);
       navigate(from, { replace: true });
+    } else {
+      console.log('Not redirecting - authentication check failed');
     }
   }, [isAuthenticated, navigate, location]);
 
@@ -96,6 +104,9 @@ const ModernLogin = () => {
   useEffect(() => {
     dispatch(clearError());
     dispatch(resetLoading());
+    
+    // For Laravel Sanctum tokens, we can't validate expiration on frontend
+    // The backend will handle expiration validation
     // Debug log to check loading state
     console.log('Login component mounted - isLoading:', isLoading);
   }, [dispatch, isLoading]);
@@ -168,6 +179,12 @@ const ModernLogin = () => {
       localStorage.setItem('token', result.token);
       localStorage.setItem('user', JSON.stringify(result.user));
       
+      // Store refresh token if available
+      if (result.tokens?.refresh_token) {
+        localStorage.setItem('refresh_token', result.tokens.refresh_token);
+        console.log('Refresh token stored:', result.tokens.refresh_token);
+      }
+      
       console.log('Token stored in localStorage:', localStorage.getItem('token'));
       console.log('User stored in localStorage:', localStorage.getItem('user'));
 
@@ -176,24 +193,9 @@ const ModernLogin = () => {
         message: 'Welcome back!',
       }));
 
-      // Get user role from the login result
-      const userRole = result.user?.role;
-
-      // Determine redirect path based on role
-      let redirectPath = '/profile'; // default for regular users
-
-      if (userRole === 'admin') {
-        redirectPath = '/admin/dashboard';
-      } else if (userRole === 'artist') {
-        redirectPath = '/profile';
-      } else if (userRole === 'artlover') {
-        redirectPath = '/profile';
-      }
-
-      // Use intended page if available, otherwise use role-based path
-      const from = location.state?.from?.pathname || redirectPath;
-      console.log('Redirecting to:', from);
-      navigate(from, { replace: true });
+      // Don't navigate here - let the useEffect handle the redirect
+      // after Redux state is updated
+      console.log('Login successful, Redux state will trigger redirect');
     } catch (error) {
       console.error('Login error caught in handleSubmit:', error);
       console.error('Error message:', error.message);

@@ -143,7 +143,7 @@ const ModernSettings = () => {
                 className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-raleway"
               >
                 Reset to Defaults
-              </button>
+            </button>
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@ const ModernSettings = () => {
                 </label>
                 <input
                   type="text"
-                  value={settings.site_name}
+                value={settings.site_name}
                   onChange={(e) => handleInputChange('site_name', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-raleway"
                   placeholder="Enter site name"
@@ -172,10 +172,10 @@ const ModernSettings = () => {
                 </label>
                 <input
                   type="url"
-                  value={settings.site_url}
+                value={settings.site_url}
                   onChange={(e) => handleInputChange('site_url', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-raleway"
-                  placeholder="https://muralfinder.net"
+                placeholder="https://muralfinder.net"
                 />
               </div>
               
@@ -198,11 +198,11 @@ const ModernSettings = () => {
                 </label>
                 <input
                   type="email"
-                  value={settings.admin_email}
+                value={settings.admin_email}
                   onChange={(e) => handleInputChange('admin_email', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-raleway"
-                  placeholder="admin@muralfinder.net"
-                />
+                placeholder="admin@muralfinder.net"
+              />
               </div>
             </div>
           </div>
@@ -306,7 +306,7 @@ const ModernSettings = () => {
                   Max Artworks per User
                 </label>
                 <input
-                  type="number"
+                type="number"
                   value={settings.max_artworks_per_user}
                   onChange={(e) => handleInputChange('max_artworks_per_user', parseInt(e.target.value))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-raleway"
@@ -320,7 +320,7 @@ const ModernSettings = () => {
                   Max Posts per User
                 </label>
                 <input
-                  type="number"
+                type="number"
                   value={settings.max_posts_per_user}
                   onChange={(e) => handleInputChange('max_posts_per_user', parseInt(e.target.value))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-raleway"
@@ -349,8 +349,8 @@ const ModernSettings = () => {
                   checked={settings.enable_comments}
                   onChange={(e) => handleInputChange('enable_comments', e.target.checked)}
                   className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-              </div>
+              />
+            </div>
               
               <div className="flex items-center justify-between">
                 <div>
@@ -451,7 +451,7 @@ const ModernSettings = () => {
                 </>
               )}
             </button>
-          </div>
+        </div>
         </form>
       </div>
     </AdminLayout>
