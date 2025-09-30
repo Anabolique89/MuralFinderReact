@@ -40,6 +40,11 @@ export const navLinks = [
     link: "/Community",
   },
   {
+    id: "artworks",
+    title: "ARTWORKS",
+    link: "/artworks",
+  },
+  {
     id: "ai-generator",
     title: "AI GENERATOR",
     link: "/ai-generator",

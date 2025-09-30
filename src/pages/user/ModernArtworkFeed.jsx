@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useGetArtworksQuery } from '@store/api/muralFinderApi';
+import { useGetArtworksQuery, useGetCategoriesQuery } from '@store/api/muralFinderApi';
 import { useArtworks, useAuth, useTheme } from '@hooks/redux';
 import { setFeedArtworks, setViewMode, setFilters } from '@store/slices/artworkSlice';
 import { addNotification } from '@store/slices/uiSlice';
-import { ModernRoute, ArtworkCard, ModernInput, ModernButton, LoadingSpinner } from '@components';
+import { ArtworkCard, ModernInput, ModernButton, LoadingSpinner } from '@components';
 import { MdGridView, MdViewList, MdViewModule, MdSearch, MdFilterList, MdRefresh } from 'react-icons/md';
 
 const ModernArtworkFeed = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuth();
   const { theme } = useTheme();
-  const { feedArtworks, viewMode, filters } = useArtworks();
+  const { feedArtworks, viewMode } = useArtworks();
   
   // Local state
   const [page, setPage] = useState(1);
@@ -28,31 +28,27 @@ const ModernArtworkFeed = () => {
   } = useGetArtworksQuery({ 
     page, 
     pageSize: 20,
-    category: selectedCategory !== 'all' ? selectedCategory : undefined,
+    category_id: selectedCategory !== 'all' ? selectedCategory : undefined,
     search: searchQuery || undefined,
-    sortBy
+    sort_by: sortBy
   });
 
-  // Mock categories for now - can be replaced with real API later
-  const categoriesData = [
-    { id: 'street-art', name: 'Street Art' },
-    { id: 'murals', name: 'Murals' },
-    { id: 'graffiti', name: 'Graffiti' },
-    { id: 'stencils', name: 'Stencils' },
-    { id: 'installations', name: 'Installations' }
-  ];
+  const { 
+    data: categoriesData, 
+    isLoading: categoriesLoading 
+  } = useGetCategoriesQuery();
 
   // Update Redux state when data changes
   useEffect(() => {
-    if (artworksData?.data) {
+    if (artworksData?.data?.data) {
       if (page === 1) {
-        dispatch(setFeedArtworks(artworksData.data));
+        dispatch(setFeedArtworks(artworksData.data.data));
       } else {
         // Append for pagination
-        dispatch(setFeedArtworks([...feedArtworks, ...artworksData.data]));
+        dispatch(setFeedArtworks([...feedArtworks, ...artworksData.data.data]));
       }
     }
-  }, [artworksData, page, dispatch]);
+  }, [artworksData, page, dispatch, feedArtworks]);
 
   // Handle errors
   useEffect(() => {
@@ -107,7 +103,7 @@ const ModernArtworkFeed = () => {
   };
 
   const handleLoadMore = () => {
-    if (artworksData?.pagination?.hasNextPage) {
+    if (artworksData?.data?.next_page_url) {
       setPage(prev => prev + 1);
     }
   };
@@ -134,20 +130,16 @@ const ModernArtworkFeed = () => {
   };
 
   return (
-    <ModernRoute title="Artwork Feed" requireAuth={false}>
+    <div className="min-h-screen bg-indigo-600 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <h1 className={`text-3xl md:text-4xl font-bold mb-2 ${
-                theme === 'dark' ? 'text-white' : 'text-gray-900'
-              }`}>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">
                 Discover Street Art
               </h1>
-              <p className={`text-lg ${
-                theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-              }`}>
+              <p className="text-lg text-white/80">
                 Explore amazing artworks from artists around the world
               </p>
             </div>
@@ -158,6 +150,7 @@ const ModernArtworkFeed = () => {
                 onClick={handleRefresh}
                 icon={<MdRefresh className="w-4 h-4" />}
                 disabled={artworksLoading}
+                className="border-white/30 text-white hover:bg-white/10 hover:text-white"
               >
                 Refresh
               </ModernButton>
@@ -166,6 +159,7 @@ const ModernArtworkFeed = () => {
                 <ModernButton
                   variant="primary"
                   onClick={() => {/* Open upload modal */}}
+                  className="bg-white/20 text-white hover:bg-white/30 border-white/30"
                 >
                   Upload Artwork
                 </ModernButton>
@@ -189,51 +183,51 @@ const ModernArtworkFeed = () => {
 
             {/* Category Filter */}
             <div className="flex items-center space-x-2">
-              <MdFilterList className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+              <MdFilterList className="w-5 h-5 text-white/80" />
               <select
                 value={selectedCategory}
                 onChange={(e) => handleCategoryChange(e.target.value)}
-                className={`px-3 py-2 rounded-lg border transition-colors duration-200 ${
-                  theme === 'dark' 
-                    ? 'bg-gray-800 border-gray-600 text-white' 
-                    : 'bg-white border-gray-300 text-gray-900'
-                }`}
+                className="px-3 py-2 rounded-lg border transition-colors duration-200 bg-white/10 border-white/20 text-white"
+                disabled={categoriesLoading}
               >
                 <option value="all">All Categories</option>
-                {categoriesData?.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
+                {categoriesLoading ? (
+                  <option disabled>Loading categories...</option>
+                ) : (
+                  categoriesData?.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
 
             {/* Sort Options */}
+              
             <select
               value={sortBy}
               onChange={(e) => handleSortChange(e.target.value)}
-              className={`px-3 py-2 rounded-lg border transition-colors duration-200 ${
-                theme === 'dark' 
-                  ? 'bg-gray-800 border-gray-600 text-white' 
-                  : 'bg-white border-gray-300 text-gray-900'
-              }`}
+              className="px-2  rounded-lg border transition-colors duration-200 bg-white/10 border-white/20 text-white text-sm"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
-              <option value="popular">Most Popular</option>
-              <option value="trending">Trending</option>
+              <option value="most_liked">Most Liked</option>
+              <option value="most_viewed">Most Viewed</option>
+              <option value="most_commented">Most Commented</option>
+              <option value="highest_rated">Highest Rated</option>
+              <option value="title_asc">Title A-Z</option>
+              <option value="title_desc">Title Z-A</option>
             </select>
           </div>
 
           {/* View Mode Toggle */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <span className={`text-sm font-medium ${
-                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-              }`}>
+              <span className="text-sm font-medium text-white/80">
                 View:
               </span>
-              <div className="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+              <div className="flex rounded-lg overflow-hidden border border-white/20">
                 {[
                   { mode: 'grid', icon: MdGridView, label: 'Grid' },
                   { mode: 'list', icon: MdViewList, label: 'List' },
@@ -244,10 +238,8 @@ const ModernArtworkFeed = () => {
                     onClick={() => handleViewModeChange(mode)}
                     className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
                       viewMode === mode
-                        ? 'bg-blue-600 text-white'
-                        : theme === 'dark'
-                        ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-white/10 text-white/60 hover:bg-white/15 hover:text-white/80'
                     }`}
                     title={label}
                   >
@@ -269,10 +261,15 @@ const ModernArtworkFeed = () => {
         {/* Content */}
         {artworksLoading && page === 1 ? (
           <div className="flex justify-center py-12">
-            <LoadingSpinner size="lg" text="Loading amazing artworks..." />
+            <LoadingSpinner size="lg" color="white" text="Loading amazing artworks..." />
           </div>
         ) : feedArtworks.length > 0 ? (
           <>
+            <div className="text-center mb-4">
+              <p className="text-white/80 text-sm">
+                Showing {feedArtworks.length} artwork{feedArtworks.length !== 1 ? 's' : ''}
+              </p>
+            </div>
             <div className={getGridClasses()}>
               {feedArtworks.map((artwork) => (
                 <ArtworkCard
@@ -285,7 +282,7 @@ const ModernArtworkFeed = () => {
             </div>
 
             {/* Load More Button */}
-            {artworksData?.pagination?.hasNextPage && (
+            {artworksData?.data?.next_page_url && (
               <div className="flex justify-center mt-12">
                 <ModernButton
                   variant="outline"
@@ -301,14 +298,10 @@ const ModernArtworkFeed = () => {
         ) : (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🎨</div>
-            <h3 className={`text-xl font-semibold mb-2 ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}>
+            <h3 className="text-xl font-semibold mb-2 text-white">
               No artworks found
             </h3>
-            <p className={`mb-6 ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}>
+            <p className="mb-6 text-white/80">
               {searchQuery || selectedCategory !== 'all' 
                 ? 'Try adjusting your search or filters'
                 : 'Be the first to share some amazing street art!'
@@ -318,6 +311,7 @@ const ModernArtworkFeed = () => {
               <ModernButton
                 variant="primary"
                 onClick={() => {/* Open upload modal */}}
+                className="bg-white/20 text-white hover:bg-white/30 border-white/30"
               >
                 Upload First Artwork
               </ModernButton>
@@ -325,7 +319,7 @@ const ModernArtworkFeed = () => {
           </div>
         )}
       </div>
-    </ModernRoute>
+    </div>
   );
 };
 

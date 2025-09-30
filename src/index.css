@@ -28,6 +28,12 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: #4f46e5 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 /* Custom Animations for Enhanced Design */
 @keyframes fadeIn {
   from {

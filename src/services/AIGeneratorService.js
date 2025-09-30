@@ -119,6 +119,129 @@ class AIGeneratorService {
   }
 
   /**
+   * Generate themed image using custom prompt without reference image
+   * @param {string} customPrompt - The custom prompt to generate
+   * @returns {Promise<Object>} Response with generated image URL
+   */
+  async generateCustomPrompt(customPrompt) {
+    try {
+      const headers = await this.getAuthHeaders();
+      const response = await axios.post(`${this.baseURL}/ai-generator/generate-custom`, {
+        prompt: customPrompt
+      }, {
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('Error generating custom prompt:', error);
+      
+      // If it's an authentication error, redirect to login
+      if (error.response?.status === 401) {
+        this.redirectToLogin();
+        return {
+          success: false,
+          error: 'Session expired. Redirecting to login...'
+        };
+      }
+      
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message
+      };
+    }
+  }
+
+  /**
+   * Generate themed image using custom prompt with reference image
+   * @param {string} customPrompt - The custom prompt to generate
+   * @param {File} imageFile - The reference image file
+   * @returns {Promise<Object>} Response with generated image URL
+   */
+  async forgeCustomSaga(customPrompt, imageFile) {
+    try {
+      const headers = await this.getAuthHeaders();
+      const formData = new FormData();
+      formData.append('prompt', customPrompt);
+      formData.append('image', imageFile);
+
+      const response = await axios.post(`${this.baseURL}/ai-generator/forge-custom-saga`, formData, {
+        headers: {
+          ...headers,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('Error forging custom saga:', error);
+      
+      // If it's an authentication error, redirect to login
+      if (error.response?.status === 401) {
+        this.redirectToLogin();
+        return {
+          success: false,
+          error: 'Session expired. Redirecting to login...'
+        };
+      }
+      
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message
+      };
+    }
+  }
+
+  /**
+   * Check prediction status and progress
+   * @param {string} predictionId - The prediction ID to check
+   * @returns {Promise<Object>} Response with status and progress
+   */
+  async checkPredictionStatus(predictionId) {
+    try {
+      const headers = await this.getAuthHeaders();
+      const response = await axios.post(`${this.baseURL}/ai-generator/check-status`, {
+        prediction_id: predictionId
+      }, {
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('Error checking prediction status:', error);
+      
+      // If it's an authentication error, redirect to login
+      if (error.response?.status === 401) {
+        this.redirectToLogin();
+        return {
+          success: false,
+          error: 'Session expired. Redirecting to login...'
+        };
+      }
+      
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message
+      };
+    }
+  }
+
+  /**
    * Download generated image
    * @param {string} imageUrl - URL of the generated image
    * @param {string} filename - Desired filename for download
@@ -150,20 +273,28 @@ class AIGeneratorService {
   /**
    * Upload generated image as artwork
    * @param {string} imageUrl - URL of the generated image
-   * @param {string} archetype - The archetype used
+   * @param {string} archetype - The archetype used (or 'custom' for custom prompts)
    * @param {string} title - Optional custom title
    * @param {string} description - Optional custom description
+   * @param {string|null} customPrompt - Optional custom prompt used
    * @returns {Promise<Object>} Response with artwork data
    */
-  async uploadAsArtwork(imageUrl, archetype, title = null, description = null) {
+  async uploadAsArtwork(imageUrl, archetype, title = null, description = null, customPrompt = null) {
     try {
       const headers = await this.getAuthHeaders();
-      const response = await axios.post(`${this.baseURL}/ai-generator/upload-as-artwork`, {
+      const payload = {
         image_url: imageUrl,
         archetype: archetype,
         title: title,
         description: description
-      }, {
+      };
+
+      // Add custom prompt if provided
+      if (customPrompt) {
+        payload.prompt = customPrompt;
+      }
+
+      const response = await axios.post(`${this.baseURL}/ai-generator/upload-as-artwork`, payload, {
         headers: {
           ...headers,
           'Content-Type': 'application/json',

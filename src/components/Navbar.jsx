@@ -106,9 +106,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`w-full fixed top-0 left-0 right-0 z-[200] mb-4 transition-all duration-300 ${
-      isScrolled ? 'bg-indigo-900/95 backdrop-blur-md shadow-xl border-b border-white/10' : 'bg-transparent'
-    }`}>
+    <nav className="w-full fixed top-0 left-0 right-0 z-[200] bg-indigo-600 backdrop-blur-md shadow-xl">
       <div className="max-w-7xl mx-auto flex py-3 px-4 sm:px-6 items-center justify-between">
         {/* Left Side - Logo + Navigation */}
         <div className="flex items-center space-x-3 sm:space-x-6">

@@ -193,15 +193,15 @@ const SingleArtwork = () => {
     // Handle error state
     if (error) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-indigo-600 pt-20 flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Artwork</h1>
-                    <p className="text-gray-600 mb-4">
+                    <h1 className="text-2xl font-bold text-white mb-4">Error Loading Artwork</h1>
+                    <p className="text-white/80 mb-4">
                         {error?.data?.message || error?.message || 'Failed to load artwork'}
                     </p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                        className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30"
                     >
                         Try Again
                     </button>
@@ -213,11 +213,11 @@ const SingleArtwork = () => {
     // Handle case where artwork is not found
     if (!isLoading && !artwork) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-indigo-600 pt-20 flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-800 mb-4">Artwork Not Found</h1>
-                    <p className="text-gray-600 mb-4">The artwork you're looking for doesn't exist.</p>
-                    <Link to="/artworks" className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                    <h1 className="text-2xl font-bold text-white mb-4">Artwork Not Found</h1>
+                    <p className="text-white/80 mb-4">The artwork you're looking for doesn't exist.</p>
+                    <Link to="/artworks" className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30">
                         Browse Artworks
                     </Link>
                 </div>
@@ -226,9 +226,9 @@ const SingleArtwork = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-indigo-600">
             {/* Hero Section */}
-            <div className="bg-indigo-600">
+            <div className="bg-indigo-600 pt-20">
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     {isLoading ? (
                         <div className="flex justify-center items-center h-96">

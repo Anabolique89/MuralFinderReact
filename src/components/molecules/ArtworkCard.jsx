@@ -22,8 +22,39 @@ const ArtworkCard = ({
   const { theme } = useTheme();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [currentImageSrc, setCurrentImageSrc] = useState('');
   
   const [likeArtwork, { isLoading: isLiking }] = useLikeArtworkMutation();
+
+  // Default placeholder image
+  const defaultImage = 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
+
+  // Function to get the best available image
+  const getArtworkImage = () => {
+    if (imageError || !artwork) return defaultImage;
+
+    const primaryImage = artwork.primary_image_path ? getFileUrl(artwork.primary_image_path) : null;
+    const fallbackImage = artwork.image_path ? getFileUrl(artwork.image_path) : null;
+
+    return primaryImage || fallbackImage || defaultImage;
+  };
+
+  // Handle image load error
+  const handleImageError = (e) => {
+    const failedSrc = e.target.src;
+    // Only set error if we're not already showing the default image
+    if (failedSrc !== defaultImage && !imageError) {
+      setImageError(true);
+      setCurrentImageSrc(defaultImage);
+    }
+    setImageLoaded(true);
+  };
+
+  // Handle image load success
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
 
   const sizes = {
     sm: 'max-w-sm',
@@ -114,33 +145,33 @@ const ArtworkCard = ({
     >
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden">
-        {!imageLoaded && !imageError && (
+        {!imageLoaded && (
           <div className={`
-            absolute inset-0 animate-pulse
+            absolute inset-0 animate-pulse flex items-center justify-center
             ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}
-          `} />
-        )}
-        
-        {!imageError ? (
-          <img
-            src={getFileUrl(artwork.primary_image_path || artwork.image_path)}
-            alt={artwork.title}
-            className={`
-              w-full h-full object-cover transition-transform duration-300
-              group-hover:scale-105
-              ${imageLoaded ? 'opacity-100' : 'opacity-0'}
-            `}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div className={`
-            w-full h-full flex items-center justify-center
-            ${theme === 'dark' ? 'bg-gray-700 text-gray-400' : 'bg-gray-200 text-gray-500'}
           `}>
-            <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
+          </div>
+        )}
+        
+        <img
+          src={currentImageSrc || getArtworkImage()}
+          alt={artwork.title}
+          className={`
+            w-full h-full object-cover transition-transform duration-300
+            group-hover:scale-105
+            ${imageLoaded ? 'opacity-100' : 'opacity-0'}
+          `}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+        />
+
+        {/* Placeholder indicator */}
+        {imageError && (
+          <div className="absolute top-2 left-2 bg-red-500/80 backdrop-blur-sm text-white px-2 py-1 rounded text-xs z-20">
+            Placeholder
           </div>
         )}
 

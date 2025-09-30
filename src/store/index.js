@@ -7,6 +7,7 @@ import { muralFinderApi } from './api/muralFinderApi';
 import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
 import searchReducer from './slices/searchSlice';
+import artworkReducer from './slices/artworkSlice';
 
 // Simple reducers for missing slices
 const themeReducer = (state = { mode: 'light' }, action) => {
@@ -38,16 +39,6 @@ const notificationsReducer = (state = { items: [], unreadCount: 0 }, action) => 
   }
 };
 
-const artworksReducer = (state = { items: [], loading: false }, action) => {
-  switch (action.type) {
-    case 'artworks/setLoading':
-      return { ...state, loading: action.payload };
-    case 'artworks/setItems':
-      return { ...state, items: action.payload };
-    default:
-      return state;
-  }
-};
 
 
 // Persist configuration
@@ -64,7 +55,7 @@ const rootReducer = combineReducers({
   search: searchReducer,
   theme: themeReducer,
   notifications: notificationsReducer,
-  artworks: artworksReducer,
+  artworks: artworkReducer,
   [muralFinderApi.reducerPath]: muralFinderApi.reducer,
 });
 

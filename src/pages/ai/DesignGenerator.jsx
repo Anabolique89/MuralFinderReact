@@ -8,8 +8,11 @@ const DesignGenerator = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [archetype, setArchetype] = useState("viking");
+  const [customPrompt, setCustomPrompt] = useState("");
+  const [useCustomPrompt, setUseCustomPrompt] = useState(false);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [progressMessage, setProgressMessage] = useState("");
   const [resultImage, setResultImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -45,38 +48,32 @@ const DesignGenerator = () => {
     setResultImage(null);
 
     try {
-      const interval = setInterval(() => {
-        setProgress((prev) => (prev >= 90 ? prev : prev + 10));
-      }, 800);
-
       let result;
       if (!file) {
         // Generate archetype image without reference
-        result = await AIGeneratorService.generateArchetype(archetype);
+        if (useCustomPrompt && customPrompt.trim()) {
+          result = await AIGeneratorService.generateCustomPrompt(customPrompt.trim());
+        } else {
+          result = await AIGeneratorService.generateArchetype(archetype);
+        }
       } else {
         // Generate with reference image
-        result = await AIGeneratorService.forgeSaga(archetype, file);
+        if (useCustomPrompt && customPrompt.trim()) {
+          result = await AIGeneratorService.forgeCustomSaga(customPrompt.trim(), file);
+        } else {
+          result = await AIGeneratorService.forgeSaga(archetype, file);
+        }
       }
 
-      clearInterval(interval);
-      setProgress(100);
-
-      console.log('Full result object:', result);
-      console.log('Result structure:', {
-        success: result.success,
-        dataSuccess: result.data?.success,
-        dataData: result.data?.data,
-        output: result.data?.data?.output
-      });
-
-      if (result.success && result.data.success && result.data.data.output) {
-        console.log('Received image URL:', result.data.data.output);
-        setResultImage(result.data.data.output);
-        setShowModal(true);
-        toast.success(`✅ Generated using ${result.data.data.service}`);
+      if (result.success && result.data.success && result.data.data.prediction_id) {
+        const predictionId = result.data.data.prediction_id;
+        console.log('Prediction started:', predictionId);
+        
+        // Start polling for progress
+        await pollForProgress(predictionId);
       } else {
         console.error("Service error:", result);
-        toast.error(`Error: ${result.error || "Failed to generate image"}`);
+        toast.error(`Error: ${result.error || "Failed to start generation"}`);
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -85,6 +82,60 @@ const DesignGenerator = () => {
       setLoading(false);
       setProgress(0);
     }
+  };
+
+  const pollForProgress = async (predictionId) => {
+    const maxAttempts = 60; // 3 minutes with 3-second intervals
+    let attempts = 0;
+
+    const poll = async () => {
+      try {
+        const statusResult = await AIGeneratorService.checkPredictionStatus(predictionId);
+        
+        if (statusResult.success && statusResult.data.success) {
+          const statusData = statusResult.data.data;
+          const progress = statusData.progress;
+          const message = statusData.message;
+          const status = statusData.status;
+
+          console.log('Status update:', { status, progress, message });
+          
+          setProgress(progress);
+          setProgressMessage(message);
+
+          if (status === 'succeeded' && statusData.output) {
+            console.log('Generation completed:', statusData.output);
+            setResultImage(statusData.output);
+            setShowModal(true);
+            toast.success(`✅ Generated using Minimax Image-01`);
+            return; // Stop polling
+          }
+
+          if (status === 'failed') {
+            console.error('Generation failed:', statusData.error);
+            toast.error(`Generation failed: ${statusData.error}`);
+            return; // Stop polling
+          }
+
+          // Continue polling if still processing
+          if (attempts < maxAttempts && (status === 'starting' || status === 'processing')) {
+            attempts++;
+            setTimeout(poll, 3000); // Poll every 3 seconds
+          } else {
+            toast.error('Generation timed out. Please try again.');
+          }
+        } else {
+          console.error('Status check failed:', statusResult);
+          toast.error('Failed to check generation status');
+        }
+      } catch (error) {
+        console.error('Polling error:', error);
+        toast.error('Error checking generation progress');
+      }
+    };
+
+    // Start polling
+    poll();
   };
 
   const [archetypes, setArchetypes] = useState([]);
@@ -105,10 +156,21 @@ const DesignGenerator = () => {
 
     setUploadingAsArtwork(true);
     try {
-      const title = `AI Generated ${archetype.charAt(0).toUpperCase() + archetype.slice(1)} Artwork`;
-      const description = `This artwork was generated using AI with the ${archetype} archetype. Created using MuralFinder's AI Generator.`;
+      let title, description, archetypeValue, promptValue;
 
-      const result = await AIGeneratorService.uploadAsArtwork(resultImage, archetype, title, description);
+      if (useCustomPrompt && customPrompt.trim()) {
+        title = `AI Generated Custom Artwork`;
+        description = `This artwork was generated using AI with a custom prompt. Created using MuralFinder's AI Generator.`;
+        archetypeValue = 'custom';
+        promptValue = customPrompt.trim();
+      } else {
+        title = `AI Generated ${archetype.charAt(0).toUpperCase() + archetype.slice(1)} Artwork`;
+        description = `This artwork was generated using AI with the ${archetype} archetype. Created using MuralFinder's AI Generator.`;
+        archetypeValue = archetype;
+        promptValue = null;
+      }
+
+      const result = await AIGeneratorService.uploadAsArtwork(resultImage, archetypeValue, title, description, promptValue);
       
       if (result.success) {
         toast.success('AI artwork uploaded successfully!');
@@ -187,31 +249,85 @@ const DesignGenerator = () => {
             </p>
           </div>
 
-          {/* Archetype Selector */}
+          {/* Prompt Selection Toggle */}
           <div className="mb-6">
             <label className="block text-lg font-semibold mb-3 text-gradient">
               👑 Choose Your Legend
             </label>
-            <select
-              value={archetype}
-              onChange={(e) => setArchetype(e.target.value)}
-              className="w-full p-4 rounded-xl bg-white/5 border-2 border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-lg hover:border-white/50 transition-colors"
-            >
-              {archetypes.map((arch) => (
-                <option key={arch.value} value={arch.value} className="bg-gray-800 text-white">
-                  {arch.label}
-                </option>
-              ))}
-            </select>
-            <p className="text-white/60 text-sm mt-2">
-              {archetypes.find(arch => arch.value === archetype)?.description}
-            </p>
+            
+            {/* Toggle Buttons */}
+            <div className="flex gap-2 mb-4">
+              <button
+                type="button"
+                onClick={() => setUseCustomPrompt(false)}
+                className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
+                  !useCustomPrompt 
+                    ? 'bg-blue-gradient text-white shadow-lg' 
+                    : 'bg-white/10 text-white/60 hover:bg-white/20'
+                }`}
+              >
+                🎭 Preset Archetypes
+              </button>
+              <button
+                type="button"
+                onClick={() => setUseCustomPrompt(true)}
+                className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
+                  useCustomPrompt 
+                    ? 'bg-blue-gradient text-white shadow-lg' 
+                    : 'bg-white/10 text-white/60 hover:bg-white/20'
+                }`}
+              >
+                ✨ Custom Prompt
+              </button>
+            </div>
+
+            {/* Archetype Selector */}
+            {!useCustomPrompt && (
+              <div className="mb-4">
+                <select
+                  value={archetype}
+                  onChange={(e) => setArchetype(e.target.value)}
+                  className="w-full p-4 rounded-xl bg-white/5 border-2 border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-lg hover:border-white/50 transition-colors"
+                >
+                  {archetypes.map((arch) => (
+                    <option key={arch.value} value={arch.value} className="bg-gray-800 text-white">
+                      {arch.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-white/60 text-sm mt-2">
+                  {archetypes.find(arch => arch.value === archetype)?.description}
+                </p>
+              </div>
+            )}
+
+            {/* Custom Prompt Input */}
+            {useCustomPrompt && (
+              <div className="mb-4">
+                <textarea
+                  value={customPrompt}
+                  onChange={(e) => setCustomPrompt(e.target.value)}
+                  placeholder="Describe your character in detail... e.g., 'A cyberpunk samurai with neon armor, glowing katana, standing in a futuristic Tokyo street at night, highly detailed, cinematic lighting'"
+                  className="w-full p-4 rounded-xl bg-white/5 border-2 border-white/30 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-lg hover:border-white/50 transition-colors resize-none"
+                  rows={4}
+                  maxLength={500}
+                />
+                <div className="flex justify-between items-center mt-2">
+                  <p className="text-white/60 text-sm">
+                    Be descriptive! Include style, setting, lighting, and details for best results.
+                  </p>
+                  <span className="text-white/40 text-xs">
+                    {customPrompt.length}/500
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Forge Button */}
           <button
             onClick={handleForge}
-            disabled={loading}
+            disabled={loading || (useCustomPrompt && !customPrompt.trim())}
             className="w-full px-8 py-4 bg-blue-gradient text-white rounded-xl font-bold text-lg hover:opacity-80 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 disabled:hover:scale-100 shadow-lg hover-lift"
           >
             {loading ? "🔥 Forging Your Legend..." : "⚔️ Forge My Saga"}
@@ -221,7 +337,7 @@ const DesignGenerator = () => {
           {loading && (
             <div className="mt-6">
               <div className="flex justify-between text-sm text-white mb-3">
-                <span className="font-medium">🔨 Smithing in the fires of creation...</span>
+                <span className="font-medium">{progressMessage || "🔨 Smithing in the fires of creation..."}</span>
                 <span className="text-gradient font-bold">{progress}%</span>
               </div>
               <div className="w-full bg-white/10 rounded-full h-4 overflow-hidden">
@@ -271,7 +387,10 @@ const DesignGenerator = () => {
                 {/* Image Info */}
                 <div className="mt-3 text-center">
                   <p className="text-gradient font-semibold text-sm mb-1">
-                    ✨ {archetype.charAt(0).toUpperCase() + archetype.slice(1)} Character Generated!
+                    ✨ {useCustomPrompt && customPrompt.trim() 
+                      ? 'Custom Character Generated!' 
+                      : `${archetype.charAt(0).toUpperCase() + archetype.slice(1)} Character Generated!`
+                    }
                   </p>
                   <p className="text-white/60 text-xs">
                     Click to view full size

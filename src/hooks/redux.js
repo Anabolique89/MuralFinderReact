@@ -39,11 +39,16 @@ export const useNotifications = () => {
 export const useArtworks = () => {
   const artworks = useSelector(state => state.artworks?.items || []);
   const loading = useSelector(state => state.artworks?.loading || false);
+  const feedArtworks = useSelector(state => state.artworks?.feedArtworks || []);
+  const viewMode = useSelector(state => state.artworks?.viewMode || 'grid');
+  const filters = useSelector(state => state.artworks?.filters || {});
   
   return {
     artworks,
-    feedArtworks: artworks, // Alias for compatibility
+    feedArtworks,
     loading,
+    viewMode,
+    filters,
   };
 };
 

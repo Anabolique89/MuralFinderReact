@@ -48,14 +48,15 @@ export const muralFinderApi = createApi({
   endpoints: (builder) => ({
     // Artwork endpoints
     getArtworks: builder.query({
-      query: ({ page = 1, pageSize = 20, category, search, nearby } = {}) => {
+      query: ({ page = 1, pageSize = 20, category_id, search, nearby, sort_by } = {}) => {
         const params = new URLSearchParams({
           page: page.toString(),
-          pageSize: pageSize.toString(),
+          per_page: pageSize.toString(),
         });
         
-        if (category) params.append('category', category);
+        if (category_id) params.append('category_id', category_id);
         if (search) params.append('search', search);
+        if (sort_by) params.append('sort_by', sort_by);
         if (nearby) {
           params.append('latitude', nearby.latitude);
           params.append('longitude', nearby.longitude);
@@ -104,6 +105,12 @@ export const muralFinderApi = createApi({
         method: 'POST',
       }),
       invalidatesTags: (result, error, id) => [{ type: 'Artwork', id }],
+    }),
+
+    // Categories endpoint
+    getCategories: builder.query({
+      query: () => 'legacy/categories',
+      providesTags: ['Category'],
     }),
     
     // Wall endpoints
@@ -426,6 +433,7 @@ export const {
   useUpdateArtworkMutation,
   useDeleteArtworkMutation,
   useLikeArtworkMutation,
+  useGetCategoriesQuery,
   useGetWallsQuery,
   useGetWallByIdQuery,
   useCreateWallMutation,
