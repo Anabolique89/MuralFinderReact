@@ -121,189 +121,234 @@ const AddPost = () => {
 
   return (
     <AdminLayout>
-      <div className="p-6">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 font-raleway">Add New Post</h1>
-          <p className="text-gray-600 font-raleway mt-1">Create a new blog post or article</p>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+        {/* Background Elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-20 w-32 h-32 bg-indigo-400 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-40 right-20 w-24 h-24 bg-purple-400 rounded-full blur-2xl animate-bounce"></div>
+          <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-blue-400 rounded-full blur-xl animate-ping"></div>
         </div>
 
-        <div className="max-w-4xl">
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="space-y-6">
+        <div className="relative z-10 p-6">
+          <div className="mb-8 text-center">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-raleway mb-2">
+              Create New Post
+            </h1>
+            <p className="text-gray-600 font-raleway text-lg">Share your thoughts with the community</p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8">
+              <div className="space-y-8">
               {/* Title */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
-                  <FontAwesomeIcon icon={faNewspaper} className="mr-2" />
-                  Title
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                    <FontAwesomeIcon icon={faNewspaper} className="text-white text-sm" />
+                  </div>
+                  Post Title
                 </label>
                 <input
                   type="text"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
-                    errors.title ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm ${
+                    errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-indigo-300'
                   }`}
-                  placeholder="Enter post title"
+                  placeholder="Enter an engaging title for your post..."
                 />
-                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+                {errors.title && <p className="text-red-500 text-sm mt-2 flex items-center">
+                  <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+                  {errors.title}
+                </p>}
               </div>
 
               {/* Excerpt */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
-                  Excerpt
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3">
+                  📝 Post Excerpt
                 </label>
                 <textarea
                   name="excerpt"
                   value={formData.excerpt}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Brief description of the post"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:border-indigo-300 resize-none"
+                  placeholder="Write a brief summary that will appear in post previews..."
                 />
+                <p className="text-xs text-gray-500 mt-2">This will be shown in post previews and search results</p>
               </div>
 
               {/* Content */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
-                  Content
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3">
+                  ✍️ Post Content
                 </label>
                 <textarea
                   name="content"
                   value={formData.content}
                   onChange={handleChange}
-                  rows={10}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
-                    errors.content ? 'border-red-500' : 'border-gray-300'
+                  rows={12}
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm resize-none ${
+                    errors.content ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-indigo-300'
                   }`}
-                  placeholder="Write your post content here..."
+                  placeholder="Write your post content here... Share your thoughts, ideas, and insights with the community."
                 />
-                {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content}</p>}
+                {errors.content && <p className="text-red-500 text-sm mt-2 flex items-center">
+                  <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+                  {errors.content}
+                </p>}
               </div>
 
               {/* Featured Image */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
-                  <FontAwesomeIcon icon={faImage} className="mr-2" />
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                    <FontAwesomeIcon icon={faImage} className="text-white text-sm" />
+                  </div>
                   Featured Image
                 </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                />
+                <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 hover:border-indigo-400 transition-colors duration-300 bg-gray-50/50">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:border-indigo-300"
+                  />
+                  <p className="text-sm text-gray-500 mt-2">Upload an image to make your post more engaging</p>
+                </div>
                 {imagePreview && (
-                  <div className="mt-3">
+                  <div className="mt-4 p-4 bg-white/50 rounded-xl border border-gray-200">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="w-32 h-32 object-cover rounded-lg border border-gray-300"
+                      className="w-40 h-40 object-cover rounded-xl border border-gray-200 shadow-sm"
                     />
                   </div>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Type (Required) */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
-                    Type <span className="text-red-500">*</span>
+                <div className="group">
+                  <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-white text-sm font-bold">📝</span>
+                    </div>
+                    Post Type <span className="text-red-500 ml-1">*</span>
                   </label>
                   <select
                     name="type"
                     value={formData.type}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
-                      errors.type ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm ${
+                      errors.type ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-indigo-300'
                     }`}
                   >
-                    <option value="article">Article</option>
-                    <option value="discussion">Discussion</option>
-                    <option value="question">Question</option>
-                    <option value="showcase">Showcase</option>
-                    <option value="event">Event</option>
-                    <option value="news">News</option>
+                    <option value="article">📰 Article</option>
+                    <option value="discussion">💬 Discussion</option>
+                    <option value="question">❓ Question</option>
+                    <option value="showcase">🎨 Showcase</option>
+                    <option value="event">📅 Event</option>
+                    <option value="news">📢 News</option>
                   </select>
-                  {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
+                  {errors.type && <p className="text-red-500 text-sm mt-2 flex items-center">
+                    <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+                    {errors.type}
+                  </p>}
                 </div>
 
                 {/* Category ID (Optional) */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
+                <div className="group">
+                  <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-white text-sm font-bold">🏷️</span>
+                    </div>
                     Category
                   </label>
                   <select
                     name="category_id"
                     value={formData.category_id || ''}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:border-indigo-300"
                   >
                     <option value="">No Category</option>
-                    <option value="1">Art & Design</option>
-                    <option value="2">Street Art</option>
-                    <option value="3">Community</option>
-                    <option value="4">Events</option>
-                    <option value="5">News</option>
+                    <option value="1">🎨 Art & Design</option>
+                    <option value="2">🏙️ Street Art</option>
+                    <option value="3">👥 Community</option>
+                    <option value="4">📅 Events</option>
+                    <option value="5">📰 News</option>
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Published Status */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
+                <div className="group">
+                  <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-white text-sm font-bold">📢</span>
+                    </div>
                     Publication Status
                   </label>
                   <select
                     name="is_published"
                     value={formData.is_published}
                     onChange={(e) => setFormData(prev => ({ ...prev, is_published: e.target.value === 'true' }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:border-indigo-300"
                   >
-                    <option value={true}>Published</option>
-                    <option value={false}>Draft</option>
+                    <option value={true}>✅ Published</option>
+                    <option value={false}>📝 Draft</option>
                   </select>
                 </div>
 
                 {/* Allow Comments */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
+                <div className="group">
+                  <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-white text-sm font-bold">💬</span>
+                    </div>
                     Allow Comments
                   </label>
                   <select
                     name="allow_comments"
                     value={formData.allow_comments}
                     onChange={(e) => setFormData(prev => ({ ...prev, allow_comments: e.target.value === 'true' }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:border-indigo-300"
                   >
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
+                    <option value={true}>✅ Yes</option>
+                    <option value={false}>❌ No</option>
                   </select>
                 </div>
 
                 {/* Featured */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
+                <div className="group">
+                  <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-white text-sm font-bold">⭐</span>
+                    </div>
                     Featured Post
                   </label>
                   <select
                     name="is_featured"
                     value={formData.is_featured}
                     onChange={(e) => setFormData(prev => ({ ...prev, is_featured: e.target.value === 'true' }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:border-indigo-300"
                   >
-                    <option value={false}>No</option>
-                    <option value={true}>Yes</option>
+                    <option value={false}>❌ No</option>
+                    <option value={true}>⭐ Yes</option>
                   </select>
                 </div>
               </div>
 
               {/* Tags */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 font-raleway mb-2">
-                  <FontAwesomeIcon icon={faTag} className="mr-2" />
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-800 font-raleway mb-3 flex items-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg flex items-center justify-center mr-3">
+                    <FontAwesomeIcon icon={faTag} className="text-white text-sm" />
+                  </div>
                   Tags
                 </label>
                 <input
@@ -311,36 +356,46 @@ const AddPost = () => {
                   name="tags"
                   value={formData.tags}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="tag1, tag2, tag3"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:border-indigo-300"
+                  placeholder="art, design, community, inspiration..."
                 />
-                <p className="text-xs text-gray-500 mt-1">Separate tags with commas</p>
+                <p className="text-xs text-gray-500 mt-2">Separate tags with commas to help people discover your post</p>
               </div>
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex justify-end space-x-4 mt-6">
+            <div className="flex justify-end space-x-4 mt-12 pt-8 border-t border-gray-200">
               <button
                 type="button"
                 onClick={() => navigate('/admin/posts')}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-raleway"
+                className="px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 hover:border-gray-400 font-raleway font-medium transition-all duration-300 flex items-center space-x-2"
               >
-                Cancel
+                <span>❌</span>
+                <span>Cancel</span>
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 font-raleway flex items-center space-x-2"
+                className="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 font-raleway font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
-                {isLoading && <FontAwesomeIcon icon={faSpinner} spin />}
-                <span>{isLoading ? 'Creating...' : 'Create Post'}</span>
+                {isLoading ? (
+                  <>
+                    <FontAwesomeIcon icon={faSpinner} spin className="text-lg" />
+                    <span>Creating Post...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>✨</span>
+                    <span>Create Post</span>
+                  </>
+                )}
               </button>
             </div>
           </form>
         </div>
       </div>
+      </div>
     </AdminLayout>
   );
 };
-
 export default AddPost;

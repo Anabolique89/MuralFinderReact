@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../../style';
 import AuthService from '../../services/AuthService';
 import ProfileImageUpload from '../../components/ProfileUpload';
@@ -23,15 +23,7 @@ const ProfileSettings = () => {
 
 
     });
-    const [isProfileUpdated, setIsProfileUpdated] = useState(false);
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setProfileData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    }; delete
+    const [, setIsProfileUpdated] = useState(false);
 
         useEffect(() => {
             const fetchProfileData = async () => {
@@ -50,9 +42,21 @@ const ProfileSettings = () => {
         }, []);
 
     return (
-        <section className='font-raleway'>
-            <div className="bg-indigo-600 w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-slate-800">
-                <a href="/Profile"><ChevronLeftIcon className='text-white' /></a>
+        <section className='font-raleway min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 pt-20'>
+            {/* Background Elements */}
+            <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-20 left-20 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute bottom-40 right-20 w-24 h-24 bg-blue-300 rounded-full blur-2xl animate-bounce"></div>
+                <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-purple-300 rounded-full blur-xl animate-ping"></div>
+            </div>
+
+            <div className="relative z-10 w-full flex flex-col gap-8 px-4 md:px-16 lg:px-28 md:flex-row text-slate-800">
+                <div className="flex items-center mb-4">
+                    <a href="/Profile" className="flex items-center space-x-2 text-white hover:text-indigo-200 transition-colors duration-300">
+                        <ChevronLeftIcon className='text-white text-2xl' />
+                        <span className="font-medium">Back to Profile</span>
+                    </a>
+                </div>
                 {/* <aside className="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
                     <div className="sticky flex flex-col gap-2 p-4 text-sm border-r border-slate-800 top-12">
                         <h2 className="pl-3 mb-4 text-2xl font-semibold font-raleway">Settings</h2>
@@ -64,61 +68,98 @@ const ProfileSettings = () => {
                 </aside> */}
                 <main className="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4">
                     <div className="p-2 md:p-4">
-                        <div className="w-full px-6 pb-4 mt-8 sm:max-w-xl sm:rounded-lg font-raleway text-white">
-                            <h2 className="pl-6 font-raleway text-2xl font-bold sm:text-xl pt-4 pb-6">Profile Picture</h2>
-                            <div className="grid max-w-2xl mx-auto mt-2">
-                                <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
+                        <div className="w-full px-6 pb-8 mt-8 sm:max-w-4xl sm:rounded-2xl font-raleway bg-white/10 backdrop-blur-md shadow-md border border-white/20">
+                            <div className="text-center mb-8 pt-6">
+                                <h2 className="text-3xl font-bold text-white font-raleway mb-2">
+                                    Profile Picture
+                                </h2>
+                                <p className="text-white/80">Update your profile image</p>
+                            </div>
+                            
+                            <div className="grid max-w-4xl mx-auto mt-2">
+                                <div className="flex flex-col items-center space-y-8">
                                     {profileData && profileData.profile && (
-                                        <ProfileImageUpload imageUrl={profileData.profile.profile_image_url} />
+                                        <div className="flex-shrink-0">
+                                            <ProfileImageUpload imageUrl={profileData.profile.profile_image_url} />
+                                        </div>
                                     )}
+                                    
+                                    <div className="w-full space-y-6">
+                                        <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                                                <span className="w-6 h-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
+                                                    <span className="text-white text-xs">👤</span>
+                                                </span>
+                                                Profile Information
+                                            </h3>
+                                            
+                                            <div className="space-y-4">
+                                                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                                                    <label className="block text-sm font-medium text-white/80 mb-2">Bio</label>
+                                                    <p className="text-sm text-white">
+                                                        {profileData && profileData.profile && profileData.profile.bio || "No bio available"}
+                                                    </p>
+                                                </div>
+                                                
+                                                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                                                    <label className="block text-sm font-medium text-white/80 mb-2">Email</label>
+                                                    <p className="text-sm text-white">
+                                                        {profileData && profileData.email || "No email available"}
+                                                    </p>
+                                                </div>
+                                                
+                                                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                                                    <label className="block text-sm font-medium text-white/80 mb-2">Location</label>
+                                                    <p className="text-sm text-white">
+                                                        City, Country
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div className="items-center mt-4 sm:mt-14 font-raleway text-white">
-
-                                    <div className="mb-4 font-raleway">
-                                        <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-800 dark:text-white">Bio</label>
-                                        <div className="rounded-lg border border-indigo-300 p-2.5">
-                                            <p className="text-sm text-white">
-                                                {profileData && profileData.profile && profileData.profile.bio}
+                                
+                                <div className="mt-12 pt-8 border-t border-white/20">
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <h3 className="text-lg font-semibold text-white mb-6 flex items-center">
+                                            <span className="w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mr-3">
+                                                <span className="text-white text-xs">🔒</span>
+                                            </span>
+                                            Password Settings
+                                        </h3>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-white/80 mb-2">Current Password</label>
+                                                <input 
+                                                    type="password" 
+                                                    className="w-full px-4 py-3 border-2 border-white/20 rounded-xl focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white/10 backdrop-blur-sm hover:border-white/40 text-white placeholder-white/60" 
+                                                    placeholder="Enter current password" 
+                                                />
+                                            </div>
+                                            
+                                            <div>
+                                                <label className="block text-sm font-medium text-white/80 mb-2">New Password</label>
+                                                <input 
+                                                    type="password" 
+                                                    className="w-full px-4 py-3 border-2 border-white/20 rounded-xl focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all duration-300 bg-white/10 backdrop-blur-sm hover:border-white/40 text-white placeholder-white/60" 
+                                                    placeholder="Enter new password" 
+                                                />
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="mt-6 flex items-center justify-between">
+                                            <p className="text-sm text-white/70">
+                                                Can&apos;t remember your current password? 
+                                                <a className="text-blue-300 hover:text-blue-200 font-medium ml-1" href="#">
+                                                    Recover Account
+                                                </a>
                                             </p>
+                                            
+                                            <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:from-blue-700 hover:to-cyan-700 font-medium transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105">
+                                                Save Password
+                                            </button>
                                         </div>
-                                        <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
-                                            <p className="text-sm text-white">
-                                                {profileData && profileData.email}
-                                            </p>
-                                        </div>
-                                        <div className="rounded-lg border border-indigo-300 p-2.5 mt-2">
-                                            <p className="text-sm text-white">
-                                                City, Country
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <hr className="mt-10 mb-10" />
-                                    <h2 className="font-raleway text-2xl font-bold sm:text-xl pt-4 pb-6">Password</h2>
-                                    <div className="flex items-center">
-                                        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
-                                            <label htmlFor="login-password">
-                                                <span className="text-sm text-slate-800 font-raleway">Current Password</span>
-                                                <div className="relative flex ">
-                                                    <input type="password" id="login-password" className="w-full flex-shrink rounded-md transition focus-within:border-blue-600appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="***********" />
-                                                </div>
-                                            </label>
-                                            <label htmlFor="login-password">
-                                                <span className="text-sm text-slate-800 font-raleway">New Password</span>
-                                                <div className="relative flex">
-                                                    <input type="password" id="login-password" className="w-full flex-shrink rounded-md transition focus-within:border-blue-600appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="***********" />
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="mt-5 ml-2 h-6 w-6 cursor-pointer text-sm font-semibold text-gray-800 underline decoration-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                        </svg>
-                                    </div>
-                                    <p className="mt-2">Can't remember your current password. <a className="text-sm font-semibold text-blue-600 underline decoration-2" href="#">Recover Account</a></p>
-                                    <button className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white">Save Password</button>
-                                    <hr className="mt-4 mb-8" />
-                                    <div className="flex justify-end">
-
                                     </div>
                                 </div>
                             </div>
@@ -129,22 +170,37 @@ const ProfileSettings = () => {
                 <section className="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4">
                     <div className="p-2 md:p-4">
                         <div className='flex justify-center items-center h-full'>
-                            <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
-                                <h2 className="font-raleway text-white text-2xl font-bold sm:text-xl pt-6 pb-6">Profile Info</h2>
-                                {profileData.profile ? (
-                                    <ProfileUpdate profile={profileData.profile} onProfileUpdated={() => setIsProfileUpdated(true)} />
-
-                                ) : (
-                                    <FontAwesomeIcon icon={faSpinner} spin className="text-white text-2xl" />
-                                )}
-                            </div></div>
+                            <div className="w-full px-6 pb-8 mt-8 sm:max-w-4xl sm:rounded-2xl bg-white/10 backdrop-blur-md shadow-md border border-white/20">
+                                <div className="text-center mb-8 pt-6">
+                                    <h2 className="text-3xl font-bold text-white font-raleway mb-2">
+                                        Profile Information
+                                    </h2>
+                                    <p className="text-white/80">Update your personal details</p>
+                                </div>
+                                
+                                <div className="max-w-4xl mx-auto">
+                                    {profileData.profile ? (
+                                        <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                            <ProfileUpdate profile={profileData.profile} onProfileUpdated={() => setIsProfileUpdated(true)} />
+                                        </div>
+                                    ) : (
+                                        <div className="flex justify-center items-center py-12">
+                                            <div className="text-center">
+                                                <FontAwesomeIcon icon={faSpinner} spin className="text-white text-3xl mb-4" />
+                                                <p className="text-white/70">Loading profile information...</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
 
             </div>
             <BackToTopButton />
-            <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
+            <div className={`${styles.paddingX} bg-gradient-to-r from-indigo-600 to-purple-600 w-full overflow-hidden`}>
                 <Footer />
             </div>
         </section>
