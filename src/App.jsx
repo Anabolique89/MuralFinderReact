@@ -241,6 +241,7 @@ const App = () => {
           {/* Updated Routes - Using Modern Components */}
           <Route path="/artworks" element={<ModernArtworkFeed />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/upload" element={<DragDropImageUploader />} />
           
           {/* AI Generator Routes */}
           <Route path="/ai-generator" element={<DesignGenerator />} />

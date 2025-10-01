@@ -7,7 +7,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Footer from '../../components/Footer';
 import styles from '../../style';
 import { BackToTopButton } from '../../components';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getFileUrl } from '../../utils/apiConfig';
 
@@ -139,7 +139,6 @@ const EditArtworkUploader = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="flex flex-col w-4/5 m-auto rounded-md mt-3">
         <div className="3/4 p-4 text-center text-white">
           <h2 className="font-bold text-lg mb-2">Edit your artwork</h2>

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '../../style';
 import { useNavigate } from "react-router-dom";
@@ -277,7 +277,6 @@ const ProfileUpdate = ({ profile, onProfileUpdated }) => {
                     <hr className="mt-4 mb-8" />
                 </div>
             </div>
-            <ToastContainer />
         </div>
     );
 };

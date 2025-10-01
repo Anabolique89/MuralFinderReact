@@ -12,7 +12,7 @@ import {
 import WallService from '../services/WallService';
 import { Footer, BackToTopButton } from '../components';
 import styles from '../style';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -689,29 +689,6 @@ const AddWall = () => {
         <Footer />
       </div>
 
-      {/* Toast Container with Custom Styling */}
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: '#ffffff',
-          color: '#1f2937',
-          borderRadius: '12px',
-          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          border: '1px solid #e5e7eb',
-          fontFamily: 'Raleway, sans-serif',
-          fontSize: '14px',
-          fontWeight: '500',
-        }}
-      />
     </div>
   );
 };

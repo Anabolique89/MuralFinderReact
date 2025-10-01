@@ -10,7 +10,7 @@ import { Footer, ArtworksGallery, BackToTopButton } from '../../components';
 import { useParams } from 'react-router-dom';
 import FellowshipService from '../../services/FellowshipService';
 import ArtworkService from '../../services/ArtworkService';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getFileUrl } from '../../utils/apiConfig';
 import { Link } from 'react-router-dom';

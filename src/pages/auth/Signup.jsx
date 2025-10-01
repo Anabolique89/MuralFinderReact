@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useAuth, useTheme } from '../../hooks/redux';
 import { registerUser, clearError, clearRegistrationSuccess } from '../../store/slices/authSlice';
 import { addNotification } from '../../store/slices/uiSlice';
-import { ModernRoute, ModernInput, ModernButton } from '../../components';
+import { ModernRoute, ModernInput, ModernButton, NotificationToast } from '../../components';
 import { fadeintoyouWhite } from '../../assets';
 import { getAuthUrl } from '../../utils/apiConfig';
 
@@ -376,6 +376,9 @@ const ModernSignup = () => {
         </div>
         </div>
       </div>
+      
+      {/* Global Notifications */}
+      <NotificationToast />
     </ModernRoute>
   );
 };

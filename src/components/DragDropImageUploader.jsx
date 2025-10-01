@@ -3,7 +3,7 @@ import AuthService from '@services/AuthService';
 import ArtworkService from '@services/ArtworkService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { ToastContainer, toast } from 'react-toastify';  // Import react-toastify
+import { toast } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css';  // Import toastify CSS
 import styles from '@styles';
 import { useNavigate, Link } from 'react-router-dom';
@@ -521,7 +521,6 @@ const DragDropImageUploader = () => {
           )}
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
