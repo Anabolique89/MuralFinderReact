@@ -103,7 +103,7 @@ const Navbar = () => {
         {/* Left Side - Logo */}
         <div className="flex items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2 sm:space-x-3 hover:scale-105 transition-transform duration-300 group">
+        <Link to="/" className="flex items-center hover:scale-105 transition-transform duration-300 group">
           <div className="relative">
             <img
               src={ArtZoroLogoWhite}
@@ -112,9 +112,6 @@ const Navbar = () => {
             />
             <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
           </div>
-          <span className="font-raleway font-bold text-white text-lg sm:text-xl hidden xs:block">
-            MuralFinder
-          </span>
         </Link>
         </div>
 
