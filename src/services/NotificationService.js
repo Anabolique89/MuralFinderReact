@@ -6,16 +6,35 @@ const NotificationService = {
     fetchNotifications: async (page = 1) => {
         try {
             const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('No authentication token found');
+            }
+            
             const response = await axios.get(`${BASE_URL}${notificationEndpoints.getNotifications}`, {
                 params: { page },
                 headers: {
                     'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                 },
             });
-            console.log(response.data.notifications.data); // Changed to response.data.data
-            return response.data.notifications; // Change this line too
+            
+            // Handle different response structures
+            if (response.data && response.data.data) {
+                return response.data.data;
+            } else if (response.data && response.data.notifications) {
+                return response.data.notifications;
+            } else if (Array.isArray(response.data)) {
+                return response.data;
+            } else {
+                console.warn('Unexpected response structure:', response.data);
+                return [];
+            }
         } catch (error) {
             console.error('Error fetching notifications:', error.response?.data || error.message);
+            if (error.response?.status === 401) {
+                throw new Error('Authentication required to fetch notifications');
+            }
             throw new Error(error.response?.data?.message || error.message || 'Failed to fetch notifications');
         }
     },

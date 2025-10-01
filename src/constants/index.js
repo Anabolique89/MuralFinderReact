@@ -25,38 +25,6 @@ export const navLinks = [
     link: "/About",
   },
   {
-    id: "map",
-    title: "MAP",
-    link: "/Map",
-  },
-  {
-    id: "walls",
-    title: "WALLS",
-    link: "/Walls",
-  },
-  {
-    id: "community",
-    title: "COMMUNITY",
-    link: "/Community",
-  },
-  {
-    id: "artworks",
-    title: "ARTWORKS",
-    link: "/artworks",
-  },
-  {
-    id: "ai-generator",
-    title: "AI GENERATOR",
-    link: "/ai-generator",
-  },
-
-  {
-    id: "shop",
-    title: "SHOP",
-    link: "/Shop",
-  },
-
-  {
     id: "contact",
     title: "CONTACT",
     link: "/Contact",
@@ -65,6 +33,93 @@ export const navLinks = [
     id: "login",
     title: "LOGIN",
     link: "/Login",
+  },
+];
+
+// Navigation dropdown groups
+export const navDropdowns = [
+  {
+    id: "explore",
+    title: "EXPLORE",
+    items: [
+      {
+        id: "artworks",
+        title: "Artworks",
+        link: "/artworks",
+      },
+      {
+        id: "walls",
+        title: "Walls",
+        link: "/Walls",
+      },
+      {
+        id: "map",
+        title: "Map",
+        link: "/Map",
+      },
+      {
+        id: "community",
+        title: "Community",
+        link: "/Community",
+      },
+    ],
+  },
+  {
+    id: "create",
+    title: "CREATE",
+    items: [
+      {
+        id: "ai-generator",
+        title: "AI Generator",
+        link: "/ai-generator",
+      },
+      {
+        id: "upload",
+        title: "Upload Artwork",
+        link: "/upload",
+      },
+      {
+        id: "add-wall",
+        title: "Add Wall",
+        link: "/addWall",
+      },
+    ],
+  },
+  {
+    id: "shop",
+    title: "SHOP",
+    items: [
+      {
+        id: "shop-main",
+        title: "Shop",
+        link: "/Shop",
+      },
+      {
+        id: "art-supplies",
+        title: "Art Supplies",
+        link: "/ArtSupplies",
+      },
+      {
+        id: "books",
+        title: "Books",
+        link: "/Books",
+      },
+      {
+        id: "materials",
+        title: "Materials",
+        link: "/Materials",
+      },
+      {
+        id: "wallpapers",
+        title: "Wallpapers",
+        link: "/Wallpapers",
+      },
+      {
+        id: "poster-prints",
+        title: "Poster Prints",
+        link: "/PosterPrints",
+      },
+    ],
   },
 ];
 

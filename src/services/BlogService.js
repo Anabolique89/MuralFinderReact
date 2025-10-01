@@ -115,12 +115,36 @@ const BlogService = {
   },
   getCommentsForBlogPost: async (postId) => {
     try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      };
+      
+      // Add authorization header if token exists
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await axios.get(
-        `${BASE_URL}${blogEndpoints.getCommentsForBlogPost(postId)}`
+        `${BASE_URL}${blogEndpoints.getCommentsForBlogPost(postId)}`,
+        { headers }
       );
-      return response.data.data;
+      
+      // Handle different response structures
+      if (response.data && response.data.data) {
+        return response.data.data;
+      } else if (Array.isArray(response.data)) {
+        return response.data;
+      } else {
+        return response.data || [];
+      }
     } catch (error) {
       console.error("Error fetching comments for blog post:", error);
+      if (error.response?.status === 401) {
+        // Return empty array for unauthenticated users
+        return [];
+      }
       throw new Error("Failed to fetch comments for blog post");
     }
   },

@@ -20,6 +20,29 @@ const SingleBlogPost = () => {
 
   const sanitizedContent = blogPost && blogPost.content ? DOMPurify.sanitize(blogPost.content) : '';
 
+  const fetchComments = async () => {
+    try {
+      setLoadingComments(true);
+      console.log('Fetching comments for post:', postId);
+      const response = await BlogService.getCommentsForBlogPost(postId);
+      console.log('Comments response:', response);
+      
+      // Handle paginated response - extract the data array
+      const commentsData = response.data || response;
+      setComments(Array.isArray(commentsData) ? commentsData : []);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      // If it's a 401 error, just set empty comments (user not authenticated)
+      if (error.response?.status === 401) {
+        setComments([]);
+      } else {
+        setComments([]);
+      }
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+
   useEffect(() => {
     const fetchBlogPost = async () => {
       try {
@@ -34,24 +57,6 @@ const SingleBlogPost = () => {
       }
     };
 
-    const fetchComments = async () => {
-      try {
-        setLoadingComments(true);
-        const response = await BlogService.getCommentsForBlogPost(postId);
-        setComments(response);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-        // If it's a 401 error, just set empty comments (user not authenticated)
-        if (error.response?.status === 401) {
-          setComments([]);
-        } else {
-          setComments([]);
-        }
-      } finally {
-        setLoadingComments(false);
-      }
-    };
-
     fetchBlogPost();
     fetchComments();
   }, [postId]);
@@ -59,11 +64,15 @@ const SingleBlogPost = () => {
   const handleCommentSubmit = async () => {
     try {
       setCommenting(true);
-      console.log('Comment submitted:', comment);
-      await BlogService.commentOnBlogPost(postId, { content: comment, post_id: postId });
+      console.log('Submitting comment:', { content: comment, post_id: postId });
+      const result = await BlogService.commentOnBlogPost(postId, { content: comment, post_id: postId });
+      console.log('Comment submission result:', result);
       setComment('');
       setShowCommentBox(false);
-      setComments([...comments, { id: comments.length + 1, content: comment }]);
+      
+      // Refetch comments from server to get the actual comment with proper data
+      console.log('Refetching comments after submission...');
+      await fetchComments();
     } catch (error) {
       console.error('Error submitting comment:', error);
     } finally {
