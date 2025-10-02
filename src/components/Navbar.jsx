@@ -120,9 +120,7 @@ const Navbar = () => {
             />
             <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
           </div>
-          <span className="font-raleway font-bold text-white text-lg sm:text-xl hidden xs:block">
-            MuralFinder
-          </span>
+   
         </Link>
 
         {/* Navigation Links */}

@@ -12,13 +12,13 @@ const Hero = () => (
    <section id="home" className={`flex md:flex-row flex-col ${styles.paddingY}`}>
     
     <div className={`flex-1 ${styles.flexStart} flex-col xl:px-0 sm:px-16 px-6 `}>
-      {/* <div className="flex flex-row items-center py-[6px] px-4 bg-discount-gradient rounded-[10px] mb-2">
-<img src={discount} alt="discount" className="w-[32px] h-[32px]" />
+      <div className="flex flex-row items-center py-[6px] px-4 bg-discount-gradient rounded-[10px] mb-2">
+
 <p className={`${styles.paragraph} ml-2`}>
 <span className="text-white">20%</span> Discount For {""}
 <span className="text-white">1 Month</span> Account 
 </p>
-      </div> */}
+      </div>
 <div className="flex flex-row justify-between items-center w-full">
   <h1 className="flex-1 font-raleway font-bold ss:text-[72px] text-[52px] text-white ss:leading-[100px] leading-[75px]">Welcome To<br className="sm:block hidden" /> {" "}
     <span className="text-gradient font-blowBrush">ArtZoro App</span> <br/> {" "}
@@ -34,9 +34,9 @@ const Hero = () => (
   <img src={google} alt="googleplay" className='w-[100px] h-auto object-contain mr-5 cursor-pointer mt-2' />
   {!isLoggedIn && (
             <a href="/Signup">
-              <button type="button" className={`py-1 px-2 mt-2 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>
+              <Button type="button" className={`py-1 px-2 mt-2 bg-blue-gradient font-raleway font-bold text-[18px] text-primary outline-none uppercase rounded-full ${styles}`}>
                 Signup
-              </button>
+              </Button>
             </a>
           )}
   </div>
