@@ -1,4 +1,6 @@
 import Navbar from "./Navbar";
+import NavDropdown from "./NavDropdown";
+import ProfileDropdown from "./ProfileDropdown";
 import Billing from "./Billing";
 import CardDeal from "./CardDeal";
 import Business from "./Business";
@@ -92,4 +94,6 @@ export {
   ModernRoute,
   LoadingSpinner,
   NotificationToast,
+  NavDropdown,
+  ProfileDropdown,
 };

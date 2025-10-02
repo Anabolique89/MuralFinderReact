@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { ArtZoroLogoWhite } from '@assets';
-import { navLinks } from "@constants";
+import { navLinks, navDropdowns } from "@constants";
+import NavDropdown from "./NavDropdown";
+import ProfileDropdown from "./ProfileDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineSearch } from "react-icons/md";
 import AuthService from '@services/AuthService';
@@ -16,7 +18,6 @@ const Navbar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const menuRef = useRef();
 
@@ -95,23 +96,14 @@ const Navbar = () => {
     };
   }, []);
 
-  // Handle scroll effect for modern navbar
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <nav className="w-full fixed top-0 left-0 right-0 z-[200] bg-indigo-600 backdrop-blur-md shadow-xl">
       <div className="max-w-7xl mx-auto flex py-3 px-4 sm:px-6 items-center justify-between">
-        {/* Left Side - Logo + Navigation */}
-        <div className="flex items-center space-x-3 sm:space-x-6">
+        {/* Left Side - Logo */}
+        <div className="flex items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2 sm:space-x-3 hover:scale-105 transition-transform duration-300 group">
+        <Link to="/" className="flex items-center hover:scale-105 transition-transform duration-300 group">
           <div className="relative">
             <img
               src={ArtZoroLogoWhite}
@@ -122,30 +114,45 @@ const Navbar = () => {
           </div>
    
         </Link>
+        </div>
 
-        {/* Navigation Links */}
-        <ul className="list-none lg:flex hidden items-center space-x-4 xl:space-x-6">
-          {navLinks.filter(nav => nav.title !== 'LOGIN').map((nav) => (
-            <li key={nav.id} className="relative group">
-              <Link
-                to={nav.id === 'home' ? '/' : `${nav.id}`}
-                className={`font-raleway font-medium text-[14px] xl:text-[15px] transition-all duration-300 hover:text-white relative py-2 px-1 ${
-                  active === nav.title ? "text-white" : "text-dimWhite"
-                }`}
-                onClick={() => setActive(nav.title)}
-              >
-                {nav.title}
-                {/* Active indicator */}
-                <div className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full transition-all duration-300 ${
-                  active === nav.title ? 'w-full' : 'w-0 group-hover:w-full'
-                }`}></div>
+        {/* Center Navigation */}
+        <div className="lg:flex hidden items-center space-x-2 xl:space-x-4">
+          {/* Main Navigation Links */}
+          <ul className="list-none flex items-center space-x-4 xl:space-x-6">
+            {navLinks.filter(nav => nav.title !== 'LOGIN').map((nav) => (
+              <li key={nav.id} className="relative group">
+                <Link
+                  to={nav.id === 'home' ? '/' : `/${nav.id}`}
+                  className={`font-raleway font-medium text-[14px] xl:text-[15px] transition-all duration-300 hover:text-white relative py-2 px-1 ${
+                    active === nav.title ? "text-white" : "text-dimWhite"
+                  }`}
+                  onClick={() => setActive(nav.title)}
+                >
+                  {nav.title}
+                  {/* Active indicator */}
+                  <div className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full transition-all duration-300 ${
+                    active === nav.title ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}></div>
 
-                {/* Hover background */}
-                <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                  {/* Hover background */}
+                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Navigation Dropdowns */}
+          <div className="flex items-center space-x-2">
+            {navDropdowns.map((dropdown) => (
+              <NavDropdown
+                key={dropdown.id}
+                title={dropdown.title}
+                items={dropdown.items}
+                isActive={active === dropdown.title}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Right Side - Search & User Actions */}
@@ -196,27 +203,8 @@ const Navbar = () => {
               <NotificationPanel />
             </div>
 
-            {/* User Avatar */}
-            <div className="hover:scale-105 transition-transform duration-300 relative group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm cursor-pointer shadow-lg">
-                {user?.username?.[0]?.toUpperCase() || 'U'}
-              </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-indigo-600 animate-pulse hidden sm:block"></div>
-            </div>
-
-            {/* Logout Button */}
-            <button
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              className="hidden lg:flex items-center space-x-1 px-2 py-2 rounded-lg text-white/70 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 group"
-            >
-              <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-              <span className="text-sm font-medium">
-                {isLoggingOut ? 'Logging out...' : 'Logout'}
-              </span>
-            </button>
+            {/* Profile Dropdown */}
+            <ProfileDropdown user={user} onLogout={handleLogout} />
           </div>
         ) : (
           <div className="flex items-center space-x-2">
@@ -281,10 +269,11 @@ const Navbar = () => {
         >
           <div className="p-4">
             <ul className="flex flex-col space-y-1 w-full">
+              {/* Main Navigation Links */}
               {navLinks.filter(nav => nav.title !== 'LOGIN').map((nav, index) => (
                 <li key={nav.id} className="animate-slide-in-up" style={{animationDelay: `${index * 0.1}s`}}>
                   <Link
-                    to={nav.id === 'home' ? '/' : `${nav.id}`}
+                    to={nav.id === 'home' ? '/' : `/${nav.id}`}
                     className={`block px-3 py-3 rounded-lg font-raleway font-medium text-sm transition-all duration-300 flex items-center space-x-3 ${
                       active === nav.title ? "text-white bg-white/10" : "text-white/70 hover:text-white hover:bg-white/5"
                     }`}
@@ -298,6 +287,32 @@ const Navbar = () => {
                       <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                     )}
                   </Link>
+                </li>
+              ))}
+
+              {/* Dropdown Items */}
+              {navDropdowns.map((dropdown, dropdownIndex) => (
+                <li key={dropdown.id} className="animate-slide-in-up" style={{animationDelay: `${(navLinks.length + dropdownIndex) * 0.1}s`}}>
+                  <div className="px-3 py-2">
+                    <div className="text-xs font-raleway font-semibold text-white/50 uppercase tracking-wider mb-2">
+                      {dropdown.title}
+                    </div>
+                    <div className="space-y-1">
+                      {dropdown.items.map((item) => (
+                        <Link
+                          key={item.id}
+                          to={item.link}
+                          className="block px-3 py-2 rounded-lg font-raleway font-medium text-sm transition-all duration-300 text-white/70 hover:text-white hover:bg-white/5"
+                          onClick={() => {
+                            setActive(item.title);
+                            setToggle_menu(false);
+                          }}
+                        >
+                          {item.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </li>
               ))}
 
@@ -317,19 +332,46 @@ const Navbar = () => {
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setToggle_menu(false);
-                    }}
-                    disabled={isLoggingOut}
-                    className="block w-full text-left px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 font-raleway font-medium text-sm transition-all duration-300 flex items-center space-x-2"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
-                  </button>
+                  
+                  {/* Profile Links */}
+                  <div className="space-y-1">
+                    <Link
+                      to="/profile"
+                      className="block px-3 py-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 font-raleway font-medium text-sm transition-all duration-300"
+                      onClick={() => setToggle_menu(false)}
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      to="/ProfileSettings"
+                      className="block px-3 py-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 font-raleway font-medium text-sm transition-all duration-300"
+                      onClick={() => setToggle_menu(false)}
+                    >
+                      Settings
+                    </Link>
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/admin/dashboard"
+                        className="block px-3 py-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 font-raleway font-medium text-sm transition-all duration-300"
+                        onClick={() => setToggle_menu(false)}
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setToggle_menu(false);
+                      }}
+                      disabled={isLoggingOut}
+                      className="block w-full text-left px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 font-raleway font-medium text-sm transition-all duration-300 flex items-center space-x-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
+                    </button>
+                  </div>
                 </li>
               ) : (
                 <li className="pt-3 border-t border-white/10 space-y-2 animate-slide-in-up" style={{animationDelay: '0.4s'}}>

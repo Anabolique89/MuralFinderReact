@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useGetArtworksQuery, useGetCategoriesQuery } from '@store/api/muralFinderApi';
 import { useArtworks, useAuth, useTheme } from '@hooks/redux';
 import { setFeedArtworks, setViewMode, setFilters } from '@store/slices/artworkSlice';
@@ -9,6 +10,7 @@ import { MdGridView, MdViewList, MdViewModule, MdSearch, MdFilterList, MdRefresh
 
 const ModernArtworkFeed = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { theme } = useTheme();
   const { feedArtworks, viewMode } = useArtworks();
@@ -118,6 +120,10 @@ const ModernArtworkFeed = () => {
     }));
   };
 
+  const handleUploadClick = () => {
+    navigate('/upload');
+  };
+
   const getGridClasses = () => {
     switch (viewMode) {
       case 'list':
@@ -130,8 +136,8 @@ const ModernArtworkFeed = () => {
   };
 
   return (
-    <div className="min-h-screen bg-indigo-600 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-indigo-600 pt-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
@@ -158,7 +164,7 @@ const ModernArtworkFeed = () => {
               {isAuthenticated && (
                 <ModernButton
                   variant="primary"
-                  onClick={() => {/* Open upload modal */}}
+                  onClick={handleUploadClick}
                   className="bg-white/20 text-white hover:bg-white/30 border-white/30"
                 >
                   Upload Artwork
@@ -310,7 +316,7 @@ const ModernArtworkFeed = () => {
             {isAuthenticated && (
               <ModernButton
                 variant="primary"
-                onClick={() => {/* Open upload modal */}}
+                onClick={handleUploadClick}
                 className="bg-white/20 text-white hover:bg-white/30 border-white/30"
               >
                 Upload First Artwork

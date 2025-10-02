@@ -8,7 +8,7 @@ import WallService from '@services/WallService';
 import Footer from '@components/Footer';
 import styles from '@styles';
 import BackToTopButton from './BackToTopButton';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -289,7 +289,6 @@ const EditWall = () => {
         </Form>
         {loading && <LoadingOverlay><CircularProgress /></LoadingOverlay>}
       </Root>
-      <ToastContainer />
       <Snackbar
         open={openToast}
         autoHideDuration={6000}

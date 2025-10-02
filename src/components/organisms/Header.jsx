@@ -89,14 +89,11 @@ const Header = () => {
           <div className="flex items-center">
             <button
               onClick={handleLogoClick}
-              className="flex items-center space-x-2 text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors"
+              className="flex items-center text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors"
             >
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">MF</span>
               </div>
-              <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>
-                MuralFinder
-              </span>
             </button>
           </div>
 

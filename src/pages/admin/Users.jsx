@@ -5,7 +5,7 @@ import { getInitials, getRoleClass } from "../../utils/index.js";
 import DashboardService from "../../services/DashboardService";
 import AuthService from "../../services/AuthService.js";
 import Swal from "sweetalert2";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Sidebar from "../../components/dashboard/Sidebar";
 import MobileSidebar from "../../components/dashboard/MobileSidebar";
 import Spinner from "../../components/Spinner";
@@ -239,7 +239,6 @@ const Users = () => {
             </div>
           </div>
           <BackToTopButton />
-          <ToastContainer />
           <div className={`${styles.paddingX} bg-indigo-600 w-full overflow-hidden`}>
             <Footer />
           </div>

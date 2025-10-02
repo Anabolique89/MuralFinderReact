@@ -9,9 +9,9 @@ export const authEndpoints = {
   register: "auth/register",
   logout: "auth/logout",
   refreshToken: "auth/refresh-token",
-  profile: (userId) => `profiles/${userId}`,
-  updateProfile: (userId) => `profiles/${userId}`,
-  uploadProfileImage: (userId) => `profiles/${userId}/image`,
+  profile: "user/profile",
+  updateProfile: "user/profile",
+  uploadProfileImage: "user/profile/image",
   deleteAccount: (userId) => `delete/user/${userId}`,
 };
 

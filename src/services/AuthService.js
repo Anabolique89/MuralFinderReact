@@ -197,34 +197,25 @@ const AuthService = {
       return error.response.data.error || 'An error occurred during logout';
     }
   },
-  updateProfile: async (userId, profileData) => {
+  updateProfile: async (profileData) => {
     try {
-      if (!userId) {
-        throw new Error('Missing userId parameter');
-      }
-
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('User not authenticated');
       }
 
-      profileData.user_id = userId
-
-      console.log(userId);
-      console.log(profileData.user_id)
-
-      console.log(profileData)
-      const response = await axios.put(`${BASE_URL}${authEndpoints.updateProfile(userId)}`, profileData, {
+      console.log('Updating profile with data:', profileData);
+      const response = await axios.put(`${BASE_URL}${authEndpoints.updateProfile}`, profileData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
       });
 
-      console.log(response)
+      console.log('Profile update response:', response);
 
       if (response.status === 200) {
-        return response.data.message;
+        return response.data;
       } else {
         throw new Error('Failed to update profile');
       }
