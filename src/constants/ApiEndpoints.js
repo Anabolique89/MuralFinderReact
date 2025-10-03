@@ -1,8 +1,11 @@
 // Base URL for the API - from environment variable
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
 
 // Ensure BASE_URL ends with a slash for consistency
-export const BASE_URL = API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`;
+export const BASE_URL = API_BASE_URL.endsWith("/")
+  ? API_BASE_URL
+  : `${API_BASE_URL}/`;
 
 export const authEndpoints = {
   login: "auth/login",
@@ -12,12 +15,14 @@ export const authEndpoints = {
   profile: "user/profile",
   updateProfile: "user/profile",
   uploadProfileImage: "user/profile/image",
+  // uploadProfileImage: (userId) => `users/${userId}/profile/image`,
   deleteAccount: (userId) => `delete/user/${userId}`,
 };
 
 export const artworkEndpoints = {
   getAllArtworks: "v1/artworks",
-  getUngroupedArtworks: (page, pageSize) => `v1/artworks?page=${page}&pageSize=${pageSize}`,
+  getUngroupedArtworks: (page, pageSize) =>
+    `v1/artworks?page=${page}&pageSize=${pageSize}`,
   uploadArtwork: "artworks",
   getCategoires: "legacy/categories",
   searchArtworks: "v1/artworks/search",
@@ -67,15 +72,15 @@ export const dashboardEndpoints = {
   getArtworksStatistics: "api/admin/statistics/artworks",
   getWallsStatisticsData: "api/admin/statistics/walls",
   getPostsStatisticsData: "api/admin/statistics/posts",
-  getProductsStatisticsData: 'api/admin/statistics/products',
+  getProductsStatisticsData: "api/admin/statistics/products",
   getUsersStatisticsData: (page) => `api/admin/statistics/users?page=${page}`,
 };
 
 export const notificationEndpoints = {
   getNotifications: "notifications",
-  markNotificationAsRead: (notificationId) => `notifications/${notificationId}/read`,
+  markNotificationAsRead: (notificationId) =>
+    `notifications/${notificationId}/read`,
   markAllNotificationsAsRead: "notifications/read",
 };
-
 
 export const contactEndpoint = "/api/contact";

@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import styles from '@styles';
-import { defaultimg, swimBlue } from '@assets';
+import { defaultimg } from '@assets';
 import AuthService from '@services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faEdit, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton } from '../../components';
 import ArtworkService from '../../services/ArtworkService';
 import { toast } from 'react-toastify';
 import { getFileUrl } from '../../utils/apiConfig';
-
 
 const Profile = () => {
     const [profileData, setProfileData] = useState(null);
@@ -19,19 +18,15 @@ const Profile = () => {
     const [artworksLoading, setArtworksLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Get current user from localStorage
-    const currentUser = AuthService.getUser();
-
-    useEffect(() => {
-        fetchProfileData();
-        fetchUserArtworks();
-    }, []);
-
+    // Fetch profile data
     const fetchProfileData = async () => {
         try {
             setLoading(true);
             const data = await AuthService.getProfile();
             setProfileData(data);
+            
+            // Update localStorage to keep data in sync
+            localStorage.setItem('user', JSON.stringify(data));
         } catch (error) {
             console.error('Error fetching profile:', error);
             setError('Failed to load profile data');
@@ -41,11 +36,14 @@ const Profile = () => {
         }
     };
 
+    // Fetch user artworks
     const fetchUserArtworks = async () => {
         try {
             setArtworksLoading(true);
-            if (currentUser?.username) {
-                const artworksData = await ArtworkService.getUserArtworks(currentUser.username);
+            const user = AuthService.getUser();
+            
+            if (user?.username) {
+                const artworksData = await ArtworkService.getUserArtworks(user.username);
                 setUserArtworks(artworksData || []);
             }
         } catch (error) {
@@ -56,9 +54,50 @@ const Profile = () => {
         }
     };
 
+    // Initial load
+    useEffect(() => {
+        fetchProfileData();
+        fetchUserArtworks();
+    }, []);
+
+    // Refresh data when returning from settings (using focus event)
+    useEffect(() => {
+        const handleFocus = () => {
+            // Refresh profile data when window regains focus
+            fetchProfileData();
+        };
+
+        window.addEventListener('focus', handleFocus);
+        
+        return () => {
+            window.removeEventListener('focus', handleFocus);
+        };
+    }, []);
+
+    // Helper function to get profile image with proper fallback chain
+    const getProfileImage = () => {
+        // Try profileData.profile.profile_image_url first (most up-to-date)
+        if (profileData?.profile?.profile_image_url) {
+            return getFileUrl(profileData.profile.profile_image_url);
+        }
+        
+        // Try direct profile_image_url
+        if (profileData?.profile_image_url) {
+            return getFileUrl(profileData.profile_image_url);
+        }
+        
+        // Fallback to default image
+        return defaultimg;
+    };
+
+    // Helper function to get profile field with proper fallback
+    const getProfileField = (field) => {
+        return profileData?.profile?.[field] || profileData?.[field] || '';
+    };
+
     if (loading) {
         return (
-            <div className="min-h-screen bg-indigo-600 flex items-center justify-center">
+            <div className="min-h-screen bg-indigo-600 flex items-center justify-center pt-20">
                 <div className="text-center">
                     <FontAwesomeIcon icon={faSpinner} spin className="text-white text-4xl mb-4" />
                     <p className="text-white text-xl">Loading profile...</p>
@@ -69,12 +108,12 @@ const Profile = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-indigo-600 flex items-center justify-center">
+            <div className="min-h-screen bg-indigo-600 flex items-center justify-center pt-20">
                 <div className="text-center">
                     <p className="text-white text-xl mb-4">{error}</p>
                     <button
-                        onClick={() => window.location.reload()}
-                        className="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-100"
+                        onClick={fetchProfileData}
+                        className="bg-white text-indigo-600 px-6 py-3 rounded-lg hover:bg-gray-100 font-semibold transition-all"
                     >
                         Try Again
                     </button>
@@ -83,17 +122,6 @@ const Profile = () => {
         );
     }
 
-    // Helper function to get profile image
-    const getProfileImage = () => {
-        if (profileData?.profile_image_url) {
-            return getFileUrl(profileData.profile_image_url);
-        }
-        if (currentUser?.profile?.profile_image_url) {
-            return getFileUrl(currentUser.profile.profile_image_url);
-        }
-        return defaultimg;
-    };
-
     return (
         <div className="bg-indigo-600 min-h-screen pt-20">
             {/* Profile Header */}
@@ -101,54 +129,100 @@ const Profile = () => {
                 <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
                     {/* Profile Sidebar */}
                     <div className="col-span-4 sm:col-span-3">
-                        <div className="bg-white profile-content p-6 rounded-lg">
-                            <div className="flex flex-col items-center object-cover">
+                        <div className="bg-white profile-content p-6 rounded-lg shadow-lg">
+                            <div className="flex flex-col items-center">
+                                {/* Profile Image */}
                                 <img
                                     src={getProfileImage()}
-                                    className="object-cover w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img"
-                                    alt="Bordered avatar"
+                                    className="object-cover w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0 profile-info-img ring-4 ring-indigo-200"
+                                    alt="Profile"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = defaultimg;
+                                    }}
                                 />
-                                <h1 className="text-xl username-name">{currentUser?.username || 'User'}</h1>
-                                {profileData && (
-                                    <>
-                                        <p className={`${styles.paragraph} mt-0 text-center`}>
-                                            {profileData.first_name} {profileData.last_name}
-                                        </p>
-                                        {profileData.bio && (
-                                            <p className={`${styles.paragraph} mt-0 text-center`}>
-                                                {profileData.bio}
-                                            </p>
-                                        )}
-                                        {profileData.location && (
-                                            <p className={`${styles.paragraph} mt-0`}>
-                                                📍 {profileData.location}
-                                            </p>
-                                        )}
-                                    </>
+                                
+                                {/* Username */}
+                                <h1 className="text-xl font-bold username-name text-center">
+                                    {profileData?.username || 'User'}
+                                </h1>
+                                
+                                {/* Name */}
+                                {(getProfileField('first_name') || getProfileField('last_name')) && (
+                                    <p className={`${styles.paragraph} mt-1 text-center text-gray-600`}>
+                                        {getProfileField('first_name')} {getProfileField('last_name')}
+                                    </p>
                                 )}
-                                <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                                    {/* Profile action buttons can go here */}
-                                </div>
+                                
+                                {/* Profession */}
+                                {getProfileField('proffession') && (
+                                    <p className="text-sm text-gray-500 mt-1 text-center">
+                                        {getProfileField('proffession')}
+                                    </p>
+                                )}
+                                
+                                {/* Bio */}
+                                {getProfileField('bio') && (
+                                    <p className={`${styles.paragraph} mt-3 text-center text-gray-700`}>
+                                        {getProfileField('bio')}
+                                    </p>
+                                )}
+                                
+                                {/* Location */}
+                                {getProfileField('location') && (
+                                    <p className={`${styles.paragraph} mt-2 text-gray-600`}>
+                                        📍 {getProfileField('location')}
+                                    </p>
+                                )}
                             </div>
-                            <hr className="my-6 border-t border-gray-300"></hr>
+                            
+                            <hr className="my-6 border-t border-gray-300" />
+                            
+                            {/* Stats Section */}
                             <div className="flex flex-col">
-                                <span className="text-white uppercase font-bold tracking-wider mb-2">Details</span>
-                                <ul>
-                                    <li className={`${styles.paragraph} mt-2 mb-2`}>ARTWORKS <span className='followers'>{profileData?.artworks_count || userArtworks.length || 0}</span></li>
-                                    <li className={`${styles.paragraph} mb-2`}>FOLLOWERS <span className='followers'>{profileData?.followers_count || 0}</span></li>
-                                    <li className={`${styles.paragraph} mb-2`}>FOLLOWING <span className='following'>{profileData?.following_count || 0}</span></li>
+                                <span className="text-purple-950 uppercase font-bold tracking-wider mb-3">
+                                    Details
+                                </span>
+                                <ul className="space-y-2">
+                                    <li className={`${styles.paragraph} flex justify-between items-center`}>
+                                        <span>ARTWORKS</span>
+                                        <span className='followers font-bold text-indigo-600'>
+                                            {profileData?.artworks_count || userArtworks.length || 0}
+                                        </span>
+                                    </li>
+                                    <li className={`${styles.paragraph} flex justify-between items-center`}>
+                                        <span>FOLLOWERS</span>
+                                        <span className='followers font-bold text-indigo-600'>
+                                            {profileData?.followers_count || 0}
+                                        </span>
+                                    </li>
+                                    <li className={`${styles.paragraph} flex justify-between items-center`}>
+                                        <span>FOLLOWING</span>
+                                        <span className='following font-bold text-indigo-600'>
+                                            {profileData?.following_count || 0}
+                                        </span>
+                                    </li>
                                 </ul>
+                                
+                                {/* Profile Settings Button */}
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                                    <Link to="/ProfileSettings" className={`py-2 px-4 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-primary outline-none uppercase rounded-full ${styles}`}>PROFILE SETTINGS</Link>
+                                    <Link 
+                                        to="/ProfileSettings" 
+                                        className="py-2 px-6 bg-blue-gradient font-raleway font-bold text-[16px] sm:text-[14px] xs:text-[12px] text-white outline-none uppercase rounded-full hover:opacity-90 transition-all shadow-md"
+                                    >
+                                        PROFILE SETTINGS
+                                    </Link>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Main Content */}
+                    {/* Main Content - Artworks */}
                     <div className="col-span-4 sm:col-span-9">
-                        <div className="bg-white p-6 profile-content z-[20] w-full">
-                            <h2 className="text-purple-950 text-xl font-bold uppercase mt-6 mb-4 font-raleway">MY ARTWORKS</h2>
+                        <div className="bg-white p-6 profile-content z-[20] w-full rounded-lg shadow-lg">
+                            <h2 className="text-purple-950 text-xl font-bold uppercase mt-2 mb-6 font-raleway">
+                                MY ARTWORKS
+                            </h2>
 
                             {artworksLoading ? (
                                 <div className="flex items-center justify-center py-12">
@@ -163,9 +237,11 @@ const Profile = () => {
                                 </div>
                             ) : (
                                 <div className="text-center py-12">
-                                    <FontAwesomeIcon icon={faUser} className="text-purple-950 text-4xl mb-4" />
-                                    <p className="text-purple-950 text-lg mb-4">No artworks yet</p>
-                                    <p className={`${styles.paragraph} text-center`}>Start sharing your amazing artwork with the community!</p>
+                                    <FontAwesomeIcon icon={faUser} className="text-purple-950 text-4xl mb-4 opacity-50" />
+                                    <p className="text-purple-950 text-lg mb-2 font-semibold">No artworks yet</p>
+                                    <p className={`${styles.paragraph} text-center text-gray-600`}>
+                                        Start sharing your amazing artwork with the community!
+                                    </p>
                                 </div>
                             )}
                         </div>
@@ -196,4 +272,4 @@ const Profile = () => {
     );
 }
 
-export default Profile
+export default Profile;
