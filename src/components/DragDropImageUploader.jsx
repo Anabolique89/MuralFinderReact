@@ -3,12 +3,12 @@ import AuthService from '@services/AuthService';
 import ArtworkService from '@services/ArtworkService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';  // Import react-toastify
-import 'react-toastify/dist/ReactToastify.css';  // Import toastify CSS
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from '@styles';
 import { useNavigate, Link } from 'react-router-dom';
 
-const DragDropImageUploader = () => {
+const DragDropImageUploader = ({ onUploadStart, onUploadEnd }) => {
   const [images, setImages] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -27,27 +27,93 @@ const DragDropImageUploader = () => {
   const [responseMessage, setResponseMessage] = useState(null);
   const isAuthenticated = AuthService.isAuthenticated();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  function selectFiles() {
+  // Signal to parent that we're interacting with the upload component
+  const signalInteractionStart = () => {
+    if (onUploadStart) {
+      onUploadStart();
+    }
+    // Set a flag in sessionStorage that persists across focus events
+    sessionStorage.setItem('uploadInProgress', 'true');
+  };
+
+  const signalInteractionEnd = () => {
+    if (onUploadEnd) {
+      onUploadEnd();
+    }
+    sessionStorage.removeItem('uploadInProgress');
+  };
+
+  function selectFiles(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    // Signal that interaction is starting BEFORE opening file dialog
+    signalInteractionStart();
     fileInputRef.current.click();
   }
 
   function onFileSelect(event) {
     const files = event.target.files;
 
-    if (files.length === 0) return;
+    if (files.length === 0) {
+      // No files selected, end interaction
+      signalInteractionEnd();
+      return;
+    }
+    
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
+    const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    let hasErrors = false;
+    
     for (let i = 0; i < files.length; i++) {
-      if (files[i].type.split('/')[0] !== 'image') continue;
+      const file = files[i];
+      
+      // Check if it's an image
+      if (file.type.split('/')[0] !== 'image') {
+        toast.error(`"${file.name}" is not an image file`);
+        hasErrors = true;
+        continue;
+      }
+      
+      // Check file type
+      if (!ALLOWED_TYPES.includes(file.type.toLowerCase())) {
+        toast.error(`"${file.name}" format not supported. Please use JPG, PNG, GIF, or WebP`);
+        hasErrors = true;
+        continue;
+      }
+      
+      // Check file size
+      if (file.size > MAX_FILE_SIZE) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        toast.error(`"${file.name}" is too large (${sizeMB}MB). Maximum size is 1MB`);
+        hasErrors = true;
+        continue;
+      }
+      
+      // File is valid, add it
       setImages((prevImages) => [
         ...prevImages,
         {
-          name: files[i].name,
-          url: URL.createObjectURL(files[i]),
-          file: files[i],
+          name: file.name,
+          url: URL.createObjectURL(file),
+          file: file,
         },
       ]);
     }
+    
+    // Show success message if files were added
+    if (files.length > 0 && !hasErrors) {
+      const count = files.length;
+      toast.success(`${count} image${count > 1 ? 's' : ''} added successfully`);
+    }
+    
+    // End interaction signal after a short delay to ensure UI has updated
+    setTimeout(() => {
+      signalInteractionEnd();
+    }, 500);
   }
 
   useEffect(() => {
@@ -63,40 +129,96 @@ const DragDropImageUploader = () => {
       });
   }, []);
 
-  function deleteImage(index) {
+  function deleteImage(index, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
 
   function onDragOver(event) {
     event.preventDefault();
+    event.stopPropagation();
     setIsDragging(true);
     event.dataTransfer.dropEffect = 'copy';
+    signalInteractionStart();
   }
 
   function onDragLeave(event) {
     event.preventDefault();
+    event.stopPropagation();
     setIsDragging(false);
+    signalInteractionEnd();
   }
 
   function onDrop(event) {
     event.preventDefault();
+    event.stopPropagation();
     setIsDragging(false);
+    
     const files = event.dataTransfer.files;
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+    const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    let hasErrors = false;
+    
     for (let i = 0; i < files.length; i++) {
-      if (files[i].type.split('/')[0] !== 'image') continue;
+      const file = files[i];
+      
+      // Check if it's an image
+      if (file.type.split('/')[0] !== 'image') {
+        toast.error(`"${file.name}" is not an image file`);
+        hasErrors = true;
+        continue;
+      }
+      
+      // Check file type
+      if (!ALLOWED_TYPES.includes(file.type.toLowerCase())) {
+        toast.error(`"${file.name}" format not supported. Please use JPG, PNG, GIF, or WebP`);
+        hasErrors = true;
+        continue;
+      }
+      
+      // Check file size
+      if (file.size > MAX_FILE_SIZE) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        toast.error(`"${file.name}" is too large (${sizeMB}MB). Maximum size is 10MB`);
+        hasErrors = true;
+        continue;
+      }
+      
+      // File is valid, add it
       setImages((prevImages) => [
         ...prevImages,
         {
-          name: files[i].name,
-          url: URL.createObjectURL(files[i]),
-          file: files[i],
+          name: file.name,
+          url: URL.createObjectURL(file),
+          file: file,
         },
       ]);
     }
+    
+    // Show success message if files were added
+    if (files.length > 0 && !hasErrors) {
+      const count = files.length;
+      toast.success(`${count} image${count > 1 ? 's' : ''} added successfully`);
+    }
+    
+    // End interaction after drop completes
+    setTimeout(() => {
+      signalInteractionEnd();
+    }, 500);
   }
 
-  async function uploadImages() {
+  async function uploadImages(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    signalInteractionStart();
     setLoading(true);
+    
     try {
       const formData = new FormData();
       formData.append('title', title);
@@ -105,12 +227,10 @@ const DragDropImageUploader = () => {
       formData.append('style', style);
       formData.append('technique', technique);
       formData.append('location_text', locationText);
-      // Convert boolean to string for FormData
       formData.append('is_commissioned', isCommissioned ? '1' : '0');
       formData.append('commissioner', commissioner);
       formData.append('created_date', createdDate);
 
-      // Handle tags - convert comma-separated string to array
       if (tags.trim()) {
         const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
         tagsArray.forEach((tag, index) => {
@@ -124,8 +244,14 @@ const DragDropImageUploader = () => {
 
       const response = await ArtworkService.uploadArtwork(formData);
       setResponseMessage(response);
+      
       if (response?.message.includes('successfully')) {
-        toast.success('Artwork uploaded successfully!'); // Show success toast
+        toast.success('Artwork uploaded successfully!');
+        
+        // Dispatch custom event for any listeners
+        window.dispatchEvent(new Event('artworkUploaded'));
+        
+        // Clear form
         setImages([]);
         setTitle('');
         setDescription('');
@@ -137,9 +263,15 @@ const DragDropImageUploader = () => {
         setIsCommissioned(false);
         setCommissioner('');
         setCreatedDate('');
-        navigate(`/artworks/${response?.data?.id}`); // Redirect to My Artwork page
+        
+        // Navigate after a short delay
+        setTimeout(() => {
+          signalInteractionEnd();
+          navigate(`/artworks/${response?.data?.id}`);
+        }, 300);
       } else {
         toast.error('Failed to upload artwork.');
+        signalInteractionEnd();
       }
 
       setTimeout(() => {
@@ -148,10 +280,24 @@ const DragDropImageUploader = () => {
     } catch (error) {
       console.error('Error uploading images:', error);
       toast.error('An error occurred while uploading images');
+      signalInteractionEnd();
     } finally {
       setLoading(false);
     }
   }
+
+  // Handle any input focus to prevent refresh
+  const handleInputFocus = () => {
+    signalInteractionStart();
+  };
+
+  const handleInputBlur = () => {
+    // Use a timeout to allow any pending operations to complete
+    setTimeout(() => {
+      signalInteractionEnd();
+    }, 300);
+  };
+
   return (
     <div className="min-h-screen bg-indigo-600 py-8">
       <div className="max-w-6xl mx-auto px-4">
@@ -192,7 +338,7 @@ const DragDropImageUploader = () => {
                         Click or drag & drop
                       </p>
                       <p className="mt-2 text-sm text-white/70">
-                        PNG, JPG, GIF up to 10MB
+                        JPG, PNG, GIF, WebP (max 10MB each)
                       </p>
                     </div>
                   </div>
@@ -209,8 +355,9 @@ const DragDropImageUploader = () => {
                               className="w-full h-20 object-cover rounded-lg"
                             />
                             <button
-                              onClick={() => deleteImage(index)}
+                              onClick={(e) => deleteImage(index, e)}
                               className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                              type="button"
                             >
                               ×
                             </button>
@@ -244,7 +391,7 @@ const DragDropImageUploader = () => {
               {/* Right Side - Form */}
               <div className="flex-1 flex flex-col justify-center py-8 px-4 sm:px-6 lg:px-20 xl:px-24 bg-white min-h-[700px]">
                 <div className="mx-auto w-full max-w-sm lg:w-96">
-                  {/* Mobile Upload Area (visible only on small screens) */}
+                  {/* Mobile Upload Area */}
                   <div className="lg:hidden mb-8">
                     <div
                       className="w-full p-6 transition-all duration-300 border-2 border-indigo-300 border-dashed rounded-xl cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 focus:outline-none group"
@@ -261,7 +408,7 @@ const DragDropImageUploader = () => {
                           Click to upload images
                         </p>
                         <p className="mt-1 text-xs text-gray-500">
-                          PNG, JPG, GIF up to 10MB
+                          JPG, PNG, GIF, WebP (max 10MB each)
                         </p>
                       </div>
                     </div>
@@ -278,8 +425,9 @@ const DragDropImageUploader = () => {
                                 className="w-full h-16 object-cover rounded-lg"
                               />
                               <button
-                                onClick={() => deleteImage(index)}
+                                onClick={(e) => deleteImage(index, e)}
                                 className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                                type="button"
                               >
                                 ×
                               </button>
@@ -320,6 +468,8 @@ const DragDropImageUploader = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                           value={title}
                           onChange={(e) => setTitle(e.target.value)}
+                          onFocus={handleInputFocus}
+                          onBlur={handleInputBlur}
                           required
                         />
                       </div>
@@ -337,6 +487,8 @@ const DragDropImageUploader = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors resize-none"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                       />
                     </div>
 
@@ -350,6 +502,8 @@ const DragDropImageUploader = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                         required
                       >
                         <option value="">Select Category</option>
@@ -372,6 +526,8 @@ const DragDropImageUploader = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                           value={style}
                           onChange={(e) => setStyle(e.target.value)}
+                          onFocus={handleInputFocus}
+                          onBlur={handleInputBlur}
                         >
                           <option value="">Select a style...</option>
                           <option value="graffiti">Graffiti</option>
@@ -392,6 +548,8 @@ const DragDropImageUploader = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                           value={technique}
                           onChange={(e) => setTechnique(e.target.value)}
+                          onFocus={handleInputFocus}
+                          onBlur={handleInputBlur}
                         >
                           <option value="">Select a technique...</option>
                           <option value="spray_paint">Spray Paint</option>
@@ -417,6 +575,8 @@ const DragDropImageUploader = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                       />
                     </div>
 
@@ -432,6 +592,8 @@ const DragDropImageUploader = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                         value={locationText}
                         onChange={(e) => setLocationText(e.target.value)}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                       />
                     </div>
 
@@ -446,6 +608,8 @@ const DragDropImageUploader = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                         value={createdDate}
                         onChange={(e) => setCreatedDate(e.target.value)}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                       />
                     </div>
 
@@ -456,6 +620,8 @@ const DragDropImageUploader = () => {
                         id="isCommissioned"
                         checked={isCommissioned}
                         onChange={(e) => setIsCommissioned(e.target.checked)}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                         className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                       />
                       <label htmlFor="isCommissioned" className="ml-2 block text-sm text-gray-700">
@@ -463,7 +629,7 @@ const DragDropImageUploader = () => {
                       </label>
                     </div>
 
-                    {/* Commissioner Field (conditional) */}
+                    {/* Commissioner Field */}
                     {isCommissioned && (
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -476,6 +642,8 @@ const DragDropImageUploader = () => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                           value={commissioner}
                           onChange={(e) => setCommissioner(e.target.value)}
+                          onFocus={handleInputFocus}
+                          onBlur={handleInputBlur}
                         />
                       </div>
                     )}
@@ -484,6 +652,7 @@ const DragDropImageUploader = () => {
                     <button
                       onClick={uploadImages}
                       disabled={loading || images.length === 0 || !title}
+                      type="button"
                       className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       {loading ? (

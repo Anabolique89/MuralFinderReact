@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from '@styles';
 import { defaultimg } from '@assets';
 import AuthService from '@services/AuthService';
@@ -18,13 +18,17 @@ const Profile = () => {
     const [loading, setLoading] = useState(true);
     const [artworksLoading, setArtworksLoading] = useState(true);
     const [error, setError] = useState(null);
+    
+    // Track if we're currently interacting with upload component
+    const isUploadingRef = useRef(false);
+    const lastFetchTimeRef = useRef(0);
 
     // Fetch profile data
     const fetchProfileData = async () => {
         try {
             setLoading(true);
             const data = await AuthService.getProfile();
-            console.log('Profile data fetched:', data); // Debug log
+            console.log('Profile data fetched:', data);
             setProfileData(data);
             
             // Update localStorage to keep data in sync
@@ -38,10 +42,12 @@ const Profile = () => {
         }
     };
 
-    // Fetch user artworks
-    const fetchUserArtworks = async () => {
+    // Fetch user artworks with callback option
+    const fetchUserArtworks = async (silent = false) => {
         try {
-            setArtworksLoading(true);
+            if (!silent) {
+                setArtworksLoading(true);
+            }
             const user = AuthService.getUser();
             
             if (user?.username) {
@@ -52,7 +58,9 @@ const Profile = () => {
             console.error('Error fetching user artworks:', error);
             setUserArtworks([]);
         } finally {
-            setArtworksLoading(false);
+            if (!silent) {
+                setArtworksLoading(false);
+            }
         }
     };
 
@@ -62,9 +70,31 @@ const Profile = () => {
         fetchUserArtworks();
     }, []);
 
-    // Refresh data when returning from settings
+    // Improved focus handler with debouncing and upload check
     useEffect(() => {
         const handleFocus = () => {
+            // Check sessionStorage flag first
+            const uploadInProgress = sessionStorage.getItem('uploadInProgress');
+            if (uploadInProgress === 'true') {
+                console.log('Skipping refresh - upload in progress (sessionStorage)');
+                return;
+            }
+
+            // Don't refresh if we're uploading (ref check as backup)
+            if (isUploadingRef.current) {
+                console.log('Skipping refresh - upload in progress (ref)');
+                return;
+            }
+
+            // Debounce: only refresh if it's been more than 2 seconds since last fetch
+            const now = Date.now();
+            if (now - lastFetchTimeRef.current < 2000) {
+                console.log('Skipping refresh - too soon');
+                return;
+            }
+
+            console.log('Window focused - refreshing profile data');
+            lastFetchTimeRef.current = now;
             fetchProfileData();
         };
 
@@ -72,6 +102,22 @@ const Profile = () => {
         
         return () => {
             window.removeEventListener('focus', handleFocus);
+        };
+    }, []);
+
+    // Listen for successful artwork uploads to refresh the gallery
+    useEffect(() => {
+        const handleArtworkUploaded = () => {
+            console.log('Artwork uploaded - refreshing artworks');
+            // Refresh artworks silently (without showing loading spinner)
+            fetchUserArtworks(true);
+        };
+
+        // Listen for custom event from DragDropImageUploader
+        window.addEventListener('artworkUploaded', handleArtworkUploaded);
+        
+        return () => {
+            window.removeEventListener('artworkUploaded', handleArtworkUploaded);
         };
     }, []);
 
@@ -89,7 +135,6 @@ const Profile = () => {
     // Helper function to get profile field with proper fallback
     const getProfileField = (field) => {
         const value = profileData?.profile?.[field] || profileData?.[field] || '';
-        console.log(`Getting field ${field}:`, value); // Debug log
         return value;
     };
 
@@ -296,7 +341,14 @@ const Profile = () => {
 
             {/* Upload Section */}
             <div className="bg-indigo-600 w-full overflow-hidden">
-                <DragDropImageUploader />
+                <DragDropImageUploader 
+                    onUploadStart={() => { isUploadingRef.current = true; }}
+                    onUploadEnd={() => { 
+                        isUploadingRef.current = false;
+                        // Refresh artworks after successful upload
+                        fetchUserArtworks(true);
+                    }}
+                />
             </div>
 
             {/* Walls Section */}
