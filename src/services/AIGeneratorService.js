@@ -1,24 +1,25 @@
-import axios from 'axios';
+import axios from "axios";
 
 class AIGeneratorService {
   constructor() {
-    this.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+    this.baseURL =
+      import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
   }
 
   /**
    * Get auth headers - Laravel Sanctum tokens can't be validated on frontend
    */
   async getAuthHeaders() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
       this.redirectToLogin();
-      throw new Error('No authentication token found. Please login again.');
+      throw new Error("No authentication token found. Please login again.");
     }
 
     // For Laravel Sanctum tokens, we can't validate expiration on frontend
     // The backend will handle expiration validation and return 401 if expired
     return {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     };
   }
 
@@ -27,12 +28,12 @@ class AIGeneratorService {
    */
   redirectToLogin() {
     // Clear all authentication data
-    localStorage.removeItem('token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
-    
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
+
     // Redirect to login page
-    window.location.href = '/login';
+    window.location.href = "/login";
   }
 
   /**
@@ -43,34 +44,38 @@ class AIGeneratorService {
   async generateArchetype(archetype) {
     try {
       const headers = await this.getAuthHeaders();
-      const response = await axios.post(`${this.baseURL}/ai-generator/generate-archetype`, {
-        archetype
-      }, {
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${this.baseURL}/ai-generator/generate-archetype`,
+        {
+          archetype,
+        },
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
         }
-      });
-      
+      );
+
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (error) {
-      console.error('Error generating archetype:', error);
-      
+      console.error("Error generating archetype:", error);
+
       // If it's an authentication error, redirect to login
       if (error.response?.status === 401) {
         this.redirectToLogin();
         return {
           success: false,
-          error: 'Session expired. Redirecting to login...'
+          error: "Session expired. Redirecting to login...",
         };
       }
-      
+
       return {
         success: false,
-        error: error.response?.data?.message || error.message
+        error: error.response?.data?.message || error.message,
       };
     }
   }
@@ -85,35 +90,39 @@ class AIGeneratorService {
     try {
       const headers = await this.getAuthHeaders();
       const formData = new FormData();
-      formData.append('archetype', archetype);
-      formData.append('image', imageFile);
+      formData.append("archetype", archetype);
+      formData.append("image", imageFile);
 
-      const response = await axios.post(`${this.baseURL}/ai-generator/forge-saga`, formData, {
-        headers: {
-          ...headers,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      
+      const response = await axios.post(
+        `${this.baseURL}/ai-generator/forge-saga`,
+        formData,
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (error) {
-      console.error('Error forging saga:', error);
-      
+      console.error("Error forging saga:", error);
+
       // If it's an authentication error, redirect to login
       if (error.response?.status === 401) {
         this.redirectToLogin();
         return {
           success: false,
-          error: 'Session expired. Redirecting to login...'
+          error: "Session expired. Redirecting to login...",
         };
       }
-      
+
       return {
         success: false,
-        error: error.response?.data?.message || error.message
+        error: error.response?.data?.message || error.message,
       };
     }
   }
@@ -126,34 +135,38 @@ class AIGeneratorService {
   async generateCustomPrompt(customPrompt) {
     try {
       const headers = await this.getAuthHeaders();
-      const response = await axios.post(`${this.baseURL}/ai-generator/generate-custom`, {
-        prompt: customPrompt
-      }, {
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${this.baseURL}/ai-generator/generate-custom`,
+        {
+          prompt: customPrompt,
+        },
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
         }
-      });
-      
+      );
+
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (error) {
-      console.error('Error generating custom prompt:', error);
-      
+      console.error("Error generating custom prompt:", error);
+
       // If it's an authentication error, redirect to login
       if (error.response?.status === 401) {
         this.redirectToLogin();
         return {
           success: false,
-          error: 'Session expired. Redirecting to login...'
+          error: "Session expired. Redirecting to login...",
         };
       }
-      
+
       return {
         success: false,
-        error: error.response?.data?.message || error.message
+        error: error.response?.data?.message || error.message,
       };
     }
   }
@@ -168,35 +181,39 @@ class AIGeneratorService {
     try {
       const headers = await this.getAuthHeaders();
       const formData = new FormData();
-      formData.append('prompt', customPrompt);
-      formData.append('image', imageFile);
+      formData.append("prompt", customPrompt);
+      formData.append("image", imageFile);
 
-      const response = await axios.post(`${this.baseURL}/ai-generator/forge-custom-saga`, formData, {
-        headers: {
-          ...headers,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      
+      const response = await axios.post(
+        `${this.baseURL}/ai-generator/forge-custom-saga`,
+        formData,
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (error) {
-      console.error('Error forging custom saga:', error);
-      
+      console.error("Error forging custom saga:", error);
+
       // If it's an authentication error, redirect to login
       if (error.response?.status === 401) {
         this.redirectToLogin();
         return {
           success: false,
-          error: 'Session expired. Redirecting to login...'
+          error: "Session expired. Redirecting to login...",
         };
       }
-      
+
       return {
         success: false,
-        error: error.response?.data?.message || error.message
+        error: error.response?.data?.message || error.message,
       };
     }
   }
@@ -209,34 +226,38 @@ class AIGeneratorService {
   async checkPredictionStatus(predictionId) {
     try {
       const headers = await this.getAuthHeaders();
-      const response = await axios.post(`${this.baseURL}/ai-generator/check-status`, {
-        prediction_id: predictionId
-      }, {
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${this.baseURL}/ai-generator/check-status`,
+        {
+          prediction_id: predictionId,
+        },
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
         }
-      });
-      
+      );
+
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (error) {
-      console.error('Error checking prediction status:', error);
-      
+      console.error("Error checking prediction status:", error);
+
       // If it's an authentication error, redirect to login
       if (error.response?.status === 401) {
         this.redirectToLogin();
         return {
           success: false,
-          error: 'Session expired. Redirecting to login...'
+          error: "Session expired. Redirecting to login...",
         };
       }
-      
+
       return {
         success: false,
-        error: error.response?.data?.message || error.message
+        error: error.response?.data?.message || error.message,
       };
     }
   }
@@ -250,22 +271,22 @@ class AIGeneratorService {
   async downloadImage(imageUrl, filename) {
     try {
       const response = await axios.get(imageUrl, {
-        responseType: 'blob'
+        responseType: "blob",
       });
-      
+
       const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
       link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      
+
       return true;
     } catch (error) {
-      console.error('Error downloading image:', error);
+      console.error("Error downloading image:", error);
       return false;
     }
   }
@@ -279,14 +300,20 @@ class AIGeneratorService {
    * @param {string|null} customPrompt - Optional custom prompt used
    * @returns {Promise<Object>} Response with artwork data
    */
-  async uploadAsArtwork(imageUrl, archetype, title = null, description = null, customPrompt = null) {
+  async uploadAsArtwork(
+    imageUrl,
+    archetype,
+    title = null,
+    description = null,
+    customPrompt = null
+  ) {
     try {
       const headers = await this.getAuthHeaders();
       const payload = {
         image_url: imageUrl,
         archetype: archetype,
         title: title,
-        description: description
+        description: description,
       };
 
       // Add custom prompt if provided
@@ -294,32 +321,36 @@ class AIGeneratorService {
         payload.prompt = customPrompt;
       }
 
-      const response = await axios.post(`${this.baseURL}/ai-generator/upload-as-artwork`, payload, {
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${this.baseURL}/ai-generator/upload-as-artwork`,
+        payload,
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
         }
-      });
-      
+      );
+
       return {
         success: true,
-        data: response.data
+        data: response.data,
       };
     } catch (error) {
-      console.error('Error uploading as artwork:', error);
-      
+      console.error("Error uploading as artwork:", error);
+
       // If it's an authentication error, redirect to login
       if (error.response?.status === 401) {
         this.redirectToLogin();
         return {
           success: false,
-          error: 'Session expired. Redirecting to login...'
+          error: "Session expired. Redirecting to login...",
         };
       }
-      
+
       return {
         success: false,
-        error: error.response?.data?.message || error.message
+        error: error.response?.data?.message || error.message,
       };
     }
   }
@@ -330,31 +361,145 @@ class AIGeneratorService {
    */
   async getAvailableArchetypes() {
     try {
-      const response = await axios.get(`${this.baseURL}/v1/ai-generator/archetypes`);
+      const response = await axios.get(
+        `${this.baseURL}/v1/ai-generator/archetypes`
+      );
       return response.data.data.archetypes;
     } catch (error) {
-      console.error('Error fetching archetypes:', error);
+      console.error("Error fetching archetypes:", error);
       // Fallback to hardcoded archetypes
       return [
         {
-          value: 'viking',
-          label: '⚔️ Viking Warrior',
-          description: 'Transform into a fierce Nordic warrior with authentic armor and weapons'
+          value: "street-art",
+          label: "🎨 Street Art",
+          description:
+            "Bold urban street art with vibrant colors and graffiti elements",
+          icon: "🏙️",
+          prompt:
+            "street art mural, vibrant graffiti style, bold colors, urban art, spray paint effect, wall art",
         },
         {
-          value: 'royal',
-          label: '👑 Medieval King/Queen',
-          description: 'Become a majestic medieval ruler with crown and royal regalia'
+          value: "abstract",
+          label: "🌀 Abstract",
+          description:
+            "Contemporary abstract art with geometric shapes and flowing forms",
+          icon: "🎭",
+          prompt:
+            "abstract mural art, geometric shapes, flowing forms, contemporary style, colorful, modern art",
         },
         {
-          value: 'norse',
-          label: '⚡ Norse God/Goddess',
-          description: 'Ascend as a powerful deity from Norse mythology with divine powers'
-        }
+          value: "realistic",
+          label: "📷 Photorealistic",
+          description: "Highly detailed photorealistic mural art",
+          icon: "🖼️",
+          prompt:
+            "photorealistic mural, highly detailed, realistic painting, wall art, fine details, professional quality",
+        },
+        {
+          value: "pop-art",
+          label: "💥 Pop Art",
+          description:
+            "Vibrant pop art style with bold colors and comic book aesthetics",
+          icon: "🎪",
+          prompt:
+            "pop art mural, bold colors, comic book style, vibrant, retro pop art aesthetic, graphic design",
+        },
+        {
+          value: "surreal",
+          label: "🌙 Surrealism",
+          description: "Dreamlike surrealist art with imaginative elements",
+          icon: "✨",
+          prompt:
+            "surrealist mural art, dreamlike, imaginative, fantasy elements, surreal composition, artistic",
+        },
+        {
+          value: "geometric",
+          label: "🔷 Geometric",
+          description: "Clean geometric patterns and shapes in modern style",
+          icon: "📐",
+          prompt:
+            "geometric mural, clean patterns, modern design, architectural, symmetrical, minimalist style",
+        },
+        {
+          value: "nature",
+          label: "🌿 Nature/Botanical",
+          description: "Beautiful natural elements, flora and fauna",
+          icon: "🌺",
+          prompt:
+            "nature mural, botanical art, flora and fauna, natural elements, organic, garden wall art",
+        },
+        {
+          value: "portrait",
+          label: "👤 Portrait",
+          description: "Artistic portrait style for faces and figures",
+          icon: "🎨",
+          prompt:
+            "portrait mural art, artistic face, figure painting, expressive, wall portrait, contemporary style",
+        },
       ];
     }
   }
 
+  /**
+   * Get user generation statistics (remaining generations, subscription status)
+   * @returns {Promise<Object>} User stats
+   */
+  async getUserGenerationStats() {
+    try {
+      const headers = await this.getAuthHeaders();
+      const response = await axios.get(
+        `${this.baseURL}/ai-generator/user-stats`,
+        {
+          headers,
+        }
+      );
+
+      return {
+        success: true,
+        data: response.data.data,
+      };
+    } catch (error) {
+      console.error("Error fetching user stats:", error);
+
+      if (error.response?.status === 401) {
+        this.redirectToLogin();
+      }
+
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  /**
+   * Get user's generation history
+   * @returns {Promise<Object>} Generation history
+   */
+  async getGenerationHistory() {
+    try {
+      const headers = await this.getAuthHeaders();
+      const response = await axios.get(`${this.baseURL}/ai-generator/history`, {
+        headers,
+      });
+
+      return {
+        success: true,
+        data: response.data.data,
+      };
+    } catch (error) {
+      console.error("Error fetching generation history:", error);
+
+      if (error.response?.status === 401) {
+        this.redirectToLogin();
+      }
+
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
   /**
    * Validate image file
    * @param {File} file - Image file to validate
@@ -362,26 +507,26 @@ class AIGeneratorService {
    */
   validateImageFile(file) {
     const maxSize = 10 * 1024 * 1024; // 10MB
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
     if (!file) {
       return { valid: true }; // No file is allowed (optional)
     }
-    
+
     if (!allowedTypes.includes(file.type)) {
       return {
         valid: false,
-        error: 'Please select a valid image file (JPEG, PNG, or WebP)'
+        error: "Please select a valid image file (JPEG, PNG, or WebP)",
       };
     }
-    
+
     if (file.size > maxSize) {
       return {
         valid: false,
-        error: 'Image file size must be less than 10MB'
+        error: "Image file size must be less than 10MB",
       };
     }
-    
+
     return { valid: true };
   }
 }

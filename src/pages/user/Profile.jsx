@@ -4,6 +4,7 @@ import { defaultimg } from '@assets';
 import AuthService from '@services/AuthService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import { DragDropImageUploader, ArtworksGallery, WallsIntro, BackToTopButton } from '../../components';
@@ -23,6 +24,7 @@ const Profile = () => {
         try {
             setLoading(true);
             const data = await AuthService.getProfile();
+            console.log('Profile data fetched:', data); // Debug log
             setProfileData(data);
             
             // Update localStorage to keep data in sync
@@ -60,10 +62,9 @@ const Profile = () => {
         fetchUserArtworks();
     }, []);
 
-    // Refresh data when returning from settings (using focus event)
+    // Refresh data when returning from settings
     useEffect(() => {
         const handleFocus = () => {
-            // Refresh profile data when window regains focus
             fetchProfileData();
         };
 
@@ -76,23 +77,25 @@ const Profile = () => {
 
     // Helper function to get profile image with proper fallback chain
     const getProfileImage = () => {
-        // Try profileData.profile.profile_image_url first (most up-to-date)
         if (profileData?.profile?.profile_image_url) {
             return getFileUrl(profileData.profile.profile_image_url);
         }
-        
-        // Try direct profile_image_url
         if (profileData?.profile_image_url) {
             return getFileUrl(profileData.profile_image_url);
         }
-        
-        // Fallback to default image
         return defaultimg;
     };
 
     // Helper function to get profile field with proper fallback
     const getProfileField = (field) => {
-        return profileData?.profile?.[field] || profileData?.[field] || '';
+        const value = profileData?.profile?.[field] || profileData?.[field] || '';
+        console.log(`Getting field ${field}:`, value); // Debug log
+        return value;
+    };
+
+    // Helper function to check if social media links exist
+    const hasSocialLinks = () => {
+        return getProfileField('facebook') || getProfileField('instagram') || getProfileField('twitter');
     };
 
     if (loading) {
@@ -173,6 +176,48 @@ const Profile = () => {
                                     <p className={`${styles.paragraph} mt-2 text-gray-600`}>
                                         📍 {getProfileField('location')}
                                     </p>
+                                )}
+
+                                {/* Social Media Links */}
+                                {hasSocialLinks() && (
+                                    <div className="mt-4 flex gap-4 justify-center">
+                                        {getProfileField('facebook') && (
+                                            <a
+                                                href={getProfileField('facebook').startsWith('http') 
+                                                    ? getProfileField('facebook') 
+                                                    : `https://${getProfileField('facebook')}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-blue-600 hover:text-blue-700 transition-colors"
+                                            >
+                                                <FontAwesomeIcon icon={faFacebook} className="text-2xl" />
+                                            </a>
+                                        )}
+                                        {getProfileField('instagram') && (
+                                            <a
+                                                href={getProfileField('instagram').startsWith('http') 
+                                                    ? getProfileField('instagram') 
+                                                    : `https://${getProfileField('instagram')}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-pink-600 hover:text-pink-700 transition-colors"
+                                            >
+                                                <FontAwesomeIcon icon={faInstagram} className="text-2xl" />
+                                            </a>
+                                        )}
+                                        {getProfileField('twitter') && (
+                                            <a
+                                                href={getProfileField('twitter').startsWith('http') 
+                                                    ? getProfileField('twitter') 
+                                                    : `https://${getProfileField('twitter')}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-sky-500 hover:text-sky-600 transition-colors"
+                                            >
+                                                <FontAwesomeIcon icon={faTwitter} className="text-2xl" />
+                                            </a>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                             

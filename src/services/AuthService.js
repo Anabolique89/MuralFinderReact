@@ -3,7 +3,6 @@ import { BASE_URL, authEndpoints } from "../constants/ApiEndpoints";
 
 const AuthService = {
   login: async (email, password) => {
-    // eslint-disable-next-line no-useless-catch
     try {
       const inputObj = { email, password };
       console.log("AuthService.login called with:", inputObj);
@@ -11,46 +10,97 @@ const AuthService = {
 
       const response = await fetch(`${BASE_URL}${authEndpoints.login}`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(inputObj),
       });
 
       console.log("Login response status:", response.status);
+
+      // Check if response is empty
+      if (response.status === 204 || response.status === 205) {
+        throw new Error(
+          "Server returned empty response. Please contact support."
+        );
+      }
+
+      // Handle non-JSON responses
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Server returned invalid response format.");
+      }
+
       const data = await response.json();
       console.log("Login response data:", data);
 
       if (response.ok) {
         const dataObj = data.data;
-        // Handle both token structures from backend
+
+        if (!dataObj || !dataObj.user) {
+          throw new Error("Invalid response from server");
+        }
+
         const token = dataObj.tokens?.access_token || dataObj.token;
-        console.log("Extracted token:", token);
 
-        if (token) {
-          // Store token in localStorage for backward compatibility
-          localStorage.setItem("token", token);
-          localStorage.setItem("user", JSON.stringify(dataObj.user));
+        if (!token) {
+          throw new Error("No authentication token received");
+        }
 
-          // Store refresh token if available
-          if (dataObj.tokens?.refresh_token) {
-            localStorage.setItem("refresh_token", dataObj.tokens.refresh_token);
-          }
+        // Store authentication data
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(dataObj.user));
+
+        if (dataObj.tokens?.refresh_token) {
+          localStorage.setItem("refresh_token", dataObj.tokens.refresh_token);
         }
 
         return {
           user: dataObj.user,
           token: token,
-          tokens: dataObj.tokens, // Include full tokens object
+          tokens: dataObj.tokens,
         };
       } else {
-        throw new Error(data.message);
+        // Handle specific error responses
+        if (response.status === 401) {
+          throw new Error("Invalid email or password. Please try again.");
+        } else if (response.status === 403) {
+          throw new Error(
+            "Your account has been suspended. Please contact support."
+          );
+        } else if (response.status === 422) {
+          // Handle validation errors
+          if (data.errors) {
+            const errorMessages = Object.values(data.errors).flat();
+            throw new Error(errorMessages.join(" "));
+          }
+          throw new Error(data.message || "Invalid credentials");
+        } else {
+          throw new Error(data.message || "Login failed. Please try again.");
+        }
       }
     } catch (err) {
+      console.error("AuthService.login error:", err);
+
+      if (err instanceof TypeError && err.message.includes("fetch")) {
+        throw new Error(
+          "Unable to connect to server. Please check your internet connection."
+        );
+      }
+
+      if (
+        err.message.includes("CORS") ||
+        err.message.includes("NetworkError")
+      ) {
+        throw new Error("Server connection error. Please try again later.");
+      }
+
       throw err;
     }
   },
 
   signup: async (username, email, role, password, passwordConfirmation) => {
-    // eslint-disable-next-line no-useless-catch
     try {
       const inputObj = {
         username,
@@ -62,15 +112,77 @@ const AuthService = {
 
       const response = await fetch(`${BASE_URL}${authEndpoints.register}`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(inputObj),
       });
+
+      // Check for empty responses
+      if (response.status === 204 || response.status === 205) {
+        throw new Error("Server returned empty response");
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Server returned invalid response format");
+      }
 
       const data = await response.json();
 
       if (response.ok) {
-        return { message: data.message };
+        return {
+          message:
+            data.message ||
+            "Registration successful! Please check your email to verify your account.",
+          success: true,
+        };
       } else {
+        // Handle validation errors (422)
+        if (response.status === 422) {
+          if (data.errors && typeof data.errors === "object") {
+            // Format Laravel validation errors
+            const errorMessages = [];
+
+            for (const [field, messages] of Object.entries(data.errors)) {
+              if (Array.isArray(messages)) {
+                // Make error messages more user-friendly
+                messages.forEach((msg) => {
+                  if (msg.includes("already been taken")) {
+                    if (field === "username") {
+                      errorMessages.push(
+                        "This username is already registered. Please choose another one."
+                      );
+                    } else if (field === "email") {
+                      errorMessages.push(
+                        "This email address is already registered. Try logging in instead."
+                      );
+                    } else {
+                      errorMessages.push(msg);
+                    }
+                  } else if (msg.includes("required")) {
+                    errorMessages.push(
+                      `${
+                        field.charAt(0).toUpperCase() + field.slice(1)
+                      } is required.`
+                    );
+                  } else if (msg.includes("invalid")) {
+                    errorMessages.push(`Please enter a valid ${field}.`);
+                  } else {
+                    errorMessages.push(msg);
+                  }
+                });
+              }
+            }
+
+            throw new Error(errorMessages.join(" "));
+          } else if (data.message) {
+            throw new Error(data.message);
+          }
+        }
+
+        // Handle old format validation errors
         if (
           data &&
           typeof data === "object" &&
@@ -78,20 +190,34 @@ const AuthService = {
           typeof data.message === "object"
         ) {
           let errorString = "";
-
           for (const key in data.message) {
             if (Array.isArray(data.message[key])) {
               errorString += data.message[key].join(" ") + " ";
             }
           }
-
           throw new Error(errorString.trim());
-        } else {
-          console.log(data);
-          throw new Error("An error occurred during signup.");
         }
+
+        throw new Error(
+          data.message || "Registration failed. Please try again."
+        );
       }
     } catch (err) {
+      console.error("AuthService.signup error:", err);
+
+      if (err instanceof TypeError && err.message.includes("fetch")) {
+        throw new Error(
+          "Unable to connect to server. Please check your internet connection."
+        );
+      }
+
+      if (
+        err.message.includes("CORS") ||
+        err.message.includes("NetworkError")
+      ) {
+        throw new Error("Server connection error. Please try again later.");
+      }
+
       throw err;
     }
   },
@@ -104,9 +230,7 @@ const AuthService = {
       return false;
     }
 
-    // Check if token is expired
     if (this.isTokenExpired()) {
-      // Clear expired tokens
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user");
@@ -122,10 +246,8 @@ const AuthService = {
   },
 
   getProfile: async () => {
-    // eslint-disable-next-line no-useless-catch
     try {
       const token = localStorage.getItem("token");
-      console.log("AuthService.getProfile - token from localStorage:", token);
       if (!token) {
         throw new Error("User not authenticated");
       }
@@ -133,32 +255,33 @@ const AuthService = {
       const response = await axios.get(`${BASE_URL}user/profile`, {
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.status === 200) {
-        console.log(response.data.data);
         return response.data.data;
       } else {
         throw new Error("Failed to fetch profile data");
       }
     } catch (err) {
+      console.error("AuthService.getProfile error:", err);
       throw err;
     }
   },
+
   uploadProfileImage: async (userId, imageData) => {
     try {
       if (!userId) {
-        return "Missing userId parameter";
+        throw new Error("Missing userId parameter");
       }
 
       const token = localStorage.getItem("token");
       if (!token) {
-        return "the server could not authenticate your request";
+        throw new Error("User not authenticated");
       }
 
-      // Just use the string endpoint
       const response = await axios.post(
         `${BASE_URL}${authEndpoints.uploadProfileImage}`,
         imageData,
@@ -171,14 +294,17 @@ const AuthService = {
       );
 
       if (response.data.success) {
-        console.log(response.data.data);
         return response.data.message;
       } else {
-        return response.data.message || "Failed to upload profile image";
+        throw new Error(
+          response.data.message || "Failed to upload profile image"
+        );
       }
     } catch (error) {
       console.error("Error uploading profile image:", error);
-      return error.response?.data?.error || "An error occurred";
+      throw new Error(
+        error.response?.data?.error || error.message || "An error occurred"
+      );
     }
   },
 
@@ -186,7 +312,7 @@ const AuthService = {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        return "No token found in session storage";
+        throw new Error("No token found");
       }
 
       await axios.post(`${BASE_URL}${authEndpoints.logout}`, null, {
@@ -195,17 +321,23 @@ const AuthService = {
         },
       });
 
-      // Remove the token from session storage
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
+    } catch (error) {
+      console.error("Error logging out:", error);
+
+      // Clear tokens even if request fails
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user");
 
-      // You can also perform any other necessary cleanup, such as clearing the user's data from the application state
-    } catch (error) {
-      console.error("Error logging out:", error);
-      return error.response.data.error || "An error occurred during logout";
+      throw new Error(
+        error.response?.data?.error || error.message || "Logout failed"
+      );
     }
   },
+
   updateProfile: async (profileData) => {
     try {
       const token = localStorage.getItem("token");
@@ -213,19 +345,17 @@ const AuthService = {
         throw new Error("User not authenticated");
       }
 
-      console.log("Updating profile with data:", profileData);
       const response = await axios.put(
         `${BASE_URL}${authEndpoints.updateProfile}`,
         profileData,
         {
           headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      console.log("Profile update response:", response);
 
       if (response.status === 200) {
         return response.data;
@@ -233,7 +363,7 @@ const AuthService = {
         throw new Error("Failed to update profile");
       }
     } catch (error) {
-      console.log(error);
+      console.error("AuthService.updateProfile error:", error);
       throw error;
     }
   },
@@ -248,8 +378,6 @@ const AuthService = {
       throw new Error("User not authenticated");
     }
 
-    console.log(userId);
-
     const response = await axios.delete(
       `${BASE_URL}${authEndpoints.deleteAccount(userId)}`,
       {
@@ -263,7 +391,7 @@ const AuthService = {
     if (response.status === 200) {
       return response.data.message;
     } else {
-      throw new Error("Failed to delete profile");
+      throw new Error("Failed to delete account");
     }
   },
 
@@ -287,6 +415,7 @@ const AuthService = {
       {
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -299,7 +428,6 @@ const AuthService = {
     }
   },
 
-  // Token refresh method
   refreshToken: async () => {
     try {
       const token = localStorage.getItem("token");
@@ -312,20 +440,18 @@ const AuthService = {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Handle both token structures from backend
         const newToken = data.data.tokens?.access_token || data.data.token;
-        console.log("Refreshed token:", newToken);
 
         if (newToken) {
           localStorage.setItem("token", newToken);
 
-          // Store new refresh token if available
           if (data.data.tokens?.refresh_token) {
             localStorage.setItem(
               "refresh_token",
@@ -336,13 +462,14 @@ const AuthService = {
 
         return {
           token: newToken,
-          tokens: data.data.tokens, // Include full tokens object
+          tokens: data.data.tokens,
         };
       } else {
         throw new Error(data.message || "Token refresh failed");
       }
     } catch (error) {
-      // If refresh fails, clear token and redirect to login
+      console.error("Token refresh error:", error);
+
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user");
@@ -350,16 +477,13 @@ const AuthService = {
     }
   },
 
-  // Check if token is expired or about to expire
   isTokenExpired: () => {
     const token = localStorage.getItem("token");
     if (!token) return true;
 
     try {
-      // Laravel Sanctum tokens are not JWT tokens, they're plain text
-      // We can't decode them to check expiration on the frontend
-      // Instead, we'll assume tokens are valid if they exist
-      // The backend will handle actual expiration validation
+      // Laravel Sanctum tokens are plain text
+      // Backend handles expiration validation
       return false;
     } catch (error) {
       return true;

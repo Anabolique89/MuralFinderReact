@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   // Loading states
   isGlobalLoading: false,
   loadingStates: {},
-  
+
   // Modal states
   modals: {
     loginModal: false,
@@ -15,37 +15,37 @@ const initialState = {
     profileModal: false,
     settingsModal: false,
   },
-  
+
   // Notification states
   notifications: [],
-  
+
   // Theme and preferences
-  theme: 'light',
+  theme: "light",
   sidebarOpen: false,
   mobileMenuOpen: false,
-  
+
   // Search and filters
   searchOpen: false,
   filtersOpen: false,
-  
+
   // Map states
-  mapView: 'normal', // 'normal', 'satellite', 'terrain'
+  mapView: "normal", // 'normal', 'satellite', 'terrain'
   mapZoom: 10,
   mapCenter: null,
-  
+
   // Feed preferences
-  feedView: 'grid', // 'grid', 'list', 'masonry'
-  feedFilter: 'all', // 'all', 'following', 'nearby'
-  
+  feedView: "grid", // 'grid', 'list', 'masonry'
+  feedFilter: "all", // 'all', 'following', 'nearby'
+
   // Error states
   globalError: null,
-  
+
   // Network status
   isOnline: navigator.onLine,
 };
 
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState,
   reducers: {
     // Loading states
@@ -59,7 +59,7 @@ const uiSlice = createSlice({
     clearLoadingState: (state, action) => {
       delete state.loadingStates[action.payload];
     },
-    
+
     // Modal management
     openModal: (state, action) => {
       const modalName = action.payload;
@@ -70,11 +70,11 @@ const uiSlice = createSlice({
       state.modals[modalName] = false;
     },
     closeAllModals: (state) => {
-      Object.keys(state.modals).forEach(modal => {
+      Object.keys(state.modals).forEach((modal) => {
         state.modals[modal] = false;
       });
     },
-    
+
     // Notification management
     addNotification: (state, action) => {
       const notification = {
@@ -83,7 +83,7 @@ const uiSlice = createSlice({
         ...action.payload,
       };
       state.notifications.unshift(notification);
-      
+
       // Keep only last 50 notifications
       if (state.notifications.length > 50) {
         state.notifications = state.notifications.slice(0, 50);
@@ -91,19 +91,21 @@ const uiSlice = createSlice({
     },
     removeNotification: (state, action) => {
       state.notifications = state.notifications.filter(
-        notification => notification.id !== action.payload
+        (notification) => notification.id !== action.payload
       );
     },
     clearNotifications: (state) => {
       state.notifications = [];
     },
     markNotificationAsRead: (state, action) => {
-      const notification = state.notifications.find(n => n.id === action.payload);
+      const notification = state.notifications.find(
+        (n) => n.id === action.payload
+      );
       if (notification) {
         notification.read = true;
       }
     },
-    
+
     // Theme and layout
     setTheme: (state, action) => {
       state.theme = action.payload;
@@ -120,7 +122,7 @@ const uiSlice = createSlice({
     setMobileMenuOpen: (state, action) => {
       state.mobileMenuOpen = action.payload;
     },
-    
+
     // Search and filters
     setSearchOpen: (state, action) => {
       state.searchOpen = action.payload;
@@ -128,7 +130,7 @@ const uiSlice = createSlice({
     setFiltersOpen: (state, action) => {
       state.filtersOpen = action.payload;
     },
-    
+
     // Map controls
     setMapView: (state, action) => {
       state.mapView = action.payload;
@@ -139,7 +141,7 @@ const uiSlice = createSlice({
     setMapCenter: (state, action) => {
       state.mapCenter = action.payload;
     },
-    
+
     // Feed preferences
     setFeedView: (state, action) => {
       state.feedView = action.payload;
@@ -147,7 +149,7 @@ const uiSlice = createSlice({
     setFeedFilter: (state, action) => {
       state.feedFilter = action.payload;
     },
-    
+
     // Error handling
     setGlobalError: (state, action) => {
       state.globalError = action.payload;
@@ -155,7 +157,7 @@ const uiSlice = createSlice({
     clearGlobalError: (state) => {
       state.globalError = null;
     },
-    
+
     // Network status
     setOnlineStatus: (state, action) => {
       state.isOnline = action.payload;

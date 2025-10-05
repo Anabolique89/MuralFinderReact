@@ -1,12 +1,97 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAuth, useTheme } from '../../hooks/redux';
 import { registerUser, clearError, clearRegistrationSuccess } from '../../store/slices/authSlice';
 import { addNotification } from '../../store/slices/uiSlice';
-import { ModernRoute, ModernInput, ModernButton, NotificationToast } from '../../components';
+import { ModernRoute, ModernButton, NotificationToast } from '../../components';
 import { fadeintoyouWhite } from '../../assets';
 import { getAuthUrl } from '../../utils/apiConfig';
+
+// Enhanced ModernInput component with password visibility toggle
+const ModernInputWithToggle = ({ 
+  label, 
+  name, 
+  type, 
+  value, 
+  onChange, 
+  error, 
+  icon, 
+  placeholder, 
+  fullWidth, 
+  autoComplete,
+  helperText 
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPasswordField = type === 'password';
+  const inputType = isPasswordField && showPassword ? 'text' : type;
+
+  const EyeIcon = ({ show }) => (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      {show ? (
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" 
+        />
+      ) : (
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" 
+        />
+      )}
+    </svg>
+  );
+
+  return (
+    <div className={fullWidth ? 'w-full' : ''}>
+      {label && (
+        <label className="block text-sm font-raleway font-medium text-gray-700 mb-2">
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        {icon && (
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+            {icon}
+          </div>
+        )}
+        <input
+          type={inputType}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          className={`w-full ${icon ? 'pl-10' : 'pl-4'} ${isPasswordField ? 'pr-10' : 'pr-4'} py-3 border rounded-lg font-raleway focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
+            error
+              ? 'border-red-500 bg-red-50'
+              : 'border-gray-300 hover:border-gray-400'
+          }`}
+        />
+        {isPasswordField && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+          >
+            <EyeIcon show={showPassword} />
+          </button>
+        )}
+      </div>
+      {error && (
+        <p className="mt-1 text-sm text-red-500 font-raleway">{error}</p>
+      )}
+      {helperText && !error && (
+        <p className="mt-1 text-xs text-gray-500 font-raleway">{helperText}</p>
+      )}
+    </div>
+  );
+};
 
 const ModernSignup = () => {
   const dispatch = useDispatch();
@@ -30,22 +115,39 @@ const ModernSignup = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  // Handle registration success
+  // Handle registration success with email verification reminder
   useEffect(() => {
+    console.log('Registration success state:', registrationSuccess);
+    
     if (registrationSuccess) {
+      console.log('Showing registration success notification');
+      
+      // Show comprehensive success notification
       dispatch(addNotification({
         type: 'success',
-        message: 'Account created successfully! Please check your email to verify your account.',
-        duration: 8000,
+        message: '✅ Account created successfully! Please check your email inbox (and spam folder) for a verification link to activate your account.',
+        duration: 10000, // Show for 10 seconds so user has time to read
       }));
-      navigate('/login');
-      dispatch(clearRegistrationSuccess());
+      
+      // Wait 3 seconds before navigating
+      const timer = setTimeout(() => {
+        console.log('Navigating to login page');
+        navigate('/login');
+        dispatch(clearRegistrationSuccess());
+      }, 3000);
+
+      return () => clearTimeout(timer);
     }
   }, [registrationSuccess, navigate, dispatch]);
 
   // Clear errors when component mounts
   useEffect(() => {
     dispatch(clearError());
+    
+    return () => {
+      dispatch(clearError());
+      dispatch(clearRegistrationSuccess());
+    };
   }, [dispatch]);
 
   // Show error notifications
@@ -54,7 +156,7 @@ const ModernSignup = () => {
       dispatch(addNotification({
         type: 'error',
         message: error,
-        duration: 5000,
+        duration: 6000,
       }));
     }
   }, [error, dispatch]);
@@ -66,14 +168,16 @@ const ModernSignup = () => {
       errors.username = 'Username is required';
     } else if (formData.username.length < 3) {
       errors.username = 'Username must be at least 3 characters';
+    } else if (formData.username.length > 20) {
+      errors.username = 'Username must not exceed 20 characters';
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
       errors.username = 'Username can only contain letters, numbers, and underscores';
     }
 
     if (!formData.email) {
       errors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Email is invalid';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
     }
 
     if (!formData.password) {
@@ -81,7 +185,7 @@ const ModernSignup = () => {
     } else if (formData.password.length < 8) {
       errors.password = 'Password must be at least 8 characters';
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+      errors.password = 'Password must contain uppercase, lowercase, and a number';
     }
 
     if (!formData.password_confirmation) {
@@ -91,7 +195,7 @@ const ModernSignup = () => {
     }
 
     if (!formData.role) {
-      errors.role = 'Please select a role';
+      errors.role = 'Please select your role';
     }
 
     setFormErrors(errors);
@@ -118,13 +222,34 @@ const ModernSignup = () => {
     e.preventDefault();
     
     if (!validateForm()) {
+      dispatch(addNotification({
+        type: 'error',
+        message: 'Please fix the errors in the form before submitting',
+        duration: 4000,
+      }));
       return;
     }
 
     try {
-      await dispatch(registerUser(formData)).unwrap();
+      const result = await dispatch(registerUser(formData)).unwrap();
+      console.log('Registration successful, result:', result);
+      
+      // Manual notification as immediate feedback
+      dispatch(addNotification({
+        type: 'success',
+        message: '✅ Account created! Please check your email (including spam folder) to verify your account.',
+        duration: 10000,
+      }));
+      
+      // Navigate after delay
+      setTimeout(() => {
+        navigate('/login');
+        dispatch(clearRegistrationSuccess());
+      }, 3000);
+      
     } catch (error) {
-      // Error is handled by the slice and useEffect above
+      console.error('Registration failed:', error);
+      // Error is handled by Redux and useEffect above
     }
   };
 
@@ -160,7 +285,7 @@ const ModernSignup = () => {
             />
           </div>
 
-          {/* Floating Elements with Original Colors */}
+          {/* Floating Elements */}
           <div className="absolute top-20 left-20 w-4 h-4 bg-secondary/20 rounded-full animate-pulse"></div>
           <div className="absolute top-40 right-20 w-2 h-2 bg-secondary/40 rounded-full animate-ping"></div>
           <div className="absolute bottom-40 left-1/3 w-3 h-3 bg-secondary/30 rounded-full animate-bounce"></div>
@@ -193,7 +318,6 @@ const ModernSignup = () => {
               }`}>
                 Join the global street art community
               </p>
-              {/* Decorative Elements with Original Colors */}
               <div className="mt-4 flex items-center justify-center space-x-2">
                 <div className="w-8 h-0.5 bg-blue-gradient rounded-full"></div>
                 <div className="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
@@ -203,7 +327,7 @@ const ModernSignup = () => {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
-              <ModernInput
+              <ModernInputWithToggle
                 label="Username"
                 name="username"
                 type="text"
@@ -216,7 +340,7 @@ const ModernSignup = () => {
                 autoComplete="username"
               />
 
-              <ModernInput
+              <ModernInputWithToggle
                 label="Email address"
                 name="email"
                 type="email"
@@ -255,7 +379,7 @@ const ModernSignup = () => {
                 )}
               </div>
 
-              <ModernInput
+              <ModernInputWithToggle
                 label="Password"
                 name="password"
                 type="password"
@@ -269,7 +393,7 @@ const ModernSignup = () => {
                 helperText="Must be at least 8 characters with uppercase, lowercase, and number"
               />
 
-              <ModernInput
+              <ModernInputWithToggle
                 label="Confirm Password"
                 name="password_confirmation"
                 type="password"

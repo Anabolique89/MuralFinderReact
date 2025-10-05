@@ -115,7 +115,7 @@ const ProfileSettings = () => {
                                     
                                     {/* Profile Information Display */}
                                     <div className="w-full space-y-6">
-                                        <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        
                                             <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
                                                 <span className="w-6 h-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
                                                     <span className="text-white text-xs">👤</span>
@@ -152,13 +152,13 @@ const ProfileSettings = () => {
                                                     </p>
                                                 </div>
                                             </div>
-                                        </div>
+                                     
                                     </div>
                                 </div>
                                 
                                 {/* Password Settings */}
                                 <div className="mt-8 pt-8 border-t border-white/20">
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                          
                                         <h3 className="text-lg font-semibold text-white mb-6 flex items-center">
                                             <span className="w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mr-3">
                                                 <span className="text-white text-xs">🔒</span>
@@ -198,7 +198,7 @@ const ProfileSettings = () => {
                                                 Save Password
                                             </button>
                                         </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -216,12 +216,12 @@ const ProfileSettings = () => {
                             
                             <div className="max-w-4xl mx-auto">
                                 {profileData?.profile ? (
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                   
                                         <ProfileUpdate 
                                             profile={profileData.profile} 
                                             onProfileUpdated={handleProfileUpdateSuccess}
                                         />
-                                    </div>
+                                    
                                 ) : (
                                     <div className="flex justify-center items-center py-12">
                                         <div className="text-center">
