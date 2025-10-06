@@ -21,6 +21,7 @@ import WallService from "../../services/WallService";
 import MapForWall from "./MapForWall";
 import { Footer, BackToTopButton } from "../../components";
 import NotificationToast from "../../components/ui/NotificationToast";
+import { getFileUrl } from '../../utils/apiConfig';
 import styles from "../../style";
 
 const ViewWall = () => {
@@ -40,7 +41,6 @@ const ViewWall = () => {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [commenting, setCommenting] = useState(false);
   const [liking, setLiking] = useState(false);
-  // const [isDeleting, setIsDeleting] = useState(false); // Not needed until backend adds endpoints
   const [editCommentId, setEditCommentId] = useState(null);
   const [editCommentText, setEditCommentText] = useState("");
   const [showMap, setShowMap] = useState(true); // Toggle between map and image
@@ -69,22 +69,19 @@ const ViewWall = () => {
     try {
       setLoadingComments(true);
       const response = await WallService.getCommentsForWall(wallId);
-      console.log("Comments response:", response); // Debug log
+      console.log("Comments response:", response);
 
       // Handle different response structures
       let commentsData = [];
       if (response.success && response.data) {
-        // Backend returns {success: true, data: {...}}
         commentsData = response.data.data || response.data || [];
       } else if (response.data) {
-        // Direct data response
         commentsData = response.data || [];
       } else if (Array.isArray(response)) {
-        // Direct array response
         commentsData = response;
       }
 
-      console.log("Setting comments:", commentsData); // Debug log
+      console.log("Setting comments:", commentsData);
       setComments(commentsData);
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -110,7 +107,6 @@ const ViewWall = () => {
     try {
       setCommenting(true);
       if (editCommentId) {
-        // If in edit mode, update the comment
         await WallService.updateComment(wallId, editCommentId, {
           comment: editCommentText,
         });
@@ -122,12 +118,12 @@ const ViewWall = () => {
           duration: 2000
         }));
       } else {
-        console.log("Submitting comment:", comment); // Debug log
+        console.log("Submitting comment:", comment);
         const result = await WallService.commentOnWall(wallId, { comment });
-        console.log("Comment submission result:", result); // Debug log
+        console.log("Comment submission result:", result);
 
         setComment("");
-        console.log("Dispatching success notification"); // Debug log
+        console.log("Dispatching success notification");
         dispatch(addNotification({
           type: 'success',
           message: 'Comment added successfully!',
@@ -135,8 +131,8 @@ const ViewWall = () => {
         }));
       }
       setShowCommentBox(false);
-      console.log("Refreshing comments..."); // Debug log
-      await fetchComments(); // Refresh the comments after submitting
+      console.log("Refreshing comments...");
+      await fetchComments();
     } catch (error) {
       console.error("Error submitting comment:", error);
       if (error.response?.status === 401) {
@@ -199,9 +195,9 @@ const ViewWall = () => {
 
     try {
       setLiking(true);
-      console.log("Attempting to like wall:", wallId); // Debug log
+      console.log("Attempting to like wall:", wallId);
       const result = await WallService.likeWall(wallId);
-      console.log("Like result:", result); // Debug log
+      console.log("Like result:", result);
 
       await fetchWallFromDatabase();
       dispatch(addNotification({
@@ -211,7 +207,7 @@ const ViewWall = () => {
       }));
     } catch (error) {
       console.error("Error liking wall:", error);
-      console.error("Error response:", error.response?.data); // Debug log
+      console.error("Error response:", error.response?.data);
 
       let errorMessage = "Failed to like wall. Please try again.";
       if (error.response?.status === 401) {
@@ -227,6 +223,43 @@ const ViewWall = () => {
       }));
     } finally {
       setLiking(false);
+    }
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: wall.name || wall.location_text,
+      text: `Check out this wall: ${wall.name || wall.location_text}`,
+      url: window.location.href,
+    };
+
+    try {
+      // Check if Web Share API is supported
+      if (navigator.share) {
+        await navigator.share(shareData);
+        dispatch(addNotification({
+          type: 'success',
+          message: 'Shared successfully!',
+          duration: 2000
+        }));
+      } else {
+        // Fallback: Copy link to clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        dispatch(addNotification({
+          type: 'success',
+          message: 'Link copied to clipboard!',
+          duration: 2000
+        }));
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        console.error("Error sharing:", error);
+        dispatch(addNotification({
+          type: 'error',
+          message: 'Failed to share. Please try again.',
+          duration: 3000
+        }));
+      }
     }
   };
 
@@ -318,7 +351,10 @@ const ViewWall = () => {
                       </span>
                     )}
                   </button>
-                  <button className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg font-raleway font-semibold transition-all duration-300 flex items-center space-x-2">
+                  <button 
+                    onClick={handleShare}
+                    className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg font-raleway font-semibold transition-all duration-300 flex items-center space-x-2"
+                  >
                     <FontAwesomeIcon icon={faShare} />
                     <span>Share</span>
                   </button>
@@ -387,7 +423,7 @@ const ViewWall = () => {
                       lat={wall.latitude}
                       long={wall.longitude}
                       title={wall.location_text}
-                      image={wall.image_path}
+                      image={wall.image_path ? getFileUrl(wall.image_path) : null}
                       isVerified={wall.is_verified}
                       mapWidth="100%"
                     />
@@ -396,7 +432,7 @@ const ViewWall = () => {
                   <div className="h-96 lg:h-[600px] relative">
                     {wall.image_path ? (
                       <img
-                        src={wall.image_path}
+                        src={getFileUrl(wall.image_path)}
                         alt={wall.name || wall.location_text}
                         className="w-full h-full object-cover"
                       />
@@ -488,8 +524,8 @@ const ViewWall = () => {
                   </div>
                 </div>
 
-                {/* Comments Section - Full Width */}
-                <div className="mt-8 rounded-xl shadow-lg p-6 bg-white/10 backdrop-blur-sm border border-white/20">
+                {/* Comments Section */}
+                <div className="rounded-xl shadow-lg p-6 bg-white/10 backdrop-blur-sm border border-white/20">
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold flex items-center text-white font-raleway">
                       <FontAwesomeIcon icon={faComment} className="mr-3 text-white" />
@@ -562,7 +598,7 @@ const ViewWall = () => {
                   {/* Comments List */}
                   {loadingComments ? (
                     <div className="flex items-center justify-center py-8">
-                      <FontAwesomeIcon icon={faSpinner} spin className="text-2xl text-indigo-600" />
+                      <FontAwesomeIcon icon={faSpinner} spin className="text-2xl text-white" />
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -572,26 +608,29 @@ const ViewWall = () => {
                             key={comment.id}
                             className="flex space-x-3 p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
                           >
-                            <div className="flex-shrink-0">
-                              {comment.user &&
-                              comment.user.profile?.profile_image_url ? (
+                            <div 
+                              className="flex-shrink-0 cursor-pointer"
+                              onClick={() => comment.user && navigate(`/user/${comment.user.username}`)}
+                            >
+                              {comment.user?.profile?.profile_image_url ? (
                                 <img
-                                  src={`https://api.muralfinder.net/${comment.user?.profile?.profile_image_url}`}
+                                  src={getFileUrl(comment.user.profile.profile_image_url)}
                                   alt={comment.user.username}
-                                  className="h-10 w-10 rounded-full object-cover"
+                                  className="h-10 w-10 rounded-full object-cover hover:ring-2 hover:ring-white transition-all"
                                 />
                               ) : (
-                                <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
+                                <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
                                   <FontAwesomeIcon icon={faUser} className="text-white" />
                                 </div>
                               )}
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
-                                <h4 className="font-semibold text-white font-raleway">
-                                  {comment.user
-                                    ? comment.user.username
-                                    : "Anonymous"}
+                                <h4 
+                                  className="font-semibold text-white font-raleway cursor-pointer hover:text-dimWhite transition-colors"
+                                  onClick={() => comment.user && navigate(`/user/${comment.user.username}`)}
+                                >
+                                  {comment.user?.username || "Anonymous"}
                                 </h4>
                                 {comment.user &&
                                   user &&
