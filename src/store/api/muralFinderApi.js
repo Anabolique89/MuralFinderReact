@@ -10,7 +10,9 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
     }
-    headers.set('content-type', 'application/json');
+    // Don't set content-type here - let each request set its own
+    // For FormData, the browser will set multipart/form-data with boundary
+    // For JSON, we'll set application/json in individual queries
     return headers;
   },
 });
@@ -78,6 +80,9 @@ export const muralFinderApi = createApi({
         url: 'artworks',
         method: 'POST',
         body: artworkData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: ['Artwork'],
     }),
@@ -142,6 +147,7 @@ export const muralFinderApi = createApi({
         url: 'walls',
         method: 'POST',
         body: wallData,
+        // Don't set Content-Type for FormData - let the browser set it with boundary
       }),
       invalidatesTags: ['Wall'],
     }),
@@ -151,6 +157,9 @@ export const muralFinderApi = createApi({
         url: `walls/${id}`,
         method: 'PUT',
         body: wallData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }),
       invalidatesTags: (result, error, { id }) => [{ type: 'Wall', id }],
     }),
@@ -184,6 +193,25 @@ export const muralFinderApi = createApi({
         if (trending) endpoint = 'v1/posts/trending';
         
         return `${endpoint}?${params}`;
+      },
+      providesTags: ['Post'],
+    }),
+    
+    // Admin posts endpoint (includes drafts)
+    getAdminPosts: builder.query({
+      query: ({ page = 1, pageSize = 20, status, category_id, type, user_id, featured } = {}) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          per_page: pageSize.toString(),
+        });
+        
+        if (status) params.append('status', status);
+        if (category_id) params.append('category_id', category_id);
+        if (type) params.append('type', type);
+        if (user_id) params.append('user_id', user_id);
+        if (featured !== undefined) params.append('featured', featured);
+        
+        return `admin/posts?${params}`;
       },
       providesTags: ['Post'],
     }),
@@ -441,6 +469,7 @@ export const {
   useDeleteWallMutation,
   useLikeWallMutation,
   useGetPostsQuery,
+  useGetAdminPostsQuery,
   useGetPostByIdQuery,
   useCreatePostMutation,
   useUpdatePostMutation,

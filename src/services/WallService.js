@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL, wallEndpoints } from "../constants/ApiEndpoints";
+import AuthService from "./AuthService";
 
 const WallService = {
   getAllWalls: async (page = 1, perPage = 10) => {
@@ -25,6 +26,12 @@ const WallService = {
   addWall: async (wallData) => {
     try {
       const token = localStorage.getItem("token");
+      
+      // Check if token exists
+      if (!token) {
+        throw new Error("No authentication token found. Please log in again.");
+      }
+      
       const response = await axios.post(
         `${BASE_URL}${wallEndpoints.addWall}`,
         wallData,
@@ -38,6 +45,15 @@ const WallService = {
       return response.data;
     } catch (error) {
       console.error("Error adding wall:", error);
+      
+      // Handle authentication errors specifically
+      if (error.response?.status === 401) {
+        // Clear invalid tokens using AuthService
+        AuthService.clearAuthData();
+        
+        throw new Error("Authentication expired. Please log in again.");
+      }
+      
       throw new Error("Failed to add wall");
     }
   },

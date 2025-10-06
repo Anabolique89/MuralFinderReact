@@ -16,11 +16,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import AdminLayout from '../../components/layout/AdminLayout';
 import {
-  useGetPostsQuery,
+  useGetAdminPostsQuery,
   useUpdatePostStatusMutation,
   useDeletePostAdminMutation
 } from '../../store/api/muralFinderApi';
 import { useToast } from '../../contexts/ToastContext';
+import { getFileUrl } from '../../utils/apiConfig';
 
 const ModernPosts = () => {
   const navigate = useNavigate();
@@ -30,14 +31,15 @@ const ModernPosts = () => {
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState('desc');
 
-  // Use Redux Query for data fetching
+  // Use Redux Query for data fetching - using admin endpoint
   const {
     data: postsData,
     isLoading: postsLoading,
     error: postsError
-  } = useGetPostsQuery({
+  } = useGetAdminPostsQuery({
     page: currentPage,
     pageSize: 12,
+    status: filterStatus !== 'all' ? filterStatus : undefined,
   });
 
   // Extract data with fallbacks
@@ -217,9 +219,9 @@ const ModernPosts = () => {
           {posts.map((post) => (
             <div key={post.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
               <div className="aspect-video bg-gray-200 relative">
-                {post.feature_image ? (
+                {post.featured_image ? (
                   <img
-                    src={`https://api.muralfinder.net/${post.feature_image}`}
+                    src={getFileUrl(post.featured_image)}
                     alt={post.title}
                     className="w-full h-full object-cover"
                   />

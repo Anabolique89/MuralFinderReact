@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { LoadScript, GoogleMap, Marker, Autocomplete } from '@react-google-maps/api';
 import { useDropzone } from 'react-dropzone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,8 @@ import {
   faCheck,
   faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons';
-import WallService from '../services/WallService';
+import { useCreateWallMutation } from '../store/api/muralFinderApi';
+import AuthService from '../services/AuthService';
 import { Footer, BackToTopButton } from '../components';
 import styles from '../style';
 import { toast } from 'react-toastify';
@@ -31,10 +32,27 @@ const AddWall = () => {
   const [location, setLocation] = useState(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.7749, lng: -122.4194 });
   const [isLegal, setIsLegal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [isDragActive, setIsDragActive] = useState(false);
   const [autocomplete, setAutocomplete] = useState(null);
   const navigate = useNavigate();
+
+  // Use Redux Query mutation hook (same pattern as ModernWalls)
+  const [createWall, { isLoading: isCreatingWall }] = useCreateWallMutation();
+
+  // Check authentication on component mount
+  useEffect(() => {
+    if (!AuthService.isAuthenticated()) {
+      toast.error('🔒 Please log in to add a wall', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      navigate('/login', { replace: true });
+    }
+  }, [navigate]);
 
 
 
@@ -143,7 +161,17 @@ const AddWall = () => {
       return;
     }
 
-    setLoading(true);
+    if (!locationText.trim()) {
+      toast.error('📍 Please enter a location description', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
 
     // Show loading toast
     const loadingToast = toast.loading('🔄 Adding wall to database...', {
@@ -151,21 +179,43 @@ const AddWall = () => {
     });
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('location_text', locationText);
-    formData.append('city', city);
-    formData.append('wall_type', wallType);
-    formData.append('surface_type', surfaceType);
-    formData.append('latitude', Number(location.lat));
-    formData.append('longitude', Number(location.lng));
-    formData.append('is_legal', isLegal ? 1 : 0);
+    
+    // REQUIRED FIELDS (must have values)
+    formData.append('location_text', locationText.trim());
+    formData.append('latitude', location.lat.toString());
+    formData.append('longitude', location.lng.toString());
+    
+    // OPTIONAL FIELDS (only send if they have values)
+    if (name.trim()) formData.append('name', name.trim());
+    if (description.trim()) formData.append('description', description.trim());
+    if (city.trim()) formData.append('city', city.trim());
+    if (wallType) formData.append('wall_type', wallType);
+    if (surfaceType) formData.append('surface_type', surfaceType);
+    if (isLegal) formData.append('is_legal', '1');
     if (photo) {
-      formData.append('image', photo);
+      formData.append('images[]', photo);
     }
 
+    // Debug: Log the form data being sent
+    console.log('Form data being sent:', {
+      // REQUIRED FIELDS
+      location_text: locationText.trim(),
+      latitude: location.lat.toString(),
+      longitude: location.lng.toString(),
+      
+      // OPTIONAL FIELDS
+      name: name.trim() || 'NOT_SENT',
+      description: description.trim() || 'NOT_SENT',
+      city: city.trim() || 'NOT_SENT',
+      wall_type: wallType || 'NOT_SENT',
+      surface_type: surfaceType || 'NOT_SENT',
+      is_legal: isLegal ? '1' : 'NOT_SENT',
+      hasImage: !!photo
+    });
+
     try {
-      const response = await WallService.addWall(formData);
+      // Use Redux Query mutation (same pattern as ModernWalls)
+      const response = await createWall(formData).unwrap();
       const wallId = response.data.id;
 
       // Dismiss loading toast and show success
@@ -185,17 +235,49 @@ const AddWall = () => {
     } catch (error) {
       // Dismiss loading toast and show error
       toast.dismiss(loadingToast);
-      toast.error('❌ Error adding wall. Please try again.', {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      
+      // Handle authentication errors specifically
+      if (error.status === 401) {
+        AuthService.clearAuthData();
+        toast.error('🔒 Session expired. Please log in again.', {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          navigate('/login', { replace: true });
+        }, 2000);
+      } else {
+        // Handle validation errors from backend
+        if (error.data?.message && typeof error.data.message === 'object') {
+          // Laravel validation errors
+          const validationErrors = Object.values(error.data.message).flat();
+          const errorMessage = validationErrors.join(', ');
+          toast.error(`❌ ${errorMessage}`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          const errorMessage = error.data?.message || error.message || 'Failed to add wall';
+          toast.error(`❌ ${errorMessage}`, {
+            position: "top-center",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      }
+      
       console.error('Error adding wall:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -661,10 +743,10 @@ const AddWall = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isCreatingWall}
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? (
+                {isCreatingWall ? (
                   <>
                     <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />
                     Adding Wall...

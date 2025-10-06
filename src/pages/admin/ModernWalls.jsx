@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapMarkerAlt,
   faSearch,
-  faFilter,
   faEye,
-  faEdit,
   faTrash,
   faSpinner,
   faPlus,
-  faSort,
   faChevronLeft,
   faChevronRight,
-  faCheckCircle,
-  faTimesCircle,
   faClock
 } from '@fortawesome/free-solid-svg-icons';
 import AdminLayout from '../../components/layout/AdminLayout';
@@ -24,6 +19,7 @@ import {
   useDeleteWallAdminMutation
 } from '../../store/api/muralFinderApi';
 import { useToast } from '../../contexts/ToastContext';
+import { getFileUrl } from '../../utils/apiConfig';
 
 const ModernWalls = () => {
   const navigate = useNavigate();
@@ -199,7 +195,16 @@ const ModernWalls = () => {
               <div className="aspect-video bg-gray-200 relative">
                 {wall.image_path ? (
                   <img
-                    src={`https://api.muralfinder.net/${wall.image_path}`}
+                    src={(() => {
+                      const imageUrl = getFileUrl(wall.image_path);
+                      console.log('ModernWalls - Image URL Debug:', {
+                        wallId: wall.id,
+                        imagePath: wall.image_path,
+                        constructedUrl: imageUrl,
+                        location: wall.location_text
+                      });
+                      return imageUrl;
+                    })()}
                     alt={wall.location_text}
                     className="w-full h-full object-cover"
                   />

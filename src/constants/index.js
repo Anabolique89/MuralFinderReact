@@ -83,6 +83,11 @@ export const navDropdowns = [
         title: "Add Wall",
         link: "/addWall",
       },
+      {
+        id: "create-post",
+        title: "Create Post",
+        link: "/blog/create",
+      },
     ],
   },
   {

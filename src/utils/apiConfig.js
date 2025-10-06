@@ -19,22 +19,43 @@ export const getServerBaseUrl = () => {
 
 // Helper function to construct full file URLs
 export const getFileUrl = (relativePath) => {
-  if (!relativePath) return null;
+  if (!relativePath) {
+    console.log('getFileUrl: No relativePath provided');
+    return null;
+  }
+
+  // If it's already a full URL, return it as is
+  if (relativePath.startsWith('http://') || relativePath.startsWith('https://')) {
+    console.log('getFileUrl: Already a full URL, returning as is:', relativePath);
+    return relativePath;
+  }
 
   const serverUrl = getServerBaseUrl();
+  console.log('getFileUrl Debug:', {
+    inputPath: relativePath,
+    serverUrl: serverUrl,
+    pathStartsWithStorage: relativePath.startsWith('/storage/'),
+    pathStartsWithSlash: relativePath.startsWith('/')
+  });
 
   // If the path already starts with /storage/, use it as is
   if (relativePath.startsWith('/storage/')) {
-    return `${serverUrl}${relativePath}`;
+    const result = `${serverUrl}${relativePath}`;
+    console.log('getFileUrl: Using storage path directly:', result);
+    return result;
   }
 
   // If the path starts with /, use it as is
   if (relativePath.startsWith('/')) {
-    return `${serverUrl}${relativePath}`;
+    const result = `${serverUrl}${relativePath}`;
+    console.log('getFileUrl: Using slash path directly:', result);
+    return result;
   }
 
   // For relative paths (like artworks/1/image.png), add /storage/ prefix
-  return `${serverUrl}/storage/${relativePath}`;
+  const result = `${serverUrl}/storage/${relativePath}`;
+  console.log('getFileUrl: Adding /storage/ prefix:', result);
+  return result;
 };
 
 // Helper function for auth URLs

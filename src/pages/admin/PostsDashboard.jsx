@@ -19,7 +19,7 @@ import BackToTopButton from '../../components/BackToTopButton.jsx';
 import Sidebar from '../../components/dashboard/Sidebar';
 import MobileSidebar from '../../components/dashboard/MobileSidebar';
 import DashboardService from "../../services/DashboardService.js";
-import BlogService from '../../services/BlogService.js';
+import { useGetAdminPostsQuery, useDeletePostAdminMutation } from '../../store/api/muralFinderApi';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
@@ -28,6 +28,7 @@ import { ToastContainer, toast } from "react-toastify";
 const PostTable = ({ posts }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [deletePost] = useDeletePostAdminMutation();
 
   const deleteHandler = async (postId) => {
     Swal.fire({
@@ -42,13 +43,13 @@ const PostTable = ({ posts }) => {
       if (result.isConfirmed) {
         setLoading(true);
         try {
-          const response = await BlogService.deleteBlogPost(postId);
-            toast.success("Post deleted successfully");
-            setTimeout(() => {
-              window.location.reload();
-            }, 5000);
-          } catch (error) {
-          toast.error("Error occurred while deleting post: " + error.message);
+          await deletePost(postId).unwrap();
+          toast.success("Post deleted successfully");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } catch (error) {
+          toast.error("Error occurred while deleting post: " + (error.message || 'Unknown error'));
         } finally {
           setLoading(false);
         }
@@ -134,39 +135,42 @@ const PostTable = ({ posts }) => {
 const PostsDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setLoading] = useState(true);
-  const [posts, setPosts] = useState([]);
   const [postStats, setPostStats] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Use the admin posts query to get all posts including drafts
+  const {
+    data: postsData,
+    isLoading: postsLoading,
+    error: postsError
+  } = useGetAdminPostsQuery({
+    page: 1,
+    pageSize: 100, // Get more posts for the dashboard
+  });
+
+  // Extract posts from the API response
+  const allPosts = postsData?.data?.data || [];
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchStats = async () => {
       setLoading(true);
       try {
         const postStatsData = await DashboardService.getPostsStatisticsData();
-        const response = await BlogService.getAllBlogPosts();
-        
-        // Check the response structure and extract posts array
-        if (response?.data?.data && Array.isArray(response.data.data)) {
-          setPostStats(postStatsData);
-          setPosts(response.data.data); // Set posts from the nested data property
-        } else {
-          console.error("Posts data is not in the expected format:", response);
-          setPosts([]);
-        }
+        setPostStats(postStatsData);
       } catch (error) {
-        toast.error("Something went wrong");
+        toast.error("Failed to fetch statistics");
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchStats();
   }, []);
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredPosts = Array.isArray(posts) ? posts.filter(post =>
+  const filteredPosts = Array.isArray(allPosts) ? allPosts.filter(post =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase())
   ) : [];
 
@@ -234,7 +238,7 @@ const PostsDashboard = () => {
             </button>
           </header>
           <div className='flex-1 flex flex-col py-4 px-2 md:px-6'>
-            {isLoading ? (
+            {isLoading || postsLoading ? (
               <div className="flex justify-center items-center h-full">
                 <FontAwesomeIcon icon={faSpinner} spin className="text-2xl text-white"/>
               </div>

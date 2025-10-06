@@ -221,7 +221,7 @@ const PublicProfile = () => {
                                         <Link key={blog.id} to={`/blog/${blog.id}`} className="block group">
                                             <div className="flex gap-3 p-3 rounded-lg hover:bg-indigo-600/30 transition-colors">
                                                 <img
-                                                    src={blog.feature_image ? getFileUrl(blog.feature_image) : defaultimg}
+                                                    src={blog.featured_image ? getFileUrl(blog.featured_image) : defaultimg}
                                                     alt={blog.title}
                                                     className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
                                                 />

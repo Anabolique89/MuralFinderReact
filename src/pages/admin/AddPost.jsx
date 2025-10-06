@@ -99,19 +99,32 @@ const AddPost = () => {
       }
 
       if (formData.tags) {
-        // Convert comma-separated tags to array
+        // Convert comma-separated tags to array - send as individual fields
         const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
-        postData.append('tags', JSON.stringify(tagsArray));
+        tagsArray.forEach((tag, index) => {
+          postData.append(`tags[${index}]`, tag);
+        });
       }
 
       if (formData.featured_image) {
         postData.append('featured_image', formData.featured_image);
       }
 
+      // Debug: Log what's being sent
+      console.log('=== ADMIN FORM DATA DEBUG ===');
+      for (let [key, value] of postData.entries()) {
+        console.log(`${key}:`, value);
+      }
+      console.log('=== END ADMIN FORM DATA ===');
+
       await createPost(postData).unwrap();
       toast.success('Post created successfully!');
       navigate('/admin/posts');
     } catch (error) {
+      console.error('Admin form error:', error);
+      console.error('Error data:', error.data);
+      console.error('Error message:', error.data?.message);
+      
       toast.error(error.data?.message || 'Failed to create post');
       if (error.data?.errors) {
         setErrors(error.data.errors);

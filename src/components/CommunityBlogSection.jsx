@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faEye, faThumbsUp, faComment, faUser, faEdit, faTrash, faSearch, faFilter, faHeart, faShare, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faEye, faThumbsUp, faComment, faUser, faEdit, faTrash, faSearch, faFilter, faHeart, faShare, faPlus, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import BlogService from '@services/BlogService';
 import { cleanHTML, trimContent } from '@utils/blogUtils';
 import AuthService from '@services/AuthService';
+import { getFileUrl } from '@utils/apiConfig';
 
 const CommunityBlogSection = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -17,6 +18,7 @@ const CommunityBlogSection = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const navigate = useNavigate();
 
   const currentUser = AuthService.getUser();
@@ -45,11 +47,27 @@ const CommunityBlogSection = () => {
     };
 
     fetchBlogPosts(currentPage);
-  }, [currentPage]);
+  }, [currentPage, refreshTrigger]);
 
   useEffect(() => {
     filterPosts();
   }, [blogPosts, searchTerm, selectedFilter]);
+
+  // Auto-refresh when component becomes visible (user returns to page)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        // Page became visible, refresh data
+        setRefreshTrigger(prev => prev + 1);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   const filterPosts = () => {
     let filtered = blogPosts;
@@ -101,6 +119,11 @@ const CommunityBlogSection = () => {
     if (currentPage > 1) {
       setCurrentPage(prevPage => prevPage - 1);
     }
+  };
+
+  const handleRefresh = () => {
+    setRefreshTrigger(prev => prev + 1);
+    setCurrentPage(1); // Reset to first page when refreshing
   };
 
   return (
@@ -193,6 +216,19 @@ const CommunityBlogSection = () => {
                 </button>
               </div>
 
+              {/* Refresh Button */}
+              <button
+                onClick={handleRefresh}
+                disabled={loading}
+                className="px-4 py-3 bg-white/10 border border-white/30 rounded-xl text-white hover:bg-white/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Refresh posts"
+              >
+                <FontAwesomeIcon 
+                  icon={faSpinner} 
+                  className={`text-sm ${loading ? 'animate-spin' : ''}`} 
+                />
+              </button>
+
               {/* Add Post Button */}
               <Link
                 to="/blog/create"
@@ -238,9 +274,9 @@ const CommunityBlogSection = () => {
                     >
                       {/* Featured Image */}
                       <div className="relative h-48 overflow-hidden">
-                        {blogPost.feature_image ? (
+                        {blogPost.featured_image ? (
                           <img
-                            src={`https://api.muralfinder.net/${blogPost.feature_image}`}
+                            src={getFileUrl(blogPost.featured_image)}
                             alt={blogPost.title}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                           />
@@ -362,43 +398,83 @@ const CommunityBlogSection = () => {
               )}
             </div>
 
-            {/* Pagination */}
-            <div className="max-w-6xl mx-auto px-4 pb-12">
-              <div className="flex items-center justify-between bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <button
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
-                  className={`px-6 py-3 rounded-xl font-raleway font-medium transition-all duration-300 ${
-                    currentPage === 1
-                      ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
-                      : 'bg-white/10 text-white hover:bg-white/20 hover:scale-105'
-                  }`}
-                >
-                  Previous
-                </button>
+            {/* Pagination - Only show if there are multiple pages */}
+            {totalPages > 1 && (
+              <div className="max-w-6xl mx-auto px-4 pb-12">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                  {/* Page Info */}
+                  <div className="text-center mb-6">
+                    <span className="text-white font-raleway font-medium text-lg">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <p className="text-white/60 font-raleway text-sm mt-1">
+                      Showing {((currentPage - 1) * 10) + 1}-{Math.min(currentPage * 10, totalItems)} of {totalItems} total posts
+                    </p>
+                  </div>
 
-                <div className="text-center">
-                  <span className="text-white font-raleway font-medium">
-                    Page {currentPage} of {totalPages}
-                  </span>
-                  <p className="text-white/60 font-raleway text-sm mt-1">
-                    {totalItems} total posts
-                  </p>
+                  {/* Pagination Controls */}
+                  <div className="flex items-center justify-center space-x-4">
+                    {/* Previous Button */}
+                    <button
+                      onClick={handlePreviousPage}
+                      disabled={currentPage === 1}
+                      className={`px-6 py-3 rounded-xl font-raleway font-medium transition-all duration-300 ${
+                        currentPage === 1
+                          ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
+                          : 'bg-white/10 text-white hover:bg-white/20 hover:scale-105'
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
+                      Previous
+                    </button>
+
+                    {/* Page Numbers */}
+                    <div className="flex items-center space-x-2">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let pageNum;
+                        if (totalPages <= 5) {
+                          pageNum = i + 1;
+                        } else if (currentPage <= 3) {
+                          pageNum = i + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          pageNum = totalPages - 4 + i;
+                        } else {
+                          pageNum = currentPage - 2 + i;
+                        }
+
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => setCurrentPage(pageNum)}
+                            className={`px-4 py-2 rounded-lg font-raleway font-medium transition-all duration-300 ${
+                              currentPage === pageNum
+                                ? 'bg-indigo-500 text-white'
+                                : 'bg-white/10 text-white hover:bg-white/20'
+                            }`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Next Button */}
+                    <button
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages}
+                      className={`px-6 py-3 rounded-xl font-raleway font-medium transition-all duration-300 ${
+                        currentPage === totalPages
+                          ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
+                          : 'bg-white/10 text-white hover:bg-white/20 hover:scale-105'
+                      }`}
+                    >
+                      Next
+                      <FontAwesomeIcon icon={faChevronRight} className="ml-2" />
+                    </button>
+                  </div>
                 </div>
-
-                <button
-                  onClick={handleNextPage}
-                  disabled={currentPage === totalPages}
-                  className={`px-6 py-3 rounded-xl font-raleway font-medium transition-all duration-300 ${
-                    currentPage === totalPages
-                      ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
-                      : 'bg-white/10 text-white hover:bg-white/20 hover:scale-105'
-                  }`}
-                >
-                  Next
-                </button>
               </div>
-            </div>
+            )}
           </>
         )}
       </div>

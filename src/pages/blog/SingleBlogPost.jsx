@@ -6,6 +6,7 @@ import { faHeart, faEdit, faSpinner, faThumbsUp, faUser } from '@fortawesome/fre
 import styles from '../../style';
 import DOMPurify from 'dompurify';
 import { BackToTopButton, Footer } from '../../components';
+import { getFileUrl } from '../../utils/apiConfig';
 
 const SingleBlogPost = () => {
   const { postId } = useParams();
@@ -152,9 +153,9 @@ const SingleBlogPost = () => {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl overflow-hidden border border-white/20 hover:border-white/40 transition-all duration-300 animate-slide-in-left">
               {/* Featured Image */}
               <div className="relative h-96 overflow-hidden">
-                {blogPost.feature_image ? (
+                {blogPost.featured_image ? (
                   <img
-                    src={`https://api.muralfinder.net/${blogPost.feature_image}`}
+                    src={getFileUrl(blogPost.featured_image)}
                     alt={blogPost.title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                   />

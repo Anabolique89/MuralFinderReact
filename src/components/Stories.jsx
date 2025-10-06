@@ -51,7 +51,7 @@ const Stories = () => {
                         <Link key={blog.id} to={`/blog/${blog.id}`} className="hover:text-orange-400 font-raleway font-semibold text-dimWhite text-[18px] leading-[30.8px] uppercase">
                             <img
                                 key={blog.id}
-                                src={blog.feature_image ? getFileUrl(blog.feature_image) : defaultimg}
+                                src={blog.featured_image ? getFileUrl(blog.featured_image) : defaultimg}
                                 alt={`Blog Image ${blog.id}`}
                                 className='object-cover highlight sm:mr-2 md:mr-4 mr-6 z-[20]'
                             />

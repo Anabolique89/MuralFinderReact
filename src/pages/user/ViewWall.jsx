@@ -423,7 +423,7 @@ const ViewWall = () => {
                       lat={wall.latitude}
                       long={wall.longitude}
                       title={wall.location_text}
-                      image={wall.image_path ? getFileUrl(wall.image_path) : null}
+                      image={wall.image_path}
                       isVerified={wall.is_verified}
                       mapWidth="100%"
                     />
@@ -432,7 +432,16 @@ const ViewWall = () => {
                   <div className="h-96 lg:h-[600px] relative">
                     {wall.image_path ? (
                       <img
-                        src={getFileUrl(wall.image_path)}
+                        src={(() => {
+                          const imageUrl = getFileUrl(wall.image_path);
+                          console.log('ViewWall - Image URL Debug:', {
+                            wallId: wall.id,
+                            imagePath: wall.image_path,
+                            constructedUrl: imageUrl,
+                            location: wall.location_text
+                          });
+                          return imageUrl;
+                        })()}
                         alt={wall.name || wall.location_text}
                         className="w-full h-full object-cover"
                       />

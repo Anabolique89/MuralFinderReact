@@ -98,7 +98,15 @@ const MapForWall = ({ lat, long, title, image, mapWidth, mapHeight, isVerified }
                 </APIProvider>
             </div>
             <img
-                src={getFileUrl(image)}
+                src={(() => {
+                    const imageUrl = getFileUrl(image);
+                    console.log('MapForWall - Image URL Debug:', {
+                        imagePath: image,
+                        constructedUrl: imageUrl,
+                        title: title
+                    });
+                    return imageUrl;
+                })()}
                 alt="Wall Image"
                 style={imageStyles}
             />

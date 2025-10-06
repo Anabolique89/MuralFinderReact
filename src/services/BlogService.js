@@ -2,10 +2,10 @@ import axios from "axios";
 import { BASE_URL, blogEndpoints } from "../constants/ApiEndpoints";
 
 const BlogService = {
-  getAllBlogPosts: async (page = 1, pageSize = 10) => {
+  getAllBlogPosts: async (page = 1, pageSize = 15) => {
     try {
       const response = await axios.get(`${BASE_URL}${blogEndpoints.getAllBlogPosts}`, {
-        params: { page, pageSize },
+        params: { page, per_page: pageSize },
       });
       console.log(response.data)
       return response.data;
@@ -57,21 +57,8 @@ const BlogService = {
       return response.data;
     } catch (error) {
       console.error("Error creating blog post:", error);
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        return error.response.data.message;
-
-        // Ensure the ID is extracted correctly
-        // return {
-        //   message: response.data.message,
-        //   postId: response.data.id, // Adjust this according to your actual response structure
-        // };
-      } else {
-        return error.response.data.error;
-      }
+      // Re-throw the error so it can be caught by the calling component
+      throw error;
     }
   },
 
