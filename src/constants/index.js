@@ -11,7 +11,7 @@ import {
   send,
   shield,
   star,
-} from '@assets';
+} from "@assets";
 
 export const navLinks = [
   {
