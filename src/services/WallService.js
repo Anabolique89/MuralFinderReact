@@ -5,17 +5,21 @@ import AuthService from "./AuthService";
 const WallService = {
   getAllWalls: async (page = 1, perPage = 10) => {
     try {
-      const response = await axios.get(`${BASE_URL}${wallEndpoints.getAllWalls(page, perPage)}`);
+      const response = await axios.get(
+        `${BASE_URL}${wallEndpoints.getAllWalls(page, perPage)}`
+      );
       return response.data;
     } catch (error) {
-      console.error('Error fetching walls:', error);
-      throw new Error('Failed to fetch walls');
+      console.error("Error fetching walls:", error);
+      throw new Error("Failed to fetch walls");
     }
   },
 
   getWallById: async (wallId) => {
     try {
-      const response = await axios.get(`${BASE_URL}${wallEndpoints.getWallById(wallId)}`);
+      const response = await axios.get(
+        `${BASE_URL}${wallEndpoints.getWallById(wallId)}`
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching wall:", error);
@@ -26,12 +30,12 @@ const WallService = {
   addWall: async (wallData) => {
     try {
       const token = localStorage.getItem("token");
-      
+
       // Check if token exists
       if (!token) {
         throw new Error("No authentication token found. Please log in again.");
       }
-      
+
       const response = await axios.post(
         `${BASE_URL}${wallEndpoints.addWall}`,
         wallData,
@@ -45,15 +49,15 @@ const WallService = {
       return response.data;
     } catch (error) {
       console.error("Error adding wall:", error);
-      
+
       // Handle authentication errors specifically
       if (error.response?.status === 401) {
         // Clear invalid tokens using AuthService
         AuthService.clearAuthData();
-        
+
         throw new Error("Authentication expired. Please log in again.");
       }
-      
+
       throw new Error("Failed to add wall");
     }
   },
@@ -74,7 +78,9 @@ const WallService = {
   getCommentsForWall: async (wallId) => {
     try {
       // Comments are public, no auth required for viewing
-      const response = await axios.get(`${BASE_URL}v1/${wallEndpoints.getCommentsForWall(wallId)}`);
+      const response = await axios.get(
+        `${BASE_URL}v1/${wallEndpoints.getCommentsForWall(wallId)}`
+      );
       return response.data; // Assuming this returns the list of comments
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -82,7 +88,7 @@ const WallService = {
     }
   },
 
-  /** 
+  /**
    * Update a specific comment by its ID.
    * @param {string} commentId - The ID of the comment to be updated.
    * @param {Object} updatedData - The updated comment data.
@@ -107,7 +113,7 @@ const WallService = {
     }
   },
 
-  /** 
+  /**
    * Delete a specific comment by its ID.
    * @param {string} commentId - The ID of the comment to be deleted.
    * @returns {Object} - The response data from the server.
@@ -170,18 +176,21 @@ const WallService = {
 
   deleteWall: async (wallId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.delete(`${BASE_URL}${wallEndpoints.deleteWall(wallId)}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(
+        `${BASE_URL}${wallEndpoints.deleteWall(wallId)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
-      console.error('Error deleting wall:', error);
-      throw new Error('Failed to delete wall');
+      console.error("Error deleting wall:", error);
+      throw new Error("Failed to delete wall");
     }
-  }
+  },
 };
 
 export default WallService;
