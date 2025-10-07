@@ -98,8 +98,8 @@ const WallsTable = ({ walls, onEdit, onView, isLoading }) => {
       </td>
       <td className="py-2 px-4">
         <div className="flex gap-1 items-center">
-          <span className={`capitalize ${wall.is_verified ? 'text-green-600' : 'text-red-600'}`}>
-            {wall.is_verified ? "Verified" : "Unverified"}
+          <span className={`capitalize ${wall.status === 'verified' ? 'text-green-600' : 'text-red-600'}`}>
+            {wall.status === 'verified' ? "Verified" : "Unverified"}
           </span>
         </div>
       </td>

@@ -57,7 +57,8 @@ const ModernWalls = () => {
       wall.location_text?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       wall.addedBy?.username?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = filterStatus === 'all' || wall.is_verified === (filterStatus === 'verified');
+    const isVerified = wall.status === 'verified';
+    const matchesStatus = filterStatus === 'all' || isVerified === (filterStatus === 'verified');
 
     return matchesSearch && matchesStatus;
   });
@@ -75,10 +76,13 @@ const ModernWalls = () => {
 
   // Action handlers
   const handleUpdateStatus = async (wallId, newStatus, location) => {
-    if (window.confirm(`Change verification status for wall at "${location}" to "${newStatus}"?`)) {
+    // Convert boolean to proper status string
+    const statusString = newStatus ? 'verified' : 'pending';
+    
+    if (window.confirm(`Change verification status for wall at "${location}" to "${statusString}"?`)) {
       try {
-        await updateWallStatus({ wallId, status: newStatus }).unwrap();
-        toast.success(`Wall at "${location}" status changed to "${newStatus}"`, 'Status Updated');
+        await updateWallStatus({ wallId, status: statusString }).unwrap();
+        toast.success(`Wall at "${location}" status changed to "${statusString}"`, 'Status Updated');
       } catch (error) {
         toast.error(error.data?.message || error.message || 'Failed to update status', 'Update Failed');
       }
@@ -96,8 +100,8 @@ const ModernWalls = () => {
     }
   };
 
-  const getStatusBadgeColor = (isVerified) => {
-    return isVerified 
+  const getStatusBadgeColor = (status) => {
+    return status === 'verified'
       ? 'bg-green-100 text-green-800' 
       : 'bg-yellow-100 text-yellow-800';
   };
@@ -215,8 +219,8 @@ const ModernWalls = () => {
                 )}
                 
                 <div className="absolute top-2 right-2">
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusBadgeColor(wall.is_verified)}`}>
-                    {wall.is_verified ? 'Verified' : 'Pending'}
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusBadgeColor(wall.status)}`}>
+                    {wall.status === 'verified' ? 'Verified' : 'Pending'}
                   </span>
                 </div>
               </div>
@@ -246,14 +250,14 @@ const ModernWalls = () => {
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center justify-between">
                     <button
-                      onClick={() => handleUpdateStatus(wall.id, !wall.is_verified, wall.location_text)}
+                      onClick={() => handleUpdateStatus(wall.id, wall.status !== 'verified', wall.location_text)}
                       className={`text-xs px-3 py-1 rounded ${
-                        wall.is_verified 
+                        wall.status === 'verified'
                           ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' 
                           : 'bg-green-100 text-green-800 hover:bg-green-200'
                       }`}
                     >
-                      {wall.is_verified ? 'Unverify' : 'Verify'}
+                      {wall.status === 'verified' ? 'Unverify' : 'Verify'}
                     </button>
                     
                     <div className="flex items-center space-x-1">

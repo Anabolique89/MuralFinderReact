@@ -382,59 +382,6 @@ export const muralFinderApi = createApi({
       invalidatesTags: ['User'],
     }),
 
-    // Artwork admin actions
-    updateArtworkStatus: builder.mutation({
-      query: ({ artworkId, status, rejectionReason }) => ({
-        url: `admin/artworks/${artworkId}/status`,
-        method: 'PUT',
-        body: { status, rejection_reason: rejectionReason },
-      }),
-      invalidatesTags: ['Artwork'],
-    }),
-
-    deleteArtworkAdmin: builder.mutation({
-      query: (artworkId) => ({
-        url: `admin/artworks/${artworkId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Artwork'],
-    }),
-
-    // Wall admin actions
-    updateWallStatus: builder.mutation({
-      query: ({ wallId, status, rejectionReason }) => ({
-        url: `admin/walls/${wallId}/status`,
-        method: 'PUT',
-        body: { status, rejection_reason: rejectionReason },
-      }),
-      invalidatesTags: ['Wall'],
-    }),
-
-    deleteWallAdmin: builder.mutation({
-      query: (wallId) => ({
-        url: `admin/walls/${wallId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Wall'],
-    }),
-
-    // Post admin actions
-    updatePostStatus: builder.mutation({
-      query: ({ postId, status }) => ({
-        url: `admin/posts/${postId}/status`,
-        method: 'PUT',
-        body: { status },
-      }),
-      invalidatesTags: ['Post'],
-    }),
-
-    deletePostAdmin: builder.mutation({
-      query: (postId) => ({
-        url: `admin/posts/${postId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Post'],
-    }),
 
     // Settings
     getAdminSettings: builder.query({
@@ -449,6 +396,67 @@ export const muralFinderApi = createApi({
         body: settings,
       }),
       invalidatesTags: ['Settings'],
+    }),
+
+    // Admin mutations (using v1 prefix)
+    updateWallStatus: builder.mutation({
+      query: ({ wallId, status, rejectionReason }) => ({
+        url: `v1/admin/walls/${wallId}/status`,
+        method: 'PUT',
+        body: { status, rejection_reason: rejectionReason },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: ['Wall'],
+    }),
+
+    deleteWallAdmin: builder.mutation({
+      query: (wallId) => ({
+        url: `v1/admin/walls/${wallId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Wall'],
+    }),
+
+    updateArtworkStatus: builder.mutation({
+      query: ({ artworkId, status, rejectionReason }) => ({
+        url: `v1/admin/artworks/${artworkId}/status`,
+        method: 'PUT',
+        body: { status, rejection_reason: rejectionReason },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: ['Artwork'],
+    }),
+
+    deleteArtworkAdmin: builder.mutation({
+      query: (artworkId) => ({
+        url: `v1/admin/artworks/${artworkId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Artwork'],
+    }),
+
+    updatePostStatus: builder.mutation({
+      query: ({ postId, status }) => ({
+        url: `v1/admin/posts/${postId}/status`,
+        method: 'PUT',
+        body: { status },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: ['Post'],
+    }),
+
+    deletePostAdmin: builder.mutation({
+      query: (postId) => ({
+        url: `v1/admin/posts/${postId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Post'],
     }),
   }),
 });
@@ -491,10 +499,10 @@ export const {
   useUpdateUserRoleMutation,
   useBanUserMutation,
   useUnbanUserMutation,
-  useUpdateArtworkStatusMutation,
-  useDeleteArtworkAdminMutation,
   useUpdateWallStatusMutation,
   useDeleteWallAdminMutation,
+  useUpdateArtworkStatusMutation,
+  useDeleteArtworkAdminMutation,
   useUpdatePostStatusMutation,
   useDeletePostAdminMutation,
   useGetAdminSettingsQuery,
