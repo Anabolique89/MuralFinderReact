@@ -299,7 +299,7 @@ const DragDropImageUploader = ({ onUploadStart, onUploadEnd }) => {
   };
 
   return (
-    <div className="min-h-screen bg-indigo-600 py-8">
+    <div className="min-h-screen bg-indigo-600 py-8 pt-24">
       <div className="max-w-6xl mx-auto px-4">
         <div className="h-auto flex mx-auto rounded-lg overflow-hidden shadow-xl">
           {isAuthenticated ? (

@@ -46,6 +46,7 @@ import AddUser from '@pages/admin/AddUser';
 import AddArtwork from '@pages/admin/AddArtwork';
 import AdminAddWall from '@pages/admin/AddWall';
 import AddPost from '@pages/admin/AddPost';
+import SubscriptionPlans from './pages/subscription/SubscriptionPlans';
 import { ToastProvider } from './contexts/ToastContext';
 import ArtworkDetails from '@pages/user/ArtworkDetails';
 import Users from '@pages/admin/Users';
@@ -247,7 +248,11 @@ const App = () => {
           <Route path="/ai-generator" element={<DesignGenerator />} />
           <Route path="/forge-saga" element={<DesignGenerator />} />
           <Route path="/design-generator" element={<DesignGenerator />} />
-          <Route path="/Onboarding1" element={<Onboarding1 />} />
+          
+          {/* Subscription Routes */}
+          <Route path="/subscription" element={<SubscriptionPlans />} />
+          <Route path="/plans" element={<SubscriptionPlans />} />
+          <Route path="/pricing" element={<SubscriptionPlans />} />
           <Route path="/Onboarding2" element={<Onboarding2 />} />
           <Route path="/Onboarding3" element={<Onboarding3 />} />
           <Route path="/Contact" element={<Contact />} />

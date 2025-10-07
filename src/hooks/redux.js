@@ -54,12 +54,26 @@ export const useArtworks = () => {
 
 // Search hook
 export const useSearch = () => {
-  const searchQuery = useSelector(state => state.search?.query || '');
-  const searchResults = useSelector(state => state.search?.results || []);
+  const query = useSelector(state => state.search?.query || '');
+  const results = useSelector(state => state.search?.results || []);
+  const suggestions = useSelector(state => state.search?.suggestions || []);
+  const recentSearches = useSelector(state => state.search?.recentSearches || []);
+  const filters = useSelector(state => state.search?.filters || { type: 'all' });
+  const isSearching = useSelector(state => state.search?.isSearching || false);
+  const hasSearched = useSelector(state => state.search?.hasSearched || false);
+  const totalResults = useSelector(state => state.search?.totalResults || 0);
+  const currentPage = useSelector(state => state.search?.currentPage || 1);
   
   return {
-    searchQuery,
-    searchResults,
+    query,
+    results,
+    suggestions,
+    recentSearches,
+    filters,
+    isSearching,
+    hasSearched,
+    totalResults,
+    currentPage,
   };
 };
 

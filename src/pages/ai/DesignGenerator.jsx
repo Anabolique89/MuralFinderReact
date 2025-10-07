@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import AIGeneratorService from "@services/AIGeneratorService";
-import { useNavigate } from "react-router-dom";
-import styles from "@styles";
+import { useNavigate, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCrown } from "@fortawesome/free-solid-svg-icons";
 
 const DesignGenerator = () => {
   const navigate = useNavigate();
@@ -17,6 +18,26 @@ const DesignGenerator = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [uploadingAsArtwork, setUploadingAsArtwork] = useState(false);
+  const [generationLimit, setGenerationLimit] = useState(null);
+  const [loadingLimit, setLoadingLimit] = useState(true);
+
+  // Fetch generation limit on component mount
+  useEffect(() => {
+    const fetchGenerationLimit = async () => {
+      try {
+        const result = await AIGeneratorService.getGenerationLimit();
+        if (result.success) {
+          setGenerationLimit(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching generation limit:', error);
+      } finally {
+        setLoadingLimit(false);
+      }
+    };
+
+    fetchGenerationLimit();
+  }, []);
 
   // Art styles for murals and visual art - mapped to match backend archetypes or custom prompts
   const artStyles = [
@@ -101,6 +122,12 @@ const DesignGenerator = () => {
   };
 
   const handleGenerate = async () => {
+    // Check generation limit
+    if (generationLimit?.limit_reached) {
+      toast.error(`You have reached the maximum limit of ${generationLimit.max_limit} AI generated images. Please delete some existing AI artworks to generate more.`);
+      return;
+    }
+
     setLoading(true);
     setProgress(0);
     setResultImage(null);
@@ -237,6 +264,11 @@ const DesignGenerator = () => {
       
       if (result.success) {
         toast.success('AI artwork uploaded successfully!');
+        // Refetch generation limit after successful upload
+        const limitResult = await AIGeneratorService.getGenerationLimit();
+        if (limitResult.success) {
+          setGenerationLimit(limitResult.data);
+        }
         navigate(`/artworks/${result.data.artwork.id}`);
       } else {
         toast.error(result.error || 'Failed to upload artwork');
@@ -276,6 +308,36 @@ const DesignGenerator = () => {
           <p className="text-sm text-purple-300 mt-2 font-semibold">
             Powered by AI • Multiple Art Styles • Professional Quality
           </p>
+          
+          {/* Generation Limit Info */}
+          {!loadingLimit && generationLimit && (
+            <div className={`mt-4 inline-block px-6 py-3 rounded-full ${
+              generationLimit.limit_reached 
+                ? 'bg-red-500/20 border-2 border-red-400' 
+                : generationLimit.remaining_count <= 3 
+                  ? 'bg-yellow-500/20 border-2 border-yellow-400'
+                  : 'bg-green-500/20 border-2 border-green-400'
+            }`}>
+              <p className={`text-sm font-bold ${
+                generationLimit.limit_reached 
+                  ? 'text-red-300' 
+                  : generationLimit.remaining_count <= 3 
+                    ? 'text-yellow-300'
+                    : 'text-green-300'
+              }`}>
+                {generationLimit.limit_reached ? (
+                  <>🚫 Generation Limit Reached ({generationLimit.generated_count}/{generationLimit.max_limit})</>
+                ) : (
+                  <>✨ {generationLimit.remaining_count} Generation{generationLimit.remaining_count !== 1 ? 's' : ''} Remaining ({generationLimit.generated_count}/{generationLimit.max_limit})</>
+                )}
+              </p>
+              {generationLimit.subscription_tier && (
+                <p className="text-xs opacity-75 mt-1">
+                  {generationLimit.subscription_tier.charAt(0).toUpperCase() + generationLimit.subscription_tier.slice(1)} Tier
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Main Grid */}
@@ -415,13 +477,18 @@ const DesignGenerator = () => {
               {/* Generate Button */}
               <button
                 onClick={handleGenerate}
-                disabled={loading || (useCustomPrompt && !customPrompt.trim())}
+                disabled={loading || (useCustomPrompt && !customPrompt.trim()) || generationLimit?.limit_reached}
                 className="w-full px-8 py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Creating Your Art...
+                  </>
+                ) : generationLimit?.limit_reached ? (
+                  <>
+                    <span className="text-xl">🚫</span>
+                    Limit Reached
                   </>
                 ) : (
                   <>
@@ -430,6 +497,21 @@ const DesignGenerator = () => {
                   </>
                 )}
               </button>
+              
+              {generationLimit?.limit_reached && (
+                <div className="text-center mt-4">
+                  <p className="text-red-300 text-sm mb-3">
+                    You&apos;ve reached the maximum of {generationLimit.max_limit} generations for your {generationLimit.subscription_tier} tier.
+                  </p>
+                  <Link
+                    to="/subscription"
+                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-raleway font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 text-sm"
+                  >
+                    <FontAwesomeIcon icon={faCrown} className="mr-2" />
+                    Upgrade Subscription
+                  </Link>
+                </div>
+              )}
 
               {/* Progress Bar */}
               {loading && (

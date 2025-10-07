@@ -90,6 +90,41 @@ const SingleArtwork = () => {
                             <a href="#" className="text-blue-500 text-xs -ml-3 ">Expand</a>
                         </div>
                     </div>
+
+                    {/* Comments Section */}
+                    {artwork.comments && artwork.comments.length > 0 && (
+                        <div className="px-4 py-4 border-t border-gray-700">
+                            <h3 className="text-lg font-semibold text-white mb-4">Comments</h3>
+                            <div className="space-y-4">
+                                {artwork.comments.map((comment) => (
+                                    <div key={comment.id} className="flex space-x-3">
+                                        <div className="flex-shrink-0">
+                                            {comment.user?.profile?.profile_image_url ? (
+                                                <img
+                                                    src={`https://api.muralfinder.net/${comment.user.profile.profile_image_url}`}
+                                                    alt={comment.user.username}
+                                                    className="w-8 h-8 rounded-full"
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon icon={faUser} className="h-8 w-8 rounded-full bg-gray-200 p-2" />
+                                            )}
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center space-x-2">
+                                                <span className="font-semibold text-purple-400 text-sm">
+                                                    {comment.user?.username || 'Unknown'}
+                                                </span>
+                                                <span className="text-xs text-gray-400">
+                                                    {new Date(comment.created_at).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                            <p className="text-sm text-gray-300 mt-1">{comment.content}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
                 <BackToTopButton />

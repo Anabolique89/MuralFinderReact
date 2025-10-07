@@ -49,12 +49,27 @@ const SingleArtwork = () => {
         skip: !artworkId
     });
     const defaultImage = 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
-    const [comments, setComments] = useState([]);
+    // Use comments from artwork response, fallback to state
+    const [localComments, setLocalComments] = useState([]);
+    const [commentsCount, setCommentsCount] = useState(0);
+    const [likesCount, setLikesCount] = useState(0);
+    const comments = localComments.length > 0 ? localComments : (artwork?.comments || []);
     const [newComment, setNewComment] = useState('');
     const [likedComments, setLikedComments] = useState({});
     const [imageError, setImageError] = useState(false);
     const [imageLoading, setImageLoading] = useState(true);
     const [currentImageSrc, setCurrentImageSrc] = useState('');
+    
+    // Update counts when artwork loads
+    useEffect(() => {
+        if (artwork) {
+            setCommentsCount(artwork.comments_count || 0);
+            setLikesCount(artwork.likes_count || 0);
+            if (artwork.comments && artwork.comments.length > 0) {
+                setLocalComments(artwork.comments);
+            }
+        }
+    }, [artwork]);
 
     // Function to get the best available image
     const getArtworkImage = () => {
@@ -106,21 +121,9 @@ const SingleArtwork = () => {
 
 
     const fetchComments = async () => {
-        try {
-            const response = await ArtworkService.loadComments(artworkId);
-            if (response.success) {
-                // Handle paginated response - comments are in response.data.data
-                const commentsData = response.data?.data || response.data;
-                const commentsArray = Array.isArray(commentsData) ? commentsData : [];
-                setComments(commentsArray);
-            } else {
-                console.error('Error fetching comments:', response.message);
-                setComments([]); // Set to empty array on error
-            }
-        } catch (error) {
-            console.error('Error fetching comments:', error);
-            setComments([]); // Set to empty array on error
-        }
+        // Comments are now loaded with artwork, no need for separate call
+        // This function is kept for backward compatibility but does nothing
+        return;
     };
 
     const handleAddComment = async () => {
@@ -130,9 +133,10 @@ const SingleArtwork = () => {
                 formData.append('content', newComment);
                 const response = await ArtworkService.addComment(artworkId, formData);
                 if (response.success) {
-                    // Ensure comments is an array before spreading
+                    // Add to local comments and increment count
                     const currentComments = Array.isArray(comments) ? comments : [];
-                    setComments([...currentComments, response.data]);
+                    setLocalComments([response.data, ...currentComments]);
+                    setCommentsCount(prev => prev + 1);
                     setNewComment('');
                     toast.success('Comment added successfully!');
                 } else {
@@ -151,7 +155,7 @@ const SingleArtwork = () => {
         try {
             const response = await ArtworkService.likeComment(commentId);
             if (response.success) {
-                // Ensure comments is an array before mapping
+                // Update local comments
                 const currentComments = Array.isArray(comments) ? comments : [];
                 const updatedComments = currentComments.map((comment, idx) => {
                     if (idx === index) {
@@ -159,7 +163,7 @@ const SingleArtwork = () => {
                     }
                     return comment;
                 });
-                setComments(updatedComments);
+                setLocalComments(updatedComments);
                 setLikedComments({ ...likedComments, [commentId]: true });
                 toast.info('Comment liked!');
             } else {
@@ -174,17 +178,23 @@ const SingleArtwork = () => {
     const likeArtwork = async (artworkId) => {
         try {
             const likeResponse = await ArtworkService.likeArtwork(artworkId);
-            console.log(likeResponse, 'likeResponseeeeeeeeeData')
+            console.log(likeResponse, 'likeResponseeeeeeeeeData');
+            
             if (likeResponse?.data?.success) {
-                toast.success(likeResponse?.data?.message || 'Artwork liked successfully')
+                const message = likeResponse?.data?.message || '';
+                // Check if liked or unliked based on message
+                if (message.toLowerCase().includes('liked')) {
+                    setLikesCount(prev => prev + 1);
+                    toast.success('Artwork liked successfully');
+                } else if (message.toLowerCase().includes('unlike')) {
+                    setLikesCount(prev => Math.max(0, prev - 1));
+                    toast.success('Artwork unliked');
+                }
             } else {
-                toast.error(likeResponse || 'Failed to like artwork')
-
+                toast.error(likeResponse || 'Failed to toggle like');
             }
-
         } catch (error) {
-            toast.error(error || 'error to like artwork')
-
+            toast.error(error || 'Error toggling like');
         }
     }
 
@@ -350,13 +360,13 @@ const SingleArtwork = () => {
                                             icon={faHeart}
                                             className="text-2xl group-hover:scale-110 transition-transform"
                                         />
-                                        <span className="text-lg font-semibold">{artwork?.likes_count || 0}</span>
+                                        <span className="text-lg font-semibold">{likesCount}</span>
                                         <span className="text-white/80">likes</span>
                                     </button>
 
                                     <div className="flex items-center space-x-2 text-white">
                                         <FontAwesomeIcon icon={faComments} className="text-2xl" />
-                                        <span className="text-lg font-semibold">{Array.isArray(comments) ? comments.length : 0}</span>
+                                        <span className="text-lg font-semibold">{commentsCount}</span>
                                         <span className="text-white/80">comments</span>
                                     </div>
 
@@ -400,7 +410,7 @@ const SingleArtwork = () => {
                     <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-lg p-8">
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="text-3xl font-bold text-white">
-                                Comments ({Array.isArray(comments) ? comments.length : 0})
+                                Comments ({commentsCount})
                             </h3>
                             <div className="flex items-center space-x-2 text-white/80">
                                 <FontAwesomeIcon icon={faComments} />

@@ -441,6 +441,38 @@ class AIGeneratorService {
   }
 
   /**
+   * Get user's generation limit info
+   * @returns {Promise<Object>} Generation limit info
+   */
+  async getGenerationLimit() {
+    try {
+      const headers = await this.getAuthHeaders();
+      const response = await axios.get(
+        `${this.baseURL}/ai-generator/generation-limit`,
+        {
+          headers,
+        }
+      );
+
+      return {
+        success: true,
+        data: response.data.data,
+      };
+    } catch (error) {
+      console.error("Error fetching generation limit:", error);
+
+      if (error.response?.status === 401) {
+        this.redirectToLogin();
+      }
+
+      return {
+        success: false,
+        error: error.response?.data?.message || error.message,
+      };
+    }
+  }
+
+  /**
    * Get user generation statistics (remaining generations, subscription status)
    * @returns {Promise<Object>} User stats
    */

@@ -111,6 +111,23 @@ export const muralFinderApi = createApi({
       }),
       invalidatesTags: (result, error, id) => [{ type: 'Artwork', id }],
     }),
+    
+    addArtworkComment: builder.mutation({
+      query: ({ id, content, parent_id }) => ({
+        url: `artworks/${id}/comments`,
+        method: 'POST',
+        body: { content, parent_id },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Artwork', id }, 'Comment'],
+    }),
+    
+    getArtworkComments: builder.query({
+      query: ({ id, per_page = 20 }) => `v1/artworks/${id}/comments?per_page=${per_page}`,
+      providesTags: (result, error, { id }) => [{ type: 'Artwork', id }, 'Comment'],
+    }),
 
     // Categories endpoint
     getCategories: builder.query({
@@ -178,6 +195,18 @@ export const muralFinderApi = createApi({
         method: 'POST',
       }),
       invalidatesTags: (result, error, id) => [{ type: 'Wall', id }],
+    }),
+    
+    addWallComment: builder.mutation({
+      query: ({ id, content, parent_id }) => ({
+        url: `walls/${id}/comments`,
+        method: 'POST',
+        body: { content, parent_id },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Wall', id }, 'Comment'],
     }),
     
     // Post endpoints
@@ -253,6 +282,23 @@ export const muralFinderApi = createApi({
         method: 'POST',
       }),
       invalidatesTags: (result, error, id) => [{ type: 'Post', id }],
+    }),
+    
+    addPostComment: builder.mutation({
+      query: ({ id, content, parent_id }) => ({
+        url: `posts/${id}/comments`,
+        method: 'POST',
+        body: { content, parent_id },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Post', id }, 'Comment'],
+    }),
+    
+    getPostComments: builder.query({
+      query: ({ id, per_page = 20 }) => `v1/posts/${id}/comments?per_page=${per_page}`,
+      providesTags: (result, error, { id }) => [{ type: 'Post', id }, 'Comment'],
     }),
     
     // User endpoints
@@ -469,6 +515,8 @@ export const {
   useUpdateArtworkMutation,
   useDeleteArtworkMutation,
   useLikeArtworkMutation,
+  useAddArtworkCommentMutation,
+  useGetArtworkCommentsQuery,
   useGetCategoriesQuery,
   useGetWallsQuery,
   useGetWallByIdQuery,
@@ -476,6 +524,7 @@ export const {
   useUpdateWallMutation,
   useDeleteWallMutation,
   useLikeWallMutation,
+  useAddWallCommentMutation,
   useGetPostsQuery,
   useGetAdminPostsQuery,
   useGetPostByIdQuery,
@@ -483,6 +532,8 @@ export const {
   useUpdatePostMutation,
   useDeletePostMutation,
   useLikePostMutation,
+  useAddPostCommentMutation,
+  useGetPostCommentsQuery,
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
   useFollowUserMutation,

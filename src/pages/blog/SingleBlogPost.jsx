@@ -7,6 +7,7 @@ import styles from '../../style';
 import DOMPurify from 'dompurify';
 import { BackToTopButton, Footer } from '../../components';
 import { getFileUrl } from '../../utils/apiConfig';
+import { toast } from 'react-toastify';
 
 const SingleBlogPost = () => {
   const { postId } = useParams();
@@ -14,34 +15,35 @@ const SingleBlogPost = () => {
   const [loadingPost, setLoadingPost] = useState(true);
   const [comment, setComment] = useState('');
   const [showCommentBox, setShowCommentBox] = useState(false);
-  const [comments, setComments] = useState([]);
+  const [localComments, setLocalComments] = useState([]);
+  const [commentsCount, setCommentsCount] = useState(0);
+  const [likesCount, setLikesCount] = useState(0);
   const [loadingComments, setLoadingComments] = useState(false);
   const [liking, setLiking] = useState(false);
   const [commenting, setCommenting] = useState(false);
 
+  // Use comments from blogPost or localComments
+  const comments = localComments.length > 0 ? localComments : (blogPost?.comments || []);
+
   const sanitizedContent = blogPost && blogPost.content ? DOMPurify.sanitize(blogPost.content) : '';
 
-  const fetchComments = async () => {
-    try {
-      setLoadingComments(true);
-      console.log('Fetching comments for post:', postId);
-      const response = await BlogService.getCommentsForBlogPost(postId);
-      console.log('Comments response:', response);
-      
-      // Handle paginated response - extract the data array
-      const commentsData = response.data || response;
-      setComments(Array.isArray(commentsData) ? commentsData : []);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-      // If it's a 401 error, just set empty comments (user not authenticated)
-      if (error.response?.status === 401) {
-        setComments([]);
-      } else {
-        setComments([]);
+  // Update counts and comments when blogPost loads
+  useEffect(() => {
+    if (blogPost) {
+      console.log('BlogPost loaded:', blogPost);
+      console.log('Comments in blogPost:', blogPost.comments);
+      setCommentsCount(blogPost.comments_count || 0);
+      setLikesCount(blogPost.likes_count || 0);
+      if (blogPost.comments && blogPost.comments.length > 0) {
+        console.log('Setting local comments:', blogPost.comments);
+        setLocalComments(blogPost.comments);
       }
-    } finally {
-      setLoadingComments(false);
     }
+  }, [blogPost]);
+
+  const fetchComments = async () => {
+    // Comments are now loaded with the post, no need for separate call
+    return;
   };
 
   useEffect(() => {
@@ -59,23 +61,37 @@ const SingleBlogPost = () => {
     };
 
     fetchBlogPost();
-    fetchComments();
   }, [postId]);
 
   const handleCommentSubmit = async () => {
+    if (!comment.trim()) {
+      toast.error('Comment cannot be empty');
+      return;
+    }
+
     try {
       setCommenting(true);
       console.log('Submitting comment:', { content: comment, post_id: postId });
       const result = await BlogService.commentOnBlogPost(postId, { content: comment, post_id: postId });
       console.log('Comment submission result:', result);
-      setComment('');
-      setShowCommentBox(false);
       
-      // Refetch comments from server to get the actual comment with proper data
-      console.log('Refetching comments after submission...');
-      await fetchComments();
+      if (result.success || result.data) {
+        toast.success('Comment added successfully!');
+        
+        // Add new comment to local state
+        const newComment = result.data || result;
+        const currentComments = Array.isArray(comments) ? comments : [];
+        setLocalComments([newComment, ...currentComments]);
+        setCommentsCount(prev => prev + 1);
+        
+        setComment('');
+        setShowCommentBox(false);
+      } else {
+        toast.error('Failed to add comment');
+      }
     } catch (error) {
       console.error('Error submitting comment:', error);
+      toast.error('An error occurred while adding the comment');
     } finally {
       setCommenting(false);
     }
@@ -84,11 +100,29 @@ const SingleBlogPost = () => {
   const handleLike = async () => {
     try {
       setLiking(true);
-      await BlogService.likeBlogPost(postId);
-      const updatedBlogPost = await BlogService.getBlogPostById(postId);
-      setBlogPost(updatedBlogPost);
+      const result = await BlogService.likeBlogPost(postId);
+      
+      if (result.success || result.data) {
+        // Update likes count locally
+        const message = result.message || '';
+        if (message.toLowerCase().includes('liked')) {
+          setLikesCount(prev => prev + 1);
+          toast.success('Post liked successfully!');
+        } else if (message.toLowerCase().includes('unlike')) {
+          setLikesCount(prev => Math.max(0, prev - 1));
+          toast.success('Post unliked');
+        } else {
+          // Fallback: refetch post
+          const updatedBlogPost = await BlogService.getBlogPostById(postId);
+          setBlogPost(updatedBlogPost);
+          toast.success('Post liked successfully!');
+        }
+      } else {
+        toast.error('Failed to like post');
+      }
     } catch (error) {
       console.error('Error liking blog post:', error);
+      toast.error('An error occurred while liking the post');
     } finally {
       setLiking(false);
     }
@@ -217,7 +251,7 @@ const SingleBlogPost = () => {
                     <div className="flex items-center space-x-4 text-white/60 text-sm">
                       <div className="flex items-center space-x-1">
                         <FontAwesomeIcon icon={faHeart} className="text-pink-400" />
-                        <span>{blogPost.likes_count || 0}</span>
+                        <span>{likesCount}</span>
                       </div>
                       <span>{blogPost.date}</span>
                     </div>
@@ -244,7 +278,7 @@ const SingleBlogPost = () => {
                     ) : (
                       <FontAwesomeIcon icon={faHeart} />
                     )}
-                    <span>Like ({blogPost.likes_count || 0})</span>
+                    <span>Like ({likesCount})</span>
                   </button>
 
                   <button
@@ -309,6 +343,7 @@ const SingleBlogPost = () => {
 
               {/* Comments List */}
               <div className="space-y-4">
+                {console.log('Rendering comments:', comments, 'loadingComments:', loadingComments)}
                 {loadingComments ? (
                   <div className="text-center py-8">
                     <FontAwesomeIcon icon={faSpinner} spin className="text-3xl text-white/60 mb-2" />
@@ -324,7 +359,7 @@ const SingleBlogPost = () => {
                       <div className="flex items-start space-x-3">
                         {comment.user?.profile?.profile_image_url ? (
                           <img
-                            src={`https://api.muralfinder.net${comment.user.profile.profile_image_url}`}
+                            src={getFileUrl(comment.user.profile.profile_image_url)}
                             alt={comment.user?.username}
                             className="w-8 h-8 rounded-full object-cover border border-white/20"
                           />
