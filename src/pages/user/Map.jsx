@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Map,
   Marker,
   InfoWindow,
   APIProvider,
+  useMap,
+  useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import {
-  DirectionsRenderer,
-} from "@react-google-maps/api";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSearch,
@@ -18,7 +17,9 @@ import {
   faSpinner,
   faFilter,
   faExpand,
-  faCompress
+  faCompress,
+  faTimes,
+  faLocationArrow
 } from '@fortawesome/free-solid-svg-icons';
 import WallService from "../../services/WallService";
 import { getFileUrl } from "../../utils/apiConfig";
@@ -32,7 +33,7 @@ const mapOptions = {
       featureType: "road",
       elementType: "geometry",
       stylers: [
-        { color: "#6366f1" }, // Indigo-500 for roads
+        { color: "#6366f1" },
         { weight: 1 },
       ],
     },
@@ -40,7 +41,7 @@ const mapOptions = {
       featureType: "road.highway",
       elementType: "geometry",
       stylers: [
-        { color: "#4f46e5" }, // Indigo-600 for highways
+        { color: "#4f46e5" },
         { weight: 2 },
       ],
     },
@@ -48,7 +49,7 @@ const mapOptions = {
       featureType: "road",
       elementType: "labels.text.fill",
       stylers: [
-        { color: "#1e1b4b" }, // Indigo-900 for road labels
+        { color: "#1e1b4b" },
       ],
     },
     {
@@ -63,7 +64,7 @@ const mapOptions = {
       featureType: "water",
       elementType: "geometry",
       stylers: [
-        { color: "#3730a3" }, // Indigo-700 for water
+        { color: "#3730a3" },
       ],
     },
     {
@@ -77,49 +78,49 @@ const mapOptions = {
       featureType: "landscape",
       elementType: "geometry",
       stylers: [
-        { color: "#f1f5f9" }, // Light gray for landscape
+        { color: "#f1f5f9" },
       ],
     },
     {
       featureType: "landscape.natural",
       elementType: "geometry",
       stylers: [
-        { color: "#e0e7ff" }, // Indigo-100 for natural areas
+        { color: "#e0e7ff" },
       ],
     },
     {
       featureType: "poi",
       elementType: "geometry",
       stylers: [
-        { color: "#8b5cf6" }, // Purple-500 for POI
+        { color: "#8b5cf6" },
       ],
     },
     {
       featureType: "poi",
       elementType: "labels.text.fill",
       stylers: [
-        { color: "#4c1d95" }, // Purple-900 for POI labels
+        { color: "#4c1d95" },
       ],
     },
     {
       featureType: "transit",
       elementType: "geometry",
       stylers: [
-        { color: "#a5b4fc" }, // Indigo-300 for transit
+        { color: "#a5b4fc" },
       ],
     },
     {
       featureType: "transit",
       elementType: "labels.text.fill",
       stylers: [
-        { color: "#312e81" }, // Indigo-800 for transit labels
+        { color: "#312e81" },
       ],
     },
     {
       featureType: "administrative",
       elementType: "geometry.stroke",
       stylers: [
-        { color: "#4338ca" }, // Indigo-700 for borders
+        { color: "#4338ca" },
         { weight: 1 },
       ],
     },
@@ -127,7 +128,7 @@ const mapOptions = {
       featureType: "administrative",
       elementType: "labels.text.fill",
       stylers: [
-        { color: "#6b7280" }, // Gray-500 for admin labels
+        { color: "#6b7280" },
       ],
     },
   ],
@@ -140,7 +141,6 @@ const mapOptions = {
   fullscreenControl: true,
 };
 
-// Default map center (San Francisco)
 const defaultCenter = { lat: 37.7749, lng: -122.4194 };
 
 const defaultProps = {
@@ -153,6 +153,156 @@ const defaultProps = {
   streetViewControl: true,
 };
 
+// Address Search Component with Autocomplete
+const AddressSearchBox = ({ onPlaceSelect, searchQuery, setSearchQuery }) => {
+  const map = useMap();
+  const places = useMapsLibrary('places');
+  const [sessionToken, setSessionToken] = useState();
+  const [autocompleteService, setAutocompleteService] = useState(null);
+  const [placesService, setPlacesService] = useState(null);
+  const [predictionResults, setPredictionResults] = useState([]);
+  const [showPredictions, setShowPredictions] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!places || !map) return;
+
+    setAutocompleteService(new places.AutocompleteService());
+    setPlacesService(new places.PlacesService(map));
+    setSessionToken(new places.AutocompleteSessionToken());
+
+    return () => setAutocompleteService(null);
+  }, [map, places]);
+
+  const fetchPredictions = async (inputValue) => {
+    if (!autocompleteService || !inputValue) {
+      setPredictionResults([]);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const request = { input: inputValue, sessionToken };
+      const response = await autocompleteService.getPlacePredictions(request);
+      setPredictionResults(response.predictions || []);
+      setShowPredictions(true);
+    } catch (error) {
+      console.error('Error fetching predictions:', error);
+      setPredictionResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    
+    if (value.length > 2) {
+      fetchPredictions(value);
+    } else {
+      setPredictionResults([]);
+      setShowPredictions(false);
+    }
+  };
+
+  const onPlaceSelectInternal = (placeId) => {
+    if (!placesService) return;
+
+    const detailRequestOptions = {
+      placeId,
+      fields: ['geometry', 'name', 'formatted_address'],
+      sessionToken
+    };
+
+    placesService.getDetails(detailRequestOptions, (placeDetails) => {
+      if (placeDetails && placeDetails.geometry && placeDetails.geometry.location) {
+        onPlaceSelect(placeDetails);
+        setSearchQuery(placeDetails.formatted_address || placeDetails.name);
+        setShowPredictions(false);
+        setPredictionResults([]);
+        setSessionToken(new places.AutocompleteSessionToken());
+      }
+    });
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && predictionResults.length > 0) {
+      e.preventDefault();
+      onPlaceSelectInternal(predictionResults[0].place_id);
+    }
+  };
+
+  return (
+    <div className="relative w-full">
+      <div className="relative">
+        <FontAwesomeIcon
+          icon={faSearch}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-600 z-10"
+        />
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Search for an address or location..."
+          value={searchQuery}
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+          onFocus={() => predictionResults.length > 0 && setShowPredictions(true)}
+          className="w-full h-12 pl-12 pr-12 rounded-full border-2 border-white/20 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-lg"
+        />
+        {isSearching && (
+          <FontAwesomeIcon
+            icon={faSpinner}
+            spin
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-indigo-600"
+          />
+        )}
+        {searchQuery && !isSearching && (
+          <button
+            onClick={() => {
+              setSearchQuery('');
+              setPredictionResults([]);
+              setShowPredictions(false);
+            }}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        )}
+      </div>
+
+      {/* Predictions Dropdown */}
+      {showPredictions && predictionResults.length > 0 && (
+        <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-2xl overflow-hidden z-50 max-h-96 overflow-y-auto">
+          {predictionResults.map((prediction) => (
+            <button
+              key={prediction.place_id}
+              onClick={() => onPlaceSelectInternal(prediction.place_id)}
+              className="w-full text-left px-4 py-3 hover:bg-indigo-50 transition-colors border-b border-gray-100 last:border-b-0"
+            >
+              <div className="flex items-start">
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  className="text-indigo-600 mt-1 mr-3 flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    {prediction.structured_formatting.main_text}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {prediction.structured_formatting.secondary_text}
+                  </p>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Maps = () => {
   const navigate = useNavigate();
 
@@ -161,8 +311,8 @@ const Maps = () => {
   const [filteredWalls, setFilteredWalls] = useState([]);
   const [image, setImage] = useState("");
   const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const [directions, setDirections] = useState(null);
-  const [userLocation, setUserLocation] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
+  const [searchMarker, setSearchMarker] = useState(null);
 
   const [cameraProps, setCameraProps] = useState({
     ...defaultProps,
@@ -170,13 +320,13 @@ const Maps = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [wallSearchQuery, setWallSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedWallType, setSelectedWallType] = useState('all');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showUserLocation, setShowUserLocation] = useState(true);
   const [mapError, setMapError] = useState(null);
-
-  // load environment vairables
+  const [searchMode, setSearchMode] = useState('address'); // 'address' or 'walls'
 
   const apiKey = import.meta.env.VITE_MAP_KEY;
 
@@ -185,7 +335,6 @@ const Maps = () => {
       setIsLoading(true);
       setMapError(null);
 
-      // Get user location
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -202,7 +351,6 @@ const Maps = () => {
           },
           (error) => {
             console.warn("Error getting user location:", error);
-            // Use default location if geolocation fails
             setMapCenter(defaultCenter);
           }
         );
@@ -211,7 +359,6 @@ const Maps = () => {
         setMapCenter(defaultCenter);
       }
 
-      // Fetch walls from database
       try {
         const response = await WallService.getAllWalls();
         if (response.success && response.data?.data) {
@@ -234,11 +381,10 @@ const Maps = () => {
     initializeMap();
   }, []);
 
-  // Filter walls based on search and wall type
+  // Filter walls based on wall search query
   useEffect(() => {
     let filtered = walls;
 
-    // Filter by wall type
     if (selectedWallType !== 'all') {
       filtered = filtered.filter(wall =>
         wall.wall_type === selectedWallType ||
@@ -246,25 +392,45 @@ const Maps = () => {
       );
     }
 
-    // Filter by search query
-    if (searchQuery.trim()) {
+    if (wallSearchQuery.trim()) {
       filtered = filtered.filter(wall =>
-        wall.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        wall.location_text?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        wall.city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        wall.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        wall.name?.toLowerCase().includes(wallSearchQuery.toLowerCase()) ||
+        wall.location_text?.toLowerCase().includes(wallSearchQuery.toLowerCase()) ||
+        wall.city?.toLowerCase().includes(wallSearchQuery.toLowerCase()) ||
+        wall.description?.toLowerCase().includes(wallSearchQuery.toLowerCase())
       );
     }
 
     setFilteredWalls(filtered);
-  }, [walls, selectedWallType, searchQuery]);
+  }, [walls, selectedWallType, wallSearchQuery]);
+
+  const handlePlaceSelect = (placeDetails) => {
+    if (placeDetails && placeDetails.geometry && placeDetails.geometry.location) {
+      const location = {
+        lat: placeDetails.geometry.location.lat(),
+        lng: placeDetails.geometry.location.lng()
+      };
+      
+      setSearchMarker({
+        position: location,
+        name: placeDetails.name,
+        address: placeDetails.formatted_address
+      });
+      
+      setCameraProps(prev => ({
+        ...prev,
+        center: location,
+        zoom: 16
+      }));
+    }
+  };
 
   const handleMarkerClick = (index) => {
     const wall = filteredWalls[index];
     setSelectedMarker(index);
     setImage(wall.image_path ? getFileUrl(wall.image_path) : null);
+    setSearchMarker(null); // Clear search marker when clicking a wall
 
-    // Center map on selected marker
     setCameraProps(prev => ({
       ...prev,
       center: {
@@ -273,10 +439,6 @@ const Maps = () => {
       },
       zoom: Math.max(prev.zoom, 15)
     }));
-  };
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
   };
 
   const toggleFilters = () => {
@@ -301,44 +463,12 @@ const Maps = () => {
         zoom: 9
       }));
     }
+    setSearchMarker(null);
+    setSearchQuery('');
   };
-
-  // const handleDirections = async (destination) => {
-  //   if (!userLocation) {
-  //     alert("Please allow location access to get directions.");
-  //     return;
-  //   }
-   
-  //   // Ensure latitude and longitude are numbers
-  //   const finalDestination = {
-  //     lat: parseFloat(destination.latitude),
-  //     lng: parseFloat(destination.longitude)
-  //   };
-  // console.log(finalDestination);
-  //   const service = new google.maps.DirectionsService();
-
-  //   service.route(
-  //     {
-  //       origin: userLocation,
-  //       destination: finalDestination,  // Properly structured destination object
-  //       travelMode: google.maps.TravelMode.DRIVING,
-  //     },
-  //     (result, status) => {
-  //       console.log(result);
-  //       if (status === google.maps.DirectionsStatus.OK) {
-  //         setDirections(result);
-  //       } else {
-  //         // console.error(`Error fetching directions ${result}`);
-  //         console.error(`Error fetching directions: ${status}`, result);
-  //       }
-  //     }
-  //   );
-  // };
-  
 
   const handleDirections = (destination) => {
     if (!userLocation) {
-      // Show a more user-friendly notification
       setMapError("Please allow location access to get directions.");
       setTimeout(() => setMapError(null), 3000);
       return;
@@ -350,8 +480,6 @@ const Maps = () => {
 
     window.open(directionsUrl, "_blank");
   };
-
-
 
   const getWallTypeIcon = (wallType) => {
     switch (wallType) {
@@ -372,9 +500,7 @@ const Maps = () => {
     }
   };
 
-
-
-  if (mapError) {
+  if (mapError && isLoading) {
     return (
       <div className="min-h-screen bg-indigo-600 flex items-center justify-center">
         <div className="text-center text-white">
@@ -395,10 +521,8 @@ const Maps = () => {
   return (
     <div className={`min-h-screen bg-indigo-600 ${isFullscreen ? 'fixed inset-0 z-50' : 'pt-20'}`}>
       <APIProvider apiKey={apiKey} libraries={["places"]}>
-          {/* Map Container */}
           <div className="relative w-full h-screen">
 
-            {/* Loading Overlay */}
             {isLoading && (
               <div className="absolute inset-0 bg-indigo-600 flex items-center justify-center z-50">
                 <div className="text-center text-white">
@@ -409,30 +533,70 @@ const Maps = () => {
             )}
 
             {/* Top Controls Bar */}
-            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center space-y-4">
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center space-y-4 w-full max-w-2xl px-4">
+              {/* Search Mode Toggle */}
+              <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded-full p-1 shadow-lg">
+                <button
+                  onClick={() => {
+                    setSearchMode('address');
+                    setWallSearchQuery('');
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                    searchMode === 'address'
+                      ? 'bg-indigo-600 text-white'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" />
+                  Search Address
+                </button>
+                <button
+                  onClick={() => {
+                    setSearchMode('walls');
+                    setSearchQuery('');
+                    setSearchMarker(null);
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                    searchMode === 'walls'
+                      ? 'bg-indigo-600 text-white'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  🎨 Search Walls
+                </button>
+              </div>
+
               {/* Search Bar */}
-              <div className="flex items-center space-x-2">
-                <div className="relative">
-                  <FontAwesomeIcon
-                    icon={faSearch}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-600 z-10"
+              <div className="w-full">
+                {searchMode === 'address' ? (
+                  <AddressSearchBox
+                    onPlaceSelect={handlePlaceSelect}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
                   />
-                  <input
-                    type="text"
-                    placeholder="Search walls by name, location, or city..."
-                    value={searchQuery}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    className="w-80 h-12 pl-12 pr-4 rounded-full border-2 border-white/20 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-lg"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
+                ) : (
+                  <div className="relative">
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-600 z-10"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Search walls by name, location, or city..."
+                      value={wallSearchQuery}
+                      onChange={(e) => setWallSearchQuery(e.target.value)}
+                      className="w-full h-12 pl-12 pr-12 rounded-full border-2 border-white/20 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-lg"
+                    />
+                    {wallSearchQuery && (
+                      <button
+                        onClick={() => setWallSearchQuery('')}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -461,7 +625,7 @@ const Maps = () => {
 
             {/* Filters Panel */}
             {showFilters && (
-              <div className="absolute top-32 left-1/2 transform -translate-x-1/2 z-20 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl p-4 w-80">
+              <div className="absolute top-48 left-1/2 transform -translate-x-1/2 z-20 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl p-4 w-80">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Filter Walls</h3>
                 <div className="space-y-3">
                   <div>
@@ -482,7 +646,7 @@ const Maps = () => {
                     <button
                       onClick={() => {
                         setSelectedWallType('all');
-                        setSearchQuery('');
+                        setWallSearchQuery('');
                       }}
                       className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
                     >
@@ -506,7 +670,7 @@ const Maps = () => {
                 className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-indigo-600 hover:bg-white transition-colors"
                 title="Reset View"
               >
-                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <FontAwesomeIcon icon={faLocationArrow} />
               </button>
 
               <button
@@ -531,13 +695,26 @@ const Maps = () => {
                     <span className="text-gray-700">Your Location</span>
                   </div>
                 )}
+                {searchMarker && (
+                  <div className="flex items-center space-x-1">
+                    <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                    <span className="text-gray-700">Search Result</span>
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* Error Toast */}
+            {mapError && !isLoading && (
+              <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-30 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+                {mapError}
+              </div>
+            )}
 
             {/* Map Component */}
             <Map {...cameraProps} onCameraChanged={(ev) => setCameraProps(ev.detail)}>
 
-              {/* User Location Marker - You are here */}
+              {/* User Location Marker */}
               {userLocation && showUserLocation && (
                 <Marker
                   position={userLocation}
@@ -554,6 +731,36 @@ const Maps = () => {
                   }}
                   title="Your Location"
                 />
+              )}
+
+              {/* Search Result Marker */}
+              {searchMarker && (
+                <Marker
+                  position={searchMarker.position}
+                  onClick={() => {
+                    setSelectedMarker(null);
+                  }}
+                  icon={{
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" fill="#f97316" stroke="#ffffff" stroke-width="3"/>
+                        <text x="20" y="28" text-anchor="middle" fill="white" font-size="20" font-weight="bold">📍</text>
+                      </svg>
+                    `),
+                    anchor: { x: 20, y: 20 }
+                  }}
+                  title={searchMarker.name}
+                >
+                  <InfoWindow
+                    position={searchMarker.position}
+                    onCloseClick={() => setSearchMarker(null)}
+                  >
+                    <div className="p-2">
+                      <h3 className="font-semibold text-gray-800">{searchMarker.name}</h3>
+                      <p className="text-sm text-gray-600">{searchMarker.address}</p>
+                    </div>
+                  </InfoWindow>
+                </Marker>
               )}
 
               {/* Art Wall Markers */}
@@ -578,9 +785,7 @@ const Maps = () => {
                 />
               ))}
 
-
-
-              {/* Enhanced InfoWindow */}
+              {/* Enhanced InfoWindow for Art Walls */}
               {selectedMarker !== null && filteredWalls[selectedMarker] && (
                 <InfoWindow
                   position={{
@@ -593,7 +798,6 @@ const Maps = () => {
                   }}
                 >
                   <div className="max-w-sm bg-white rounded-lg overflow-hidden">
-                    {/* Header */}
                     <div className="bg-indigo-600 text-white p-4">
                       <div className="flex items-center justify-between">
                         <h3 className="text-lg font-semibold truncate">
@@ -608,7 +812,6 @@ const Maps = () => {
                       </p>
                     </div>
 
-                    {/* Image */}
                     {image && (
                       <div className="h-48 overflow-hidden">
                         <img
@@ -619,7 +822,6 @@ const Maps = () => {
                       </div>
                     )}
 
-                    {/* Content */}
                     <div className="p-4">
                       <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                         {filteredWalls[selectedMarker].description || "No description available."}
@@ -633,7 +835,6 @@ const Maps = () => {
                         <p>🎨 {filteredWalls[selectedMarker].artworks_count || 0} artworks</p>
                       </div>
 
-                      {/* Actions */}
                       <div className="flex space-x-2">
                         <Link
                           to={`/wall/${filteredWalls[selectedMarker].id}`}
@@ -655,19 +856,10 @@ const Maps = () => {
                 </InfoWindow>
               )}
 
-              {/* Directions Renderer */}
-              {directions && (
-                <DirectionsRenderer
-                  key={`directions_${Date.now()}`}
-                  directions={directions}
-                />
-              )}
-
             </Map>
           </div>
         </APIProvider>
 
-      {/* Footer - only show when not in fullscreen */}
       {!isFullscreen && (
         <>
           <BackToTopButton />
